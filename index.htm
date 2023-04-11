@@ -4,13 +4,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Primary Meta Tags -->
     <title>Absurd Industries - The Sassy Side of Science</title>
+    <meta name="title" content="Absurd Industries - The Sassy Side of Science">
+    <meta name="description" content="We're all about bending the rules and defying the norm. We're here to push boundaries, and, quite frankly, to make science and technology a whole lot more fun.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://absurd.industries/">
+    <meta property="og:title" content="Absurd Industries - The Sassy Side of Science">
+    <meta property="og:description" content="We're all about bending the rules and defying the norm. We're here to push boundaries, and, quite frankly, to make science and technology a whole lot more fun.">
+    <meta property="og:image" content="https://absurd.industries/absurd-industries-logo.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://absurd.industries/">
+    <meta property="twitter:title" content="Absurd Industries - The Sassy Side of Science">
+    <meta property="twitter:description" content="We're all about bending the rules and defying the norm. We're here to push boundaries, and, quite frankly, to make science and technology a whole lot more fun.">
+    <meta property="twitter:image" content="https://absurd.industries/absurd-industries-logo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tufte-css/1.8.0/tufte.min.css" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#141414">
+    <link rel="shortcut icon" href="/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#ece0cf">
+    <meta name="msapplication-config" content="/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ece0cf">
+
     <style>
         body {
             background-color: #ECE0CF;
             color: #1a1a1a;
-            margin:0;
+            margin: 0;
         }
 
         header,
@@ -24,19 +54,85 @@
         }
 
         .mt-0 {
-            margin-top: 0;  
+            margin-top: 0;
         }
 
-        a.button {
-            background-color: #1a1a1a;
-            color: #ECE0CF;
-            border-radius: 0.5rem;
-            text-decoration: none;
+        .btn {
+            border: 2.5px solid #111;
+            color: #111;
             display: inline-block;
-            padding: 0.5rem 1rem;
-            margin-top: 1rem;
-            font-size:0.9rem;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            padding: 15px 10px;
+            margin: 5px;
+            min-width: 60px;
+            text-align: center;
+            cursor: pointer;
         }
+
+        .btn.large {
+            border: 3px solid #111;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin: 10px 5px;
+            padding: 15px;
+        }
+
+        .btn.mini {
+            border: 1px solid #111;
+            color: #111;
+            min-width: 40px;
+            line-height: 40px;
+            padding: 0 10px;
+        }
+
+        .btn.radio {
+            border-style: dashed;
+        }
+
+        .btn.selected {
+            background: #111;
+            color: #FFFFF8;
+        }
+
+        .btn.white {
+            background: #FFFFF8;
+            color: #111;
+        }
+
+        .btn.flash {
+            background: #EEE !important;
+        }
+
+        .btns {
+            margin: 3px 0;
+        }
+
+        .btns .btn:first-child {
+            margin-left: 0;
+        }
+
+        .btns .btn:last-child {
+            margin-right: 0;
+        }
+
+        .btns.stack {
+            margin: 15px 0 20px 0;
+        }
+
+        .btns.stack>.btn {
+            display: block;
+            margin: 5px 0;
+        }
+
+        a {
+            font-size: 1.5rem;
+            color: #111;
+            text-decoration: none;
+            padding-bottom: 1px;
+            border-bottom: 2px solid #111;
+        }
+
 
         h1 {
             font-size: 2.5rem;
@@ -67,8 +163,8 @@
         }
 
         footer p {
-            margin:0;
-            padding:0;
+            margin: 0;
+            padding: 0;
         }
 
         .copyleft {
@@ -80,7 +176,7 @@
 
 <body>
     <header>
-        <img src="absurd-industries-logo.svg" alt="Absurd Industries Logo" width="300" class="logo" />
+        <img src="absurd-industries-logo.png" alt="Absurd Industries Logo" width="300" class="logo" />
         <h1 class="mt-0">Absurd Industries</h1>
         <h2>Where Creativity Dances with Chaos</h2>
         <h4><em>run by Amartha and <a href="https://www.instagram.com/layogtima/">@layogtima</a></em></h4>
@@ -106,13 +202,13 @@
                 <li>Firefly Lamp: 3D printed voronai lamp that simulates fireflies</li>
             </ul>
         </section>
-        
+
 
         <section id="community">
             <h3>Join the Absurd Industries Community</h3>
             <p>Hey, you! Yeah, you, the one who's not afraid to embrace the absurd. We're looking for DIY hackers,
                 enthusiasts, and students like you to join our chaotic corner of the universe. Ready to dive in?</p>
-            <a href="#" class="button">Join Now</a>
+            <a href="#" class="btn">Join Now</a>
         </section>
 
         <section id="amartha">
