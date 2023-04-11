@@ -123,6 +123,10 @@ li {
     padding: 0.5rem 0;
 }
 
+article {
+    background-color: #1a1a1a;
+}
+
 footer {
     border-radius:1rem 0 0 0;
     font-size: 0.65rem;
