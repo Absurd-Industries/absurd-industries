@@ -1,0 +1,201 @@
+.mod {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    perspective: 60px;
+    z-index:-1;
+  }
+  .mod .project-name {
+    position: absolute;
+    width: 420px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 1.75em;
+    text-transform: uppercase;
+    letter-spacing: 0.5em;
+    text-align: center;
+    line-height: 1.5em;
+    font-family: 'Roboto Mono';
+    font-weight: 300;
+  }
+  .mod .cube {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -105px;
+    margin-left: -105px;
+    width: 210px;
+    height: 210px;
+    -webkit-transform-style: preserve-3d;
+    -webkit-transform-origin: 105px 105px;
+    animation: spinCube 9000ms linear infinite;
+  }
+  .mod .cube .faces {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 210px;
+    height: 210px;
+  }
+  .mod .cube .faces .dot {
+    position: absolute;
+    background: #ee780d;
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+  }
+  .mod .cube .faces .p1 {
+    top: -1px;
+    margin-left: -1px;
+  }
+  .mod .cube .faces .p2 {
+    top: -1px;
+    left: 50%;
+    margin-left: - 1px;
+  }
+  .mod .cube .faces .p3 {
+    top: -1px;
+    left: 100%;
+    margin-left: -1px;
+  }
+  .mod .cube .faces .p4 {
+    top: 50%;
+    left: -1px;
+    margin-top: -1px;
+  }
+  .mod .cube .faces .p5 {
+    top: 50%;
+    left: 50%;
+    margin-top: -1px;
+    margin-left: -1px;
+  }
+  .mod .cube .faces .p6 {
+    top: 50%;
+    left: 100%;
+    margin-top: -1px;
+    margin-left: -1px;
+  }
+  .mod .cube .faces .p7 {
+    top: 100%;
+    left: 0%;
+    margin-top: -1px;
+    margin-left: -1px;
+  }
+  .mod .cube .faces .p8 {
+    top: 100%;
+    left: 50%;
+    margin-top: -1px;
+    margin-left: -1px;
+  }
+  .mod .cube .faces .p9 {
+    top: 100%;
+    left: 100%;
+    margin-top: -1px;
+    margin-left: -1px;
+  }
+  .mod .cube .faces .p10 {
+    top: 25%;
+    left: 25%;
+    margin-top: -1px;
+    margin-left: -1px;
+  }
+  .mod .cube .faces .p11 {
+    top: 25%;
+    left: 75%;
+    margin-top: -1px;
+    margin-left: -1px;
+  }
+  .mod .cube .faces .p12 {
+    top: 75%;
+    left: 25%;
+    margin-top: -1px;
+    margin-left: -1px;
+  }
+  .mod .cube .faces .p13 {
+    top: 75%;
+    left: 75%;
+    margin-top: -1px;
+    margin-left: -1px;
+  }
+  .mod .cube .f1 {
+    -webkit-transform: translateZ(-105px);
+    animation-delay: 0.3s;
+  }
+  .mod .cube .f2 {
+    -webkit-transform: translateZ(-84px);
+    animation-delay: 0.6s;
+  }
+  .mod .cube .f3 {
+    -webkit-transform: translateZ(-63px);
+    animation-delay: 0.9s;
+  }
+  .mod .cube .f4 {
+    -webkit-transform: translateZ(-42px);
+    animation-delay: 1.2s;
+  }
+  .mod .cube .f5 {
+    -webkit-transform: translateZ(-21px);
+    animation-delay: 1.5s;
+  }
+  .mod .cube .f6 {
+    -webkit-transform: translateZ(0px);
+    animation-delay: 1.8s;
+  }
+  .mod .cube .f7 {
+    -webkit-transform: translateZ(21px);
+    animation-delay: 2.1s;
+  }
+  .mod .cube .f8 {
+    -webkit-transform: translateZ(42px);
+    animation-delay: 2.4s;
+  }
+  .mod .cube .f9 {
+    -webkit-transform: translateZ(63px);
+    animation-delay: 2.7s;
+  }
+  .mod .cube .f10 {
+    -webkit-transform: translateZ(84px);
+    animation-delay: 3s;
+  }
+  .mod .cube .f11 {
+    -webkit-transform: translateZ(105px);
+    animation-delay: 3.3s;
+  }
+  @-webkit-keyframes spinCube {
+    0% {
+      -webkit-transform: rotateY(0deg) rotateX(-45deg) rotate(0deg);
+    }
+    50% {
+      -webkit-transform: rotateY(180deg) rotateX(135deg) rotate(180deg);
+    }
+    100% {
+      -webkit-transform: rotateY(360deg) rotateX(315deg) rotate(360deg);
+    }
+  }
+  @-webkit-keyframes spinDots {
+    0% {
+      -webkit-transform: rotateX(0deg) rotateY(45deg);
+    }
+    50% {
+      -webkit-transform: rotateX(-180deg) rotateY(-135deg);
+    }
+    100% {
+      -webkit-transform: rotateX(-360deg) rotateY(-315deg);
+    }
+  }
+  @-webkit-keyframes spinFaces {
+    0% {
+      -webkit-transform: rotateX(0deg);
+    }
+    50% {
+      -webkit-transform: rotateX(180deg);
+    }
+    100% {
+      -webkit-transform: rotateX(0deg);
+    }
+  }
+  
