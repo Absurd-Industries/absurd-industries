@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Network SVG</title>
+    <style>
+        circle {
+            fill: #4285f4;
+        }
+        line {
+            stroke: #999;
+            stroke-width: 1px;
+        }
+    </style>
+</head>
+<body>
+    <svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+        <!-- Input Layer -->
+        <circle cx="50" cy="50" r="10" />
+        <circle cx="50" cy="150" r="10" />
+        <circle cx="50" cy="250" r="10" />
+
+        <!-- Hidden Layer -->
+        <circle cx="200" cy="50" r="10" />
+        <circle cx="200" cy="150" r="10" />
+        <circle cx="200" cy="250" r="10" />
+
+        <!-- Output Layer -->
+        <circle cx="350" cy="150" r="10" />
+
+        <!-- Connections between Input Layer and Hidden Layer -->
+        <line x1="60" y1="50" x2="190" y2="50" />
+        <line x1="60" y1="50" x2="190" y2="150" />
+        <line x1="60" y1="50" x2="190" y2="250" />
+
+        <line x1="60" y1="150" x2="190" y2="50" />
+        <line x1="60" y1="150" x2="190" y2="150" />
+        <line x1="60" y1="150" x2="190" y2="250" />
+
+        <line x1="60" y1="250" x2="190" y2="50" />
+        <line x1="60" y1="250" x2="190" y2="150" />
+        <line x1="60" y1="250" x2="190" y2="250" />
+
+        <!-- Connections between Hidden Layer and Output Layer -->
+        <line x1="210" y1="50" x2="340" y2="150" />
+        <line x1="210" y1="150" x2="340" y2="150" />
+        <line x1="210" y1="250" x2="340" y2="150" />
+    </svg>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Reactive Shape</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.sound.js"></script>
+</head>
+<body>
+    <script>
+        let mic;
+        let shapeSize = 100;
+        let speed = 0.01;
+        let rotation = 0;
+        let coreSize = 20;
+
+        function setup() {
+            createCanvas(windowWidth, windowHeight, WEBGL);
+            mic = new p5.AudioIn();
+            mic.start();
+        }
+
+        function draw() {
+            background(0);
+
+            let vol = mic.getLevel();
+            let minSize = 60;
+            let maxSize = 200;
+            let minVolThreshold = 0.15;
+            let sizeIncreaseFactor = 10;
+
+            if (vol > minVolThreshold) {
+                shapeSize = map(vol, minVolThreshold, 1, minSize, maxSize);
+                speed = map(vol, minVolThreshold, 1, 0.005, 0.2);
+            }
+
+            push();
+            translate(0, 0);
+            rotateX(rotation);
+            rotateY(rotation);
+            rotateZ(rotation);
+            stroke(255, 0, 0);
+            strokeWeight(1);
+            noFill();
+
+            // Draw main shape (cube)
+            box(shapeSize);
+
+            // Draw internal ethical core shape
+            stroke(0, 255, 0);
+            sphere(coreSize);
+
+            pop();
+
+            rotation += speed;
+        }
+
+        function windowResized() {
+            resizeCanvas(windowWidth, windowHeight);
+        }
+    </script>
+</body>
+</html>

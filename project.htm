@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Project Name - Absurd Industries</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tufte-css/1.8.0/tufte.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Add your custom CSS here */
+        .header {
+            position: relative;
+            width: 100%;
+            height: 50vh;
+            overflow: hidden;
+        }
+
+        .header video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -100;
+            transform: translate(-50%, -50%);
+        }
+
+        .header img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -99;
+        }
+
+        .header h1 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+        }
+
+        .header p {
+            position: absolute;
+            top: 70%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+        }
+
+        .timeline {
+            list-style-type: none;
+            position: relative;
+        }
+
+        .timeline:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #333;
+            left: 50%;
+            margin-left: -2px;
+        }
+
+        .timeline-element {
+            position: relative;
+            margin: 20px 0;
+        }
+
+        .timeline-element:before {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #333;
+            border-radius: 50%;
+            top: 0;
+            left: 50%;
+            margin-left: -10px;
+            z-index: 100;
+        }
+
+        .timeline-content {
+            width: 45%;
+            padding: 10px;
+            background: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .timeline-element:nth-child(even) .timeline-content {
+            float: right;
+        }
+
+        .timeline-element:nth-child(odd) .timeline-content {
+            float: left;
+        }
+
+        .timeline-content .date {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .timeline-content .progress {
+            margin-bottom: 8px;
+        }
+
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+        .references {
+            margin-top: 40px;
+        }
+
+        .references ul {
+            list-style-type: none;
+        }
+
+        .references li {
+            margin-bottom: 8px;
+        }
+    </style>
+    </head>
+    <body>
+        <div class="header">
+            <video autoplay muted loop>
+                <source src="cover-video.mp4" type="video/mp4">
+            </video>
+            <img src="backup-image.jpg" alt="Cover image fallback">
+            <h1>Project Title</h1>
+            <p>by Absurd Industries</p>
+        </div>
+        <section>
+            <h2>Description</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam, mollitia.</p>
+        </section>
+        
+        <section>
+            <h2>Contributors</h2>
+            <p>John Doe, Jane Doe, Mark Smith</p>
+        </section>
+        
+        <section>
+            <h2>Start Date</h2>
+            <p>January 1, 2023</p>
+        </section>
+        
+        <section>
+            <h2>Project Updates</h2>
+            <ul class="timeline">
+                <li class="timeline-element">
+                    <div class="timeline-content">
+                        <span class="date">2 months ago</span>
+                        <p class="progress">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, dolore!</p>
+                    </div>
+                </li>
+                <li class="timeline-element">
+                    <div class="timeline-content">
+                        <span class="date">1 month ago</span>
+                        <ul class="progress">
+                            <li>Lorem ipsum dolor sit amet.</li>
+                            <li>Consectetur adipisicing elit.</li>
+                            <li>Quisquam, mollitia.</li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="timeline-element">
+                    <div class="timeline-content">
+                        <span class="date">2 weeks ago</span>
+                        <div class="progress">
+                            <img src="progress-image.jpg" alt="Progress image">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </section>
+        
+        <section class="references">
+            <h2>References / External Links</h2>
+            <ul>
+                <li><a href="https://example.com/library1">Library 1</a></li>
+                <li><a href="https://example.com/library2">Library 2</a></li>
+                <li><a href="https://example.com/credits">Credits</a></li>
+            </ul>
+        </section>
+    </body>
+    </html>        

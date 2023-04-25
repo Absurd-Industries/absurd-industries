@@ -7,21 +7,6 @@
     perspective: 60px;
     z-index:-1;
   }
-  .mod .project-name {
-    position: absolute;
-    width: 420px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: 1.75em;
-    text-transform: uppercase;
-    letter-spacing: 0.5em;
-    text-align: center;
-    line-height: 1.5em;
-    font-family: 'Roboto Mono';
-    font-weight: 300;
-  }
   .mod .cube {
     position: absolute;
     top: 50%;
