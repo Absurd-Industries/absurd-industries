@@ -7,34 +7,64 @@
     <title>Audio Reactive Shape</title>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.sound.js"></script>
+    <style>
+        #startButton {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1;
+        }
+    </style>
 </head>
 <body>
+    <button id="startButton" onclick="startAudio()">Start</button>
     <script>
-        let mic;
         let shapeSize = 100;
         let speed = 0.01;
         let rotation = 0;
         let coreSize = 20;
+        let audioContext;
+        let analyser;
+        let dataArray;
+        let started = false;
+
+        async function startAudio() {
+            if (started) return;
+            started = true;
+
+            // Web Audio API
+            audioContext = new AudioContext();
+            analyser = audioContext.createAnalyser();
+            dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                const source = audioContext.createMediaStreamSource(stream);
+                source.connect(analyser);
+            } catch (err) {
+                console.error('Error: ', err);
+            }
+        }
 
         function setup() {
             createCanvas(windowWidth, windowHeight, WEBGL);
-            mic = new p5.AudioIn();
-            mic.start();
         }
 
         function draw() {
-            background(0);
+            if (!started) return;
 
-            let vol = mic.getLevel();
-            let minSize = 60;
+            background(0);
+            analyser.getByteFrequencyData(dataArray);
+            let vol = dataArray[0] / 255;
+
+            let minSize = 30;
             let maxSize = 200;
-            let minVolThreshold = 0.15;
+            let minVolThreshold = 0.01;
             let sizeIncreaseFactor = 10;
 
             if (vol > minVolThreshold) {
                 shapeSize = map(vol, minVolThreshold, 1, minSize, maxSize);
-                speed = map(vol, minVolThreshold, 1, 0.005, 0.2);
+                speed = map(vol, minVolThreshold, 1, 0.01, 0.2);
             }
 
             push();
