@@ -33,6 +33,22 @@ footer {
     background-color: rgba(0, 0, 0, 0.35);
 }
 
+.menu {
+    margin-top: 2em;
+}
+
+.menu li {
+    display:inline-block;
+    list-style: none;
+}
+
+.menu li a {
+    padding: 1em;
+    margin-right: 0.75em;
+    text-decoration: none;
+
+}
+
 .logo {
     min-width: 200px;
 }
@@ -44,6 +60,7 @@ footer {
 .btn {
     border: 2.5px solid #111;
     color: #111;
+    background: black;
     display: inline-block;
     font-size: 1.1rem;
     text-transform: uppercase;
