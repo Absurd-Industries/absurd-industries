@@ -6,173 +6,507 @@
     For more information, see the README.md file in the root of the project.
 
 */
+.fa-spin {
+  animation-duration: 8s;
+}
 
+.fa-beat-fade, .fa-fade {
+  animation-duration: 2s;
+}
+
+.fa-shake {
+  animation-duration: 2s;
+}
+
+.fa-bounce {
+  animation-duration: 2s;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+Universal
+In Progress: https://github.com/filipelinhares/ress/blob/master/ress.css
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* Apply styling to all elements (including their `::before` and `::after`
+pseudo-elements). One common use of this selector is to apply a custom
+`box-sizing`. */
+*, *::before, *::after {
+  background-repeat: no-repeat; /* Set `background-repeat: no-repeat` to all elements and pseudo elements */
+  box-sizing: inherit;
+}
+
+::before,
+::after {
+  text-decoration: inherit; /* Inherit text-decoration and vertical align to ::before and ::after pseudo elements */
+  vertical-align: inherit;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+Root
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 :root {
-    --animate-delay: 3s;
-  }
-  
-  /* All delay classes will take half the time to start */
-  :root {
-    --animate-delay: 1.5s;
-  }
+  --animate-delay: 3s;
+  --dark: #1a1a1a;
+  --white: #fffbf6;
+  --dark-pink: #77219f;
+  --gray-line: #333;
+  --dark-background-gray-text: #969696;
+  --white-background-gray-text: #535353;
+  --lighter-dark-purple: #11131b;
+  --blue: #4478ff;
+  --purple: #6138d8;
+  --pink: #fb42ff;
+  --cyan: #57ebff;
+  --green: #42ff8e;
+  --orange: #f90;
+}
+
+html {
+  box-sizing: border-box;
+  -webkit-text-size-adjust: 100%; /* Prevent adjustments of font size after orientation changes in iOS */
+  word-break: normal;
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+     tab-size: 4;
+}
 
 body {
-    font-family: 'EB Garamond', serif;
-    background-color: #1a1a1a;
-    color: #ECE0CF;
-    margin: 0;
+  font-family: "Jura", sans-serif;
+  background-color: var(--dark);
+  color: #ECE0CF;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-gap: 1em;
 }
 
-header {
-    border-radius:0 0 0 1rem;
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+Content sectioning
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 400;
+  margin-top: 4rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.15em;
 }
 
-header,
+main {
+  display: block;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+Text block content
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* Overall styling, e.g. vertical spacing */
+hr {
+  overflow: visible; /* Show the overflow in Edge and IE */
+  height: 0; /* Add the correct box sizing in Firefox */
+  color: inherit; /* Correct border color in Firefox. */
+}
+
+p {
+  line-height: 1.5em;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+Inline text semantics
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+a {
+  color: inherit;
+}
+
+/* If you specify a font size, consider using the `em` unit so that it works
+universally, e.g. for both `h1 small` and `p small` */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+Demarcating edits
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+Embedded content
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+Table content
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+Forms
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* Overall styling, e.g. vertical spacing */
+/* `textarea` and `input` elements that share a similar look and similar styling
+capabilities */
+/* - common styling */
+/* - individual styling */
+/* Tick boxes */
+/* Other input fields, some with limited styling capabilities */
+/* This matches forms or form elements that are invalid *and* have been
+interacted with. Note that:
+1) You may need to add the `interacted` class to forms yourself
+2) You may need to add the `touched` class to form fields yourself
+3) `:user-invalid` is a working draft and not yet supported by most browsers
+4) `:-moz-ui-invalid` is non-standard and only works in Firefox
+Form validation error messages will appear (in capable browsers) regardless of
+this styling. You can omit 1) and 2) and still have working forms. Perfect
+example of progressive enhancement. */
+/* Applies to invalid forms */
+/* Applies to invalid form fields. You would need to repeat your declarations
+for the following three groups of selectors individually. Browsers completely
+ignore any rule that contains a selector they do not know. */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+Interactive elements
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+details {
+  display: block;
+}
+
+/* Some form fields, `details`, elements with `tabindex`, and possibly other
+elements can be focussed. You should use `:focus-visible` instead of `:focus`
+whenever possible. As the former is not yet widely supported, you need to do it
+as follows:
+1) Set styling on focus
+2) If browser supports `:focus-visible`, revert/unset the styling from 1)
+3) If the element matches `:focus-visible`, apply the styling again */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+Media queries
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*
+This file evolved from Natural Selection:
+https://github.com/frontaid/natural-selection
+*/
+.wrapper {
+  max-width: 85%;
+  margin: 5% auto;
+}
+
+nav {
+  position: relative;
+  text-align: right;
+}
+nav a {
+  text-align: center;
+  font-size: 1.5em;
+  font-weight: 700;
+  display: inline-block;
+  padding: 0.9em 1.5rem;
+  border: 0 none;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background-color 200ms linear;
+}
+nav a.link:hover, nav a.link.active {
+  background-color: rgba(100, 100, 100, 0.15);
+}
+nav a span {
+  display: block;
+  font-size: 0.5em;
+  opacity: 0.65;
+  padding-top: 0.6em;
+}
+
+header .logo {
+  padding: 0;
+  display: block;
+  transform: rotate(-23deg) scale(1);
+  position: absolute;
+  left: -9%;
+  margin-top: -9%;
+}
+
+.boxy {
+  background-color: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+}
+
+.video-wrapper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+  opacity: 1;
+  background-color: inherit;
+}
+@media (max-width: 767.98px) {
+  .video-wrapper {
+    height: 90vh;
+  }
+}
+.video-wrapper video {
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+.video-wrapper.blend-normal::after {
+  mix-blend-mode: normal;
+}
+.video-wrapper::after {
+  content: "";
+  background-color: inherit;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  mix-blend-mode: hard-light;
+}
+@media (max-width: 575.98px) {
+  .video-wrapper::after {
+    mix-blend-mode: normal;
+  }
+}
+.video-wrapper .image {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.page-home .event {
+  position: relative;
+  padding: 4em;
+  margin-top: 8em;
+  text-decoration: none;
+  display: block;
+  transition: background-color 200ms linear;
+}
+.page-home .event:hover, .page-home .event:active {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+.page-home .event .icon {
+  font-size: 12em;
+  position: relative;
+  top: -0.55em;
+  left: -0.55em;
+}
+.page-home .event label {
+  font-size: 1.15em;
+  display: block;
+  position: absolute;
+  right: -0.65em;
+  top: 2em;
+  padding: 0.5em 1em;
+  background: red;
+  border-radius: 0.1s5em;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.page-home .event label span {
+  color: red;
+  opacity: 0.85;
+  font-size: 0.85em;
+  position: absolute;
+  bottom: -1.5em;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+.page-home .event h5 {
+  margin: 0;
+  opacity: 0.75;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.page-home .event .details {
+  margin-top: -4em;
+}
+.page-home .event .details h1 {
+  font-size: 4em;
+  max-width: 80%;
+}
+.page-home .event .details p {
+  opacity: 0.65;
+  max-width: 80%;
+}
+.page-home .event .details .button {
+  text-transform: uppercase;
+  color: var(--green);
+}
+.page-home #intro {
+  margin: 6em 0;
+  max-width: 60%;
+}
+.page-home #intro h1 {
+  font-size: 6em;
+}
+.page-home #intro p {
+  font-size: 1.5em;
+}
+.page-home .projects {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-gap: 2em;
+}
+.page-home .projects .project {
+  position: relative;
+  padding: 3em;
+  text-decoration: none;
+  font-style: normal;
+}
+.page-home .projects .project .icon {
+  position: relative;
+  top: -0.5em;
+  font-size: 7em;
+}
+.page-home .projects .project h2 {
+  margin: -1em 0 0;
+  font-size: 1.85em;
+}
+.page-home .projects .project h3 {
+  margin: 0.5em 0 0;
+  font-size: 1.25em;
+  opacity: 0.5;
+}
+
+.page-event h1 {
+  font-size: 4em;
+}
+
+/* All delay classes will take half the time to start */
 footer {
-    padding: 2em 3rem;
-    background-color: rgba(0, 0, 0, 0.35);
+  padding: 2em 3rem;
+  background-color: rgba(0, 0, 0, 0.35);
 }
 
 .menu {
-    margin-top: 2em;
+  margin-top: 2em;
 }
 
 .menu li {
-    display:inline-block;
-    list-style: none;
+  display: inline-block;
+  list-style: none;
 }
 
 .menu li a {
-    padding: 1em;
-    margin-right: 0.75em;
-    text-decoration: none;
-
+  padding: 1em;
+  margin-right: 0.75em;
+  text-decoration: none;
 }
 
 .logo {
-    min-width: 200px;
+  min-width: 200px;
 }
 
 .mt-0 {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 .btn {
-    border: 2.5px solid #111;
-    color: #111;
-    background: black;
-    display: inline-block;
-    font-size: 1.1rem;
-    text-transform: uppercase;
-    padding: 15px 10px;
-    margin: 5px;
-    min-width: 60px;
-    text-align: center;
-    cursor: pointer;
+  border: 2.5px solid #111;
+  color: #111;
+  background: black;
+  display: inline-block;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  padding: 15px 10px;
+  margin: 5px;
+  min-width: 60px;
+  text-align: center;
+  cursor: pointer;
 }
 
 .btn.large {
-    border: 3px solid #111;
-    font-size: 1.5rem;
-    font-weight: 800;
-    margin: 10px 5px;
-    padding: 15px;
+  border: 3px solid #111;
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 10px 5px;
+  padding: 15px;
 }
 
 .btn.mini {
-    border: 1px solid #111;
-    color: #111;
-    min-width: 40px;
-    line-height: 40px;
-    padding: 0 10px;
+  border: 1px solid #111;
+  color: #111;
+  min-width: 40px;
+  line-height: 40px;
+  padding: 0 10px;
 }
 
 .btn.radio {
-    border-style: dashed;
+  border-style: dashed;
 }
 
 .btn.selected {
-    background: #111;
-    color: #FFFFF8;
+  background: #111;
+  color: #FFFFF8;
 }
 
 .btn.white {
-    background: #FFFFF8;
-    color: #111;
+  background: #FFFFF8;
+  color: #111;
 }
 
 .btn.flash {
-    background: #EEE !important;
+  background: #EEE !important;
 }
 
 .btns {
-    margin: 3px 0;
+  margin: 3px 0;
 }
 
 .btns .btn:first-child {
-    margin-left: 0;
+  margin-left: 0;
 }
 
 .btns .btn:last-child {
-    margin-right: 0;
+  margin-right: 0;
 }
 
 .btns.stack {
-    margin: 15px 0 20px 0;
+  margin: 15px 0 20px 0;
 }
 
-.btns.stack>.btn {
-    display: block;
-    margin: 5px 0;
+.btns.stack > .btn {
+  display: block;
+  margin: 5px 0;
 }
 
 a {
-    text-shadow: none !important;
+  text-shadow: none !important;
 }
 
 h1 {
-    font-size: 2.5rem;
+  font-size: 2.5rem;
 }
 
 h2 {
-    font-size: 1.5rem;
-    font-weight: lighter;
-    margin-top: -0.5rem;
+  font-size: 1.5rem;
+  font-weight: lighter;
+  margin-top: -0.5rem;
 }
 
 h3 {
-    font-size: 1.95rem;
+  font-size: 1.95rem;
 }
 
 section {
-    padding: 2rem;
+  padding: 2rem;
 }
 
 ul {
-    list-style-type: none;
-    padding: 0;
+  list-style-type: none;
+  padding: 0;
 }
 
 li {
-    font-size: 1.25rem;
-    padding: 0.5rem 0;
+  font-size: 1.25rem;
+  padding: 0.5rem 0;
 }
 
 article {
-    background-color: #1a1a1a;
+  background-color: #1a1a1a;
 }
 
 footer {
-    border-radius:1rem 0 0 0;
-    font-size: 0.65rem;
+  border-radius: 1rem 0 0 0;
+  font-size: 0.65rem;
 }
 
 footer p {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .copyleft {
-    display: inline-block;
-    transform: rotate(180deg);
-}
+  display: inline-block;
+  transform: rotate(180deg);
+}/*# sourceMappingURL=styles.css.map */

@@ -1,0 +1,162 @@
+/* 
+    This is the primary CSS styleing file for the site. Here goes all magic!
+    This file is compiled from the SCSS files in the assets/css/scss folder.
+    If you want to make changes to the CSS, you should edit the SCSS files.
+    The SCSS files are compiled to CSS using the Gulp task runner.
+    For more information, see the README.md file in the root of the project.
+
+*/
+
+@import '../scss/init';
+
+  
+/* All delay classes will take half the time to start */
+
+footer {
+    padding: 2em 3rem;
+    background-color: rgba(0, 0, 0, 0.35);
+}
+
+.menu {
+    margin-top: 2em;
+}
+
+.menu li {
+    display:inline-block;
+    list-style: none;
+}
+
+.menu li a {
+    padding: 1em;
+    margin-right: 0.75em;
+    text-decoration: none;
+
+}
+
+.logo {
+    min-width: 200px;
+}
+
+.mt-0 {
+    margin-top: 0;
+}
+
+.btn {
+    border: 2.5px solid #111;
+    color: #111;
+    background: black;
+    display: inline-block;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    padding: 15px 10px;
+    margin: 5px;
+    min-width: 60px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.btn.large {
+    border: 3px solid #111;
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 10px 5px;
+    padding: 15px;
+}
+
+.btn.mini {
+    border: 1px solid #111;
+    color: #111;
+    min-width: 40px;
+    line-height: 40px;
+    padding: 0 10px;
+}
+
+.btn.radio {
+    border-style: dashed;
+}
+
+.btn.selected {
+    background: #111;
+    color: #FFFFF8;
+}
+
+.btn.white {
+    background: #FFFFF8;
+    color: #111;
+}
+
+.btn.flash {
+    background: #EEE !important;
+}
+
+.btns {
+    margin: 3px 0;
+}
+
+.btns .btn:first-child {
+    margin-left: 0;
+}
+
+.btns .btn:last-child {
+    margin-right: 0;
+}
+
+.btns.stack {
+    margin: 15px 0 20px 0;
+}
+
+.btns.stack>.btn {
+    display: block;
+    margin: 5px 0;
+}
+
+a {
+    text-shadow: none !important;
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: lighter;
+    margin-top: -0.5rem;
+}
+
+h3 {
+    font-size: 1.95rem;
+}
+
+section {
+    padding: 2rem;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    font-size: 1.25rem;
+    padding: 0.5rem 0;
+}
+
+article {
+    background-color: #1a1a1a;
+}
+
+footer {
+    border-radius:1rem 0 0 0;
+    font-size: 0.65rem;
+}
+
+footer p {
+    margin: 0;
+    padding: 0;
+}
+
+.copyleft {
+    display: inline-block;
+    transform: rotate(180deg);
+}
