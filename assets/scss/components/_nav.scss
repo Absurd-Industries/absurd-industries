@@ -1,0 +1,49 @@
+nav {
+    position: relative;
+    text-align: right;
+
+    @include media-breakpoint-down(md) {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        z-index: 100;
+        background: black !important;
+        display: grid;
+        grid-template-columns: auto auto auto auto auto;
+        border-radius: 0 !important;
+    }
+
+    a {
+        text-align: center;
+        font-size: 1.5em;
+        font-weight: 700;
+        display: inline-block;
+        padding: 0.9em 1.5rem;
+        border:0 none;
+        text-transform: uppercase;
+        text-decoration: none;
+        -webkit-transition: background-color 200ms linear;
+        -ms-transition: background-color 200ms linear;
+        transition: background-color 200ms linear;
+
+        @include media-breakpoint-down(md) {
+            padding: 0.75em 0.25rem;
+        }
+
+        &.link:hover, &.link.active {
+            background-color: rgba(100, 100, 100, 0.15);
+        }
+
+        span {
+            display: block;
+            font-size: 0.5em;
+            opacity: 0.65;
+            padding-top: 0.6em;
+
+            @include media-breakpoint-down(md) {
+                font-size: 0.4em;
+            }
+        }
+    }
+}
