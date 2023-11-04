@@ -17,7 +17,7 @@
     height: 210px;
     -webkit-transform-style: preserve-3d;
     -webkit-transform-origin: 105px 105px;
-    animation: spinCube 9000ms linear infinite;
+    animation: spinCube 36000ms linear infinite;
   }
   .mod .cube .faces {
     position: absolute;

@@ -66,9 +66,20 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: 1.5rem;
     line-height: 1.15em;
 }
-h1 {}
-h2 {}
-h3 {}
+h1 {
+    font-size: 2.5rem;
+}
+h2 {
+    font-size: 1.5rem;
+    font-weight: lighter;
+
+    @include media-breakpoint-down(md) {
+        font-size: 1.25rem;
+    }
+}
+h3 {
+    font-size: 1.95rem;
+}
 h4 {}
 h5 {}
 h6 {}
@@ -89,7 +100,8 @@ main {
 
 article {}
 
-section {}
+section {
+}
 
 aside {}
 
@@ -146,7 +158,9 @@ Inline text semantics
 
 a {
     color: inherit;
+    text-shadow: none !important;
 }
+
 a:visited {}
 a:hover {}
 a:active {}

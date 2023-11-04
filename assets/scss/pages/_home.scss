@@ -9,28 +9,43 @@
         -ms-transition: background-color 200ms linear;
         transition: background-color 200ms linear;
 
-        &:hover, &:active {
+        @include media-breakpoint-down(md) {
+            padding: 1.5em;
+            margin-top: 6em;
+        }
+
+        &:hover,
+        &:active {
             background-color: rgba(0, 0, 0, 0.9);
         }
-        
+
         .icon {
             font-size: 12em;
             position: relative;
             top: -0.55em;
             left: -0.55em;
+
+            @include media-breakpoint-down(md) {
+                font-size: 7em;
+            }
         }
 
         label {
             font-size: 1.15em;
             display: block;
             position: absolute;
-            right:-0.65em;
+            right: -0.65em;
             top: 2em;
             padding: 0.5em 1em;
             background: red;
             border-radius: 0.1s5em;
             font-weight: bold;
             text-transform: uppercase;
+
+            @include media-breakpoint-down(md) {
+                font-size: 0.85em;
+                top: 1.5em;
+            }
 
             span {
                 color: red;
@@ -57,11 +72,31 @@
             h1 {
                 font-size: 4em;
                 max-width: 80%;
+
+                @include media-breakpoint-down(md) {
+                    font-size: 2em;
+                    max-width: 100%;
+                }
+            }
+
+            h2 {
+                margin-top: 0.5rem;
+
+                @include media-breakpoint-down(md) {
+                    font-size: 1em;
+                    line-height: 1.5;
+                    opacity: 0.65;
+                    margin-top: -0.5em;
+                }
             }
 
             p {
                 opacity: 0.65;
                 max-width: 80%;
+
+                @include media-breakpoint-down(md) {
+                    display: none;
+                }
             }
 
             .button {
@@ -72,15 +107,54 @@
     }
 
     #intro {
-        margin: 6em 0;
-        max-width: 60%;
+        margin: 3em 0 15em;
+        max-width: 65%;
+
+        @include media-breakpoint-down(md) {
+            max-width: 100%;
+            margin: 0 0 10em;
+        }
+
+        .portal-frame {
+            z-index: -1;
+            position: absolute;
+            bottom: -11em;
+            left: -3.5em;
+
+            @include media-breakpoint-down(md) {
+                bottom: -7.5em;
+                left: -2.5em;
+            }
+        }
 
         h1 {
-            font-size: 6em;
+            font-size: 15.5em;
+            font-weight: 700;
+            position: relative;
+            top: 0.25em;
+            opacity: 1;
+
+            @include media-breakpoint-down(md) {
+                font-size: 5em;
+                margin-top: 0.5em;
+            }
         }
 
         p {
-            font-size: 1.5em;
+            font-size: 1.8em;
+            position: relative;
+            left: 4.3em;
+            top: 1.6em;
+            padding: 1em;
+            z-index: 3;
+
+            @include media-breakpoint-down(md) {
+                font-size: 0.95em;
+                top: 2.25em;
+                left: 4em;
+                padding: 0;
+                width: 85%;
+            }
         }
     }
 
@@ -89,12 +163,22 @@
         grid-template-columns: auto auto auto;
         grid-gap: 2em;
 
+        @include media-breakpoint-down(md) {
+            grid-template-columns: auto auto;
+            grid-gap: 1em;
+        }
+
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: auto;
+            grid-gap: 2em;
+        }
+
         .project {
             position: relative;
             padding: 3em;
             text-decoration: none;
             font-style: normal;
-            
+
             .icon {
                 position: relative;
                 top: -0.5em;
@@ -112,5 +196,64 @@
                 opacity: 0.5;
             }
         }
+    }
+
+    #community {
+        margin: 7.5em 0;
+
+        @include media-breakpoint-down(md) {
+            margin: 5em 0 10em;
+        }
+
+        .vault {
+            position: relative;
+            display: block;
+            text-decoration: none;
+
+            .blob {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+
+            @include media-breakpoint-down(md) {
+                position: relative;
+            }
+
+            .blob-wrapper {
+                font-size: 2em;
+                z-index: 2;
+                position: relative;
+                text-align: center;
+                left: 2em;
+                height: 10em;
+
+                @include media-breakpoint-down(md) {
+                    font-size: 1.75em;
+                    left: 0;
+                }
+            }
+
+            p.call-out {
+                position: absolute;
+                right: 0;
+                width: 60%;
+                top: 23%;
+                font-size: 1.25em;
+
+                @include media-breakpoint-down(md) {
+                    position: relative;
+                    right: auto;
+                    top: auto;
+                    width: 100%;
+                    margin: 2em 0 2em;
+                }
+            }
+        }
+    }
+
+    #enablers {
+        display: grid;
+        grid-template-columns: auto auto;
     }
 }
