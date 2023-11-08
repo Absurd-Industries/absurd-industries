@@ -52,7 +52,12 @@ body {
     margin: 0;
     display: grid;
     grid-template-columns: 100%;
-    grid-gap: 1em;
+    grid-gap: 1rem;
+    font-size: 16px;
+
+    @include media-breakpoint-down(md) {
+        font-size: 0.7rem;
+    }
 }
 
 
@@ -159,6 +164,7 @@ Inline text semantics
 a {
     color: inherit;
     text-shadow: none !important;
+    cursor: pointer;
 }
 
 a:visited {}

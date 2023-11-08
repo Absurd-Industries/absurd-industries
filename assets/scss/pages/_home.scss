@@ -1,8 +1,8 @@
 .page-home {
     .event {
         position: relative;
-        padding: 4em;
-        margin-top: 8em;
+        padding: 4rem;
+        margin-top: 8rem;
         text-decoration: none;
         display: block;
         -webkit-transition: background-color 200ms linear;
@@ -10,8 +10,8 @@
         transition: background-color 200ms linear;
 
         @include media-breakpoint-down(md) {
-            padding: 1.5em;
-            margin-top: 6em;
+            padding: 1.5rem;
+            margin-top: 1rem;
         }
 
         &:hover,
@@ -20,39 +20,39 @@
         }
 
         .icon {
-            font-size: 12em;
+            font-size: 12rem;
             position: relative;
             top: -0.55em;
             left: -0.55em;
 
             @include media-breakpoint-down(md) {
-                font-size: 7em;
+                font-size: 7rem;
             }
         }
 
         label {
-            font-size: 1.15em;
+            font-size: 1.15rem;
             display: block;
             position: absolute;
-            right: -0.65em;
-            top: 2em;
-            padding: 0.5em 1em;
+            right: -0.65rem;
+            top: 2rem;
+            padding: 0.5em 1rem;
             background: red;
-            border-radius: 0.1s5em;
+            border-radius: 0.1s5rem;
             font-weight: bold;
             text-transform: uppercase;
 
             @include media-breakpoint-down(md) {
-                font-size: 0.85em;
-                top: 1.5em;
+                font-size: 0.9rem;
+                top: 1.5rem;
             }
 
             span {
                 color: red;
                 opacity: 0.85;
-                font-size: 0.85em;
+                font-size: 0.85rem;
                 position: absolute;
-                bottom: -1.5em;
+                bottom: -1.5rem;
                 left: 0;
                 width: 100%;
                 text-align: center;
@@ -67,14 +67,14 @@
         }
 
         .details {
-            margin-top: -4em;
+            margin-top: -4rem;
 
             h1 {
-                font-size: 4em;
+                font-size: 4rem;
                 max-width: 80%;
 
                 @include media-breakpoint-down(md) {
-                    font-size: 2em;
+                    font-size: 1.75rem;
                     max-width: 100%;
                 }
             }
@@ -83,10 +83,10 @@
                 margin-top: 0.5rem;
 
                 @include media-breakpoint-down(md) {
-                    font-size: 1em;
+                    font-size: 1.25rem;
                     line-height: 1.5;
                     opacity: 0.65;
-                    margin-top: -0.5em;
+                    margin-top: -1rem;
                 }
             }
 
@@ -107,51 +107,58 @@
     }
 
     #intro {
-        margin: 3em 0 15em;
+        margin: 3em 0 15rem;
         max-width: 65%;
 
         @include media-breakpoint-down(md) {
             max-width: 100%;
-            margin: 0 0 10em;
+            margin: 3rem 0 14rem;
         }
 
         .portal-frame {
             z-index: -1;
             position: absolute;
-            bottom: -11em;
-            left: -3.5em;
+            bottom: -13em;
+            left: -5em;
 
             @include media-breakpoint-down(md) {
                 bottom: -7.5em;
                 left: -2.5em;
             }
+
+            @include media-breakpoint-down(sm) {
+                bottom: -10.5em;
+                left: -4.25em;
+            }
         }
 
         h1 {
-            font-size: 15.5em;
+            font-size: 15.5rem;
             font-weight: 700;
             position: relative;
             top: 0.25em;
             opacity: 1;
 
             @include media-breakpoint-down(md) {
-                font-size: 5em;
-                margin-top: 0.5em;
+                font-size: 4rem;
+                margin-top: 0.5rem;
+                top: 3.75rem;
+                left: 2rem;
             }
         }
 
         p {
-            font-size: 1.8em;
+            font-size: 1.8rem;
             position: relative;
             left: 4.3em;
             top: 1.6em;
-            padding: 1em;
+            padding: 1rem;
             z-index: 3;
 
             @include media-breakpoint-down(md) {
-                font-size: 0.95em;
-                top: 2.25em;
-                left: 4em;
+                font-size: 1rem;
+                top: 2rem;
+                left: 3rem;
                 padding: 0;
                 width: 85%;
             }
@@ -161,48 +168,60 @@
     .projects {
         display: grid;
         grid-template-columns: auto auto auto;
-        grid-gap: 2em;
+        grid-gap: 2rem;
 
         @include media-breakpoint-down(md) {
             grid-template-columns: auto auto;
-            grid-gap: 1em;
+            grid-gap: 1rem;
         }
 
         @include media-breakpoint-down(sm) {
             grid-template-columns: auto;
-            grid-gap: 2em;
+            grid-gap: 2rem;
         }
 
         .project {
             position: relative;
-            padding: 3em;
+            padding: 3rem;
             text-decoration: none;
             font-style: normal;
 
             .icon {
                 position: relative;
                 top: -0.5em;
-                font-size: 7em;
+                font-size: 7rem;
+
+                @include media-breakpoint-down(md) {
+                    font-size: 6.5rem;
+                }
             }
 
             h2 {
                 margin: -1em 0 0;
-                font-size: 1.85em;
+                font-size: 1.85rem;
+
+                @include media-breakpoint-down(md) {
+                    font-size: 1.65rem;
+                }
             }
 
             h3 {
                 margin: 0.5em 0 0;
-                font-size: 1.25em;
+                font-size: 1.25rem;
                 opacity: 0.5;
+
+                @include media-breakpoint-down(md) {
+                    font-size: 1.15rem;
+                }
             }
         }
     }
 
     #community {
-        margin: 7.5em 0;
+        margin: 7.5rem 0 3rem;
 
         @include media-breakpoint-down(md) {
-            margin: 5em 0 10em;
+            margin: 7.5rem 0 0;
         }
 
         .vault {
@@ -221,15 +240,15 @@
             }
 
             .blob-wrapper {
-                font-size: 2em;
+                font-size: 2rem;
                 z-index: 2;
                 position: relative;
                 text-align: center;
-                left: 2em;
-                height: 10em;
+                left: 2rem;
+                height: 20rem;
 
                 @include media-breakpoint-down(md) {
-                    font-size: 1.75em;
+                    font-size: 1.75rem;
                     left: 0;
                 }
             }
@@ -239,14 +258,14 @@
                 right: 0;
                 width: 60%;
                 top: 23%;
-                font-size: 1.25em;
+                font-size: 1.25rem;
 
                 @include media-breakpoint-down(md) {
                     position: relative;
                     right: auto;
                     top: auto;
                     width: 100%;
-                    margin: 2em 0 2em;
+                    margin: 2em 0 2rem;
                 }
             }
         }
@@ -255,5 +274,31 @@
     #enablers {
         display: grid;
         grid-template-columns: auto auto;
+        grid-gap: 4rem;
+
+        @include media-breakpoint-down(md) {
+            grid-gap: 0;
+            grid-template-columns: auto;
+        }
+
+        h3 {
+            position: relative;
+            top: 8.5em;
+            left: 4em;
+            background-color: black;
+            padding: 0.45rem 0.75rem;
+            border-radius: 2rem;
+            display: inline-block;
+        }
+
+        img {
+            display: block;
+            max-width: 15rem;
+            border-radius: 100rem;
+        }
+
+        p {
+            font-size: 1.3rem;
+        }
     }
 }

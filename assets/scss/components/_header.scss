@@ -9,7 +9,14 @@ header {
         z-index: 10;
 
         @include media-breakpoint-down(md) {
-            display: none;
+            position: relative;
+            margin: 0 auto;
+            max-width: 17rem;
+            transform: rotate(-11.5deg) scale(1);
+
+            img {
+              max-width: 17rem;
+            }
         }
     }
 } 

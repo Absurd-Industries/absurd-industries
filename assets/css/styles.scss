@@ -12,13 +12,8 @@
   
 /* All delay classes will take half the time to start */
 
-footer {
-    padding: 2em 3rem;
-    background-color: rgba(0, 0, 0, 0.35);
-}
-
 .menu {
-    margin-top: 2em;
+    margin-top: 2rem;
 }
 
 .menu li {
@@ -27,8 +22,8 @@ footer {
 }
 
 .menu li a {
-    padding: 1em;
-    margin-right: 0.75em;
+    padding: 1rem;
+    margin-right: 0.75rem;
     text-decoration: none;
 
 }
@@ -53,19 +48,4 @@ li {
 
 article {
     background-color: #1a1a1a;
-}
-
-footer {
-    border-radius:1rem 0 0 0;
-    font-size: 0.65rem;
-}
-
-footer p {
-    margin: 0;
-    padding: 0;
-}
-
-.copyleft {
-    display: inline-block;
-    transform: rotate(180deg);
 }

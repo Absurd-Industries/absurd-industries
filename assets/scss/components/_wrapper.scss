@@ -1,4 +1,9 @@
 .wrapper {
     max-width: 85%;
     margin: 5% auto;
+
+    @include media-breakpoint-down(md) {
+        max-width: 90%;
+        margin: 0 auto 5%;
+    }
 }
