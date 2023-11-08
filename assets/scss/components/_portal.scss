@@ -9,7 +9,7 @@
 .portal-frame {
   --portal-color: orange;
   background-color: black;
-  border-radius: 10em;
+  border-radius: 10rem;
   box-shadow: 0 0 5em black;
   width: 400px;
   aspect-ratio: 1;
@@ -31,16 +31,16 @@
     border-left: none;
     border-top: none;
     border-bottom: none;
-    top: 4em;
+    top: 4rem;
     height: 14rem;
     width: 20rem;
     box-shadow: 0 0 1.5em black;
-    left: 4em;
+    left: 4rem;
     z-index: 1;
 
     @include media-breakpoint-down(md) {
-      left: 2em;
-      top: 0.75em;
+      left: 2rem;
+      top: 0.75rem;
       height: 7rem;
       width: 10rem;
     }

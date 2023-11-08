@@ -1,7 +1,7 @@
 .spotify {
   position: fixed;
-  bottom: 1em;
-  right: 1em;
+  bottom: 1rem;
+  right: 1rem;
 
   @include media-breakpoint-down(md) {
     display: none;
