@@ -79,7 +79,7 @@ body {
 @media (max-width: 767.98px) {
   body {
     font-size: 0.7rem;
-    overflow-x: clip;
+    overflow-x: hidden;
   }
 }
 
@@ -195,7 +195,7 @@ https://github.com/frontaid/natural-selection
 */
 .wrapper {
   max-width: 85%;
-  margin: 5% auto;
+  margin: 10% auto;
 }
 @media (max-width: 767.98px) {
   .wrapper {
