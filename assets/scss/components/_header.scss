@@ -11,11 +11,11 @@ header {
         @include media-breakpoint-down(md) {
             position: relative;
             margin: 0 auto;
-            max-width: 17rem;
+            max-width: 12rem;
             transform: rotate(-11.5deg) scale(1);
 
             img {
-              max-width: 17rem;
+              max-width: 12rem;
             }
         }
     }

@@ -249,7 +249,6 @@
 
                 @include media-breakpoint-down(md) {
                     font-size: 1.75rem;
-                    left: 0;
                 }
             }
 
@@ -289,6 +288,10 @@
             padding: 0.45rem 0.75rem;
             border-radius: 2rem;
             display: inline-block;
+
+            @include media-breakpoint-down(md) {
+                left: 0;
+            }
         }
 
         img {
