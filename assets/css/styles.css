@@ -74,14 +74,12 @@ body {
   background-color: var(--dark);
   color: #ECE0CF;
   margin: 0;
-  display: grid;
-  grid-template-columns: 100%;
-  grid-gap: 1rem;
   font-size: 16px;
 }
 @media (max-width: 767.98px) {
   body {
     font-size: 0.7rem;
+    overflow-x: clip;
   }
 }
 
@@ -340,6 +338,13 @@ nav a span {
   justify-content: center;
   align-items: center;
 }
+@media (max-width: 767.98px) {
+  .blob {
+    width: 15rem;
+    height: 15rem;
+    max-width: 90%;
+  }
+}
 
 .blob::before {
   border: 2px solid #fff;
@@ -409,11 +414,11 @@ header .logo {
   header .logo {
     position: relative;
     margin: 0 auto;
-    max-width: 17rem;
+    max-width: 12rem;
     transform: rotate(-11.5deg) scale(1);
   }
   header .logo img {
-    max-width: 17rem;
+    max-width: 12rem;
   }
 }
 
@@ -767,7 +772,6 @@ footer .copyleft {
 @media (max-width: 767.98px) {
   .page-home #community .vault .blob-wrapper {
     font-size: 1.75rem;
-    left: 0;
   }
 }
 .page-home #community .vault p.call-out {
@@ -805,6 +809,11 @@ footer .copyleft {
   padding: 0.45rem 0.75rem;
   border-radius: 2rem;
   display: inline-block;
+}
+@media (max-width: 767.98px) {
+  .page-home #enablers h3 {
+    left: 0;
+  }
 }
 .page-home #enablers img {
   display: block;
