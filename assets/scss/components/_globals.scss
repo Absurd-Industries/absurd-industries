@@ -163,6 +163,13 @@ a {
     color: inherit;
     text-shadow: none !important;
     cursor: pointer;
+
+    -o-transition:.5s;
+    -ms-transition:.5s;
+    -moz-transition:.5s;
+    -webkit-transition:.5s;
+    /* ...and now for the proper property */
+    transition:.5s;
 }
 
 a:visited {}

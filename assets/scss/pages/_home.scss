@@ -137,6 +137,7 @@
             font-weight: 700;
             position: relative;
             top: 0.25em;
+            display:inline-block;
             opacity: 1;
 
             @include media-breakpoint-down(md) {
@@ -229,6 +230,10 @@
             display: block;
             text-decoration: none;
 
+            @include media-breakpoint-down(sm) {
+                overflow-x: hidden;
+            }
+
             .blob {
                 position: absolute;
                 left: 0;
@@ -264,7 +269,7 @@
                     right: auto;
                     top: auto;
                     width: 100%;
-                    margin: 2em 0 2rem;
+                    margin: -2em 0 2rem;
                 }
             }
         }
