@@ -1,7 +1,7 @@
 .fly-wrapper {
     width: calc(100% + 3rem);
     margin: 0 -1.5rem;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 .fly {
@@ -38,7 +38,7 @@
 .wing {
     height: 8px;
     width: 54px;
-    animation: 0.125s linear wing-anim infinite;
+    animation: 0.0625s linear wing-anim infinite;
     transform-origin: center;
     z-index: 99;
     background-color: grey;

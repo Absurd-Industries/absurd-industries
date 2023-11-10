@@ -129,6 +129,20 @@ p {
   line-height: 1.5em;
 }
 
+ol {
+  padding: 0 0 0 1rem;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  font-size: 1.15rem;
+  padding: 0.5rem 0;
+}
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 Inline text semantics
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -403,7 +417,7 @@ nav a span {
 .fly-wrapper {
   width: calc(100% + 3rem);
   margin: 0 -1.5rem;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .fly {
@@ -436,7 +450,7 @@ nav a span {
 .wing {
   height: 8px;
   width: 54px;
-  animation: 0.125s linear wing-anim infinite;
+  animation: 0.0625s linear wing-anim infinite;
   transform-origin: center;
   z-index: 99;
   background-color: grey;
@@ -592,7 +606,7 @@ footer .copyleft {
   }
 }
 .page-home .event label span {
-  color: red;
+  color: --var(white);
   opacity: 0.85;
   font-size: 0.85rem;
   position: absolute;
@@ -852,7 +866,7 @@ footer .copyleft {
   overflow-x: hidden;
 }
 .page-event footer {
-  margin-top: 1em;
+  margin-top: 2.5em;
 }
 .page-event .wrapper {
   max-width: 90%;
@@ -1014,12 +1028,12 @@ footer .copyleft {
   margin-top: 6rem;
   font-size: 3rem;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: bold;
 }
 @media (max-width: 767.98px) {
   .page-event .event .section-wrapper h1 {
-    font-size: 2.25rem;
-    margin-top: 2rem;
+    font-size: 2rem;
+    margin-top: 0;
     margin-bottom: 1rem;
   }
 }
@@ -1043,7 +1057,8 @@ footer .copyleft {
 @media (max-width: 767.98px) {
   .page-event .event .schedule {
     grid-template-columns: auto;
-    margin-top: 2rem;
+    margin-top: 0.5rem;
+    margin-bottom: 3rem;
   }
 }
 @media (max-width: 575.98px) {
@@ -1060,23 +1075,31 @@ footer .copyleft {
   opacity: 0.9;
 }
 .page-event .event .schedule p {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   line-height: 1.5rem;
   margin: 0.5rem 0 0;
+}
+@media (max-width: 575.98px) {
+  .page-event .event .schedule p {
+    font-size: 1.15rem;
+  }
+}
+.page-event .event .featured-image {
+  margin-bottom: 3rem;
 }
 .page-event .cta {
   position: fixed;
   text-align: left;
   bottom: 1em;
   right: 1em;
-  background-color: #ECE0CF;
-  color: red;
   border-radius: 0.75em;
   padding: 0.75rem 1.25rem;
   cursor: pointer;
   display: grid;
   grid-template-columns: auto auto;
   max-width: 375px;
+  color: #ECE0CF;
+  background-color: red;
 }
 @media (max-width: 575.98px) {
   .page-event .cta {
@@ -1089,8 +1112,8 @@ footer .copyleft {
   }
 }
 .page-event .cta:hover {
-  color: #ECE0CF;
-  background-color: red;
+  background-color: #ECE0CF;
+  color: red;
 }
 .page-event .cta div {
   text-align: right;
@@ -1145,16 +1168,6 @@ footer .copyleft {
 
 .mt-0 {
   margin-top: 0;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  font-size: 1.25rem;
-  padding: 0.5rem 0;
 }
 
 article {
