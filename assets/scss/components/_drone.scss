@@ -1,0 +1,57 @@
+.fly-wrapper {
+    width: calc(100% + 3rem);
+    margin: 0 -1.5rem;
+    overflow-x: hidden;
+}
+
+.fly {
+    position: relative;
+    animation: 6s ease-in-out fly-anim infinite;
+    margin: 5em 0 0;
+    display: inline-block;
+
+    @include media-breakpoint-down(md) {
+        transform: scale(0.5);
+        margin:0 0 0 -35%;
+    }
+}
+
+@keyframes fly-anim {
+
+    0%,
+    100% {
+        left: 10%;
+    }
+
+    50% {
+        left: 80%;
+    }
+
+}
+
+.drone {
+    height: 200px;
+    width: 200px;
+    z-index: -1;
+}
+
+.wing {
+    height: 8px;
+    width: 54px;
+    animation: 0.125s linear wing-anim infinite;
+    transform-origin: center;
+    z-index: 99;
+    background-color: grey;
+    border-radius: 4rem;
+}
+
+@keyframes wing-anim {
+    from {
+        transform: rotate(0deg);
+
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}

@@ -1,0 +1,12 @@
+.featured-image {
+    margin: 0 -4em;
+
+    img {
+        max-width: 100%;
+    }
+
+    @include media-breakpoint-down(md) {
+        margin-left:-1.5rem;
+        margin-right:-1.5rem;
+    }
+}
