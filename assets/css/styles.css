@@ -858,6 +858,11 @@ footer .copyleft {
   max-width: 90%;
   margin: 7.5% auto;
 }
+@media (max-width: 575.98px) {
+  .page-event .wrapper {
+    margin-top: 0;
+  }
+}
 .page-event .wrapper header .logo {
   transform: rotate(23deg) scale(1);
   left: auto;
@@ -869,7 +874,13 @@ footer .copyleft {
   }
 }
 .page-event .event-wrapper {
+  border-radius: 0.75rem 0.75rem 0 0;
   background: transparent url("/assets/images/drone-genesis/drone-still-lit.jpg") no-repeat 0 -5%/contain;
+}
+@media (max-width: 575.98px) {
+  .page-event .event-wrapper {
+    background-position: 0 0;
+  }
 }
 .page-event .event {
   position: relative;
@@ -1055,36 +1066,61 @@ footer .copyleft {
 }
 .page-event .cta {
   position: fixed;
-  text-align: center;
+  text-align: left;
   bottom: 1em;
   right: 1em;
   background-color: #ECE0CF;
   color: red;
   border-radius: 0.75em;
-  padding: 0.75rem 2rem;
+  padding: 0.75rem 1.25rem;
   cursor: pointer;
+  display: grid;
+  grid-template-columns: auto auto;
+  max-width: 375px;
 }
 @media (max-width: 575.98px) {
   .page-event .cta {
-    width: calc(100% - 1em);
-    bottom: 0.5em;
-    left: 0.5em;
-    right: auto;
+    width: calc(100% - 4em);
+    bottom: 0;
+    z-index: 100;
+    left: 2em;
+    right: 2em;
+    border-radius: 0.75em 0.75em 0 0;
   }
 }
 .page-event .cta:hover {
   color: #ECE0CF;
   background-color: red;
 }
-.page-event .cta h3 {
+.page-event .cta div {
+  text-align: right;
+  font-size: 0.8rem;
+}
+@media (max-width: 575.98px) {
+  .page-event .cta div {
+    font-size: 0.7rem;
+  }
+}
+.page-event .cta div h3 {
   margin: 0;
   font-weight: bold;
-  font-size: 2.7rem;
+  font-size: 2.4rem;
+}
+@media (max-width: 575.98px) {
+  .page-event .cta div h3 {
+    font-size: 2rem;
+  }
 }
 .page-event .cta h4 {
+  font-size: 1.65rem;
   margin: 0;
   text-transform: uppercase;
   font-weight: bold;
+}
+@media (max-width: 575.98px) {
+  .page-event .cta h4 {
+    font-size: 1.65rem;
+  }
 }
 
 /* All delay classes will take half the time to start */
