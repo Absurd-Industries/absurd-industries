@@ -10,7 +10,11 @@
   animation-duration: 8s;
 }
 
-.fa-beat-fade, .fa-fade {
+.fa-beat, .fa-fade {
+  animation-duration: 3s;
+}
+
+.fa-beat-fade {
   animation-duration: 2s;
 }
 
@@ -525,7 +529,7 @@ footer {
 }
 footer .socials {
   display: inline-grid;
-  grid-template-columns: auto auto auto auto;
+  grid-template-columns: auto auto auto auto auto;
   grid-gap: 0.75rem;
 }
 @media (max-width: 767.98px) {
@@ -1001,7 +1005,7 @@ footer .copyleft {
   }
 }
 .page-event .event .details h3 {
-  font-size: 1.25rem;
+  font-size: 1.65rem;
   margin: 0.6rem 0;
   padding: 0;
   font-weight: 600;
