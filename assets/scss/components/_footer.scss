@@ -14,7 +14,7 @@ footer {
 
     .socials {
         display: inline-grid;
-        grid-template-columns: auto auto auto auto;
+        grid-template-columns: auto auto auto auto auto;
         grid-gap: 0.75rem;
 
         @include media-breakpoint-down(md) {
