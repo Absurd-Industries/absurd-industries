@@ -67,14 +67,17 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 400;
     margin-top: 4rem;
     margin-bottom: 1.5rem;
-    line-height: 1.15em;
+    line-height: 1.15rem;
 }
 h1 {
     font-size: 2.5rem;
+    line-height: 2.9rem;
 }
 h2 {
     font-size: 1.5rem;
+    line-height: 1.8rem;
     font-weight: lighter;
+    margin-bottom: .25rem;
 
     @include media-breakpoint-down(md) {
         font-size: 1.25rem;
@@ -129,10 +132,13 @@ hr {
 }
 
 p {
-    line-height: 1.5em;
+    font-size: 1.15rem;
+    line-height: 1.75rem;
 }
 
-ol, ul {}
+ol, ul {
+    margin:0;
+}
 ol {
     padding: 0 0 0 1rem;
 }
@@ -143,6 +149,7 @@ ul {
 
 li {
     font-size: 1.15rem;
+    line-height: 1.85rem;
     padding: 0.5rem 0;
 }
 
