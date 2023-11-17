@@ -126,13 +126,15 @@
                 max-width: 80%;
 
                 @include media-breakpoint-down(md) {
-                    font-size: 2.5rem;
+                    font-size: 2.4rem;
+                    line-height: 1.25em;
                     max-width: 100%;
                 }
             }
 
             h2 {
-                margin-top: 0.5rem;
+                margin-top: 0.5em;
+                margin-bottom: 1.5em;
 
                 @include media-breakpoint-down(md) {
                     font-size: 1.25rem;
@@ -190,7 +192,7 @@
 
             h3 {
                 margin-top: -0.5rem;
-                margin-bottom: 2rem;
+                margin-bottom: 0.5rem;
 
                 @include media-breakpoint-down(sm) {
                     font-size: 1.45rem;
@@ -260,11 +262,11 @@
         background-color: red;
 
         @include media-breakpoint-down(sm) {
-            width: calc(100% - 4em);
+            width: calc(100% - 2em);
             bottom: 0;
             z-index: 100;
-            left: 2em;
-            right: 2em;
+            left: 1em;
+            right: 1em;
             border-radius: 0.75em 0.75em 0 0;
         }
 
@@ -285,6 +287,7 @@
                 margin: 0;
                 font-weight: bold;
                 font-size: 2.4rem;
+                line-height: 2.5rem;
     
                 @include media-breakpoint-down(sm) {
                     font-size: 2rem;
@@ -294,6 +297,7 @@
 
         h4 {
             font-size: 1.65rem;
+            line-height: 2rem;
             margin: 0;
             text-transform: uppercase;
             font-weight: bold;

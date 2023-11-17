@@ -94,17 +94,17 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 400;
   margin-top: 4rem;
   margin-bottom: 1.5rem;
-  line-height: 1.15rem;
+  line-height: 1.45em;
 }
 
 h1 {
   font-size: 2.5rem;
-  line-height: 2.9rem;
+  line-height: 1.25em;
 }
 
 h2 {
   font-size: 1.5rem;
-  line-height: 1.8rem;
+  line-height: 1.8em;
   font-weight: lighter;
   margin-bottom: 0.25rem;
 }
@@ -563,7 +563,7 @@ footer p {
 }
 @media (max-width: 767.98px) {
   footer p {
-    margin: 2rem 0 0;
+    margin: 1rem 0 0;
     font-size: 1.05rem;
   }
 }
@@ -649,6 +649,7 @@ footer .copyleft {
 }
 .page-home .event .details h2 {
   margin-top: 0.5rem;
+  margin-bottom: 1em;
 }
 @media (max-width: 767.98px) {
   .page-home .event .details h2 {
@@ -717,6 +718,7 @@ footer .copyleft {
 }
 .page-home #intro p {
   font-size: 1.8rem;
+  line-height: 1.25em;
   position: relative;
   left: 4.3em;
   top: 1.6em;
@@ -800,6 +802,7 @@ footer .copyleft {
 @media (max-width: 575.98px) {
   .page-home #community .vault {
     overflow-x: hidden;
+    padding: 2em 0 0;
   }
 }
 .page-home #community .vault .blob {
@@ -997,12 +1000,14 @@ footer .copyleft {
 }
 @media (max-width: 767.98px) {
   .page-event .event .details h1 {
-    font-size: 2.5rem;
+    font-size: 2.4rem;
+    line-height: 1.25em;
     max-width: 100%;
   }
 }
 .page-event .event .details h2 {
-  margin-top: 0.5rem;
+  margin-top: 0.5em;
+  margin-bottom: 1.5em;
 }
 @media (max-width: 767.98px) {
   .page-event .event .details h2 {
@@ -1055,7 +1060,7 @@ footer .copyleft {
 }
 .page-event .event .section-wrapper h3 {
   margin-top: -0.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
 }
 @media (max-width: 575.98px) {
   .page-event .event .section-wrapper h3 {
@@ -1119,11 +1124,11 @@ footer .copyleft {
 }
 @media (max-width: 575.98px) {
   .page-event .cta {
-    width: calc(100% - 4em);
+    width: calc(100% - 2em);
     bottom: 0;
     z-index: 100;
-    left: 2em;
-    right: 2em;
+    left: 1em;
+    right: 1em;
     border-radius: 0.75em 0.75em 0 0;
   }
 }
@@ -1144,6 +1149,7 @@ footer .copyleft {
   margin: 0;
   font-weight: bold;
   font-size: 2.4rem;
+  line-height: 2.5rem;
 }
 @media (max-width: 575.98px) {
   .page-event .cta div h3 {
@@ -1152,6 +1158,7 @@ footer .copyleft {
 }
 .page-event .cta h4 {
   font-size: 1.65rem;
+  line-height: 2rem;
   margin: 0;
   text-transform: uppercase;
   font-weight: bold;
