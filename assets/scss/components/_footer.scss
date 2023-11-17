@@ -38,7 +38,7 @@ footer {
         opacity: 0.5;
         
         @include media-breakpoint-down(md) {
-            margin: 2rem 0 0;
+            margin: 1rem 0 0;
             font-size: 1.05rem;
         }
     }

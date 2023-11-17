@@ -81,6 +81,7 @@
 
             h2 {
                 margin-top: 0.5rem;
+                margin-bottom: 1em;
 
                 @include media-breakpoint-down(md) {
                     font-size: 1.25rem;
@@ -150,6 +151,7 @@
 
         p {
             font-size: 1.8rem;
+            line-height: 1.25em;
             position: relative;
             left: 4.3em;
             top: 1.6em;
@@ -232,6 +234,7 @@
 
             @include media-breakpoint-down(sm) {
                 overflow-x: hidden;
+                padding: 2em 0 0;
             }
 
             .blob {
