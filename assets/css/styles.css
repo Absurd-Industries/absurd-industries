@@ -572,6 +572,18 @@ footer .copyleft {
   transform: rotate(180deg);
 }
 
+.post-footer {
+  margin-top: 1em;
+  text-align: center;
+}
+.post-footer a {
+  text-decoration: none;
+  opacity: 0.5;
+}
+.post-footer a:hover {
+  opacity: 1;
+}
+
 .page-home .event {
   position: relative;
   padding: 4rem;

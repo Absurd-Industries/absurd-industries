@@ -1,0 +1,13 @@
+.post-footer {
+    margin-top: 1em;
+    text-align: center;
+
+    a {
+       text-decoration: none;
+       opacity: 0.5;
+
+       &:hover {
+            opacity: 1;
+       }
+    }
+}
