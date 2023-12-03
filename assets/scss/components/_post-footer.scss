@@ -2,6 +2,10 @@
     margin-top: 1em;
     text-align: center;
 
+    @include media-breakpoint-down(md) {
+        margin-bottom: 8rem;
+    }
+
     a {
        text-decoration: none;
        opacity: 0.5;

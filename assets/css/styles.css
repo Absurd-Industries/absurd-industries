@@ -532,7 +532,6 @@ footer {
 @media (max-width: 767.98px) {
   footer {
     text-align: left;
-    margin-bottom: 8rem;
     border-radius: 1.5rem;
   }
 }
@@ -575,6 +574,11 @@ footer .copyleft {
 .post-footer {
   margin-top: 1em;
   text-align: center;
+}
+@media (max-width: 767.98px) {
+  .post-footer {
+    margin-bottom: 8rem;
+  }
 }
 .post-footer a {
   text-decoration: none;
