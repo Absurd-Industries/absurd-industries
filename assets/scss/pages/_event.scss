@@ -102,15 +102,32 @@
             .video-wrapper {
                 position: relative;
                 width: calc(100% + 8rem);
-                height: 0;
-                padding-bottom: 56.25%;
+                padding-bottom: 86.25%;
                 margin: 4rem -4rem;
+
+                iframe:first-child {
+                    display: block;
+
+                    @include media-breakpoint-down(sm) {
+                        display: none;
+                    }
+                }
+                
+                iframe:last-child {
+                    display: none;
+
+                    @include media-breakpoint-down(sm) {
+                        display: block;
+                    }
+                }
 
                 @include media-breakpoint-down(md) {
                     width: calc(100% + 3rem);
                     margin-left:-1.5rem;
                     margin-right:-1.5rem;
                 }
+
+                
 
                 iframe {
                     position: absolute;
@@ -199,6 +216,12 @@
                     margin-bottom: 0;
                 }
             }
+
+            &.vlos-wrapper {
+                @include media-breakpoint-down(md) {
+                    margin-top: 4rem;
+                }
+            }
         }
 
         .schedule {
@@ -260,6 +283,7 @@
         max-width: 375px;
         color: #ECE0CF;
         background-color: red;
+        z-index: 1001;
 
         @include media-breakpoint-down(sm) {
             width: calc(100% - 2em);
