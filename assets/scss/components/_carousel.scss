@@ -1,0 +1,205 @@
+.carousel {
+    position:relative;
+    margin: 0 -4em;
+    text-align: center;
+
+    @include media-breakpoint-down(md) {
+        margin-left:-1.5rem;
+        margin-right:-1.5rem;
+    }
+
+  [type="radio"]:checked,
+  [type="radio"]:not(:checked){
+    position: absolute;
+    left: -9999px;
+  }
+  .checkbox:checked + label,
+  .checkbox:not(:checked) + label{
+    position: relative;
+    cursor: pointer;
+    margin: 0 auto;
+    text-align: center;
+    margin-right: 6px;
+    margin-left: 6px;
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    background-size: cover;
+    background-position: center;
+    box-sizing: border-box;
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+    background-image: url('../images/drone-genesis/drone-hatchling-blueprint.jpg');
+    animation: border-transform 6s linear infinite alternate forwards;
+      -webkit-animation-play-state: paused;
+      -moz-animation-play-state: paused;
+      animation-play-state: paused;
+
+      @include media-breakpoint-down(sm) {
+        width: 30px;
+        height: 30px;
+    }
+  }
+  .checkbox.second + label{
+    background-image: url('../images/drone-genesis/drone-hatchling-box.jpg');
+  }
+  .checkbox.third + label{
+    background-image: url('../images/drone-genesis/ashwin-making-a-drone.jpg');
+  }
+  .checkbox.fourth + label{
+    background-image: url('../images/drone-genesis/manju-customizing-the-drone.jpg');
+  }
+  .checkbox.fifth + label{
+    background-image: url('../images/drone-genesis/drone-built-with-instructions.jpg');
+  }
+  .checkbox.sixth + label{
+    background-image: url('../images/drone-genesis/parna-holding-a-drone.jpg');
+  }
+  .checkbox.seventh + label{
+    background-image: url('../images/drone-genesis/sakshi-holding-a-drone.jpg');
+  }
+  .checkbox.eighth + label{
+    background-image: url('../images/drone-genesis/drone-on-cutting-mat.jpg');
+  }
+  
+  
+
+  .checkbox:checked + label{
+    box-shadow: 0 8px 25px 0 rgba(16,39,112,.3);
+    transform: scale(1.3);
+      -webkit-animation-play-state: running;
+      -moz-animation-play-state: running;
+      animation-play-state: running;
+  }
+  @keyframes border-transform{
+    0%,100% { border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%; } 
+    14% { border-radius: 40% 60% 54% 46% / 49% 60% 40% 51%; } 
+    28% { border-radius: 54% 46% 38% 62% / 49% 70% 30% 51%; } 
+    42% { border-radius: 61% 39% 55% 45% / 61% 38% 62% 39%; } 
+    56% { border-radius: 61% 39% 67% 33% / 70% 50% 50% 30%; } 
+    70% { border-radius: 50% 50% 34% 66% / 56% 68% 32% 44%; } 
+    84% { border-radius: 46% 54% 50% 50% / 35% 61% 39% 65%; } 
+  }
+  
+  .slider-height-padding {
+    padding-top: 715px;
+    margin-left: -1.5rem;
+
+    @include media-breakpoint-down(lg) {
+        padding-top: 615px;
+    }
+
+    @include media-breakpoint-down(md) {
+        padding-top: 415px;
+    }
+
+    @include media-breakpoint-down(sm) {
+        padding-top: 265px;
+    }
+  }
+  
+  ul {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    z-index: 100;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+  ul li {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: block;
+    z-index: 100;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    height: 675px;
+    background-size: cover;
+    background-position: center;
+    background-image: url('../images/drone-genesis/drone-hatchling-blueprint.jpg');
+    border-radius: 50%;
+    box-sizing: border-box;
+    font-weight: 900;
+    font-size: 16px;
+    letter-spacing: 2px;
+    line-height: 2.7;
+    color: transparent;
+    writing-mode: vertical-rl;
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: 0 8px 25px 0 rgba(16,39,112,.1);
+    -webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+
+    @include media-breakpoint-down(lg) {
+        height: 615px;
+    }
+
+    @include media-breakpoint-down(md) {
+        height: 415px;
+    }
+
+    @include media-breakpoint-down(sm) {
+        height: 265px;
+    }
+  }
+  ul li span {
+    mix-blend-mode: difference;
+  }
+  ul li:nth-child(2) {
+    background-image: url('../images/drone-genesis/drone-hatchling-box.jpg');
+  }
+  ul li:nth-child(3) {
+    background-image: url('../images/drone-genesis/ashwin-making-a-drone.jpg');
+  }
+  ul li:nth-child(4) {
+    background-image: url('../images/drone-genesis/manju-customizing-the-drone.jpg');
+  }
+  ul li:nth-child(5) {
+    background-image: url('../images/drone-genesis/drone-built-with-instructions.jpg');
+  }
+  ul li:nth-child(6) {
+    background-image: url('../images/drone-genesis/parna-holding-a-drone.jpg');
+  }
+  ul li:nth-child(7) {
+    background-image: url('../images/drone-genesis/sakshi-holding-a-drone.jpg');
+  }
+  ul li:nth-child(8) {
+    background-image: url('../images/drone-genesis/drone-on-cutting-mat.jpg');
+  }
+
+
+    .checkbox.first:checked ~ ul li:nth-child(1),
+    .checkbox.second:checked ~ ul li:nth-child(2),
+    .checkbox.third:checked ~ ul li:nth-child(3),
+    .checkbox.fourth:checked ~ ul li:nth-child(4),
+    .checkbox.fifth:checked ~ ul li:nth-child(5),
+    .checkbox.sixth:checked ~ ul li:nth-child(6),
+    .checkbox.seventh:checked ~ ul li:nth-child(7),
+    .checkbox.eighth:checked ~ ul li:nth-child(8) {
+        opacity: 1;
+        pointer-events: auto;
+        border-radius: 0;
+    }
+  
+  .logo {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    display: block;
+    z-index: 100;
+    transition: all 250ms linear;
+  }
+
+  .logo img {
+    height: 26px;
+    width: auto;
+    display: block;
+  }
+}
