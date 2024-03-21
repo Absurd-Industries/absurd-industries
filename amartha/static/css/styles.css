@@ -1,0 +1,264 @@
+::-moz-placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #4AF626;
+  opacity: 0.45;
+  /* Firefox */
+}
+
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #4AF626;
+  opacity: 0.45;
+  /* Firefox */
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #4AF626;
+}
+
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: #4AF626;
+}
+
+html,
+body {
+  min-height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: #000;
+  font-family: "Souce Code Pro", Courier, monospace;
+  line-height: 1.4em;
+  color: #4AF626;
+  position: relative;
+}
+
+.hidden {
+  display: none;
+}
+
+.interface-wrapper {
+  height: 100%;
+  padding: 2em;
+}
+.interface-wrapper .interface-container {
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  position: relative;
+  height: 90vh;
+  padding: 0;
+  margin: 0 2em;
+}
+
+.animated-background {
+  position: absolute;
+  background: transparent url("../images/background-chair.png") no-repeat center center/cover !important;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 5;
+}
+.animated-background::after {
+  display: block;
+  content: " ";
+  background: rgba(0, 0, 0, 0.75);
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+@keyframes retro-future-lines {
+  0% {
+    -webkit-mask-position: center 0rem;
+    mask-position: center 0rem;
+  }
+  100% {
+    -webkit-mask-position: center -1.5rem;
+    mask-position: center -1.5rem;
+  }
+}
+.effect-retro-future-lines {
+  -webkit-mask-image: repeating-linear-gradient(black, black 0.5rem, rgba(0, 0, 0, 0.5) 0.75rem);
+  mask-image: repeating-linear-gradient(black, black 0.5rem, rgba(0, 0, 0, 0.5) 0.75rem);
+  -webkit-mask-position: center 0rem;
+  mask-position: center 0rem;
+  animation: retro-future-lines linear infinite;
+  animation-duration: 500ms;
+  --playstate: var(
+  --media-prefers-reduced-motion) paused;
+  animation-play-state: var(--playstate, running);
+}
+
+.scrollable::-webkit-scrollbar-thumb {
+  background-color: #4AF626;
+}
+
+.scrollable::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.scrollable::-webkit-scrollbar-corner {
+  background-color: #4AF626;
+}
+
+.scrollable::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+.scrollable {
+  -ms-overflow-style: auto;
+  scrollbar-color: rgba(0, 0, 0, 0.75) #4AF626;
+  scrollbar-width: thin;
+}
+
+.button {
+  font-family: "Souce Code Pro", Courier, monospace;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 2.1em;
+  padding: 0.65em;
+  background: #4AF626;
+  color: #000;
+  text-decoration: none;
+  border: 3px solid #4AF626;
+  position: absolute;
+  z-index: 1000;
+  top: 70%;
+  left: 50%;
+  margin: 0 0 0 -5em;
+  text-align: center;
+  width: 10em;
+}
+.button:hover {
+  background: #000;
+  color: #4AF626;
+  border: 3px solid #4AF626;
+}
+
+.welcome-wrapper {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  width: 70%;
+  text-align: center;
+  margin: 0 0 0 -35%;
+}
+.welcome-wrapper #welcome {
+  font-size: 2.5em;
+  line-height: 1.8em;
+  padding-bottom: 3em;
+}
+.welcome-wrapper .initialize-button {
+  text-align: center;
+  font-size: 1.5em;
+}
+
+.settings {
+  position: absolute;
+  top: 0;
+  left: 0.5em;
+  z-index: 100;
+}
+.settings .button {
+  cursor: pointer;
+  background-color: transparent;
+  border: 0 none;
+  color: #4AF626;
+  font-size: 0.95em;
+}
+
+.waveform-wrapper {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.waveform-wrapper .waveform-container {
+  border: 4px solid #4AF626;
+  width: 10em;
+  height: 10em;
+}
+.waveform-wrapper .waveform-container #waveform {
+  width: 100%;
+  height: 100%;
+}
+
+.choice-wrapper {
+  margin: 1em 0 0 1.5em;
+}
+
+.chat-wrapper {
+  width: 45%;
+  padding-top: 2.5em;
+  border-right: 3px solid #4AF626;
+  height: 100%;
+}
+.chat-wrapper .chat-messages {
+  max-height: 75%;
+  overflow-y: auto;
+}
+.chat-wrapper .chat-message {
+  font-size: 1em;
+  padding: 1.25em 2em;
+  border-top: 1px solid #4AF626;
+}
+.chat-wrapper .chat-message:first-child {
+  border: 0 none;
+}
+.chat-wrapper .chat-message.muted {
+  opacity: 0.65;
+}
+.chat-wrapper .chat-message p {
+  margin: 0;
+  padding: 0;
+}
+
+.chat-input-container {
+  width: calc(45% - 2em);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 1em;
+  background-color: rgba(74, 246, 38, 0.25);
+}
+.chat-input-container .chat-input {
+  font-family: "Souce Code Pro", Courier, monospace;
+  font-size: 1.15em;
+  background: transparent;
+  border: 0 none;
+  color: #4AF626;
+  width: calc(100% - 1.5em);
+  padding: 0.5em 0.75em 1em 0.75em;
+}
+.chat-input-container .chat-input:focus {
+  border: 0 none;
+  outline: 0 none;
+}
+.chat-input-container .chat-submit {
+  width: 100%;
+  cursor: pointer;
+}
+
+.signal-wrapper {
+  position: absolute;
+  left: 0;
+  bottom: 7.5em;
+  border-top: 1px dashed #4AF626;
+  background: transparent;
+  color: #4AF626;
+  width: 100%;
+  height: 3.5em;
+  line-height: 3em;
+}
+.signal-wrapper .signal-ticker {
+  font-size: 1em;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150%;
+}/*# sourceMappingURL=styles.css.map */

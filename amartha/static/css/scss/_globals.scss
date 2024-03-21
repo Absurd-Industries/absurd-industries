@@ -1,0 +1,82 @@
+//
+//
+//
+// Globals
+// --------------------------------------------------
+$font-family: "Souce Code Pro", Courier, monospace;
+$color-background: #000;
+$color-primary: #4AF626;
+$color-secondary: #000;
+
+// Meta Elements
+::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: $color-primary;
+    opacity: 0.45;
+    /* Firefox */
+}
+
+:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: $color-primary;
+}
+
+::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: $color-primary;
+}
+
+// Base Elements
+html,
+body {
+    min-height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background: $color-background;
+    font-family: $font-family;
+    line-height: 1.4em;
+    color: $color-primary;
+    position: relative;
+}
+
+// Element Modifiers
+.hidden {
+    display: none;
+}
+
+// Interface Wrapper
+.interface-wrapper {
+    height: 100%;
+    padding: 2em;
+
+    .interface-container {
+        background-color: rgba(0, 0, 0, 0.5);
+        overflow: hidden;
+        position: relative;
+        height: 90vh;
+        padding: 0;
+        margin: 0 2em;
+    }
+}
+
+.animated-background {
+    position: absolute;
+    background: transparent url("../images/background-chair.png") no-repeat center center / cover !important;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 5;
+
+    &::after {
+        display: block;
+        content: " ";
+        background: rgba(0, 0, 0, 0.75);
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+    }
+}

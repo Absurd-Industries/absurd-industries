@@ -1,0 +1,23 @@
+//
+//
+//
+// Waveform
+// --------------------------------------------------
+@use "globals" as g;
+
+.waveform-wrapper {
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    .waveform-container {
+        border: 4px solid g.$color-primary;
+        width: 10em;
+        height: 10em;
+
+        #waveform {
+            width: 100%;
+            height: 100%;
+        }
+    }
+}
