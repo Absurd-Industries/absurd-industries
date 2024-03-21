@@ -1,0 +1,25 @@
+//
+//
+//
+// Scrollable
+// --------------------------------------------------
+@use "globals" as g;
+
+.scrollable::-webkit-scrollbar-thumb {
+    background-color: g.$color-primary;
+  }
+  .scrollable::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.75);
+  }
+  .scrollable::-webkit-scrollbar-corner {
+    background-color: g.$color-primary;
+  }
+  .scrollable::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+  .scrollable {
+    -ms-overflow-style: auto;
+    scrollbar-color: rgba(0, 0, 0, 0.75) g.$color-primary;
+    scrollbar-width: thin;
+  }

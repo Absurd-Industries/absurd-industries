@@ -1,0 +1,26 @@
+//
+//
+//
+// Initialize
+// --------------------------------------------------
+@use "globals" as g;
+
+.welcome-wrapper {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    width: 70%;
+    text-align: center;
+    margin: 0 0 0 -35%;
+
+    #welcome {
+        font-size: 2.5em;
+        line-height: 1.8em;
+        padding-bottom: 3em;
+    }
+
+    .initialize-button {
+        text-align: center;
+        font-size: 1.5em;
+    }
+}

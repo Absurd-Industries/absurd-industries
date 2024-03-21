@@ -1,0 +1,32 @@
+//
+//
+//
+// Buttons
+// --------------------------------------------------
+@use "globals" as g;
+
+
+.button {
+    font-family: g.$font-family;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 2.1em;
+    padding: 0.65em;
+    background: g.$color-primary;
+    color: g.$color-secondary;
+    text-decoration: none;
+    border: 3px solid g.$color-primary;
+    position: absolute;
+    z-index: 1000;
+    top: 70%;
+    left: 50%;
+    margin: 0 0 0 -5em;
+    text-align: center;
+    width: 10em;
+    
+    &:hover {
+        background: g.$color-secondary;
+        color: g.$color-primary;
+        border: 3px solid g.$color-primary;
+    }
+}

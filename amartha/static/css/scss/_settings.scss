@@ -1,0 +1,21 @@
+//
+//
+//
+// Settings 
+// --------------------------------------------------
+@use "globals" as g;
+
+.settings {
+    position: absolute;
+    top: 0;
+    left: 0.5em;
+    z-index: 100;
+
+    .button {
+        cursor: pointer;
+        background-color: transparent;
+        border: 0 none;
+        color: g.$color-primary;
+        font-size: 0.95em;
+    }
+}

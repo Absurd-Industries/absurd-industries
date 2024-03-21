@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+		<link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16x16.png">
+		<link rel="manifest" href="../assets/favicon/site.webmanifest">
+		<link rel="mask-icon" href="../assets/favicon/safari-pinned-tab.svg" color="#141414">
+		<link rel="shortcut icon" href="../assets/favicon/favicon.ico">
+		<meta name="msapplication-TileColor" content="#ece0cf">
+		<meta name="msapplication-config" content="../assets/favicon/browserconfig.xml">
+		<meta name="theme-color" content="#ece0cf">
+
+		<title>Stasis</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css"></style>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link rel="stylesheet" type="text/css" href="https://unpkg.com/augmented-ui@2/augmented-ui.min.css">
+		<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap"
+			rel="stylesheet">
+		<link rel="stylesheet" href="static/css/styles.css.map">
+		<link rel="stylesheet" href="static/css/styles.css">
+	</head>
+	<body>
+		<audio id="text-streaming-1" src="static/audio/text-streaming-1.ogg" preload="auto" muted="true"></audio>
+		<audio id="text-streaming-2" src="static/audio/text-streaming-2.ogg" preload="auto" muted="true"></audio>
+		<audio id="text-streaming-3" src="static/audio/text-streaming-3.ogg" preload="auto" muted="true"></audio>
+		<audio id="ambient-soundscape-1" src="static/audio/ambient-soundscape-1.mp3" preload="auto" muted="true" loop></audio>
+		<audio id="ambient-soundscape-2" src="static/audio/ambient-soundscape-2.mp3" preload="auto" muted="true" loop></audio>
+	  
+		<div class="animated-background effect-retro-future-lines"></div>
+			<a href="#" id="initialize" class="button initialize-button">Initialize</a>
+		</div>
+
+		<script type="importmap">
+			{
+			  "imports": {
+				"three": "https://unpkg.com/three@0.162.0/build/three.module.js",
+				"three/addons/": "https://unpkg.com/three@0.162.0/examples/jsm/"
+			  }
+			}
+		  </script>
+
+		<script type="module">
+
+			import * as THREE from 'three';
+
+			import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
+
+			import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+			let renderer, scene, camera;
+
+			let spotLight, lightHelper;
+
+			init();
+
+			function init() {
+
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				document.body.appendChild( renderer.domElement );
+
+				renderer.shadowMap.enabled = true;
+				renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+
+				renderer.toneMapping = THREE.ACESFilmicToneMapping;
+				renderer.toneMappingExposure = 1;
+
+				renderer.setAnimationLoop( render );
+
+				scene = new THREE.Scene();
+
+				camera = new THREE.PerspectiveCamera( 25, window.innerWidth / window.innerHeight, 0.1, 100 );
+				camera.position.set( 10, 40, -20 );
+
+				const controls = new OrbitControls( camera, renderer.domElement );
+				controls.minDistance = 2;
+				controls.maxDistance = 10;
+				controls.maxPolarAngle = Math.PI / 2;
+				controls.target.set( 0, 1, 0 );
+				controls.update();
+
+				const ambient = new THREE.HemisphereLight( 0xffffff, 0x8d8d8d, 0.15 );
+				scene.add( ambient );
+
+				const loader = new THREE.TextureLoader().setPath( 'static/textures/' );
+				const filenames = [ 'disturb.jpg', 'colors.png', 'uv_grid_opengl.jpg' ];
+
+				const textures = { none: null };
+
+				for ( let i = 0; i < filenames.length; i ++ ) {
+
+					const filename = filenames[ i ];
+
+					const texture = loader.load( filename );
+					texture.minFilter = THREE.LinearFilter;
+					texture.magFilter = THREE.LinearFilter;
+					texture.colorSpace = THREE.SRGBColorSpace;
+
+					textures[ filename ] = texture;
+
+				}
+
+				spotLight = new THREE.SpotLight( 0xffffff, 248 );
+				spotLight.position.set( 2.5, 5, 2.5 );
+				spotLight.angle = Math.PI / 6;
+				spotLight.penumbra = 1;
+				spotLight.decay = 1.8;
+				spotLight.distance = 30;
+				spotLight.map = textures[ 'disturb.jpg' ];
+
+				spotLight.castShadow = true;
+				spotLight.shadow.mapSize.width = 1024;
+				spotLight.shadow.mapSize.height = 1024;
+				spotLight.shadow.camera.near = 1;
+				spotLight.shadow.camera.far = 10;
+				spotLight.shadow.focus = 1;
+				scene.add( spotLight );
+
+				lightHelper = new THREE.SpotLightHelper( spotLight );
+				// scene.add( lightHelper );
+
+				//
+
+				const geometry = new THREE.PlaneGeometry( 200, 200 );
+				const material = new THREE.MeshLambertMaterial( { color: 0xbcbcbc } );
+
+				const mesh = new THREE.Mesh( geometry, material );
+				mesh.position.set( 0, - 1, 0 );
+				mesh.rotation.x = - Math.PI / 2;
+				mesh.receiveShadow = true;
+				scene.add( mesh );
+
+				//
+
+				new STLLoader().load(
+					'static/models/glados.stl',
+					function (geometry) {
+						geometry.scale( 0.2, 0.2, 0.2 );
+						geometry.computeVertexNormals();
+
+						const material = new THREE.MeshLambertMaterial();
+
+						const mesh = new THREE.Mesh( geometry, material );
+						mesh.rotation.y = - Math.PI / 4;
+						mesh.position.y = 0;
+						mesh.castShadow = true;
+						mesh.receiveShadow = true;
+						scene.add( mesh );
+					},
+					(xhr) => {
+						console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+					},
+					(error) => {
+						console.log(error)
+					}
+				)
+
+				window.addEventListener( 'resize', onWindowResize );
+
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			function render() {
+
+				const time = performance.now() / 3000;
+
+				spotLight.position.x = Math.cos( time ) * 2.5;
+				spotLight.position.z = Math.sin( time ) * 2.5;
+
+				lightHelper.update();
+
+				renderer.render( scene, camera );
+
+			}
+
+		</script>
+		<script src="https://code.jquery.com/jquery-3.6.4.min.js"
+		integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+	  <script src="https://cdn.jsdelivr.net/npm/glitched-writer/lib/index.min.js"></script>
+	  <script src="https://cdn.jsdelivr.net/npm/oscilloscope@1.x"></script>
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+	  <script type="text/javascript" src="static/js/script.js"></script>
+	</body>
+
+</html>

@@ -1,0 +1,29 @@
+//
+//
+//
+// Effects
+// --------------------------------------------------
+@use "globals" as g;
+
+@keyframes retro-future-lines {
+    0% {
+      -webkit-mask-position: center 0rem;
+      mask-position: center 0rem;
+    }
+    100% {
+      -webkit-mask-position: center -1.5rem;
+      mask-position: center -1.5rem;
+    }
+  }
+
+  .effect-retro-future-lines {
+    -webkit-mask-image: repeating-linear-gradient(black, black 0.5rem, rgba(0, 0, 0, 0.5) 0.75rem);
+      mask-image: repeating-linear-gradient(black, black 0.5rem, rgba(0, 0, 0, 0.5) 0.75rem);
+      -webkit-mask-position: center 0rem;
+      mask-position: center 0rem;
+      animation: retro-future-lines linear infinite;
+      animation-duration: 500ms;
+      --playstate: var(
+      --media-prefers-reduced-motion) paused;
+      animation-play-state: var(--playstate, running);
+  }
