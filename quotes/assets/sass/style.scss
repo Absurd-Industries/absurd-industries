@@ -6,8 +6,9 @@
 3. Invoice General Style
 --------------------------------------------------------------*/
 
-@import 'common/color_variable';
+@import 'common/colors';
+@import 'common/breakpoints';
 @import 'common/normalize';
 @import 'common/typography';
 @import 'common/invoice';
-@import 'common/akash';
+@import 'common/theme';

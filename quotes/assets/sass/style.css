@@ -1445,6 +1445,15 @@ kbd {
 .header {
   margin-top: -180px;
 }
+@media (max-width: 767.98px) {
+  .header {
+    margin-top: 0;
+  }
+  .header .cs-text_right {
+    text-align: left;
+    margin-bottom: em;
+  }
+}
 
 .cs-logo img {
   margin-top: -18px;
@@ -1452,6 +1461,11 @@ kbd {
 
 .footer {
   font-size: 12.5px;
+}
+@media (max-width: 767.98px) {
+  .footer .cs-text_right {
+    text-align: left;
+  }
 }
 
 .cs-table.cs-style2.padding-rignt-left td {
@@ -1669,6 +1683,11 @@ kbd {
 
 .btn-blanck {
   background: none;
+}
+@media (max-width: 767.98px) {
+  .btn-blanck {
+    display: none;
+  }
 }
 
 .border-bottom-1 {
