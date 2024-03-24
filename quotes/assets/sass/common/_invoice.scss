@@ -1006,7 +1006,7 @@
 
         .cs-text_right {
             text-align: left;
-            margin-bottom: em;
+            margin-bottom: 2em;
         }
     }
 }
@@ -1019,6 +1019,8 @@
     font-size: 12.5px;
 
     @include media-breakpoint-down(md) {
+        justify-content: flex-start !important;
+
         .cs-text_right {
             text-align: left;
         }
