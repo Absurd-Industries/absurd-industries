@@ -1451,7 +1451,7 @@ kbd {
   }
   .header .cs-text_right {
     text-align: left;
-    margin-bottom: em;
+    margin-bottom: 2em;
   }
 }
 
@@ -1463,6 +1463,9 @@ kbd {
   font-size: 12.5px;
 }
 @media (max-width: 767.98px) {
+  .footer {
+    justify-content: flex-start !important;
+  }
   .footer .cs-text_right {
     text-align: left;
   }
