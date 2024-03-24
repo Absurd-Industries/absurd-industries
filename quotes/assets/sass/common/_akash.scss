@@ -1,0 +1,229 @@
+/* akash */
+
+.flex-horizontal-center {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.cs-container {
+    &.style1 {
+        max-width: 400px;
+    }
+}
+
+.cs-table.cs-style2.padding-rignt-left td {
+    padding: 12px 0px;
+}
+
+.cs-table.cs-style2.padding-rignt-left th {
+    padding: 12px 0px;
+}
+
+.top-header-section {
+    position: relative;
+    width: 100%;
+    object-fit: cover;
+    background-position: center;
+    height: 100px;
+    background-repeat: no-repeat;
+    background-image: url('../../../assets/img/Subtract.png');
+    .header-text {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+}
+
+.top-bottom-section {
+    position: relative;
+    width: 100%;
+    object-fit: cover;
+    background-position: center;
+    height: 130px;
+    background-repeat: no-repeat;
+    background-image: url('../../../assets/img/bg-bottom.png');
+}
+
+
+/* Margin Start */
+
+.cs-mb40 {
+    margin-bottom: 40px;
+}
+
+.cs-mb50 {
+    margin-bottom: 50px;
+}
+
+.cs-mb70 {
+    margin-bottom: 70px;
+}
+
+.cs-mr5 {
+    margin-right: 5px;
+}
+
+.cs-mr10 {
+    margin-right: 10px;
+}
+
+.cs-mr15 {
+    margin-right: 15px;
+}
+
+.cs-mr20 {
+    margin-right: 20px;
+}
+
+.cs-mr22 {
+    margin-right: 22px;
+}
+
+.cs-mr28 {
+    margin-right: 28px;
+}
+
+.cs-mt50 {
+    margin-top: 50px;
+}
+
+.cs-mr50 {
+    margin-right: 50px;
+}
+
+.cs-mr60 {
+    margin-right: 50px;
+}
+
+.cs-mr120 {
+    margin-right: 120px;
+}
+
+.cs-mr97 {
+    margin-right: 97px;
+}
+
+.cs-ml10 {
+    margin-left: 10px;
+}
+
+.cs-mt5 {
+    margin-top: 5px;
+}
+
+.cs-mt12 {
+    margin-top: 12px;
+}
+
+.cs-mt20 {
+    margin-top: 20px;
+}
+
+.cs-mt30 {
+    margin-top: 30px;
+}
+
+.cs-mt100 {
+    margin-top: 100px;
+}
+
+
+/* Padding Start */
+
+.cs-p0 {
+    padding: 0px !important;
+}
+
+.cs-p50 {
+    padding: 50px !important;
+}
+
+.cs-p-t5 {
+    padding-top: 5px !important;
+}
+
+.cs-p-t10 {
+    padding-top: 10px !important;
+}
+
+.cs-p-b5 {
+    padding-bottom: 5px !important;
+}
+
+.cs-p-b10 {
+    padding-bottom: 10px !important;
+}
+
+
+/* Position */
+
+.position-relative {
+    position: relative;
+}
+
+.position-absolute {
+    position: absolute;
+}
+
+.text-transform-uppercase {
+    text-transform: uppercase;
+}
+
+
+/* Border Start */
+
+.cs-border-1 {
+    content: '';
+    height: 1px;
+    width: 100%;
+    margin-top: 9px;
+    border: 0.5px dashed #494949c4;
+}
+
+.cs-border {
+    content: '';
+    height: 1px;
+    width: 100%;
+    border: 1px dashed #494949c4;
+    &.border-none {
+        border: 0px dashed #494949c4;
+    }
+}
+
+.cs-border_bottom {
+    &.style_1 {
+        border-bottom: 1px dashed #494949c4;
+    }
+}
+
+.cs-signature {
+    .signature-img {
+        width: 155.956px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #000;
+    }
+    P {
+        padding-top: 10px;
+    }
+}
+
+.cs-white_bg {
+    background: #ffffff;
+}
+
+@media print {
+    body {
+        background-color: #ffffff;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+    }
+    .cs-p50 {
+        padding: 0;
+    }
+}
+
+
+/* sf  */
