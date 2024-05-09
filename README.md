@@ -44,7 +44,7 @@ Follow us into the void:
 
 - [Discord](https://discord.gg/DUSUtguG2H)
 - [Instagram](https://www.instagram.com/absurd.science/)
-- [YouTube](https://www.youtube.com/@absurdindustries)
+- [YouTube](https://www.youtube.com/@absurd.industries)
 - [LinkedIn](https://www.linkedin.com/company/absurd-explorations/)
 
 ### Copyleft Notice
