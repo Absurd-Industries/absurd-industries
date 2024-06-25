@@ -49,7 +49,7 @@
             margin-top: 1rem;
         }
 
-        .drone-icon {
+        .corner-icon {
             font-size: 12rem;
             position: relative;
             top: -0.75em;
@@ -157,6 +157,14 @@
 
                 a {
                     text-decoration: none;
+                }
+            }
+
+            h4 {
+                font-size: 1.65rem;
+
+                @include media-breakpoint-down(sm) {
+                    font-size: 1.05rem;
                 }
             }
 

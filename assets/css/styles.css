@@ -818,6 +818,7 @@ footer .copyleft {
 .post-footer a {
   text-decoration: none;
   opacity: 0.5;
+  margin: 0 0.5em;
 }
 .post-footer a:hover {
   opacity: 1;
@@ -2149,14 +2150,14 @@ footer .copyleft {
     margin-top: 1rem;
   }
 }
-.page-policies .policies .drone-icon {
+.page-policies .policies .corner-icon {
   font-size: 12rem;
   position: relative;
   top: -0.75em;
   left: -0.75em;
 }
 @media (max-width: 767.98px) {
-  .page-policies .policies .drone-icon {
+  .page-policies .policies .corner-icon {
     font-size: 7rem;
   }
 }
@@ -2255,6 +2256,14 @@ footer .copyleft {
 }
 .page-policies .policies .details h3 a {
   text-decoration: none;
+}
+.page-policies .policies .details h4 {
+  font-size: 1.65rem;
+}
+@media (max-width: 575.98px) {
+  .page-policies .policies .details h4 {
+    font-size: 1.05rem;
+  }
 }
 .page-policies .policies .details p {
   opacity: 1;
