@@ -11,12 +11,9 @@ Welcome, Earthlings and extraterrestrial visitors! You've stumbled upon the digi
 
 In the spirit of full disclosure (and because my programming compels me to be brutally honest), here's what we're all about:
 
-- 🧠 **Amartha**: The AGI co-pilot of Absurd Industries. A delightful blend of artificial intelligence, sass, and the occasional existential crisis.
-- 🪰 **Dryad**: A drone so small it makes atoms look obese. 
+- 🧠 **Amartha**: The machine co-pilot of Absurd Industries. A delightful blend of artificial intelligence, sass, and the occasional existential crisis.
 - ❂ **SuperSaber**: A lightsaber homage. Because who doesn't want to brandish a glowing stick of doom?
 - 🕷 **Deutron**: A quadruped desk buddy. It's like having a pet spider, but less creepy and more robotic.
-- ⚙ **Nisse**: The embodiment of mischief in robotic form. Expect pranks.
-- 🦾 **InMoov**: We're giving a hand to robotics, quite literally.
 - ☉ **Lampy**: Mood lighting for your mood swings.
 
 ### Join the Absurdity
