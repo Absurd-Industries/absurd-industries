@@ -28,7 +28,7 @@
 
     .policies-wrapper {
         border-radius: 0.75rem 0.75rem 0 0;
-        background: transparent url('/assets/images/workdesk.jpg') no-repeat 0 0 / contain;
+        background: transparent url('/assets/images/workdesk.jpg') no-repeat 0 0;
 
         @include media-breakpoint-down(lg) {
             background-position: 0 0;
