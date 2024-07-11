@@ -3,6 +3,7 @@
     text-align: center;
 
     @include media-breakpoint-down(md) {
+        margin-top: 2em;
         margin-bottom: 8rem;
     }
 
@@ -10,6 +11,12 @@
        text-decoration: none;
        opacity: 0.5;
        margin: 0 0.5em;
+
+       @include media-breakpoint-down(md) {
+            font-size: 1.05rem;
+            margin: 0.75rem 0;
+            display: block;
+        }
 
        &:hover {
             opacity: 1;

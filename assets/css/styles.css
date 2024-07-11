@@ -812,6 +812,7 @@ footer .copyleft {
 }
 @media (max-width: 767.98px) {
   .post-footer {
+    margin-top: 2em;
     margin-bottom: 8rem;
   }
 }
@@ -819,6 +820,13 @@ footer .copyleft {
   text-decoration: none;
   opacity: 0.5;
   margin: 0 0.5em;
+}
+@media (max-width: 767.98px) {
+  .post-footer a {
+    font-size: 1.05rem;
+    margin: 0.75rem 0;
+    display: block;
+  }
 }
 .post-footer a:hover {
   opacity: 1;
@@ -1157,7 +1165,7 @@ footer .copyleft {
 }
 .page-event .event-wrapper {
   border-radius: 0.75rem 0.75rem 0 0;
-  background: transparent url("/assets/images/drone-genesis/drone-still-lit.jpg") no-repeat 0 -5%/contain;
+  background: transparent url("/assets/images/workdesk.jpg") no-repeat 0 -30%/contain;
 }
 @media (max-width: 575.98px) {
   .page-event .event-wrapper {
@@ -1343,7 +1351,7 @@ footer .copyleft {
 .page-event .event .schedule {
   display: grid;
   text-align: left;
-  grid-template-columns: auto auto auto auto;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   grid-gap: 1.5em;
   margin: 4rem 0 6rem;
 }
@@ -2130,7 +2138,7 @@ footer .copyleft {
 }
 .page-policies .policies-wrapper {
   border-radius: 0.75rem 0.75rem 0 0;
-  background: transparent url("/assets/images/workdesk.jpg") no-repeat 0 0/contain;
+  background: transparent url("/assets/images/workdesk.jpg") no-repeat 0 0;
 }
 @media (max-width: 991.98px) {
   .page-policies .policies-wrapper {
