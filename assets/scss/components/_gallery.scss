@@ -9,9 +9,11 @@
     max-width: 25%;
   }
   
-  .column img {
-    vertical-align: middle;
-    width: 100%;
+  .column {
+    img, video {
+        vertical-align: middle;
+        width: 100%;
+    }
   }
   
   @media (max-width: 1200px) {
