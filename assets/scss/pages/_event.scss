@@ -285,6 +285,16 @@
             }
         }
 
+        .gallery-container {
+            margin-left: -4em;
+            margin-right: -4em;
+
+            @include media-breakpoint-down(sm) {
+                margin-left: -2em;
+                margin-right: -2em;
+            }
+        };
+
         .prerequisites-wrapper {
             font-style: italic;
             text-align: center;
@@ -293,7 +303,7 @@
             padding: 0.1em 4em 4em;
 
             @include media-breakpoint-down(sm) {
-                margin: 0 -2em 2em;
+                margin: 4em -2em 2.5em;
                 padding: 3em 1.5em;
             }
 

@@ -1,0 +1,30 @@
+
+.gallery-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .column {
+    flex: 20%;
+    max-width: 25%;
+  }
+  
+  .column img {
+    vertical-align: middle;
+    width: 100%;
+  }
+  
+  @media (max-width: 1200px) {
+    .column {
+      flex: 40%;
+      flex-wrap: wrap;
+      max-width: 50%;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .column {
+      flex: 50%;
+      max-width: 100%;
+    }
+  }
