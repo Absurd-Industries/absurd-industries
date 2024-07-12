@@ -842,7 +842,7 @@ footer .copyleft {
   max-width: 25%;
 }
 
-.column img {
+.column img, .column video {
   vertical-align: middle;
   width: 100%;
 }
