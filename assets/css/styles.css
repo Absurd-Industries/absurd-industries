@@ -1337,6 +1337,17 @@ footer .copyleft {
 .page-event .event .details h3 a {
   text-decoration: none;
 }
+.page-event .event .details h5 {
+  text-transform: none;
+  margin-top: 2em;
+  font-size: 0.8rem;
+  max-width: 80%;
+}
+@media (max-width: 575.98px) {
+  .page-event .event .details h5 {
+    max-width: 100%;
+  }
+}
 .page-event .event .details p {
   opacity: 1;
   max-width: 80%;
