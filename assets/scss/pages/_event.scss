@@ -179,6 +179,17 @@
                 }
             }
 
+            h5 {
+                text-transform: none;
+                margin-top: 2em;
+                font-size: 0.8rem;
+                max-width: 80%;
+
+                @include media-breakpoint-down(sm) {
+                    max-width: 100%;
+                }
+            }
+
             p {
                 opacity: 1;
                 max-width: 80%;
