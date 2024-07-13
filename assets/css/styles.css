@@ -1340,7 +1340,7 @@ footer .copyleft {
 .page-event .event .details h5 {
   text-transform: none;
   margin-top: 2em;
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   max-width: 80%;
 }
 @media (max-width: 575.98px) {
@@ -1401,8 +1401,12 @@ footer .copyleft {
     margin-bottom: 3rem;
   }
 }
+.page-event .event .schedule a, .page-event .event .schedule div {
+  display: block;
+  text-decoration: none;
+}
 @media (max-width: 575.98px) {
-  .page-event .event .schedule div {
+  .page-event .event .schedule a, .page-event .event .schedule div {
     margin-top: 2rem;
   }
 }

@@ -182,7 +182,7 @@
             h5 {
                 text-transform: none;
                 margin-top: 2em;
-                font-size: 0.8rem;
+                font-size: 0.95rem;
                 max-width: 80%;
 
                 @include media-breakpoint-down(sm) {
@@ -248,7 +248,10 @@
                 margin-bottom: 3rem;
             }
 
-            div {
+            a, div {
+                display: block;
+                text-decoration: none;
+
                 @include media-breakpoint-down(sm) {
                     margin-top: 2rem;
                 }
