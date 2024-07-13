@@ -1193,7 +1193,7 @@ footer .copyleft {
 }
 .page-event .event-wrapper {
   border-radius: 0.75rem 0.75rem 0 0;
-  background: transparent url("/assets/images/workdesk.jpg") no-repeat 0 -30%/contain;
+  background: transparent url("/assets/images/workdesk.jpg") no-repeat 0 -15%/contain;
 }
 @media (max-width: 575.98px) {
   .page-event .event-wrapper {
