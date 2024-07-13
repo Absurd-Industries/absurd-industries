@@ -28,7 +28,6 @@
 
     .event-wrapper {
         border-radius: 0.75rem 0.75rem 0 0;
-        background: transparent url('/assets/images/workdesk.jpg') no-repeat 0 -15% / contain;
 
         @include media-breakpoint-down(sm) {
             background-position: 0 0;
@@ -303,10 +302,10 @@
             }
         };
 
-        .prerequisites-wrapper {
+        .important-wrapper {
             font-style: italic;
             text-align: center;
-            background-color: var(--purple);
+            background: transparent url('/assets/images/workdesk.jpg') no-repeat 0 65% / cover;
             margin: 4em -4em -2em;
             padding: 0.1em 4em 4em;
 
@@ -334,7 +333,7 @@
 
         }
 
-        .prerequisites {
+        .important {
             display: grid;
             grid-template-columns: auto auto auto auto;
             grid-gap: 1.5em;
