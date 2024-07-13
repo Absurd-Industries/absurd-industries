@@ -1382,11 +1382,6 @@ footer .copyleft {
     margin-bottom: 0;
   }
 }
-@media (max-width: 767.98px) {
-  .page-event .event .section-wrapper.vlos-wrapper {
-    margin-top: 4rem;
-  }
-}
 .page-event .event .schedule {
   display: grid;
   text-align: left;
