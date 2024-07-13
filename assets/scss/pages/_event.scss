@@ -227,12 +227,6 @@
                     margin-bottom: 0;
                 }
             }
-
-            &.vlos-wrapper {
-                @include media-breakpoint-down(md) {
-                    margin-top: 4rem;
-                }
-            }
         }
 
         .schedule {
