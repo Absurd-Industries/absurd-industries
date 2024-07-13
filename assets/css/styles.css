@@ -1193,7 +1193,6 @@ footer .copyleft {
 }
 .page-event .event-wrapper {
   border-radius: 0.75rem 0.75rem 0 0;
-  background: transparent url("/assets/images/workdesk.jpg") no-repeat 0 -15%/contain;
 }
 @media (max-width: 575.98px) {
   .page-event .event-wrapper {
@@ -1451,62 +1450,62 @@ footer .copyleft {
     margin-right: -2em;
   }
 }
-.page-event .event .prerequisites-wrapper {
+.page-event .event .important-wrapper {
   font-style: italic;
   text-align: center;
-  background-color: var(--purple);
+  background: transparent url("/assets/images/workdesk.jpg") no-repeat 0 65%/cover;
   margin: 4em -4em -2em;
   padding: 0.1em 4em 4em;
 }
 @media (max-width: 575.98px) {
-  .page-event .event .prerequisites-wrapper {
+  .page-event .event .important-wrapper {
     margin: 4em -2em 2.5em;
     padding: 3em 1.5em;
   }
 }
-.page-event .event .prerequisites-wrapper h1 {
+.page-event .event .important-wrapper h1 {
   margin-bottom: 0;
 }
-.page-event .event .prerequisites-wrapper p {
+.page-event .event .important-wrapper p {
   margin: 0.5em auto 2em;
   font-size: 1.35rem;
   line-height: 2rem;
   max-width: 80%;
 }
 @media (max-width: 575.98px) {
-  .page-event .event .prerequisites-wrapper p {
+  .page-event .event .important-wrapper p {
     font-size: 1rem;
     line-height: 1.5rem;
     max-width: 100%;
   }
 }
-.page-event .event .prerequisites {
+.page-event .event .important {
   display: grid;
   grid-template-columns: auto auto auto auto;
   grid-gap: 1.5em;
 }
 @media (max-width: 575.98px) {
-  .page-event .event .prerequisites {
+  .page-event .event .important {
     grid-template-columns: auto auto;
   }
 }
-.page-event .event .prerequisites div h3 {
+.page-event .event .important div h3 {
   font-size: 4.5rem;
   text-align: center;
   margin: 0;
 }
 @media (max-width: 575.98px) {
-  .page-event .event .prerequisites div h3 {
+  .page-event .event .important div h3 {
     font-size: 2.5rem;
   }
 }
-.page-event .event .prerequisites div h2 {
+.page-event .event .important div h2 {
   font-size: 1.35rem;
   text-align: center;
   margin: 0;
 }
 @media (max-width: 575.98px) {
-  .page-event .event .prerequisites div h2 {
+  .page-event .event .important div h2 {
     font-size: 1.05rem;
   }
 }
