@@ -46,7 +46,7 @@ Follow us into the void:
 
 ### Copyleft Notice
 
-<span class="copyleft">&#127744;</span> Copyleft Absurd Explorations (OPC) Private Limited 2023. Fueled by Chaos.
+<span class="copyleft">&#127744;</span> Copyleft Absurd Explorations (OPC) Private Limited 2024. Fueled by Chaos.
 
 
 
