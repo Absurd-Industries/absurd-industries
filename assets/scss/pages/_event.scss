@@ -28,13 +28,17 @@
 
     .event-wrapper {
         border-radius: 0.75rem 0.75rem 0 0;
+        background: transparent url('/assets/images/supersaber/supersaber-socials.jpg') no-repeat 0 0% / contain;
 
         @include media-breakpoint-down(sm) {
-            background-position: 0 0;
+            background: transparent url('/assets/images/supersaber/supersaber-socials.jpg') no-repeat;
+            background-size: auto 12.5%;
+            background-position: 50% -0%;
         }
     }
 
     .event {
+        background-color: rgba(0, 0, 0, 0.4);
         position: relative;
         padding: 4rem;
         text-decoration: none;
@@ -44,6 +48,7 @@
         transition: background-color 200ms linear;
 
         @include media-breakpoint-down(md) {
+            background-color: rgba(0, 0, 0, 0.65);
             padding: 1.5rem;
             margin-top: 1rem;
         }
