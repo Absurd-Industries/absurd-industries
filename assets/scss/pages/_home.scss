@@ -1,22 +1,38 @@
 .page-home {
     .event {
         position: relative;
-        padding: 4rem;
         margin-top: 8rem;
-        text-decoration: none;
+        border-radius: 0.75rem;
         display: block;
         -webkit-transition: background-color 200ms linear;
         -ms-transition: background-color 200ms linear;
         transition: background-color 200ms linear;
+        cursor: pointer;
+        background: transparent url('/assets/images/supersaber/supersaber-socials.jpg') no-repeat 0 0% / cover;
 
         @include media-breakpoint-down(md) {
-            padding: 1.5rem;
+            background: transparent url('/assets/images/supersaber/supersaber-socials.jpg') no-repeat;
+            background-size: cover;
+            background-position: 70% -0%;
             margin-top: 1rem;
         }
 
-        &:hover,
-        &:active {
-            background-color: rgba(0, 0, 0, 0.9);
+        .boxy {
+            cursor: pointer;
+            padding: 4rem;
+            display: block;
+            text-decoration: none;
+            background-color: rgba(0, 0, 0, 0.3);
+
+            &:hover,
+            &:active {
+                background-color: rgba(0, 0, 0, 0.6);
+            }
+
+            @include media-breakpoint-down(md) {
+                background-color: rgba(0, 0, 0, 0.75);
+                padding: 1.5rem;
+            }
         }
 
         .icon {
