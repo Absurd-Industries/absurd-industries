@@ -867,11 +867,11 @@ footer .copyleft {
   display: block;
   transition: background-color 200ms linear;
   cursor: pointer;
-  background: transparent url("/assets/images/supersaber/supersaber-socials.jpg") no-repeat 0 0%/cover;
+  background: transparent url("/assets/images/workdesk-ii.jpg") no-repeat center center/cover;
 }
 @media (max-width: 767.98px) {
   .page-home .event {
-    background: transparent url("/assets/images/supersaber/supersaber-socials.jpg") no-repeat;
+    background: transparent url("/assets/images/workdesk-ii.jpg") no-repeat;
     background-size: cover;
     background-position: 70% 0%;
     margin-top: 1rem;
@@ -882,10 +882,10 @@ footer .copyleft {
   padding: 4rem;
   display: block;
   text-decoration: none;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.75);
 }
 .page-home .event .boxy:hover, .page-home .event .boxy:active {
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.75);
 }
 @media (max-width: 767.98px) {
   .page-home .event .boxy {
@@ -944,6 +944,7 @@ footer .copyleft {
 .page-home .event .details h1 {
   font-size: 4rem;
   max-width: 80%;
+  margin-bottom: 0.5rem;
 }
 @media (max-width: 767.98px) {
   .page-home .event .details h1 {
