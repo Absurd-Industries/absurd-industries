@@ -389,6 +389,7 @@
         color: #ECE0CF;
         background-color: red;
         z-index: 1001;
+        text-decoration: none;
 
         @include media-breakpoint-down(sm) {
             width: calc(100% - 2em);
