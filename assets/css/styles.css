@@ -1548,6 +1548,7 @@ footer .copyleft {
   color: #ECE0CF;
   background-color: red;
   z-index: 1001;
+  text-decoration: none;
 }
 @media (max-width: 575.98px) {
   .page-event .cta {

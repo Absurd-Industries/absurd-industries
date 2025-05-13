@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hardware Devroom | FOSS United 2025</title>
+    <meta name="description"
+        content="Join the Open Hardware Devroom at FOSS United's 2025 September Event - where hardware hacking becomes accessible to everyone.">
+
+    <!-- OG Meta Tags -->
+    <meta property="og:title" content="Hardware Devroom | FOSS United 2025">
+    <meta property="og:description"
+        content="Join the Open Hardware Devroom at FOSS United's 2025 September Event - where hardware hacking becomes accessible to everyone.">
+    <meta property="og:image" content="https://absurd.industries/assets/images/workdesk.jpg">
+    <meta property="og:url" content="https://absurd.industries/hardware-devroom">
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Hardware Devroom | FOSS United 2025">
+    <meta name="twitter:description"
+        content="Join the Open Hardware Devroom at FOSS United's 2025 September Event - where hardware hacking becomes accessible to everyone.">
+    <meta name="twitter:image" content="https://absurd.industries/assets/images/workdesk.jpg">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="../assets/favicon/site.webmanifest">
+    <link rel="mask-icon" href="../assets/favicon/safari-pinned-tab.svg" color="#141414">
+    <link rel="shortcut icon" href="../assets/favicon/favicon.ico">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jura:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <script src="https://kit.fontawesome.com/e0c6d65845.js" crossorigin="anonymous"></script>
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#1a1a1a',
+                        white: '#fffbf6',
+                        'dark-pink': '#77219f',
+                        'gray-line': '#333',
+                        'dark-background-gray-text': '#969696',
+                        'white-background-gray-text': '#535353',
+                        'lighter-dark-purple': '#11131b',
+                        blue: '#4478ff',
+                        purple: '#6138d8',
+                        pink: '#fb42ff',
+                        cyan: '#57ebff',
+                        orange: '#f90'
+                    },
+                    fontFamily: {
+                        jura: ['Jura', 'sans-serif']
+                    },
+                    animation: {
+                        'ping-slow': 'ping 3s cubic-bezier(0, 0, 0.2, 1) infinite',
+                        'spin-slow': 'spin 8s linear infinite',
+                        'beat-slow': 'beat 3s infinite',
+                        'fade-slow': 'fade 3s infinite',
+                        'beat-fade-slow': 'beatFade 2s infinite',
+                        'shake-slow': 'shake 2s infinite',
+                        'bounce-slow': 'bounce 2s infinite',
+                        'float': 'float 6s ease-in-out infinite'
+                    },
+                    keyframes: {
+                        beat: {
+                            '0%, 100%': { transform: 'scale(1)' },
+                            '50%': { transform: 'scale(1.1)' },
+                        },
+                        fade: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0.5' },
+                        },
+                        beatFade: {
+                            '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+                            '50%': { transform: 'scale(1.1)', opacity: '0.5' },
+                        },
+                        shake: {
+                            '0%, 100%': { transform: 'translateX(0)' },
+                            '25%': { transform: 'translateX(-5px)' },
+                            '75%': { transform: 'translateX(5px)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    },
+                    backdropBlur: {
+                        xs: '2px',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom styles that can't be easily done with Tailwind */
+        .blob {
+            animation: rotate 16s linear infinite;
+            position: relative;
+        }
+
+        .blob::before {
+            content: '';
+            position: absolute;
+            border: 2px solid #fff;
+            border-radius: 58% 42% 48% 53% / 47% 60% 36% 53%;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            animation: rotate 16s linear infinite;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+        }
+
+        .blob::after {
+            content: '';
+            position: absolute;
+            border: 2px solid #fff;
+            border-radius: 48% 42% 48% 53% / 47% 60% 36% 53%;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            animation: rotate 6s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+                border-color: #f90;
+            }
+
+            50% {
+                border-color: #EC0D0D;
+            }
+
+            100% {
+                transform: rotate(360deg);
+                border-color: #f90;
+            }
+        }
+
+        .copyleft {
+            display: inline-block;
+            transform: rotate(180deg);
+        }
+
+        .fly-wrapper {
+            overflow: hidden;
+        }
+
+        .fly {
+            animation: 6s ease-in-out fly-anim infinite;
+        }
+
+        @keyframes fly-anim {
+
+            0%,
+            100% {
+                left: 10%;
+            }
+
+            50% {
+                left: 80%;
+            }
+        }
+
+        .wing {
+            animation: 0.055s linear wing-anim infinite;
+            transform-origin: center;
+        }
+
+        @keyframes wing-anim {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .frosted {
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+
+        .marquee {
+            white-space: nowrap;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .scroll-indicator {
+            animation: scroll-down 2s ease-in-out infinite;
+        }
+
+        @keyframes scroll-down {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(10px);
+            }
+        }
+
+        .mobile-nav {
+            transition: transform 0.3s ease;
+        }
+
+        .tab-indicator {
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-dark text-white font-jura bg-[url('/assets/images/workdesk.jpg')] bg-cover bg-fixed bg-center min-h-screen">
+    <div class="min-h-screen backdrop-blur-sm backdrop-brightness-50 overflow-x-hidden">
+        <!-- Marquee Announcement - UNTOUCHED AS REQUESTED -->
+        <div class="marquee py-2 bg-orange text-dark font-bold overflow-hidden">
+            <div class="marquee-content">
+                ⚡️ CALL FOR PROPOSALS NOW OPEN ⚡️ SEPTEMBER 2025 ⚡️ SPEAKERS WANTED ⚡️ SUBMIT YOUR OPEN HARDWARE TALK
+                TODAY ⚡️ CALL FOR PROPOSALS NOW OPEN ⚡️ SEPTEMBER 2025 ⚡️ SPEAKERS WANTED ⚡️ SUBMIT YOUR OPEN HARDWARE
+                TALK TODAY ⚡️
+            </div>
+        </div>
+
+        <!-- Header Section with Vue.js for mobile menu -->
+        <div id="header-app">
+            <header class="relative container mx-auto px-4 py-6 z-30">
+                <nav class="absolute top-5 -right-8 rotate-12 justify-between items-center">
+                    <a href="/" class="logo transform scale-100 transition-transform hover:scale-105">
+                        <img src="/absurd-industries-logo.png" alt="Absurd Industries Logo" class="w-48 md:w-64">
+                    </a>
+
+                    <!-- Mobile Menu Toggle -->
+                    <button @click="showMobileMenu = !showMobileMenu"
+                        class="md:hidden p-2 bg-black bg-opacity-40 rounded-lg frosted">
+                        <i class="fa-solid" :class="[showMobileMenu ? 'fa-xmark' : 'fa-bars']"></i>
+                    </button>
+                </nav>
+            </header>
+
+            <!-- Mobile App-Style Navigation -->
+            <div v-if="showMobileMenu"
+                class="fixed bottom-0 left-0 right-0 bg-black bg-opacity-70 frosted z-50 md:hidden border-t border-gray-800">
+                <div class="relative">
+                    <div class="absolute bottom-full left-0 right-0 h-20 bg-gradient-to-t from-black to-transparent">
+                    </div>
+
+                    <!-- Tab Indicator -->
+                    <div class="absolute bottom-12 h-1 bg-orange rounded-full tab-indicator"
+                        :style="{transform: `translateX(${25 * activeTabIndex}%)`, width: '12%', left: '6.5%'}"></div>
+
+                    <!-- Swipeable Menu Area -->
+                    <div class="touch-pan-x" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd">
+                        <div class="flex justify-around py-4">
+                            <a @click.prevent="setActiveTab(0)" href="https://fossunited.org/"
+                                class="flex flex-col items-center w-1/4 px-2"
+                                :class="{'text-orange': activeTabIndex === 0}">
+                                <i class="fa-solid fa-house text-xl mb-1"></i>
+                                <span class="text-xs">FOSS</span>
+                            </a>
+                            <a @click.prevent="setActiveTab(1)" href="#submit-talk"
+                                class="flex flex-col items-center w-1/4 px-2"
+                                :class="{'text-orange': activeTabIndex === 1}">
+                                <i class="fa-solid fa-microchip text-xl mb-1"></i>
+                                <span class="text-xs">Submit</span>
+                            </a>
+                            <a @click.prevent="setActiveTab(2)" href="#get-involved"
+                                class="flex flex-col items-center w-1/4 px-2"
+                                :class="{'text-orange': activeTabIndex === 2}">
+                                <i class="fa-solid fa-screwdriver-wrench text-xl mb-1"></i>
+                                <span class="text-xs">Involve</span>
+                            </a>
+                            <a @click.prevent="setActiveTab(3)" href="https://discord.gg/DUSUtguG2H"
+                                class="flex flex-col items-center w-1/4 px-2"
+                                :class="{'text-orange': activeTabIndex === 3}">
+                                <i class="fa-brands fa-discord text-xl mb-1"></i>
+                                <span class="text-xs">Discord</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hero Section -->
+        <section class="container mx-auto px-4 pt-10 pb-16 md:pt-20 md:pb-32 relative">
+            <div
+                class="frosted bg-black bg-opacity-40 rounded-xl p-6 md:p-12 relative overflow-hidden border border-gray-700 border-opacity-30">
+                <!-- Hero Content -->
+                <div class="relative z-10 md:max-w-2xl">
+                    <div
+                        class="inline-block px-3 py-1 bg-orange bg-opacity-20 text-orange rounded-lg mb-4 frosted border border-orange border-opacity-30">
+                        <i class="fa-solid fa-calendar-days mr-2"></i>September 2025
+                    </div>
+
+                    <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+                        FOSS 2025: <span class="text-orange">Hardware</span> Devroom
+                    </h1>
+
+                    <h2 class="text-xl md:text-2xl font-light mb-6 opacity-90">Because hardware should be accessible to
+                        everyone!</h2>
+
+                    <p class="text-2xl mb-8 opacity-80">
+                        A welcoming space where anyone can learn, tinker, and build with open hardware. No experience
+                        required—just curiosity and a willingness to try!
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="https://fossunited.org/dashboard/cfp/apply/indiafoss/2025" target="_blank"
+                            class="bg-orange uppercase text-dark font-bold py-3 px-6 rounded-lg text-center hover:bg-opacity-90 transition-all transform hover:scale-105 group">
+                            <i class="fa-solid fa-microchip mr-2"></i>Submit Your Talk
+                        </a>
+                        <a href="https://fossunited.org/dashboard/buy-tickets?event=qvn4nr1b28" target="_blank"
+                            class="bg-transparent uppercase border border-orange text-orange font-bold py-3 px-6 rounded-lg text-center hover:bg-orange hover:bg-opacity-10 transition-all">
+                            <i class="fa-solid fa-ticket mr-2"></i>Register to Attend
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Decorative Elements -->
+                <div
+                    class="hidden md:block absolute right-8 top-1/2 transform -translate-y-1/2 text-9xl text-orange opacity-10 pointer-events-none">
+                    <i class="fa-solid fa-microchip animate-float"></i>
+                </div>
+            </div>
+
+            <!-- Scroll indicator -->
+            <div
+                class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white opacity-50 scroll-indicator hidden md:block">
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+        </section>
+
+        <!-- About Section (Condensed) -->
+        <section class="container mx-auto px-4 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="frosted bg-black bg-opacity-40 p-10 rounded-xl border border-gray-700 border-opacity-30">
+                    <div class="mb-4">
+                        <i class="fa-solid fa-users text-5xl text-orange"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold mb-3">Who</h3>
+                    <p class="opacity-80 text-xl">
+                        We're a community of DIYers breaking down barriers to hardware hacking and making it fun for
+                        everyone
+                    </p>
+                </div>
+
+                <div class="frosted bg-black bg-opacity-40 p-10 rounded-xl border border-gray-700 border-opacity-30">
+                    <div class="mb-4">
+                        <i class="fa-solid fa-lightbulb text-4xl text-orange"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold mb-3">Why</h3>
+                    <p class="opacity-80 text-xl">
+                        Making technology accessible through hands-on workshops and a supportive community where
+                        beginnings are celebrated
+                    </p>
+                </div>
+
+                <div class="frosted bg-black bg-opacity-40 p-10 rounded-xl border border-gray-700 border-opacity-30">
+                    <div class="mb-4">
+                        <i class="fa-solid fa-calendar-check text-4xl text-orange"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold mb-3">What</h3>
+                    <p class="opacity-80 text-xl">
+                        3 hours of open hardware exploration: Beginner-friendly talks, demos, and Q&As at FOSS United
+                        2025
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Example Talks Section (formerly Project Showcase) -->
+        <section class="container mx-auto px-4 py-16">
+            <h2 class="text-4xl font-bold mb-3">Example Talks</h2>
+            <p class="text-left mb-12 opacity-70 text-3xl">Previous presentations that show how accessible hardware
+                hacking can be.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div
+                    class="frosted bg-black bg-opacity-30 rounded-xl overflow-hidden border border-gray-700 border-opacity-30 transition-transform hover:scale-105">
+                    <div class="relative aspect-video">
+                        <iframe class="absolute inset-0 w-full h-full"
+                            src="https://youtu.be/jpTXz0AlL78?si=9_HZC1xQIgNngPl6" title="T1" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <h3 class="text-2xl font-bold">From Concept to Creation: The Journey of An Open-Source Watch
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="frosted bg-black bg-opacity-30 rounded-xl overflow-hidden border border-gray-700 border-opacity-30 transition-transform hover:scale-105">
+                    <div class="relative aspect-video">
+                        <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/watch?v=xvyl9yv9X3A"
+                            title="T1" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <h3 class="text-2xl font-bold">Open Source in and for Indian Chips</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Macropad Talk -->
+                <div
+                    class="frosted bg-black bg-opacity-30 rounded-xl overflow-hidden border border-gray-700 border-opacity-30 transition-transform hover:scale-105">
+                    <div class="relative aspect-video">
+                        <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/watch?v=pFYOFzUogiU"
+                            title="Building Open Hardware with FOSS" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <h3 class="text-2xl font-bold">Building Open Hardware with FOSS</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call for Proposals Section -->
+        <section id="submit-talk" class="container mx-auto px-4 py-16">
+            <div class="frosted bg-black bg-opacity-40 rounded-xl p-8 md:p-12">
+                <div class="mb-10">
+                    <h2 class="text-4xl font-bold mb-3 inline-block relative">
+                        <span class="inline-block relative z-10">Call For Talks</span>
+                        <span class="absolute bottom-1 left-0 w-full h-3 bg-orange opacity-30 -z-1"></span>
+                    </h2>
+                    <p class="opacity-70 text-2xl">
+                        Share your hardware journey, no matter where you are on it.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-8">
+                    <div>
+                        <h3 class="text-xl font-bold mb-4 flex items-center text-orange">
+                            What We're Looking For
+                        </h3>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                            <div class="bg-black bg-opacity-30 p-6 rounded-lg frosted">
+                                <h4 class="font-bold mb-1 text-slate-200 text-2xl">DIY Projects</h4>
+                                <p class="text-xl opacity-80">Electronics builds and modifications</p>
+                            </div>
+
+                            <div class="bg-black bg-opacity-30 p-4 rounded-lg frosted">
+                                <h4 class="font-bold mb-1 text-slate-200 text-2xl">PCB Design</h4>
+                                <p class="text-xl opacity-80">Deep-dive into what, why and how you made it</p>
+                            </div>
+
+                            <div class="bg-black bg-opacity-30 p-4 rounded-lg frosted">
+                                <h4 class="font-bold mb-1 text-slate-200 text-2xl">Open Components</h4>
+                                <p class="text-xl opacity-80">RISC-V, Arduino and maker-friendly tech</p>
+                            </div>
+
+                            <div class="bg-black bg-opacity-30 p-4 rounded-lg frosted">
+                                <h4 class="font-bold mb-1 text-slate-200 text-2xl">Community Stories</h4>
+                                <p class="text-xl opacity-80">How to start hardware/technology collectives</p>
+                            </div>
+                        </div>
+
+                        <h3 class="text-xl font-bold mb-4 flex items-center text-slate-400">
+                            <i class="fa-solid fa-clock mr-3"></i>
+                            Talk Formats
+                        </h3>
+
+                        <div class="flex flex-wrap gap-4 mb-6">
+                            <div
+                                class="bg-cyan bg-opacity-20 px-4 py-2 rounded-lg border border-cyan border-opacity-30 frosted">
+                                <span class="font-bold text-cyan">10+5 min</span>
+                            </div>
+                            <div
+                                class="bg-cyan bg-opacity-20 px-4 py-2 rounded-lg border border-cyan border-opacity-30 frosted">
+                                <span class="font-bold text-cyan">10+5 min</span>
+                            </div>
+                            <div
+                                class="bg-cyan bg-opacity-20 px-4 py-2 rounded-lg border border-cyan border-opacity-30 frosted">
+                                <span class="font-bold text-cyan">10+5 min</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="contact" class="container mx-auto px-4 py-16">
+            <div
+                class="frosted bg-black bg-opacity-40 rounded-xl p-8 md:p-12 border border-gray-700 border-opacity-30 relative overflow-hidden">
+                <!-- Decorative elements -->
+                <div class="absolute -right-12 -top-12 w-48 h-48 bg-orange bg-opacity-5 rounded-full blur-xl"></div>
+                <div class="absolute -left-16 -bottom-16 w-64 h-64 bg-pink bg-opacity-5 rounded-full blur-xl"></div>
+
+                <div class="relative z-10">
+                    <h2 class="text-4xl font-bold mb-2">Need Help? Reach Out!</h2>
+                    <p class="text-2xl opacity-70 mb-10">We're here to assist with your talk submissions and answer any
+                        questions.</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <div class="space-y-6">
+                                <!-- Balu -->
+                                <div class="flex items-start">
+                                    <div
+                                        class="w-14 h-14 bg-pink bg-opacity-20 rounded-3xl overflow-hidden flex items-center justify-center mr-4 shrink-0">
+                                        <img
+                                            src="https://pbs.twimg.com/profile_images/1165633592430448640/OE1-I4b5_400x400.jpg" />
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xl font-bold">Balu</h4>
+                                        <div class="space-y-2 mt-1">
+                                            <a href="mailto:balu@absurd.industries"
+                                                class="flex items-center hover:text-orange transition-colors">
+                                                <i class="fa-solid fa-envelope mr-2"></i>
+                                                balu@absurd.industries
+                                            </a>
+                                            <a href="tel:+919892836471"
+                                                class="flex items-center hover:text-orange transition-colors">
+                                                <i class="fa-solid fa-phone mr-2"></i>
+                                                +91 98928 36471
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Amit -->
+                                <div class="flex items-start">
+                                    <div
+                                        class="w-14 h-14 bg-orange bg-opacity-20 rounded-3xl overflow-hidden flex items-center justify-center mr-4 shrink-0">
+                                        <img
+                                            src="https://codeuncode.com/cdn-cgi/image/format=webp,width=200/https://cdn.codeuncode.com/media/amit.753a67f2.png">
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xl font-bold">Amit</h4>
+                                        <div class="space-y-2 mt-1">
+                                            <a href="mailto:amit@absurd.industries"
+                                                class="flex items-center hover:text-orange transition-colors">
+                                                <i class="fa-solid fa-envelope mr-2"></i>
+                                                amit@absurd.industries
+                                            </a>
+                                            <a href="tel:+919892836471"
+                                                class="flex items-center hover:text-orange transition-colors">
+                                                <i class="fa-solid fa-phone mr-2"></i>
+                                                +91 98928 36471
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="space-y-5">
+                                <a href="https://discord.gg/DUSUtguG2H" target="_blank"
+                                    class="flex items-center p-4 bg-black bg-opacity-30 rounded-lg border border-gray-700 border-opacity-30 hover:bg-orange hover:bg-opacity-10 transition-all group">
+                                    <div
+                                        class="w-10 h-10 bg-opacity-20 rounded-md flex items-center justify-center mr-4 shrink-0 group-hover:bg-opacity-30 transition-all">
+                                        <i class="fa-brands fa-discord text-white text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xl font-bold">Join Our Discord</h4>
+                                        <p class="opacity-70">Connect with the community and get real-time support</p>
+                                    </div>
+                                    <i
+                                        class="fa-solid fa-arrow-right ml-auto opacity-0 group-hover:opacity-100 transform group-hover:translate-x-1 transition-all"></i>
+                                </a>
+
+                                <a href="https://forum.fossunited.org/t/talk-proposal-guidelines-for-a-foss-conference-meetup/1923"
+                                    target="_blank"
+                                    class="flex items-center p-4 bg-black bg-opacity-30 rounded-lg border border-gray-700 border-opacity-30 hover:bg-orange hover:bg-opacity-10 transition-all group">
+                                    <div
+                                        class="w-10 h-10 bg-opacity-20 rounded-md flex items-center justify-center mr-4 shrink-0 group-hover:bg-opacity-30 transition-all">
+                                        <i class="fa-solid fa-file-lines text-white text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xl font-bold">Proposal Guidelines</h4>
+                                        <p class="opacity-70">Read our guidelines for submitting a great talk</p>
+                                    </div>
+                                    <i
+                                        class="fa-solid fa-arrow-right ml-auto opacity-0 group-hover:opacity-100 transform group-hover:translate-x-1 transition-all"></i>
+                                </a>
+
+                                <div
+                                    class="flex items-center p-4 bg-black bg-opacity-30 rounded-lg border border-orange border-opacity-30">
+                                    <div
+                                        class="w-10 h-10 bg-orange bg-opacity-20 rounded-md flex items-center justify-center mr-4 shrink-0 animate-pulse">
+                                        <i class="fa-solid fa-calendar-day text-orange text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xl font-bold">CFP Deadline</h4>
+                                        <p class="text-orange">7th June, 2025</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="container mx-auto px-4 py-16 border-t border-gray-800">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-2xl font-bold mb-4">Important Links</h3>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="https://fossunited.org/dashboard/cfp/apply/indiafoss/2025"
+                                class="hover:text-orange transition-colors flex items-center">
+                                <i class="fa-solid fa-arrow-right text-orange mr-3"></i>
+                                Submit Your Talk
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://forum.fossunited.org/t/talk-proposal-guidelines-for-a-foss-conference-meetup/1923"
+                                class="hover:text-orange transition-colors flex items-center">
+                                <i class="fa-solid fa-arrow-right text-orange mr-3"></i>
+                                Talk Proposal Guidelines
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://fossunited.org/dashboard/buy-tickets?event=qvn4nr1b28"
+                                class="hover:text-orange transition-colors flex items-center">
+                                <i class="fa-solid fa-arrow-right text-orange mr-3"></i>
+                                Register to Attend
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://absurd.industries"
+                                class="hover:text-orange transition-colors flex items-center">
+                                <i class="fa-solid fa-arrow-right text-orange mr-3"></i>
+                                Absurd Industries
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-bold mb-4">About FOSS United</h3>
+                    <p class="opacity-80 mb-4">
+                        FOSS United is a non-profit foundation that aims to increase the FOSS footprint in India. We
+                        want to evangelise, promote, encourage, and educate institutions, students, corporations,
+                        governments, communities, and others regarding Free and Open Source Software.
+                    </p>
+                    <a href="https://fossunited.org" class="text-orange hover:underline">fossunited.org</a>
+                </div>
+            </div>
+
+            <div class="mt-10 pt-6 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
+                <div class="text-center md:text-left mb-4 md:mb-0">
+                    <p class="opacity-70">Absurd Industries x FOSS United</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="https://discord.com/invite/DUSUtguG2H"
+                        class="text-white hover:text-orange transition-colors">
+                        <i class="fa-brands fa-discord"></i>
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>
