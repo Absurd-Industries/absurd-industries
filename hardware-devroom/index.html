@@ -38,9 +38,6 @@
     <!-- FontAwesome -->
     <script src="https://kit.fontawesome.com/e0c6d65845.js" crossorigin="anonymous"></script>
 
-    <!-- Vue.js -->
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -256,67 +253,7 @@
                 TALK TODAY ⚡️
             </div>
         </div>
-
-        <!-- Header Section with Vue.js for mobile menu -->
-        <div id="header-app">
-            <header class="relative container mx-auto px-4 py-6 z-30">
-                <nav class="absolute top-5 -right-8 rotate-12 justify-between items-center">
-                    <a href="/" class="logo transform scale-100 transition-transform hover:scale-105">
-                        <img src="/absurd-industries-logo.png" alt="Absurd Industries Logo" class="w-48 md:w-64">
-                    </a>
-
-                    <!-- Mobile Menu Toggle -->
-                    <button @click="showMobileMenu = !showMobileMenu"
-                        class="md:hidden p-2 bg-black bg-opacity-40 rounded-lg frosted">
-                        <i class="fa-solid" :class="[showMobileMenu ? 'fa-xmark' : 'fa-bars']"></i>
-                    </button>
-                </nav>
-            </header>
-
-            <!-- Mobile App-Style Navigation -->
-            <div v-if="showMobileMenu"
-                class="fixed bottom-0 left-0 right-0 bg-black bg-opacity-70 frosted z-50 md:hidden border-t border-gray-800">
-                <div class="relative">
-                    <div class="absolute bottom-full left-0 right-0 h-20 bg-gradient-to-t from-black to-transparent">
-                    </div>
-
-                    <!-- Tab Indicator -->
-                    <div class="absolute bottom-12 h-1 bg-orange rounded-full tab-indicator"
-                        :style="{transform: `translateX(${25 * activeTabIndex}%)`, width: '12%', left: '6.5%'}"></div>
-
-                    <!-- Swipeable Menu Area -->
-                    <div class="touch-pan-x" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd">
-                        <div class="flex justify-around py-4">
-                            <a @click.prevent="setActiveTab(0)" href="https://fossunited.org/"
-                                class="flex flex-col items-center w-1/4 px-2"
-                                :class="{'text-orange': activeTabIndex === 0}">
-                                <i class="fa-solid fa-house text-xl mb-1"></i>
-                                <span class="text-xs">FOSS</span>
-                            </a>
-                            <a @click.prevent="setActiveTab(1)" href="#submit-talk"
-                                class="flex flex-col items-center w-1/4 px-2"
-                                :class="{'text-orange': activeTabIndex === 1}">
-                                <i class="fa-solid fa-microchip text-xl mb-1"></i>
-                                <span class="text-xs">Submit</span>
-                            </a>
-                            <a @click.prevent="setActiveTab(2)" href="#get-involved"
-                                class="flex flex-col items-center w-1/4 px-2"
-                                :class="{'text-orange': activeTabIndex === 2}">
-                                <i class="fa-solid fa-screwdriver-wrench text-xl mb-1"></i>
-                                <span class="text-xs">Involve</span>
-                            </a>
-                            <a @click.prevent="setActiveTab(3)" href="https://discord.gg/DUSUtguG2H"
-                                class="flex flex-col items-center w-1/4 px-2"
-                                :class="{'text-orange': activeTabIndex === 3}">
-                                <i class="fa-brands fa-discord text-xl mb-1"></i>
-                                <span class="text-xs">Discord</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        
         <!-- Hero Section -->
         <section class="container mx-auto px-4 pt-10 pb-16 md:pt-20 md:pb-32 relative">
             <div
@@ -341,7 +278,7 @@
                     </p>
 
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="https://fossunited.org/dashboard/cfp/apply/indiafoss/2025" target="_blank"
+                        <a href="https://fossunited.org/indiafoss/2025/devrooms/hardware" target="_blank"
                             class="bg-orange uppercase text-dark font-bold py-3 px-6 rounded-lg text-center hover:bg-opacity-90 transition-all transform hover:scale-105 group">
                             <i class="fa-solid fa-microchip mr-2"></i>Submit Your Talk
                         </a>
