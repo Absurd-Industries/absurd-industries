@@ -1,0 +1,71 @@
+/* education-manifesto.css */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #141414;
+}
+
+/* Copy-left Symbol */
+.copyleft {
+    display: inline-block;
+    transform: rotate(180deg);
+}
+
+/* Blob animation for morphing shapes */
+@keyframes blob {
+    0%, 100% {
+        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    }
+    50% {
+        border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+    }
+}
+
+.animate-blob {
+    animation: blob 7s infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(20, 20, 20, 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 89, 0, 0.5);
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 89, 0, 0.7);
+}
+
+/* Modal transitions */
+.course-modal-enter-active,
+.course-modal-leave-active {
+    transition: opacity 0.3s ease;
+}
+
+.course-modal-enter-from,
+.course-modal-leave-to {
+    opacity: 0;
+}
+
+/* FAQ transitions */
+.faq-content-enter-active,
+.faq-content-leave-active {
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    max-height: 1000px;
+    overflow: hidden;
+}
+
+.faq-content-enter-from,
+.faq-content-leave-to {
+    max-height: 0;
+    opacity: 0;
+}
