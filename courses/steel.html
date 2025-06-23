@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>STEEL MERIDIAN | Educational Revolution</title>
+  
+  <!-- Meta Tags -->
+  <meta name="description" content="Stand strong. Stand together. Fight for freedom of education. We are Steel Meridian, and we'll teach you to fight back.">
+
+  <!-- Fonts - Russo One for that industrial strength look + Titillium Web for body -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Titillium+Web:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome -->
+  <script src="https://kit.fontawesome.com/e0c6d65845.js" crossorigin="anonymous"></script>
+  
+  <!-- Vue.js -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            russo: ["Russo One", "sans-serif"],
+            titillium: ["Titillium Web", "sans-serif"],
+          },
+          colors: {
+            'meridian': {
+              'red': '#DB2B25',
+              'dark-red': '#761310',
+              'darkest': '#0A0A0A',
+              'dark': '#1A1A1A',
+              'medium': '#2D2D2D',
+              'light': '#575757',
+              'accent': '#C6C6C6',
+            }
+          },
+          animation: {
+            'pulse-slow': 'pulse 3s infinite',
+            'float': 'float 6s ease-in-out infinite',
+            'glitch': 'glitch 3s infinite',
+            'scan': 'scan 2s ease-in-out infinite',
+            'flicker': 'flicker 3s linear infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-10px)' },
+            },
+            glitch: {
+              '0%, 5%, 10%, 100%': { transform: 'translateX(0)' },
+              '2.5%': { transform: 'translateX(-5px)' },
+              '7.5%': { transform: 'translateX(5px)' },
+            },
+            scan: {
+              '0%': { transform: 'translateY(-100%)' },
+              '100%': { transform: 'translateY(100%)' }
+            },
+            flicker: {
+              '0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100%': { opacity: '1' },
+              '20%, 21.999%, 63%, 63.999%, 65%, 69.999%': { opacity: '0.33' }
+            }
+          },
+          backgroundImage: {
+            'noise': "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E\")",
+            'tech-pattern': "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M0,0 L0,20 M0,10 L20,10 M10,0 L10,20 M1,1 L4,1 M1,19 L4,19 M19,1 L16,1 M19,19 L16,19' stroke='%23DB2B25' stroke-width='0.5' fill='none' stroke-opacity='0.3'/%3E%3C/svg%3E\")",
+            'steel-gradient': 'linear-gradient(135deg, #1A1A1A 0%, #2D2D2D 100%)',
+          },
+        },
+      },
+    };
+  </script>
+  
+  <style>
+    /* Base styles */
+    body {
+      font-family: 'Titillium Web', sans-serif;
+      background-color: #0A0A0A;
+      color: #C6C6C6;
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Russo One', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    /* Steel Meridian specific elements */
+    .meridian-border {
+      border-width: 1px;
+      border-style: solid;
+      border-image: linear-gradient(to right, #DB2B25, transparent) 1;
+    }
+    
+    .meridian-border-top {
+      border-top-width: 1px;
+      border-top-style: solid;
+      border-image: linear-gradient(to right, #DB2B25, transparent) 1;
+    }
+    
+    .meridian-border-left {
+      border-left-width: 1px;
+      border-left-style: solid;
+      border-image: linear-gradient(to bottom, #DB2B25, transparent) 1;
+    }
+    
+    .meridian-panel {
+      position: relative;
+      border: 1px solid rgba(219, 43, 37, 0.3);
+      background: #1A1A1A;
+      box-shadow: 0 0 10px rgba(219, 43, 37, 0.2);
+    }
+    
+    .meridian-panel::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      width: 12px;
+      height: 12px;
+      border-top: 2px solid #DB2B25;
+      border-left: 2px solid #DB2B25;
+    }
+    
+    .meridian-panel::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      right: -1px;
+      width: 12px;
+      height: 12px;
+      border-bottom: 2px solid #DB2B25;
+      border-right: 2px solid #DB2B25;
+    }
+    
+    .scan-line {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, 
+        transparent, 
+        rgba(219, 43, 37, 0.2), 
+        transparent
+      );
+      opacity: 0.6;
+      pointer-events: none;
+      height: 10%;
+      animation: scan 2s ease-in-out infinite;
+    }
+    
+    /* Hexagonal grid pattern for backgrounds */
+    .hex-bg {
+      background-image: radial-gradient(#DB2B25 1px, transparent 1px);
+      background-size: 16px 16px;
+      background-position: 0 0;
+      opacity: 0.1;
+    }
+    
+    /* Glitchy text effect */
+    .glitch-text {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .glitch-text::before,
+    .glitch-text::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .glitch-text::before {
+      left: 2px;
+      text-shadow: -1px 0 #DB2B25;
+      overflow: hidden;
+      clip: rect(0, 900px, 0, 0);
+      animation: glitch-anim 3s infinite linear alternate-reverse;
+    }
+    
+    .glitch-text::after {
+      left: -2px;
+      text-shadow: -1px 0 #2D2D2D;
+      overflow: hidden;
+      clip: rect(0, 900px, 0, 0);
+      animation: glitch-anim2 2.5s infinite linear alternate-reverse;
+    }
+    
+    @keyframes glitch-anim {
+      0% {
+        clip: rect(96px, 9999px, 40px, 0);
+      }
+      20% {
+        clip: rect(9px, 9999px, 98px, 0);
+      }
+      40% {
+        clip: rect(43px, 9999px, 2px, 0);
+      }
+      60% {
+        clip: rect(48px, 9999px, 53px, 0);
+      }
+      80% {
+        clip: rect(67px, 9999px, 99px, 0);
+      }
+      100% {
+        clip: rect(86px, 9999px, 63px, 0);
+      }
+    }
+    
+    @keyframes glitch-anim2 {
+      0% {
+        clip: rect(31px, 9999px, 56px, 0);
+      }
+      20% {
+        clip: rect(1px, 9999px, 78px, 0);
+      }
+      40% {
+        clip: rect(14px, 9999px, 31px, 0);
+      }
+      60% {
+        clip: rect(95px, 9999px, 53px, 0);
+      }
+      80% {
+        clip: rect(54px, 9999px, 7px, 0);
+      }
+      100% {
+        clip: rect(71px, 9999px, 46px, 0);
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-meridian-darkest font-titillium bg-noise">
+  <div id="app" class="min-h-screen flex flex-col">
+    <!-- Overlay effect -->
+    <div class="fixed inset-0 bg-tech-pattern opacity-5 pointer-events-none"></div>
+    <div class="scan-line pointer-events-none"></div>
+    
+    <!-- Mobile menu overlay -->
+    <div 
+      class="fixed inset-0 bg-meridian-darkest/95 z-40 md:hidden transform transition-transform duration-300"
+      :class="{ 'translate-x-0': mobileMenuOpen, 'translate-x-full': !mobileMenuOpen }"
+    >
+      <button 
+        @click="mobileMenuOpen = false" 
+        class="absolute top-6 right-6 text-meridian-accent text-2xl p-2"
+      >
+        <i class="fas fa-times"></i>
+      </button>
+      
+      <nav class="flex flex-col items-center justify-center h-full space-y-8 text-meridian-accent">
+        <a 
+          href="#" 
+          class="text-2xl hover:text-meridian-red transition-colors duration-300"
+          @click="mobileMenuOpen = false"
+        >
+          HOME
+        </a>
+        <a 
+          href="#manifesto" 
+          class="text-2xl hover:text-meridian-red transition-colors duration-300"
+          @click="mobileMenuOpen = false"
+        >
+          MANIFESTO
+        </a>
+        <a 
+          href="#training" 
+          class="text-2xl hover:text-meridian-red transition-colors duration-300"
+          @click="mobileMenuOpen = false"
+        >
+          TRAINING
+        </a>
+        <a 
+          href="https://discord.gg/DUSUtguG2H" 
+          class="text-2xl hover:text-meridian-red transition-colors duration-300"
+          @click="mobileMenuOpen = false"
+          target="_blank"
+        >
+          ALLIES
+        </a>
+      </nav>
+    </div>
+
+    <!-- Header -->
+    <header class="fixed top-0 w-full z-30 bg-meridian-darkest/80 backdrop-blur-sm">
+      <div class="container mx-auto px-4 py-3">
+        <div class="flex justify-between items-center">
+          <a href="#" class="flex items-center">
+            <!-- Steel Meridian symbol as the logo -->
+            <div class="w-10 h-10 mr-3 relative">
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 5L95 50L50 95L5 50L50 5Z" stroke="#DB2B25" stroke-width="3" fill="none"/>
+                <path d="M50 20L80 50L50 80L20 50L50 20Z" stroke="#DB2B25" stroke-width="3" fill="none"/>
+                <path d="M50 35L65 50L50 65L35 50L50 35Z" fill="#DB2B25"/>
+              </svg>
+            </div>
+            <span class="text-xl font-russo text-meridian-accent tracking-wider">STEEL MERIDIAN</span>
+          </a>
+          
+          <!-- Desktop Navigation -->
+          <nav class="hidden md:flex space-x-8">
+            <a href="#" class="text-sm text-meridian-accent hover:text-meridian-red transition-colors duration-300 font-russo tracking-wider">HOME</a>
+            <a href="#manifesto" class="text-sm text-meridian-accent hover:text-meridian-red transition-colors duration-300 font-russo tracking-wider">MANIFESTO</a>
+            <a href="#training" class="text-sm text-meridian-accent hover:text-meridian-red transition-colors duration-300 font-russo tracking-wider">TRAINING</a>
+            <a href="https://discord.gg/DUSUtguG2H" class="text-sm text-meridian-accent hover:text-meridian-red transition-colors duration-300 font-russo tracking-wider" target="_blank">ALLIES</a>
+          </nav>
+          
+          <!-- Mobile menu button -->
+          <button 
+            class="md:hidden text-meridian-accent focus:outline-none"
+            @click="mobileMenuOpen = true"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Red line underneath header -->
+      <div class="h-0.5 w-full bg-gradient-to-r from-meridian-red via-meridian-red to-transparent"></div>
+    </header>
+
+    <main class="flex-grow pt-16">
+      <!-- Hero Section -->
+      <section class="min-h-screen relative flex flex-col justify-center items-center overflow-hidden">
+        <!-- Background elements -->
+        <div class="absolute inset-0 hex-bg"></div>
+        
+        <div class="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
+          <svg viewBox="0 0 500 500" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="250" cy="250" r="200" stroke="#DB2B25" stroke-width="1" stroke-dasharray="10 5"/>
+            <circle cx="250" cy="250" r="150" stroke="#DB2B25" stroke-width="1" stroke-dasharray="10 5"/>
+            <circle cx="250" cy="250" r="100" stroke="#DB2B25" stroke-width="1" stroke-dasharray="10 5"/>
+            <circle cx="250" cy="250" r="50" stroke="#DB2B25" stroke-width="1" stroke-dasharray="10 5"/>
+          </svg>
+        </div>
+        
+        <div class="container mx-auto px-4 z-10 text-center">
+          <div class="inline-block mb-6 px-4 py-1 border border-meridian-red bg-meridian-dark/50 text-xs font-mono tracking-widest">
+            <span class="text-meridian-red">PROTOCOL</span> <span class="animate-pulse">ACTIVE</span>
+          </div>
+          
+          <h1 class="glitch-text text-5xl sm:text-6xl md:text-7xl font-russo mb-8 text-meridian-accent" data-text="EDUCATION">
+            EDUCATION
+          </h1>
+          
+          <div class="w-24 h-1 bg-meridian-red mx-auto mb-8"></div>
+          
+          <p class="max-w-lg mx-auto text-lg mb-10 text-meridian-accent/80">
+            <span class="text-meridian-red font-bold">STAND STRONG. STAND TOGETHER.</span> Education is broken. We're rebuilding it from salvaged parts. No one gets left behind.
+          </p>
+          
+          <div class="inline-block group meridian-panel p-0.5">
+            <a 
+              href="#manifesto" 
+              class="meridian-panel px-8 py-3 inline-flex items-center bg-meridian-dark hover:bg-meridian-red/20 transition-colors duration-300 font-russo tracking-wider"
+            >
+              <span>VIEW OBJECTIVES</span>
+              <i class="fas fa-chevron-down ml-2 group-hover:translate-y-1 transition-transform duration-300"></i>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Decorative foreground elements -->
+        <div class="absolute inset-x-0 bottom-0 h-24 pointer-events-none">
+          <div class="h-px w-full bg-gradient-to-r from-transparent via-meridian-red to-transparent"></div>
+          <div class="h-px w-full bg-gradient-to-r from-meridian-red via-transparent to-meridian-red mt-4"></div>
+          <div class="h-px w-full bg-gradient-to-r from-transparent via-meridian-red to-transparent mt-4"></div>
+        </div>
+      </section>
+
+      <!-- Warning Banner/Marquee -->
+      <div class="relative overflow-hidden bg-meridian-red/90 py-2 font-mono text-sm">
+        <div class="animate-[marquee_20s_linear_infinite] whitespace-nowrap">
+          <span class="mx-4 font-bold">ALERT: OUTDATED EDUCATION PROTOCOLS DETECTED</span>
+          <span class="mx-4">•</span>
+          <span class="mx-4 font-bold">INITIALIZING COUNTERMEASURES</span>
+          <span class="mx-4">•</span>
+          <span class="mx-4 font-bold">STEEL MERIDIAN EDUCATIONAL DIVISION ACTIVATED</span>
+          <span class="mx-4">•</span>
+          <span class="mx-4 font-bold">ALERT: OUTDATED EDUCATION PROTOCOLS DETECTED</span>
+          <span class="mx-4">•</span>
+          <span class="mx-4 font-bold">INITIALIZING COUNTERMEASURES</span>
+          <span class="mx-4">•</span>
+          <span class="mx-4 font-bold">STEEL MERIDIAN EDUCATIONAL DIVISION ACTIVATED</span>
+          <span class="mx-4">•</span>
+        </div>
+      </div>
+
+      <!-- Manifesto Section -->
+      <section id="manifesto" class="py-24 relative">
+        <div class="container mx-auto px-4">
+          <div class="max-w-4xl mx-auto">
+            <div class="flex items-center mb-12">
+              <div class="w-1 h-12 bg-meridian-red mr-4"></div>
+              <h2 class="text-3xl sm:text-4xl font-russo text-meridian-accent">
+                MANI<span class="text-meridian-red">FESTO</span>
+              </h2>
+            </div>
+            
+            <div class="meridian-panel p-8 space-y-6 text-base leading-relaxed">
+              <p>
+                We are the salvagers of broken education. The ones who see potential in what others discard. In the wreckage of traditional learning, we find parts worth saving.
+              </p>
+              
+              <p>
+                <span class="text-meridian-red font-bold">Education isn't sitting quietly and memorizing useless facts.</span> It's getting your hands dirty, breaking things, and figuring them out. It's building from scraps. Fighting back against systems that don't work.
+              </p>
+              
+              <div class="py-8 my-8 border-t border-b border-meridian-red/30">
+                <blockquote class="text-xl sm:text-2xl italic text-meridian-accent">
+                  "Stand for something, or die for nothing. The cost of ignorance is too high."
+                </blockquote>
+                <div class="mt-2 text-right text-meridian-red">
+                  — Cressa Tal, Steel Meridian Founder
+                </div>
+              </div>
+              
+              <p>
+                We protect those who cannot protect themselves. We fight for those without a voice. And we teach others to do the same. Knowledge is our weapon. Together we are stronger.
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Decorative elements -->
+        <div class="absolute bottom-0 left-0 w-1/2 h-px bg-gradient-to-r from-meridian-red/50 to-transparent"></div>
+        <div class="absolute top-0 right-0 w-1/2 h-px bg-gradient-to-l from-meridian-red/50 to-transparent"></div>
+      </section>
+
+      <!-- Comparison Section - Old vs New -->
+      <section class="py-24 bg-meridian-dark relative overflow-hidden">
+        <div class="hex-bg absolute inset-0"></div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <!-- Old Way Side -->
+            <div class="meridian-panel p-8">
+              <h2 class="text-3xl font-russo text-meridian-accent mb-8 flex items-center">
+                <div class="w-8 h-8 bg-meridian-red/20 flex items-center justify-center mr-3">
+                  <i class="fas fa-skull-crossbones text-meridian-red"></i>
+                </div>
+                GRINEER INDOCTRINATION
+              </h2>
+              
+              <div class="space-y-6">
+                <div class="border-b border-meridian-red/20 pb-4">
+                  <h3 class="font-bold flex items-center mb-2">
+                    <i class="fas fa-times text-meridian-red mr-2"></i>
+                    COMMAND AND CONTROL
+                  </h3>
+                  <p class="text-meridian-accent/70 pl-6">
+                    Rigid hierarchy. Teacher dictates. Students obey. Manufactured consent. Thoughtless repetition. Clone-like thinking.
+                  </p>
+                </div>
+                
+                <div class="border-b border-meridian-red/20 pb-4">
+                  <h3 class="font-bold flex items-center mb-2">
+                    <i class="fas fa-times text-meridian-red mr-2"></i>
+                    STANDARDIZED PROGRAMS
+                  </h3>
+                  <p class="text-meridian-accent/70 pl-6">
+                    One-size neural implant. Mass-produced curriculum. Assembly line learning. No deviation tolerated. Individual thinking penalized.
+                  </p>
+                </div>
+                
+                <div class="border-b border-meridian-red/20 pb-4">
+                  <h3 class="font-bold flex items-center mb-2">
+                    <i class="fas fa-times text-meridian-red mr-2"></i>
+                    ISOLATION TACTICS
+                  </h3>
+                  <p class="text-meridian-accent/70 pl-6">
+                    Collaboration forbidden. Competition enforced. Divide and conquer. Break community bonds. Easier to control when separated.
+                  </p>
+                </div>
+                
+                <div class="border-b border-meridian-red/20 pb-4">
+                  <h3 class="font-bold flex items-center mb-2">
+                    <i class="fas fa-times text-meridian-red mr-2"></i>
+                    TESTING COMPLIANCE
+                  </h3>
+                  <p class="text-meridian-accent/70 pl-6">
+                    Success measured in obedience. Memorize and regurgitate. Critical thinking suppressed. Creativity eliminated. Perfect for creating soldiers, not thinkers.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Meridian Way Side -->
+            <div class="meridian-panel p-8">
+              <h2 class="text-3xl font-russo text-meridian-accent mb-8 flex items-center">
+                <div class="w-8 h-8 bg-meridian-red/20 flex items-center justify-center mr-3">
+                  <i class="fas fa-fist-raised text-meridian-red"></i>
+                </div>
+                STEEL MERIDIAN TRAINING
+              </h2>
+              
+              <div class="space-y-6">
+                <div class="border-b border-meridian-red/20 pb-4">
+                  <h3 class="font-bold flex items-center mb-2">
+                    <i class="fas fa-check text-meridian-red mr-2"></i>
+                    FREEDOM OF ACTION
+                  </h3>
+                  <p class="text-meridian-accent/70 pl-6">
+                    Autonomy respected. Facilitator guides, doesn't dictate. Your choices matter. Learn by decision, not coercion. Build independence, not dependency.
+                  </p>
+                </div>
+                
+                <div class="border-b border-meridian-red/20 pb-4">
+                  <h3 class="font-bold flex items-center mb-2">
+                    <i class="fas fa-check text-meridian-red mr-2"></i>
+                    ADAPTIVE PROTOCOLS
+                  </h3>
+                  <p class="text-meridian-accent/70 pl-6">
+                    Personalized learning paths. Follow your strengths. Adapt to individual needs. Custom-built curriculum. Recognize diverse battle strategies.
+                  </p>
+                </div>
+                
+                <div class="border-b border-meridian-red/20 pb-4">
+                  <h3 class="font-bold flex items-center mb-2">
+                    <i class="fas fa-check text-meridian-red mr-2"></i>
+                    SQUAD TACTICS
+                  </h3>
+                  <p class="text-meridian-accent/70 pl-6">
+                    Strength in numbers. Learn together, fight together. Collaborative problem-solving. Mutual support system. Network of knowledge-sharing.
+                  </p>
+                </div>
+                
+                <div class="border-b border-meridian-red/20 pb-4">
+                  <h3 class="font-bold flex items-center mb-2">
+                    <i class="fas fa-check text-meridian-red mr-2"></i>
+                    COMBAT EFFECTIVENESS
+                  </h3>
+                  <p class="text-meridian-accent/70 pl-6">
+                    Success measured in results. Build something that works. Solve real problems. Apply knowledge in the field. Performance under fire, not under fluorescent lights.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Resource Distribution Section (Payment Model) -->
+      <section class="py-24 relative">
+        <div class="container mx-auto px-4">
+          <div class="max-w-5xl mx-auto">
+            <div class="flex items-center mb-12">
+              <div class="w-1 h-12 bg-meridian-red mr-4"></div>
+              <h2 class="text-3xl sm:text-4xl font-russo text-meridian-accent">
+                RESOURCE <span class="text-meridian-red">DISTRIBUTION</span>
+              </h2>
+            </div>
+            
+            <p class="text-lg max-w-2xl mb-12 text-meridian-accent/80">
+              Steel Meridian believes in equal access to tactical training. No potential ally left behind due to resource constraints.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <!-- Credit Transfer Option -->
+              <div class="meridian-panel p-0.5 cursor-pointer group transform transition-all duration-300 hover:scale-[1.01]">
+                <div class="p-6 bg-meridian-dark h-full">
+                  <h3 class="text-xl font-russo flex items-center mb-6 text-meridian-accent">
+                    <div class="w-10 h-10 bg-meridian-red/20 flex items-center justify-center mr-3">
+                      <i class="fas fa-coins text-meridian-red"></i>
+                    </div>
+                    CREDIT TRANSFER
+                  </h3>
+                  
+                  <div class="space-y-4">
+                    <p class="text-meridian-accent/80">
+                      Contribute credits based on your capacity. Suggested donation amount exists, but you determine final value transfer.
+                    </p>
+                    
+                    <ul class="space-y-2 pl-6 text-meridian-accent/70">
+                      <li class="flex items-start">
+                        <i class="fas fa-angle-right text-meridian-red mt-1 mr-2"></i>
+                        <span>Direct support to training facilitators</span>
+                      </li>
+                      <li class="flex items-

@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absurd Education | Learning Weirdly Works</title>
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="Education is broken. We're fixing it with chaos, joy, and actual learning. Join the revolution!">
+    <meta property="og:title" content="Absurd Education | Learning Weirdly Works">
+    <meta property="og:description" content="Education is broken. We're fixing it with chaos, joy, and actual learning. Join the revolution!">
+    <meta property="og:image" content="https://absurd.industries/assets/images/education-manifesto-og.jpg">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jura:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <script src="https://kit.fontawesome.com/e0c6d65845.js" crossorigin="anonymous"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        jura: ['Jura', 'sans-serif']
+                    },
+                    colors: {
+                        'absurd-cream': '#ECE0CF',
+                        'absurd-dark': '#141414',
+                        'absurd-orange': '#FF5900',
+                        'absurd-blue': '#00A3FF',
+                        'absurd-red': '#EC0D0D',
+                        'absurd-purple': '#8A00FF'
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s infinite',
+                        'wiggle': 'wiggle 1s ease-in-out infinite',
+                        'spin-slow': 'spin 8s linear infinite',
+                        'glitch': 'glitch 2s linear infinite',
+                        'blob': 'blob 7s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        wiggle: {
+                            '0%, 100%': { transform: 'rotate(-3deg)' },
+                            '50%': { transform: 'rotate(3deg)' },
+                        },
+                        glitch: {
+                            '0%, 100%': { transform: 'translate(0)' },
+                            '20%': { transform: 'translate(-2px, 2px)' },
+                            '40%': { transform: 'translate(-2px, -2px)' },
+                            '60%': { transform: 'translate(2px, 2px)' },
+                            '80%': { transform: 'translate(2px, -2px)' },
+                        },
+                        blob: {
+                            '0%': {
+                                'border-radius': '60% 40% 30% 70%/60% 30% 70% 40%'
+                            },
+                            '50%': {
+                                'border-radius': '30% 60% 70% 40%/50% 60% 30% 60%'
+                            },
+                            '100%': {
+                                'border-radius': '60% 40% 30% 70%/60% 30% 70% 40%'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Vue.js -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    
+    <!-- Typeform -->
+    <script src="https://embed.typeform.com/next/embed.js"></script>
+    
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="script.css">
+</head>
+
+<body class="bg-dark text-white font-jura bg-[url('/assets/images/workdesk.jpg')] bg-cover bg-fixed bg-center min-h-screen">
+    <div id="app" class="min-h-screen backdrop-brightness-[0.4] backdrop-blur-sm">
+        <!-- Header -->
+        <header class="fixed top-0 w-full z-50 bg-absurd-dark/80 backdrop-blur-md border-b border-absurd-cream/10">
+            <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+                <a href="index.htm" class="logo absolute top-0 left-0 rotate-12">
+                    <img src="../absurd-industries-logo.png" alt="Absurd Industries" width="180" />
+                </a>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="index.htm" class="link opacity-70 hover:opacity-100 transition-opacity"><i class="fa-light fa-house mr-2"></i>Home</a>
+                    <a href="#" class="link text-absurd-orange opacity-100 transition-opacity"><i class="fa-light fa-graduation-cap mr-2"></i>Education</a>
+                    <a href="https://shop.absurd.industries/" class="link opacity-70 hover:opacity-100 transition-opacity"><i class="fa-light fa-bag-shopping mr-2"></i>Shop</a>
+                    <a href="https://bytes.absurd.industries" class="link opacity-70 hover:opacity-100 transition-opacity"><i class="fa-light fa-book-journal-whills mr-2"></i>Journal</a>
+                    <a href="https://discord.gg/DUSUtguG2H" class="link opacity-70 hover:opacity-100 transition-opacity"><i class="fa-brands fa-discord mr-2"></i>Community</a>
+                </nav>
+                <button class="md:hidden text-2xl" @click="mobileMenu = !mobileMenu">
+                    <i class="fa-light" :class="mobileMenu ? 'fa-xmark' : 'fa-bars'"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Mobile Menu -->
+        <div class="md:hidden fixed inset-0 bg-absurd-dark z-40 transform transition-transform duration-300" 
+             :class="mobileMenu ? 'translate-x-0' : 'translate-x-full'">
+            <div class="pt-20 px-6 flex flex-col space-y-6">
+                <a href="index.htm" class="link text-xl opacity-70 hover:opacity-100 transition-opacity" @click="mobileMenu = false"><i class="fa-light fa-house mr-2"></i>Home</a>
+                <a href="#" class="link text-xl text-absurd-orange opacity-100 transition-opacity" @click="mobileMenu = false"><i class="fa-light fa-graduation-cap mr-2"></i>Education</a>
+                <a href="https://shop.absurd.industries/" class="link text-xl opacity-70 hover:opacity-100 transition-opacity" @click="mobileMenu = false"><i class="fa-light fa-bag-shopping mr-2"></i>Shop</a>
+                <a href="https://bytes.absurd.industries" class="link text-xl opacity-70 hover:opacity-100 transition-opacity" @click="mobileMenu = false"><i class="fa-light fa-book-journal-whills mr-2"></i>Journal</a>
+                <a href="https://discord.gg/DUSUtguG2H" class="link text-xl opacity-70 hover:opacity-100 transition-opacity" @click="mobileMenu = false"><i class="fa-brands fa-discord mr-2"></i>Community</a>
+            </div>
+        </div>
+
+        <main class="pt-20">
+            <!-- Hero Section with Manifesto -->
+            <section class="relative min-h-screen flex items-center justify-center px-4 overflow-hidden">
+                <div class="absolute inset-0 pointer-events-none">
+                    <div class="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-absurd-orange/10 animate-pulse-slow filter blur-3xl"></div>
+                    <div class="absolute bottom-1/3 right-1/4 w-96 h-96 rounded-full bg-absurd-blue/10 animate-pulse-slow filter blur-3xl" style="animation-delay: 1s;"></div>
+                </div>
+                
+                <div class="container py-24 mx-auto max-w-4xl relative z-10">
+                    <div class="text-center mb-16">
+                        <span class="inline-block px-3 py-1 bg-absurd-orange/20 text-absurd-orange rounded-lg text-sm mb-4">MANIFESTO</span>
+                        <h1 class="text-5xl md:text-6xl font-bold mb-24 leading-none">
+                            <span class="block">Education is</span>
+                            <span class="block text-absurd-red">broken</span>
+                            <span class="block mt-8">We're making it</span>
+                            <span class="block text-absurd-orange">absurd</span>
+                        </h1>
+                        
+                        <div class="manifesto-text text-xl bg-absurd-dark/50 backdrop-blur-md p-6 rounded-xl border border-absurd-cream/10 max-w-2xl mx-auto">
+                            <p class="mb-3">Education isn't about sitting quietly and memorizing useless facts. It's about getting your hands dirty, breaking things, and figuring them out.</p>
+                            <p class="font-bold text-absurd-orange mt-5">We believe in:</p>
+                            <ul class="text-left space-y-2 mt-3">
+                                <li class="flex items-start">
+                                    <i class="fa-solid fa-circle-check text-absurd-blue mt-1 mr-3"></i>
+                                    <span>Making stuff, not just thinking about it</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fa-solid fa-circle-check text-absurd-blue mt-1 mr-3"></i>
+                                    <span>Learning by trying (and failing spectacularly)</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fa-solid fa-circle-check text-absurd-blue mt-1 mr-3"></i>
+                                    <span>Creating together because lone geniuses are boring</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fa-solid fa-circle-check text-absurd-blue mt-1 mr-3"></i>
+                                    <span>Making education both weird and accessible</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <a href="#courses" class="inline-block bg-absurd-red hover:bg-absurd-red/90 text-absurd-cream font-bold px-8 py-4 rounded-xl transition transform hover:scale-105">
+                            Show Me How <i class="fa-solid fa-arrow-down ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Learning Model Comparison -->
+            <section class="py-20 relative">
+                <div class="container mx-auto px-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Traditional Education -->
+                        <div class="bg-absurd-dark/50 backdrop-blur-md p-6 rounded-xl border border-absurd-cream/10">
+                            <div class="flex items-center justify-center mb-6">
+                                <div class="w-16 h-16 flex items-center justify-center bg-absurd-dark rounded-full border border-absurd-cream/20">
+                                    <i class="fa-solid fa-school text-3xl opacity-50"></i>
+                                </div>
+                            </div>
+                            
+                            <h3 class="text-2xl font-bold text-center mb-4 opacity-70">The Old Way</h3>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-start">
+                                    <i class="fa-solid fa-circle-xmark text-absurd-red mt-1 mr-3"></i>
+                                    <div>
+                                        <h4 class="font-bold">Listening to lectures</h4>
+                                        <p class="text-sm opacity-70">Quietly absorbing information that someone else decided was important</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start">
+                                    <i class="fa-solid fa-circle-xmark text-absurd-red mt-1 mr-3"></i>
+                                    <div>
+                                        <h4 class="font-bold">Memorizing for tests</h4>
+                                        <p class="text-sm opacity-70">Cramming facts you'll forget by next week</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start">
+                                    <i class="fa-solid fa-circle-xmark text-absurd-red mt-1 mr-3"></i>
+                                    <div>
+                                        <h4 class="font-bold">Working alone</h4>
+                                        <p class="text-sm opacity-70">Because "collaboration" is just another word for "cheating"</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start">
+                                    <i class="fa-solid fa-circle-xmark text-absurd-red mt-1 mr-3"></i>
+                                    <div>
+                                        <h4 class="font-bold">One-size-fits-all</h4>
+                                        <p class="text-sm opacity-70">Everyone learns the same way at the same speed, right? (Wrong.)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Absurd Education -->
+                        <div class="bg-absurd-dark/50 backdrop-blur-md p-6 rounded-xl border border-absurd-orange/20">
+                            <div class="flex items-center justify-center mb-6">
+                                <div class="w-16 h-16 flex items-center justify-center bg-absurd-dark rounded-full border border-absurd-orange">
+                                    <i class="fa-solid fa-brain text-3xl text-absurd-orange"></i>
+                                </div>
+                            </div>
+                            
+                            <h3 class="text-2xl font-bold text-center mb-4 text-absurd-orange">The Absurd Way</h3>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-start">
+                                    <i class="fa-solid fa-circle-check text-absurd-blue mt-1 mr-3"></i>
+                                    <div>
+                                        <h4 class="font-bold">Hands-on making</h4>
+                                        <p class="text-sm opacity-70">Building real things that actually work (or hilariously don't)</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start">
+                                    <i class="fa-solid fa-circle-check text-absurd-blue mt-1 mr-3"></i>
+                                    <div>
+                                        <h4 class="font-bold">Learning by failing</h4>
+                                        <p class="text-sm opacity-70">When it breaks, you figure out why. That's where real learning happens</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start">
+                                    <i class="fa-solid fa-circle-check text-absurd-blue mt-1 mr-3"></i>
+                                    <div>
+                                        <h4 class="font-bold">Creating together</h4>
+                                        <p class="text-sm opacity-70">Because two weird brains are better than one</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start">
+                                    <i class="fa-solid fa-circle-check text-absurd-blue mt-1 mr-3"></i>
+                                    <div>
+                                        <h4 class="font-bold">Chaos = Creativity</h4>
+                                        <p class="text-sm opacity-70">Structure is boring. Organized chaos is where the magic happens</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Learning Cycle -->
+                    <div class="mt-16 text-center">
+                        <h3 class="text-2xl md:text-3xl font-bold mb-8">The <span class="text-absurd-orange">Absurd Learning Cycle</span></h3>
+                        
+                        <div class="relative w-64 h-64 mx-auto">
+                            <div class="absolute inset-0 rounded-full border-2 border-absurd-cream/20 animate-spin-slow"></div>
+                            
+                            <!-- Hack Node -->
+                            <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+                                <div class="w-16 h-16 rounded-full bg-absurd-dark border-2 border-absurd-red flex items-center justify-center mb-2 animate-pulse">
+                                    <i class="fa-solid fa-screwdriver-wrench text-2xl text-absurd-red"></i>
+                                </div>
+                                <span class="font-bold text-absurd-red">HACK</span>
+                            </div>
+                            
+                            <!-- Learn Node -->
+                            <div class="absolute top-1/2 right-0 transform translate-x-1/2 -translate-y-1/2 text-center">
+                                <div class="w-16 h-16 rounded-full bg-absurd-dark border-2 border-absurd-orange flex items-center justify-center mb-2 animate-pulse" style="animation-delay: 0.33s;">
+                                    <i class="fa-solid fa-lightbulb text-2xl text-absurd-orange"></i>
+                                </div>
+                                <span class="font-bold text-absurd-orange">LEARN</span>
+                            </div>
+                            
+                            <!-- Collaborate Node -->
+                            <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 text-center">
+                                <div class="w-16 h-16 rounded-full bg-absurd-dark border-2 border-absurd-blue flex items-center justify-center mb-2 animate-pulse" style="animation-delay: 0.66s;">
+                                    <i class="fa-solid fa-people-group text-2xl text-absurd-blue"></i>
+                                </div>
+                                <span class="font-bold text-absurd-blue">COLLABORATE</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- How We Pay Section -->
+            <section class="py-20 relative bg-absurd-dark/30">
+                <div class="container mx-auto px-4">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4">Money Shouldn't Stop <span class="text-absurd-orange">Learning</span></h2>
+                        <p class="text-xl max-w-2xl mx-auto opacity-80">Our radical approach to making education accessible</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-4xl mx-auto">
+                        <!-- Pay What You Want -->
+                        <div class="bg-absurd-dark/50 backdrop-blur-md p-6 rounded-xl border border-absurd-cream/10">
+                            <div class="w-20 h-20 bg-absurd-dark rounded-full mx-auto mb-6 flex items-center justify-center">
+                                <i class="fa-solid fa-hand-holding-dollar text-3xl text-absurd-blue"></i>
+                            </div>
+                            
+                            <h3 class="text-2xl font-bold text-center mb-3">Pay What You Want</h3>
+                            <p class="opacity-80 text-center mb-4">Courses have a suggested price, but you decide what you can afford.</p>
+                            
+                            <div class="space-y-2">
+                                <div class="flex items-start">
+                                    <i class="fa-solid fa-check text-absurd-blue mt-1 mr-2"></i>
+                                    <span class="opacity-80">Pay the facilitator directly</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <i class="fa-solid fa-check text-absurd-blue mt-1 mr-2"></i>
+                                    <span class="opacity-80">No minimum amount</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <i class="fa-solid fa-check text-absurd-blue mt-1 mr-2"></i>
+                                    <span class="opacity-80">Support creators who share their knowledge</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Pass The Coin -->
+                        <div class="bg-absurd-dark/50 backdrop-blur-md p-6 rounded-xl border border-absurd-cream/10">
+                            <div class="w-20 h-20 bg-absurd-dark rounded-full mx-auto mb-6 flex items-center justify-center">
+                                <i class="fa-solid fa-coin text-3xl text-absurd-orange"></i>
+                            </div>
+                            
+                            <h3 class="text-2xl font-bold text-center mb-3">Pass The Coin</h3>
+                            <p class="opacity-80 text-center mb-4">Can't pay? No problem. Take our 3D-printed coin instead.</p>
+                            
+                            <div class="space-y-2">
+                                <div class="flex items-start">
+                                    <i class="fa-solid fa-check text-absurd-orange mt-1 mr-2"></i>
+                                    <span class="opacity-80">Teach someone what you learned</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <i class="fa-solid fa-check text-absurd-orange mt-1 mr-2"></i>
+                                    <span class="opacity-80">Pass them the coin to continue the chain</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <i class="fa-solid fa-check text-absurd-orange mt-1 mr-2"></i>
+                                    <span class="opacity-80">Knowledge should flow freely</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mx-auto max-w-4xl mt-12 bg-absurd-dark/50 backdrop-blur-md p-6 rounded-xl border border-absurd-cream/10 flex flex-col md:flex-row items-center gap-6">
+                        <div class="w-28 h-28 bg-absurd-dark rounded-full flex-shrink-0 flex items-center justify-center">
+                            <img src="assets/images/education/placeholder-coin.jpg" alt="Absurd Education Coin" class="w-20 h-20 rounded-full object-cover">
+                        </div>
+                        
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold mb-2">The Knowledge Coin</h3>
+                            <p class="opacity-80">Our 3D-printed token is a physical reminder of the responsibility to share what you learn. Each coin has a unique ID that we track to see how far knowledge can spread.</p>
+                            <p class="mt-2 text-absurd-orange">Wonder how far your coin will travel?</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Course Cards -->
+            <section id="courses" class="py-20 relative">
+                <div class="container mx-auto px-4">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl md:text-5xl font-bold mb-6">Join the <span class="text-absurd-orange">Absurd Learning</span> Experiments</h2>
+                        <p class="text-xl max-w-3xl mx-auto opacity-80">These are our chaotic adventures in learning. They're weird, they're hands-on, and they actually work.</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- Circuit Breakers Course -->
+                        <div class="bg-absurd-dark/50 backdrop-blur-md rounded-xl overflow-hidden border border-absurd-cream/10 group cursor-pointer transition transform hover:scale-[1.02] hover:border-absurd-red/50" @click="activeCourse = 'circuitBreakers'">
+                            <div class="h-48 bg-gradient-to-br from-absurd-red/20 to-absurd-cream/5 relative overflow-hidden">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <i class="fa-solid fa-bolt text-6xl text-absurd-red/30 group-hover:text-absurd-red/50 transition-colors"></i>
+                                </div>
+                                <div class="absolute top-4 left-4 bg-absurd-dark/80 backdrop-blur-sm py-1 px-3 rounded-full text-sm">
+                                    <i class="fa-solid fa-flask-vial mr-1"></i> Just Launched
+                                </div>
+                            </div>
+                            
+                            <div class="p-6">
+                                <h3 class="text-2xl font-bold mb-2 group-hover:text-absurd-red transition-colors">Circuit Breakers</h3>
+                                <p class="opacity-80 mb-4">Build weird electronic gadgets that actually do something interesting. No prior experience needed.</p>
+                                
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <i class="fa-solid fa-clock text-absurd-cream/50 mr-2"></i>
+                                        <span class="text-sm opacity-70">8 Weeks</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fa-solid fa-users text-absurd-cream/50 mr-2"></i>
+                                        <span class="text-sm opacity-70">6-8 People</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 border-t border-absurd-cream/10 flex justify-between items-center">
+                                <span class="text-sm opacity-70">Beginner-friendly</span>
+                                <span class="text-absurd-red group-hover:translate-x-1 transition-transform flex items-center">
+                                    Details <i class="fa-solid fa-arrow-right ml-2"></i>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <!-- Code Poets Course -->
+                        <div class="bg-absurd-dark/50 backdrop-blur-md rounded-xl overflow-hidden border border-absurd-cream/10 group cursor-pointer transition transform hover:scale-[1.02] hover:border-absurd-blue/50" @click="activeCourse = 'codePoets'">
+                            <div class="h-48 bg-gradient-to-br from-absurd-blue/20 to-absurd-cream/5 relative overflow-hidden">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <i class="fa-solid fa-code text-6xl text-absurd-blue/30 group-hover:text-absurd-blue/50 transition-colors"></i>
+                                </div>
+                                <div class="absolute top-4 left-4 bg-absurd-dark/80 backdrop-blur-sm py-1 px-3 rounded-full text-sm">
+                                    <i class="fa-solid fa-flask-vial mr-1"></i> Experimental
+                                </div>
+                            </div>
+                            
+                            <div class="p-6">
+                                <h3 class="text-2xl font-bold mb-2 group-hover:text-absurd-blue transition-colors">Code Poets</h3>
+                                <p class="opacity-80 mb-4">Programming isn't just logic, it's art. Create digital art, stories, and experiences through code.</p>
+                                
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <i class="fa-solid fa-clock text-absurd-cream/50 mr-2"></i>
+                                        <span class="text-sm opacity-70">10 Weeks</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fa-solid fa-users text-absurd-cream/50 mr-2"></i>
+                                        <span class="text-sm opacity-70">8-10 People</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 border-t border-absurd-cream/10 flex justify-between items-center">
+                                <span class="text-sm opacity-70">No coding experience needed</span>
+                                <span class="text-absurd-blue group-hover:translate-x-1 transition-transform flex items-center">
+                                    Details <i class="fa-solid fa-arrow-right ml-2"></i>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <!-- Play with Clay Course -->
+                        <div class="bg-absurd-dark/50 backdrop-blur-md rounded-xl overflow-hidden border border-absurd-cream/10 group cursor-pointer transition transform hover:scale-[1.02] hover:border-absurd-orange/50" @click="activeCourse = 'playWithClay'">
+                            <div class="h-48 bg-gradient-to-br from-absurd-orange/20 to-absurd-cream/5 relative overflow-hidden">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <i class="fa-solid fa-hands-holding text-6xl text-absurd-orange/30 group-hover:text-absurd-orange/50 transition-colors"></i>
+                                </div>
+                                <div class="absolute top-4 left-4 bg-absurd-dark/80 backdrop-blur-sm py-1 px-3 rounded-full text-sm">
+                                    <i class="fa-solid fa-flask-vial mr-1"></i> Coming Soon
+                                </div>
+                            </div>
+                            
+                            <div class="p-6">
+                                <h3 class="text-2xl font-bold mb-2 group-hover:text-absurd-orange transition-colors">Play with Clay</h3>
+                                <p class="opacity-80 mb-4">Understand clay as a fundamental material of human progress through hands-on experimentation.</p>
+                                
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <i class="fa-solid fa-clock text-absurd-cream/50 mr-2"></i>
+                                        <span class="text-sm opacity-70">6 Weeks</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fa-solid fa-users text-absurd-cream/50 mr-2"></i>
+                                        <span class="text-sm opacity-70">8-12 People</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 border-t border-absurd-cream/10 flex justify-between items-center">
+                                <span class="text-sm opacity-70">All experience levels</span>
+                                <span class="text-absurd-orange group-hover:translate-x-1 transition-transform flex items-center">
+                                    Details <i class="fa-solid fa-arrow-right ml-2"></i>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <!-- More courses you could add -->
+                        <!-- Data Detectives Course -->
+                        <!-- Biomakers Course -->
+                        <!-- Math Mayhem Course -->
+                    </div>
+
+                    <!-- Join Waitlist Button -->
+                    <div class="text-center mt-12">
+                        <button class="bg-absurd-red hover:bg-absurd-red/90 text-absurd-cream font-bold px-8 py-4 rounded-xl transition transform hover:scale-105" data-tf-popup="waitlistTypeformId" data-tf-opacity="100" data-tf-size="100">
+                            <i class="fa-solid fa-rocket mr-2"></i> Join the Waitlist
+                        </button>
+                        <p class="mt-4 opacity-60">Be the first to know when new courses launch.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Course Modals -->
+            <div v-if="activeCourse" class="fixed inset-0 bg-absurd-dark/90 backdrop-blur-md z-50 overflow-y-auto flex items-center justify-center p-4" @click="activeCourse = null">
+                <div class="max-w-4xl w-full bg-absurd-dark rounded-xl overflow-hidden border border-absurd-cream/20" @click.stop>
+                    <div class="relative">
+                        <!-- Circuit Breakers Course Modal -->
+                        <div v-if="activeCourse === 'circuitBreakers'">
+                            <div class="h-40 bg-gradient-to-r from-absurd-red/30 to-absurd-dark relative">
+                                <div class="absolute top-4 right-4">
+                                    <button @click="activeCourse = null" class="w-10 h-10 bg-absurd-dark/50 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-absurd-dark transition-colors">
+                                        <i class="fa-solid fa-xmark text-absurd-cream"></i>
+                                    </button>
+                                </div>
+                                <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-absurd-dark to-transparent">
+                                    <h2 class="text-3xl font-bold text-absurd-red">Circuit Breakers</h2>
+                                </div>
+                            </div>
+                            
+                            <div class="p-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                                    <div>
+                                        <p class="text-xl mb-6 opacity-90">Build weird electronic gadgets that actually do something useful (or at least interesting). No prior experience required - just curiosity and a willingness to blow a few LEDs.</p>
+                                        
+                                        <div class="space-y-4">
+                                            <div class="flex items-center">
+                                                <div class="w-12 h-12 rounded-full bg-absurd-red/10 flex items-center justify-center mr-4 flex-shrink-0">
+                                                    <i class="fa-solid fa-clock text-absurd-red"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 class="font-bold">Duration</h4>
+                                                    <p class="opacity-70">8 weeks (weekly 2-hour sessions)</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="flex items-center">
+                                                <div class="w-12 h-12 rounded-full bg-absurd-red/10 flex items-center justify-center mr-4 flex-shrink-0">
+                                                    <i class="fa-solid fa-users text-absurd-red"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 class="font-bold">Group Size</h4>
+                                                    <p class="opacity-70">6-8 participants per cohort</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="flex items-center">
+                                                <div class="w-12 h-12 rounded-full bg-absurd-red/10 flex items-center justify-center mr-4 flex-shrink-0">
+                                                    <i class="fa-solid fa-location-dot text-absurd-red"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 class="font-bold">Location</h4>
+                                                    <p class="opacity-70">Online or in-person in Bangalore</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="space-y-6">
+                                        <div>
+                                            <h3 class="text-xl font-bold mb-3 text-absurd-red">What You'll Make</h3>
+                                            <div class="grid grid-cols-2 gap-3">
+                                                <div class="bg-absurd-dark/50 p-3 rounded-lg border border-absurd-cream/10">
+                                                    <h4 class="font-bold">Mood Light</h4>
+                                                    <p class="text-sm opacity-70">RGB LED light system that reacts to sound</p>
+                                                </div>
+                                                <div class="bg-absurd-dark/50 p-3 rounded-lg border border-absurd-cream/10">
+                                                    <h4 class="font-bold">Digital Instrument</h4>
+                                                    <p class="text-sm opacity-70">Make music with sensors and circuits</p>
+                                                </div>
+                                                <div class="bg-absurd-dark/50 p-3 rounded-lg border border-absurd-cream/10">
+                                                    <h4 class="font-bold">Home Automation</h4>
+                                                    <p class="text-sm opacity-70">Build a device to automate something</p>
+                                                </div>
+                                                <div class="bg-absurd-dark/50 p-3 rounded-lg border border-absurd-cream/10">
+                                                    <h4 class="font-bold">Your Weird Idea</h4>
+                                                    <p class="text-sm opacity-70">We'll help you build it!</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div>
+                                            <h3 class="text-xl font-bold mb-3 text-absurd-red">Facilitator</h3>
+                                            <div class="flex items-center">
+                                                <div class="w-16 h-16 rounded-full bg-absurd-cream/10 flex items-center justify-center mr-4 flex-shrink-0">
+                                                    <i class="fa-solid fa-user text-2xl opacity-70"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-lg font-bold">Rashmi K.</h4>
+                                                    <p class="opacity-70">Electronics engineer and hardware hacker with a passion for making technology accessible</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="border-t border-absurd-cream/10 pt-6 mt-6">
+                                    <h3 class="text-xl font-bold mb-4 text-absurd-red">Payment Options</h3>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div class="bg-absurd-dark/50 p-4 rounded-lg border border-absurd-cream/10">
+                                            <h4 class="font-bold mb-2 flex items-center">
+                                                <i class="fa-solid fa-hand-holding-dollar text-absurd-blue mr-2"></i>
+                                                Pay What You Want
+                                            </h4>
+                                            <p class="opacity-70 mb-2">Suggested price: ₹12,000</p>
+                                            <p class="opacity-70 text-sm">Including all materials and component kits</p>
+                                        </div>
+                                        
+                                        <div class="bg-absurd-dark/50 p-4 rounded-lg border border-absurd-cream/10">
+                                            <h4 class="font-bold mb-2 flex items-center">
+                                                <i class="fa-solid fa-coin text-absurd-orange mr-2"></i>
+                                                Knowledge Coin
+                                            </h4>
+                                            <p class="opacity-70 mb-2">Can't pay? Take our coin instead</p>
+                                            <p class="opacity-70 text-sm">Teach someone else & pass the coin forward</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+                                    <button class="px-6 py-3 rounded-lg bg-absurd-red text-absurd-cream font-bold hover:bg-absurd-red/90 transition-all" data-tf-popup="circuitBreakersTypeformId" data-tf-opacity="100" data-tf-size="100">
+                                        <i class="fa-solid fa-bolt mr-2"></i> I Want In!
+                                    </button>
+                                    <button class="px-6 py-3 rounded-lg border border-absurd-cream/50 hover:bg-absurd-cream/10 transition-all" @click="activeCourse = null">
+                                        Maybe Later
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Code Poets Course Modal -->
+                        <div v-if="activeCourse === 'codePoets'">
+                            <div class="h-40 bg-gradient-to-r from-absurd-blue/30 to-absurd-dark relative">
+                                <div class="absolute top-4 right-4">
+                                    <button @click="activeCourse = null" class="w-10 h-10 bg-absurd-dark/50 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-absurd-dark transition-colors">
+                                        <i class="fa-solid fa-xmark text-absurd-cream"></i>
+                                    </button>
+                                </div>
+                                <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-absurd-dark to-transparent">
+                                    <h2 class="text-3xl font-bold text-absurd-blue">Code Poets</h2>
+                                </div>
+                            </div>
+                            
+                            <div class="p-6">
+                                <!-- Similar structure to Circuit Breakers modal with different content -->
+                                <!-- For brevity, I'm not including the full content here -->
+                            </div>
+                        </div>
+                        
+                        <!-- Play with Clay Course Modal -->
+                        <div v-if="activeCourse === 'playWithClay'">
+                            <!-- Similar structure to the other modals -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Section -->
+            <section class="py-20 relative bg-absurd-dark/30">
+                <div class="container mx-auto px-4">
+                    <div class="text-center mb-16">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4">Burning <span class="text-absurd-orange">Questions</span></h2>
+                        <p class="text-xl max-w-2xl mx-auto opacity-80">Things you're probably wondering about this weird approach to learning</p>
+                    </div>
+                    
+                    <div class="max-w-3xl mx-auto">
+                        <div class="space-y-4">
+                            <!-- FAQ 1 -->
+                            <div class="bg-absurd-dark/50 backdrop-blur-md rounded-xl overflow-hidden border border-absurd-cream/10">
+                                <div class="p-5 cursor-pointer flex justify-between items-center" @click="toggleFaq(1)">
+                                    <h3 class="text-xl font-bold">Is this real education or just messing around?</h3>
+                                    <i class="fa-solid" :class="faqOpen[1] ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                                </div>
+                                <div v-show="faqOpen[1]" class="p-5 pt-0 border-t border-absurd-cream/10">
+                                    <p class="opacity-80">Both! "Just messing around" is how most breakthroughs happen. The world's best scientists, engineers, and artists all describe their work as "play." We've just structured that play to ensure you actually learn something.</p>
+                                    <p class="mt-3 opacity-80">The most successful people in any field are the ones who never stopped treating it like a fascinating game. We're helping you build that mindset from the start.</p>
+                                </div>
+                            </div>
+                            
+                            <!-- FAQ 2 -->
+                            <div class="bg-absurd-dark/50 backdrop-blur-md rounded-xl overflow-hidden border border-absurd-cream/10">
+                                <div class="p-5 cursor-pointer flex justify-between items-center" @click="toggleFaq(2)">
+                                    <h3 class="text-xl font-bold">How do you measure success without tests?</h3>
+                                    <i class="fa-solid" :class="faqOpen[2] ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                                </div>
+                                <div v-show="faqOpen[2]" class="p-5 pt-0 border-t border-absurd-cream/10">
+                                    <p class="opacity-80">Did you make something that works? Can you explain how and why it works? Can you teach someone else to do it? That's our measure of success.</p>
+                                    <p class="mt-3 opacity-80">Traditional tests measure your ability to memorize information temporarily. We'd rather measure your ability to create something real that demonstrates your understanding. That's what matters in the real world anyway.</p>
+                                </div>
+                            </div>
+                            
+                            <!-- FAQ 3 -->
+                            <div class="bg-absurd-dark/50 backdrop-blur-md rounded-xl overflow-hidden border border-absurd-cream/10">
+                                <div class="p-5 cursor-pointer flex justify-between items-center" @click="toggleFaq(3)">
+                                    <h3 class="text-xl font-bold">Is the Knowledge Coin thing for real?</h3>
+                                    <i class="fa-solid" :class="faqOpen[3] ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                                </div>
+                                <div v-show="faqOpen[3]" class="p-5 pt-0 border-t border-absurd-cream/10">
+                                    <p class="opacity-80">Absolutely! We never want money to be a barrier to learning. If you can't afford a course, you can take our 3D-printed Knowledge Coin instead. The "cost" is your commitment to teach what you've learned to at least one other person and pass the coin to them.</p>
+                                    <p class="mt-3 opacity-80">Each coin has a unique tracking number. We're building a system to map how far each coin travels and how many people learn through this chain reaction of knowledge sharing.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="py-20 relative">
+                <div class="container mx-auto px-4">
+                    <div class="max-w-4xl mx-auto bg-absurd-dark/50 backdrop-blur-md rounded-xl p-8 border border-absurd-cream/10 relative overflow-hidden">
+                        <!-- Blob background -->
+                        <div class="absolute top-0 right-0 w-64 h-64 transform translate-x-1/3 -translate-y-1/3">
+                            <div class="w-full h-full bg-absurd-orange/10 rounded-full animate-blob filter blur-3xl"></div>
+                        </div>
+                        <div class="absolute bottom-0 left-0 w-80 h-80 transform -translate-x-1/3 translate-y-1/3">
+                            <div class="w-full h-full bg-absurd-blue/10 rounded-full animate-blob filter blur-3xl" style="animation-delay: 2s;"></div>
+                        </div>
+                        
+                        <!-- Content -->
+                        <div class="relative z-10 text-center">
+                            <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to Learn the <span class="text-absurd-orange">Absurd Way</span>?</h2>
+                            <p class="text-xl max-w-2xl mx-auto opacity-80 mb-10">Join our chaotic but effective learning revolution. No boring lectures guaranteed.</p>
+                            
+                            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                                <button class="px-8 py-4 rounded-xl bg-absurd-red text-absurd-cream font-bold hover:bg-absurd-red/90 transition-all transform hover:scale-105" data-tf-popup="mainTypeformId" data-tf-opacity="100" data-tf-size="100">
+                                    <i class="fa-solid fa-rocket mr-2"></i> Sign Me Up!
+                                </button>
+                                <a href="https://discord.gg/DUSUtguG2H" target="_blank" class="px-8 py-4 rounded-xl border border-absurd-cream/50 hover:bg-absurd-cream/10 transition-all flex items-center justify-center">
+                                    <i class="fa-brands fa-discord mr-2"></i> Join Our Community
+                                </a>
+                            </div>
+                            
+                            <p class="mt-6 opacity-60">Have a course idea? <a href="mailto:education@absurd.industries" class="text-absurd-orange hover:underline">Pitch it to us!</a></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="bg-absurd-dark border-t border-absurd-cream/10 py-12 mt-20">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-6 md:mb-0">
+                        <img src="absurd-industries-logo.png" alt="Absurd Industries" width="150" />
+                    </div>
+                    <div class="socials flex space-x-6">
+                        <a href="https://discord.gg/DUSUtguG2H" target="_blank" class="hover:text-absurd-orange transition-colors"><i class="fa-brands fa-discord text-2xl"></i></a>
+                        <a href="https://www.instagram.com/absurd.science/" target="_blank" class="hover:text-absurd-orange transition-colors"><i class="fa-brands fa-instagram text-2xl"></i></a>
+                        <a href="https://www.youtube.com/@absurd.industries" target="_blank" class="hover:text-absurd-orange transition-colors"><i class="fa-brands fa-youtube text-2xl"></i></a>
+                        <a href="https://www.linkedin.com/company/absurd-explorations/" target="_blank" class="hover:text-absurd-orange transition-colors"><i class="fa-brands fa-linkedin text-2xl"></i></a>
+                    </div>
+                </div>
+                <div class="mt-8 pt-8 border-t border-absurd-cream/10 text-center">
+                    <p><span class="copyleft inline-block transform rotate-180">©</span> Copyleft Absurd Explorations (OPC) Private Limited 2025. Fueled by Chaos!</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Main script -->
+    <script src="script.js"></script>
+</body>
+
+</html>
