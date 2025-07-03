@@ -1,0 +1,231 @@
+/* MONO Democracy Machine Styles */
+
+* {
+    font-family: 'Space Mono', monospace;
+}
+
+/* Grid Background */
+.grid-lines {
+    background-size: 40px 40px;
+    background-image: 
+        linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+}
+
+/* Gradient Text Effect */
+.mono-gradient {
+    background: linear-gradient(135deg, #000 0%, #333 25%, #666 50%, #999 75%, #ccc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Vote Button Effects */
+.vote-button {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.vote-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.vote-button:hover::before {
+    left: 100%;
+}
+
+/* Modal Backdrop */
+.modal-backdrop {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+/* Text Effects */
+.text-shadow-hard {
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.8);
+}
+
+.border-dashed-thick {
+    border-width: 3px;
+    border-style: dashed;
+}
+
+/* Hover Effects */
+.hover-lift {
+    transition: transform 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-4px);
+}
+
+/* Custom Scrollbar for Modal */
+.modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: #000;
+    border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: #333;
+}
+
+/* Typing Effects */
+.typing-effect {
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 2px solid #000;
+    animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: #000 }
+}
+
+/* Line Clamp Utility */
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Focus States */
+input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Typography */
+@media (max-width: 768px) {
+    .text-3xl {
+        font-size: 1.5rem;
+    }
+    
+    .text-4xl {
+        font-size: 2rem;
+    }
+    
+    .text-5xl {
+        font-size: 2.5rem;
+    }
+}
+
+/* Animation Classes */
+.animate-slide-in {
+    animation: slideIn 0.5s ease-out;
+}
+
+.animate-vote-pulse {
+    animation: votePulse 0.6s ease-out;
+}
+
+/* Print Styles */
+@media print {
+    .grid-lines {
+        background: none;
+    }
+    
+    .border-2 {
+        border-width: 1px;
+    }
+    
+    .vote-button {
+        background: white !important;
+        color: black !important;
+        border: 1px solid black !important;
+    }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+    .border-gray-600 {
+        border-color: #000;
+    }
+    
+    .bg-gray-50 {
+        background-color: #f9f9f9;
+    }
+    
+    .opacity-70 {
+        opacity: 1;
+    }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Dark Mode Support (if needed) */
+@media (prefers-color-scheme: dark) {
+    /* Currently staying true to MONO white background */
+    /* But structure is here for future dark mode */
+}
+
+/* Selection Colors */
+::selection {
+    background: #000;
+    color: #fff;
+}
+
+::-moz-selection {
+    background: #000;
+    color: #fff;
+}
+
+/* Custom Properties for Consistency */
+:root {
+    --border-main: 2px solid #000;
+    --border-subtle: 1px solid #000;
+    --bg-main: #fff;
+    --bg-alt: #f5f5f5;
+    --text-main: #000;
+    --text-subtle: rgba(0, 0, 0, 0.7);
+    --spacing-unit: 1rem;
+    --transition-main: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Utility Classes */
+.border-main {
+    border: var(--border-main);
+}
+
+.border-subtle {
+    border: var(--border-subtle);
+}
+
+.transition-main {
+    transition: var(--transition-main);
+}

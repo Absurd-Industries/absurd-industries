@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HARDWARE DEVROOM VOTING</title>
+    <meta name="description" content="Vote for your favorite hardware talks at IndiaFOSS 2025!">
+
+    <!-- Space Mono Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        mono: ['Space Mono', 'monospace'],
+                    },
+                    animation: {
+                        'slide-in': 'slideIn 0.5s ease-out',
+                        'vote-pulse': 'votePulse 0.6s ease-out',
+                        'type-cursor': 'typeCursor 1s infinite',
+                        'grid-glow': 'gridGlow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        slideIn: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        },
+                        votePulse: {
+                            '0%': { transform: 'scale(1)' },
+                            '50%': { transform: 'scale(1.05)' },
+                            '100%': { transform: 'scale(1)' }
+                        },
+                        typeCursor: {
+                            '0%, 50%': { opacity: '1' },
+                            '51%, 100%': { opacity: '0' }
+                        },
+                        gridGlow: {
+                            '0%': { opacity: '0.3' },
+                            '100%': { opacity: '0.7' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Vue.js -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="bg-white text-black font-mono min-h-screen relative overflow-x-hidden">
+    <!-- Grid Background -->
+    <div class="fixed inset-0 grid-lines opacity-20 pointer-events-none"></div>
+
+    <div id="app" class="relative z-10">
+        <!-- Header -->
+        <header class="border-b-2 border-black">
+            <div class="container mx-auto px-4 py-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-2xl md:text-4xl font-bold tracking-tight">
+                            HARDWARE<span class="text-xs align-super">DEVROOM</span>
+                        </h1>
+                        <p class="text-sm md:text-base mt-1 opacity-70">INDIAFOSS 2025</p>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-3xl md:text-5xl font-bold">{{ votesRemaining }}</div>
+                        <div class="text-xs uppercase tracking-widest">VOTES LEFT</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Email Input Section -->
+        <section v-if="!emailVerified" class="min-h-[80vh] flex items-center justify-center p-4">
+            <div class="w-full max-w-md">
+                <div class="border-2 border-black p-8 bg-white shadow-lg">
+                    <h2 class="text-3xl font-bold mb-2 text-center">
+                        YOUR EMAIL<span class="text-xs align-super"></span>
+                    </h2>
+                    <p class="text-center mb-8 text-sm opacity-70">
+                        ONE EMAIL • THREE VOTES
+                    </p>
+                    
+                    <form @submit.prevent="verifyEmail" class="space-y-6">
+                        <div class="relative">
+                            <input 
+                                v-model="email" 
+                                type="email" 
+                                placeholder="address@provider.com" 
+                                required
+                                class="w-full px-4 py-3 border-2 border-black focus:outline-none focus:border-gray-600 bg-white text-black placeholder-gray-500 font-mono tracking-wide"
+                            >
+                        </div>
+                        <button 
+                            type="submit" 
+                            :disabled="!email || emailSubmitting"
+                            class="vote-button w-full bg-black text-white font-bold py-3 px-6 uppercase tracking-widest hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed border-2 border-black"
+                        >
+                            {{ emailSubmitting ? 'VERIFYING...' : 'BEGIN VOTING' }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Voting Section -->
+        <section v-if="emailVerified" class="container mx-auto px-4 py-8">
+            <!-- Status Bar -->
+            <div class="mb-8 border-2 border-black p-4 bg-gray-100">
+                <div class="flex items-center justify-between text-sm">
+                    <span>VOTER: <span class="font-bold">{{ email }}</span></span>
+                    <span>{{ talks.length }} PROPOSALS AVAILABLE</span>
+                </div>
+                <div class="mt-2 bg-white border border-black h-8 relative overflow-hidden">
+                    <div 
+                        class="bg-black h-full transition-all duration-500"
+                        :style="{ width: `${((3 - votesRemaining) / 3) * 100}%` }"
+                    ></div>
+                    <div class="absolute inset-0 flex items-center justify-center text-xs font-bold">
+                        {{ 3 - votesRemaining }}/3 VOTES CAST
+                    </div>
+                </div>
+            </div>
+
+            <!-- Talks Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div 
+                    v-for="talk in talks" 
+                    :key="talk.id"
+                    class="border-2 border-black bg-white hover-lift transition-all duration-300"
+                    :class="{ 'border-gray-600 bg-gray-50': talk.voted }"
+                >
+                    <div class="p-6">
+                        <!-- Talk Header -->
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex-1 mr-4">
+                                <h3 class="text-lg font-bold mb-2 leading-tight line-clamp-3">{{ talk.title }}</h3>
+                                <div class="flex items-center space-x-4 text-xs opacity-70 uppercase tracking-wider">
+                                    <span>{{ talk.type }}</span>
+                                    <span>•</span>
+                                    <span>{{ talk.track }}</span>
+                                </div>
+                            </div>
+                            <div v-if="talk.voted" class="text-black font-bold text-2xl">
+                                ★
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex gap-2">
+                            <button 
+                                @click="openModal(talk)"
+                                class="flex-1 border-2 border-black bg-white text-black py-2 px-4 font-bold uppercase text-xs tracking-wider hover:bg-black hover:text-white transition-all"
+                            >
+                                VIEW
+                            </button>
+                            <button 
+                                @click="toggleVote(talk)"
+                                :disabled="!talk.voted && votesRemaining === 0"
+                                class="vote-button border-2 border-black font-bold py-2 px-4 uppercase text-xs tracking-wider disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                                :class="talk.voted ? 'bg-black text-white' : 'bg-white text-black hover:bg-black hover:text-white'"
+                            >
+                                {{ talk.voted ? 'VOTED' : 'VOTE' }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Section -->
+            <div v-if="votesRemaining === 0" class="mt-12 text-center">
+                <div class="border-2 border-black p-8 bg-black text-white">
+                    <h2 class="text-3xl font-bold mb-4">
+                        YOUR VOTES HAVE BEEN RECORDED
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+                        <div v-for="(vote, index) in votedTalks" :key="vote.id" class="border-2 border-white p-3 bg-white text-black">
+                            <div class="text-xs font-bold mb-1">VOTE {{ index + 1 }}</div>
+                            <div class="text-sm">{{ vote.title }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modal -->
+        <div v-if="selectedTalk" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop bg-black bg-opacity-50" @click="closeModal">
+            <div class="border-2 border-black bg-white max-w-4xl w-full max-h-[90vh] overflow-hidden" @click.stop>
+                <!-- Modal Header -->
+                <div class="p-6 border-b-2 border-black bg-gray-100">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-xl font-bold pr-4">{{ selectedTalk.title }}</h2>
+                        <button @click="closeModal" class="text-black hover:text-gray-600 transition-colors text-2xl font-bold">
+                            ×
+                        </button>
+                    </div>
+                    <div class="flex items-center space-x-4 mt-2 text-xs opacity-70 uppercase tracking-wider">
+                        <span>{{ selectedTalk.type }}</span>
+                        <span>•</span>
+                        <span>{{ selectedTalk.track }}</span>
+                    </div>
+                </div>
+
+                <!-- Modal Content -->
+                <div class="p-6 modal-content overflow-y-auto max-h-[calc(90vh-200px)]">
+                    <div class="prose max-w-none">
+                        <div v-if="selectedTalk.description" class="mb-6">
+                            <h3 class="text-lg font-bold mb-3 uppercase tracking-wide">DESCRIPTION</h3>
+                            <div class="text-sm leading-relaxed whitespace-pre-wrap">{{ selectedTalk.description }}</div>
+                        </div>
+                        
+                        <div class="border-2 border-black p-4 bg-gray-50 mb-6">
+                            <h3 class="text-sm font-bold mb-2 uppercase tracking-wide">FULL PROPOSAL</h3>
+                            <p class="text-xs opacity-70 mb-3">View complete details on FOSS United platform</p>
+                            <a 
+                                :href="selectedTalk.url" 
+                                target="_blank"
+                                class="inline-block bg-black text-white font-bold py-2 px-4 uppercase text-xs tracking-wider hover:bg-gray-800 transition-all"
+                            >
+                                OPEN PROPOSAL →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="p-6 border-t-2 border-black bg-gray-100">
+                    <div class="flex justify-between items-center">
+                        <button @click="closeModal" class="border-2 border-black bg-white text-black py-2 px-4 font-bold uppercase text-xs tracking-wider hover:bg-black hover:text-white transition-all">
+                            ← BACK
+                        </button>
+                        <button 
+                            @click="toggleVote(selectedTalk); closeModal()"
+                            :disabled="!selectedTalk.voted && votesRemaining === 0"
+                            class="vote-button border-2 border-black font-bold py-2 px-4 uppercase text-xs tracking-wider disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                            :class="selectedTalk.voted ? 'bg-black text-white' : 'bg-white text-black hover:bg-black hover:text-white'"
+                        >
+                            {{ selectedTalk.voted ? 'REMOVE VOTE' : 'VOTE FOR THIS' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+
+</html>
