@@ -56,25 +56,6 @@ This talk will have a lot of pictures and/or video, explaining the journey of wh
         voted: false
     },
     {
-        id: 'agt50d66ih',
-        title: 'AI Accelerators: The What, the Why, and Open Source Today',
-        type: 'Talk',
-        track: 'Hardware',
-        url: 'https://fossunited.org/c/indiafoss/2025/cfp/agt50d66ih',
-        description: `AI has outgrown general-purpose compute — yet we're still stuck in a world dominated by closed, GPU-heavy ecosystems. This session takes a systems-level look at AI accelerators: what they are, basic principles about how they work, and why open source efforts around them matter more than ever.
-
-We'll cover:
-• The rise of specialized hardware in the AI stack—and why CPUs and GPUs alone don't cut it
-• What makes an AI accelerator: compute paradigms, memory models, dataflow architectures
-• A reality check on the state of open source hardware and tooling for AI
-• Why existing open-source efforts mostly build on proprietary hardware
-• The NVIDIA monopoly isn't just a market issue—it's a bottleneck for innovation and autonomy
-• Emerging efforts: Neuromorphic Hardware, Optical Computation, Alternative Fabrication methodologies
-
-Whether you're an ML engineer, systems nerd, or just curious about what powers the models behind the curtain, this talk aims to offer a deeper technical and ecosystem-level understanding.`,
-        voted: false
-    },
-    {
         id: 'b3hd06oqbv',
         title: 'Because Glancing at Your Phone While Riding 2 Wheelers Is Dumb !!!',
         type: 'Lightning Talk',
@@ -183,24 +164,6 @@ CircuitVerse is now a staple in digital design courses—featured in books, adop
         track: 'Hardware',
         url: 'https://fossunited.org/c/indiafoss/2025/cfp/5lr5dkbti9',
         description: 'A Birds of Feather discussion about the challenges of open-source hardware in India and potential solutions.',
-        voted: false
-    },
-    {
-        id: 'bhcdo1fqft',
-        title: 'Smarter Healthcare with IoT & AI: From Sensors to Predictions',
-        type: 'Talk',
-        track: 'Hardware',
-        url: 'https://fossunited.org/c/indiafoss/2025/cfp/bhcdo1fqft',
-        description: 'A talk about using IoT and AI in healthcare applications, from sensor data collection to predictive analytics.',
-        voted: false
-    },
-    {
-        id: '9bhth8guic',
-        title: 'Build Your First Voice-Controlled Smart Robot Using FOSS and LLM',
-        type: 'Talk',
-        track: 'Hardware',
-        url: 'https://fossunited.org/c/indiafoss/2025/cfp/9bhth8guic',
-        description: 'A talk about building voice-controlled robots using FOSS and LLM technologies, with practical examples.',
         voted: false
     }
 ];
