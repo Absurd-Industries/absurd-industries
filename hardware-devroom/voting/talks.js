@@ -234,32 +234,5 @@ This is a story of getting comfortable working with bare metal, from sawing alum
 We'll learn about building metal frames, designing in 3D, where to source hardware, and how to setup your own homelab with power backup, WiFi, home automation and more.`,
     links: [],
     voted: false
-  },
-  {
-    id: '5lr5dkbti9',
-    title: 'Open-Source Hardware in India: Why We\'re Still Playing on Hard Mode',
-    type: 'Lightning Talk',
-    track: 'Hardware',
-    url: 'https://fossunited.org/c/indiafoss/2025/cfp/5lr5dkbti9',
-    description: `Brutally honest conversation about why building hardware in India feels like playing a video game on nightmare difficulty.
-
-Key topics:
-• Why VCs/funds/grants ghost you the moment you mention "open source"
-• Real estate costs that make a simple garage workshop cost 40-50k/month
-• Getting scammed while trying to buy parts and supplies
-• Why talented engineers are planning to escape to countries where there's a future
-• The hidden costs beyond just "building cool stuff"
-• Why "Make in India" is still mostly a hashtag for government/startups
-
-Target Audience: Anyone curious about hardware entrepreneurship reality, policy makers who think throwing money fixes everything, and founders wondering if they're the only ones struggling.
-
-Takeaways:
-• Infrastructure gaps that software folks never see
-• The chicken-and-egg problem of market size vs. innovation
-• Why manufacturing in India works for global markets but fails locally
-• Systemic barriers to hardware innovation in India beyond just funding
-• Creative workarounds that actually work`,
-    links: [],
-    voted: false
   }
 ];
