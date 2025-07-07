@@ -1,172 +1,5 @@
-// MONO Democracy Machine - Vue.js Logic
-const { createApp, ref, computed } = Vue;
-
-// Talk Data with Scraped Content
-const talkData = [
-    {
-        id: '1v5av3j7m9',
-        title: 'Fixable: How do we resist the planned obsolescence problem?',
-        type: 'Lightning Talk',
-        track: 'Hardware',
-        url: 'https://fossunited.org/c/indiafoss/2025/cfp/1v5av3j7m9',
-        description: `I will talk about how isfixable.com started and talk about hardware repairability from the consumers, not makers, point of view.
-
-Key topics:
-• How economic models have led to planned obsolescence of hardware products across categories
-• How we are crowdsourcing community knowledge
-• Government initiatives and whether they will be effective
-• The goal is for buyers and repair-experts to empower each other, not "DIY"
-
-I presented a version of this talk at MisinfoCon in March 2025 and BarcampBangalore 2025. This talk will be useful for many attendees as we are all consumers of many products, and attending such talks could create awareness.`,
-        voted: false
-    },
-    {
-        id: 'fgt0th22r3',
-        title: 'Makerville Badge',
-        type: 'Talk',
-        track: 'Hardware',
-        url: 'https://fossunited.org/c/indiafoss/2025/cfp/fgt0th22r3',
-        description: `Makerville is an open source hardware community. We have our Telegram channel for discussions and rants, a wiki for sharing resources, and an annual conference to come together.
-
-In this talk, I'll show how we built our community badge using only open-source tools - and how we are making fun things out of the same hardware by overloading the basic badge firmware.
-
-You'll learn to use the following open source tools:
-• OpenSCAD to write code to design enclosures for the badge
-• KiCAD to tweak the PCB
-• Zephyr to bend the ESP32C3 to your will
-• WebBluetooth to change the badge on the go
-
-We've done fun projects together as a community like the Traveling Hacker Box, and the Vendor Wiki List. But now we are making our own devboards in the form of a badge!`,
-        voted: false
-    },
-    {
-        id: '3q88q9klng',
-        title: 'Design of a Nutube Raspberry Pi HAT',
-        type: 'Lightning Talk',
-        track: 'Hardware',
-        url: 'https://fossunited.org/c/indiafoss/2025/cfp/3q88q9klng',
-        description: `I am currently designing a Raspberry Pi audio HAT using the Nutube 6P1 (flat vacuum tube). I'd like to talk about the process involved in the conception and execution of such projects.
-
-Topics covered:
-• How to put together a non-trivial hardware design from reference designs
-• Hardware development process
-• Hardware ecosystem in India
-
-This talk will have a lot of pictures and/or video, explaining the journey of why I wanted to make this thing as well as the making of it. There may be many who have never considered making hardware, but would be inspired by this journey.`,
-        voted: false
-    },
-    {
-        id: 'b3hd06oqbv',
-        title: 'Because Glancing at Your Phone While Riding 2 Wheelers Is Dumb !!!',
-        type: 'Lightning Talk',
-        track: 'Hardware',
-        url: 'https://fossunited.org/c/indiafoss/2025/cfp/b3hd06oqbv',
-        description: `Engotta (എങ്ങോട്ടാ) - in Malayalam means 'where to?' like 'where are you going?'
-
-A Product that came into existence because of the sheer number of times I have to stop my bike to check maps, only to find that I missed a turn.
-
-SOOO, Introducing Engotta, an open Hardware Project for Navigation. It's a display that can be mounted on scooters and bikes so that it gives directional navigation for users. Now I don't need to look at Maps after every turn YAAAYY ✨
-
-Technical Details:
-• Uses ESP32, a .96 inch OLED Display, a Real Time Clock
-• Shows time when not navigating
-• Power management stuff
-• (Future) 3D printing a case to attach it to scooters/bikes
-• Building custom PCBs
-
-I'm still working on it and expect to complete it within a month or so.`,
-        voted: false
-    },
-    {
-        id: '3e4nk9prdh',
-        title: 'CircuitVerse: Making Digital Logic Simulation a Breeze',
-        type: 'Lightning Talk',
-        track: 'Hardware',
-        url: 'https://fossunited.org/c/indiafoss/2025/cfp/3e4nk9prdh',
-        description: `I'm Aman Asrani—a developer at Juspay, a GSOC '24 contributor to CircuitVerse, and one of its current maintainers. In this 15-minute lightning talk, I'll guide you through how CircuitVerse turns what was once an expensive, resource-hungry, and complex process into something anyone can start exploring with a single click.
-
-What you'll see:
-• Live "Hello, World!" of Digital Logic - Open your browser, point at CircuitVerse, and you're set
-• Features: Combinational-circuit generators, interactive timing diagrams, built-in testbench, Verilog module export
-• Under the Hood: Vue.js makeover, upcoming Verilog superpowers, hardware I/O integration
-• Real Impact: Over 1 million circuits and 150,000+ active users worldwide
-
-CircuitVerse is now a staple in digital design courses—featured in books, adopted by high-school teachers. Hardware used to mean expensive workstations, complex installs, and limited lab hours. CircuitVerse shatters those barriers—anyone with an internet connection can experiment, learn, and contribute.`,
-        voted: false
-    },
-    {
-        id: 'eph0a7phr8',
-        title: 'JIgIta - jump to soldering joy from pain',
-        type: 'Talk',
-        track: 'Hardware',
-        url: 'https://fossunited.org/c/indiafoss/2025/cfp/eph0a7phr8',
-        description: 'A talk about making soldering more accessible and joyful. Learn how to transition from soldering pain to soldering joy with better techniques, tools, and approaches.',
-        voted: false
-    },
-    {
-        id: '872pp0almf',
-        title: 'Portable Social Buddy',
-        type: 'Lightning Talk',
-        track: 'Hardware',
-        url: 'https://fossunited.org/c/indiafoss/2025/cfp/872pp0almf',
-        description: 'A lightning talk about building a portable social companion device using open source hardware and software.',
-        voted: false
-    },
-    {
-        id: '4kjn23beab',
-        title: 'VoltQuest: Open Source Hardware Gaming',
-        type: 'Lightning Talk',
-        track: 'Hardware',
-        url: 'https://fossunited.org/c/indiafoss/2025/cfp/4kjn23beab',
-        description: 'A lightning talk about open source hardware gaming projects and how to build gaming devices using open hardware platforms.',
-        voted: false
-    },
-    {
-        id: 'cuslb7o4qp',
-        title: 'CoryDora: A Macropad, A Supply Chain, and A Case for Local Manufacturing',
-        type: 'Talk',
-        track: 'Hardware',
-        url: 'https://fossunited.org/c/indiafoss/2025/cfp/cuslb7o4qp',
-        description: 'A talk about building a macropad, exploring supply chain challenges, and making a case for local manufacturing in India.',
-        voted: false
-    },
-    {
-        id: 'a8fit07dot',
-        title: 'Designing UX for Human-Machine interaction',
-        type: 'Talk',
-        track: 'Hardware',
-        url: 'https://fossunited.org/c/indiafoss/2025/cfp/a8fit07dot',
-        description: 'A talk about designing user experiences for human-machine interaction, covering principles and best practices.',
-        voted: false
-    },
-    {
-        id: '0gf740p4oj',
-        title: 'Building modern GUI applications for embedded devices using game engine.',
-        type: 'Talk',
-        track: 'Hardware',
-        url: 'https://fossunited.org/c/indiafoss/2025/cfp/0gf740p4oj',
-        description: 'A talk about building modern GUI applications for embedded devices using game engines for better performance and user experience.',
-        voted: false
-    },
-    {
-        id: '4v6f8ek2n0',
-        title: 'Homelabbing with bare metal',
-        type: 'Talk',
-        track: 'Hardware',
-        url: 'https://fossunited.org/c/indiafoss/2025/cfp/4v6f8ek2n0',
-        description: 'A talk about setting up home labs with bare metal hardware, covering best practices and lessons learned.',
-        voted: false
-    },
-    {
-        id: '5lr5dkbti9',
-        title: 'Open-Source Hardware in India: Why We\'re Still Playing on Hard Mode',
-        type: 'Birds of Feather(BoF)',
-        track: 'Hardware',
-        url: 'https://fossunited.org/c/indiafoss/2025/cfp/5lr5dkbti9',
-        description: 'A Birds of Feather discussion about the challenges of open-source hardware in India and potential solutions.',
-        voted: false
-    }
-];
+// MONO Democracy Machine V3 - Main Vue.js Logic
+const { createApp, ref, computed, nextTick } = Vue;
 
 // Vue App
 createApp({
@@ -176,19 +9,70 @@ createApp({
         const emailVerified = ref(false);
         const emailSubmitting = ref(false);
         const selectedTalk = ref(null);
+        const showEmailModal = ref(false);
+        const pendingVoteTalk = ref(null);
         const votedTalkIds = ref(new Set());
-        const talks = ref([...talkData]);
+        const talks = ref([...talkData]); // Using data from talks.js
 
         // Computed properties
         const votesRemaining = computed(() => {
-            return 3 - votedTalkIds.value.size;
+            return 5 - votedTalkIds.value.size;
         });
 
         const votedTalks = computed(() => {
             return talks.value.filter(talk => talk.voted);
         });
 
+        const votingComplete = computed(() => {
+            return votesRemaining.value === 0;
+        });
+
         // Methods
+        const handleVoteClick = async (talk) => {
+            if (!emailVerified.value) {
+                // Show email modal first
+                pendingVoteTalk.value = talk;
+                showEmailModal.value = true;
+                await nextTick();
+                if (this.$refs.emailInput) {
+                    this.$refs.emailInput.focus();
+                }
+                return;
+            }
+            
+            toggleVote(talk);
+        };
+
+        const toggleVote = (talk) => {
+            if (talk.voted) {
+                // Remove vote
+                talk.voted = false;
+                votedTalkIds.value.delete(talk.id);
+            } else {
+                // Add vote (if slots available)
+                if (votesRemaining.value > 0) {
+                    talk.voted = true;
+                    votedTalkIds.value.add(talk.id);
+                    
+                    // Add visual feedback
+                    const talkElement = document.querySelector(`[data-talk-id="${talk.id}"]`);
+                    if (talkElement) {
+                        talkElement.classList.add('animate-vote-pulse');
+                        setTimeout(() => {
+                            talkElement.classList.remove('animate-vote-pulse');
+                        }, 600);
+                    }
+                }
+            }
+            
+            // Auto-submit when 5 votes are cast
+            if (votesRemaining.value === 0) {
+                setTimeout(() => {
+                    submitVotes();
+                }, 300);
+            }
+        };
+
         const verifyEmail = async () => {
             if (!email.value) return;
             
@@ -207,6 +91,13 @@ createApp({
                 
                 emailVerified.value = true;
                 localStorage.setItem(`current_voter`, email.value);
+                showEmailModal.value = false;
+                
+                // If there was a pending vote, execute it
+                if (pendingVoteTalk.value) {
+                    toggleVote(pendingVoteTalk.value);
+                    pendingVoteTalk.value = null;
+                }
                 
             } catch (error) {
                 alert('ERROR VERIFYING EMAIL. PLEASE TRY AGAIN.');
@@ -215,24 +106,18 @@ createApp({
             }
         };
 
-        const toggleVote = (talk) => {
-            if (talk.voted) {
-                // Remove vote
-                talk.voted = false;
-                votedTalkIds.value.delete(talk.id);
-            } else {
-                // Add vote (if slots available)
-                if (votesRemaining.value > 0) {
-                    talk.voted = true;
-                    votedTalkIds.value.add(talk.id);
-                }
-            }
+        const cancelEmailEntry = () => {
+            showEmailModal.value = false;
+            pendingVoteTalk.value = null;
+            email.value = '';
+        };
+
+        const showVerificationPrompt = () => {
+            if (votedTalks.value.length === 0) return;
             
-            // Auto-submit when 3 votes are cast
-            if (votesRemaining.value === 0) {
-                setTimeout(() => {
-                    submitVotes();
-                }, 300);
+            const message = `You have selected ${votedTalks.value.length} talk(s). Click OK to verify your email and submit your votes.`;
+            if (confirm(message)) {
+                submitVotes();
             }
         };
 
@@ -247,13 +132,15 @@ createApp({
                 console.log('SUBMITTING VOTES:', { 
                     email: email.value, 
                     votes,
-                    timestamp: new Date().toISOString()
+                    timestamp: new Date().toISOString(),
+                    verified: emailVerified.value
                 });
                 
                 // Mark this email as having voted
                 localStorage.setItem(`voted_${email.value}`, JSON.stringify({
                     votes,
-                    timestamp: new Date().toISOString()
+                    timestamp: new Date().toISOString(),
+                    verified: emailVerified.value
                 }));
                 
                 // Here you would replace this with actual API call:
@@ -263,10 +150,12 @@ createApp({
                 //     body: JSON.stringify({ 
                 //         email: email.value, 
                 //         votes,
-                //         timestamp: new Date().toISOString()
+                //         timestamp: new Date().toISOString(),
+                //         verified: emailVerified.value
                 //     })
                 // });
                 
+                alert('VOTES SUBMITTED SUCCESSFULLY! Thank you for participating in the democratic process.');
                 console.log('VOTES SUBMITTED SUCCESSFULLY');
                 
             } catch (error) {
@@ -285,10 +174,40 @@ createApp({
             document.body.style.overflow = 'auto';
         };
 
+        const formatDescription = (description) => {
+            if (!description) return '';
+            
+            // Convert line breaks to <br> tags
+            let formatted = description.replace(/\n/g, '<br>');
+            
+            // Convert bullet points to proper list items
+            formatted = formatted.replace(/^•\s+(.+)$/gm, '<li>$1</li>');
+            
+            // Wrap consecutive list items in <ul> tags
+            formatted = formatted.replace(/(<li>.*<\/li>(?:<br>)*)+/gs, (match) => {
+                const cleanMatch = match.replace(/<br>/g, '');
+                return `<ul class="list-disc list-inside my-2 space-y-1">${cleanMatch}</ul>`;
+            });
+            
+            // Convert paragraphs (double line breaks)
+            formatted = formatted.replace(/(<br>){2,}/g, '</p><p class="mb-4">');
+            
+            // Wrap in paragraph tags if not already wrapped
+            if (!formatted.startsWith('<p') && !formatted.startsWith('<ul')) {
+                formatted = `<p class="mb-4">${formatted}</p>`;
+            }
+            
+            return formatted;
+        };
+
         // Keyboard shortcuts
         const handleKeydown = (event) => {
-            if (event.key === 'Escape' && selectedTalk.value) {
-                closeModal();
+            if (event.key === 'Escape') {
+                if (selectedTalk.value) {
+                    closeModal();
+                } else if (showEmailModal.value) {
+                    cancelEmailEntry();
+                }
             }
         };
 
@@ -298,7 +217,7 @@ createApp({
             return {
                 totalTalks: talks.value.length,
                 votedTalks: totalVotes,
-                remainingVotes: 3 - totalVotes
+                remainingVotes: 5 - totalVotes
             };
         };
 
@@ -320,7 +239,8 @@ createApp({
             const dataStr = JSON.stringify({
                 email: email.value,
                 votes,
-                timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString(),
+                verified: emailVerified.value
             }, null, 2);
             
             const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
@@ -332,8 +252,37 @@ createApp({
             linkElement.click();
         };
 
+        // Check for existing voter on load
+        const checkExistingVoter = () => {
+            const currentVoter = localStorage.getItem('current_voter');
+            if (currentVoter) {
+                email.value = currentVoter;
+                emailVerified.value = true;
+                
+                // Restore any existing votes
+                const existingVotes = localStorage.getItem(`voted_${currentVoter}`);
+                if (existingVotes) {
+                    try {
+                        const voteData = JSON.parse(existingVotes);
+                        voteData.votes.forEach(vote => {
+                            const talk = talks.value.find(t => t.id === vote.id);
+                            if (talk) {
+                                talk.voted = true;
+                                votedTalkIds.value.add(vote.id);
+                            }
+                        });
+                    } catch (error) {
+                        console.error('Error restoring votes:', error);
+                    }
+                }
+            }
+        };
+
         // Lifecycle hooks
         window.addEventListener('keydown', handleKeydown);
+        
+        // Check for existing voter when app loads
+        checkExistingVoter();
         
         // Clean up on unmount
         window.addEventListener('beforeunload', () => {
@@ -347,19 +296,25 @@ createApp({
             emailVerified,
             emailSubmitting,
             selectedTalk,
+            showEmailModal,
             talks,
             votedTalkIds,
             
             // Computed
             votesRemaining,
             votedTalks,
+            votingComplete,
             
             // Methods
-            verifyEmail,
+            handleVoteClick,
             toggleVote,
+            verifyEmail,
+            cancelEmailEntry,
+            showVerificationPrompt,
             submitVotes,
             openModal,
             closeModal,
+            formatDescription,
             getVotingStats,
             resetVotes,
             exportVotes
@@ -376,7 +331,8 @@ window.debugVoting = {
     simulateVotes: (email, talkIds) => {
         localStorage.setItem(`voted_${email}`, JSON.stringify({
             votes: talkIds.map(id => ({ id, title: `Talk ${id}` })),
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
+            verified: true
         }));
     },
     getStoredVotes: () => {
@@ -385,5 +341,16 @@ window.debugVoting = {
             email: key.replace('voted_', ''),
             data: JSON.parse(localStorage.getItem(key))
         }));
+    },
+    exportAllVotes: () => {
+        const allVotes = window.debugVoting.getStoredVotes();
+        const dataStr = JSON.stringify(allVotes, null, 2);
+        const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+        const exportFileDefaultName = `all-hardware-devroom-votes-${new Date().toISOString().split('T')[0]}.json`;
+        
+        const linkElement = document.createElement('a');
+        linkElement.setAttribute('href', dataUri);
+        linkElement.setAttribute('download', exportFileDefaultName);
+        linkElement.click();
     }
 };

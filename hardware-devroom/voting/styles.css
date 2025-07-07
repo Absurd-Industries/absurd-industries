@@ -1,4 +1,4 @@
-/* MONO Democracy Machine Styles */
+/* MONO Democracy Machine V2 Styles */
 
 * {
     font-family: 'Space Mono', monospace;
@@ -10,14 +10,6 @@
     background-image: 
         linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
-}
-
-/* Gradient Text Effect */
-.mono-gradient {
-    background: linear-gradient(135deg, #000 0%, #333 25%, #666 50%, #999 75%, #ccc 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
 }
 
 /* Vote Button Effects */
@@ -48,16 +40,6 @@
     -webkit-backdrop-filter: blur(8px);
 }
 
-/* Text Effects */
-.text-shadow-hard {
-    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.8);
-}
-
-.border-dashed-thick {
-    border-width: 3px;
-    border-style: dashed;
-}
-
 /* Hover Effects */
 .hover-lift {
     transition: transform 0.3s ease;
@@ -86,24 +68,6 @@
     background: #333;
 }
 
-/* Typing Effects */
-.typing-effect {
-    overflow: hidden;
-    white-space: nowrap;
-    border-right: 2px solid #000;
-    animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
-}
-
-@keyframes typing {
-    from { width: 0 }
-    to { width: 100% }
-}
-
-@keyframes blink-caret {
-    from, to { border-color: transparent }
-    50% { border-color: #000 }
-}
-
 /* Line Clamp Utility */
 .line-clamp-3 {
     display: -webkit-box;
@@ -121,6 +85,45 @@ input:focus {
 button:focus {
     outline: none;
     box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Link Styling for Modal Content */
+.modal-content a {
+    color: #000;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+    font-weight: bold;
+}
+
+.modal-content a:hover {
+    background-color: #000;
+    color: #fff;
+    text-decoration: none;
+    padding: 2px 4px;
+}
+
+/* Prose Styling for Descriptions */
+.prose p {
+    margin-bottom: 1rem;
+}
+
+.prose ul {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+}
+
+.prose li {
+    margin-bottom: 0.5rem;
+    list-style-type: disc;
+}
+
+.prose strong {
+    font-weight: bold;
+}
+
+.prose em {
+    font-style: italic;
 }
 
 /* Responsive Typography */
@@ -145,6 +148,14 @@ button:focus {
 
 .animate-vote-pulse {
     animation: votePulse 0.6s ease-out;
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.animate-scale-in {
+    animation: scaleIn 0.2s ease-out;
 }
 
 /* Print Styles */
@@ -188,12 +199,6 @@ button:focus {
     }
 }
 
-/* Dark Mode Support (if needed) */
-@media (prefers-color-scheme: dark) {
-    /* Currently staying true to MONO white background */
-    /* But structure is here for future dark mode */
-}
-
 /* Selection Colors */
 ::selection {
     background: #000;
@@ -228,4 +233,49 @@ button:focus {
 
 .transition-main {
     transition: var(--transition-main);
+}
+
+/* Card States */
+.voted-card {
+    border-color: #666;
+    background-color: #f9f9f9;
+}
+
+.voted-card .vote-button {
+    background-color: #000;
+    color: #fff;
+}
+
+/* Status indicators */
+.status-complete {
+    background: linear-gradient(45deg, #000 25%, #333 25%, #333 50%, #000 50%, #000 75%, #333 75%);
+    background-size: 8px 8px;
+    color: #fff;
+}
+
+/* Email modal specific styles */
+.email-modal {
+    animation: scaleIn 0.2s ease-out;
+}
+
+/* Talk grid responsive adjustments */
+@media (max-width: 640px) {
+    .talks-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+    .talks-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+@media (min-width: 1025px) {
+    .talks-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
 }
