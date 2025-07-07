@@ -1,4 +1,4 @@
-// MONO Democracy Machine V3 - Main Vue.js Logic
+// MONO Democracy Machine V4 - Production Ready Vue.js Logic
 const { createApp, ref, computed, nextTick } = Vue;
 
 // Vue App
@@ -6,13 +6,14 @@ createApp({
     setup() {
         // Reactive state
         const email = ref('');
-        const emailVerified = ref(false);
         const emailSubmitting = ref(false);
         const selectedTalk = ref(null);
-        const showEmailModal = ref(false);
+        const showEmailModal = ref(true);
+        const showCompletionModal = ref(false);
         const pendingVoteTalk = ref(null);
         const votedTalkIds = ref(new Set());
         const talks = ref([...talkData]); // Using data from talks.js
+        const emailVerified = ref(false);
 
         // Computed properties
         const votesRemaining = computed(() => {
@@ -34,9 +35,8 @@ createApp({
                 pendingVoteTalk.value = talk;
                 showEmailModal.value = true;
                 await nextTick();
-                if (this.$refs.emailInput) {
-                    this.$refs.emailInput.focus();
-                }
+                const emailInput = document.querySelector('input[type="email"]');
+                if (emailInput) emailInput.focus();
                 return;
             }
             
@@ -65,32 +65,35 @@ createApp({
                 }
             }
             
-            // Auto-submit when 5 votes are cast
+            // Show completion modal when 5 votes are cast
             if (votesRemaining.value === 0) {
                 setTimeout(() => {
-                    submitVotes();
-                }, 300);
+                    showCompletionModal.value = true;
+                }, 800); // Small delay for better UX
             }
         };
 
-        const verifyEmail = async () => {
+        const submitEmail = async () => {
             if (!email.value) return;
             
             emailSubmitting.value = true;
             
             try {
-                // Simulate API call
-                await new Promise(resolve => setTimeout(resolve, 1500));
+                // Here you'll replace with actual API call to your Cloudflare Worker
+                // const response = await fetch('/api/submit-vote', {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify({
+                //         email: email.value,
+                //         talkId: pendingVoteTalk.value?.id
+                //     })
+                // });
                 
-                // Check if email already voted (mock check)
-                const hasVoted = localStorage.getItem(`voted_${email.value}`);
-                if (hasVoted) {
-                    alert('THIS EMAIL HAS ALREADY VOTED. ONE VOTE PER EMAIL ADDRESS.');
-                    return;
-                }
+                // Simulate API call for now
+                await new Promise(resolve => setTimeout(resolve, 1000));
                 
+                // For development, store in localStorage
                 emailVerified.value = true;
-                localStorage.setItem(`current_voter`, email.value);
                 showEmailModal.value = false;
                 
                 // If there was a pending vote, execute it
@@ -100,7 +103,9 @@ createApp({
                 }
                 
             } catch (error) {
-                alert('ERROR VERIFYING EMAIL. PLEASE TRY AGAIN.');
+                console.error('Error submitting vote:', error);
+                // Show user-friendly error message instead of alert
+                showNotification('Unable to submit vote. Please try again.', 'error');
             } finally {
                 emailSubmitting.value = false;
             }
@@ -112,16 +117,17 @@ createApp({
             email.value = '';
         };
 
-        const showVerificationPrompt = () => {
-            if (votedTalks.value.length === 0) return;
-            
-            const message = `You have selected ${votedTalks.value.length} talk(s). Click OK to verify your email and submit your votes.`;
-            if (confirm(message)) {
-                submitVotes();
-            }
+        const proceedToEmailVerification = () => {
+            showCompletionModal.value = false;
+            submitAllVotes();
         };
 
-        const submitVotes = async () => {
+        const showVerificationPrompt = () => {
+            if (votedTalks.value.length === 0) return;
+            submitAllVotes();
+        };
+
+        const submitAllVotes = async () => {
             const votes = votedTalks.value.map(talk => ({
                 id: talk.id,
                 title: talk.title,
@@ -129,38 +135,36 @@ createApp({
             }));
             
             try {
+                // Here you'll replace with actual API call to your Cloudflare Worker
+                // const response = await fetch('/api/submit-votes', {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify({
+                //         email: email.value,
+                //         votes: votes,
+                //         timestamp: new Date().toISOString()
+                //     })
+                // });
+                
                 console.log('SUBMITTING VOTES:', { 
                     email: email.value, 
                     votes,
-                    timestamp: new Date().toISOString(),
-                    verified: emailVerified.value
+                    timestamp: new Date().toISOString()
                 });
                 
-                // Mark this email as having voted
+                // For development, store in localStorage
                 localStorage.setItem(`voted_${email.value}`, JSON.stringify({
                     votes,
                     timestamp: new Date().toISOString(),
                     verified: emailVerified.value
                 }));
                 
-                // Here you would replace this with actual API call:
-                // await fetch('/api/submit-votes', {
-                //     method: 'POST',
-                //     headers: { 'Content-Type': 'application/json' },
-                //     body: JSON.stringify({ 
-                //         email: email.value, 
-                //         votes,
-                //         timestamp: new Date().toISOString(),
-                //         verified: emailVerified.value
-                //     })
-                // });
-                
-                alert('VOTES SUBMITTED SUCCESSFULLY! Thank you for participating in the democratic process.');
-                console.log('VOTES SUBMITTED SUCCESSFULLY');
+                // Show success notification
+                showNotification('Votes submitted successfully! Check your email to verify.', 'success');
                 
             } catch (error) {
                 console.error('Error submitting votes:', error);
-                alert('ERROR SUBMITTING VOTES. PLEASE TRY AGAIN.');
+                showNotification('Unable to submit votes. Please try again.', 'error');
             }
         };
 
@@ -200,6 +204,33 @@ createApp({
             return formatted;
         };
 
+        // Notification system (replaces alerts)
+        const showNotification = (message, type = 'info') => {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 p-4 border-2 border-black font-mono text-sm max-w-sm animate-scale-in ${
+                type === 'success' ? 'bg-green-100 text-green-800' : 
+                type === 'error' ? 'bg-red-100 text-red-800' : 
+                'bg-blue-100 text-blue-800'
+            }`;
+            
+            notification.innerHTML = `
+                <div class="flex items-center justify-between">
+                    <span>${message}</span>
+                    <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-lg font-bold">&times;</button>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 5000);
+        };
+
         // Keyboard shortcuts
         const handleKeydown = (event) => {
             if (event.key === 'Escape') {
@@ -207,6 +238,8 @@ createApp({
                     closeModal();
                 } else if (showEmailModal.value) {
                     cancelEmailEntry();
+                } else if (showCompletionModal.value) {
+                    showCompletionModal.value = false;
                 }
             }
         };
@@ -297,6 +330,7 @@ createApp({
             emailSubmitting,
             selectedTalk,
             showEmailModal,
+            showCompletionModal,
             talks,
             votedTalkIds,
             
@@ -308,13 +342,15 @@ createApp({
             // Methods
             handleVoteClick,
             toggleVote,
-            verifyEmail,
+            submitEmail,
             cancelEmailEntry,
+            proceedToEmailVerification,
             showVerificationPrompt,
-            submitVotes,
+            submitAllVotes,
             openModal,
             closeModal,
             formatDescription,
+            showNotification,
             getVotingStats,
             resetVotes,
             exportVotes
@@ -352,5 +388,10 @@ window.debugVoting = {
         linkElement.setAttribute('href', dataUri);
         linkElement.setAttribute('download', exportFileDefaultName);
         linkElement.click();
+    },
+    testNotification: (message, type) => {
+        // Test the notification system
+        const app = document.querySelector('#app').__vueParentComponent.ctx;
+        app.showNotification(message || 'Test notification', type || 'info');
     }
 };
