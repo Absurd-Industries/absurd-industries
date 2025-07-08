@@ -15,6 +15,75 @@ createApp({
         const talks = ref([...talkData]); // Using data from talks.js
         const emailVerified = ref(false);
 
+        const checkVerificationToken = async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    
+    if (token) {
+        console.log('🔍 Token detected:', token);
+        
+        // Clean the URL immediately (no one likes messy URLs)
+        window.history.replaceState({}, document.title, window.location.pathname);
+        
+        try {
+            // Call your beautiful /api/verify endpoint
+            const response = await fetch(`https://hardware-voting-api-staging.forsakenlegacy.workers.dev/api/verify?token=${token}`);
+            const result = await response.json();
+            
+            if (result.success) {
+                // Show success modal instead of email modal
+                showVerificationSuccessModal(result);
+            } else {
+                showNotification(`Verification failed: ${result.message}`, 'error');
+            }
+        } catch (error) {
+            console.error('Verification error:', error);
+            showNotification('Verification failed - please try again!', 'error');
+        }
+    }
+};
+
+// The beautiful success modal state
+const showVerificationModal = ref(false);
+const verificationResult = ref(null);
+
+// Show verification success modal - PURE JOY
+const showVerificationSuccessModal = (result) => {
+    verificationResult.value = result;
+    showVerificationModal.value = true;
+    
+    // Update app state
+    email.value = result.email;
+    emailVerified.value = true;
+    showEmailModal.value = false; // Hide email modal if it's open
+    
+    // Mark votes in UI
+    if (result.votes) {
+        result.votes.forEach(vote => {
+            const talk = talks.value.find(t => t.id === vote.id);
+            if (talk) {
+                talk.voted = true;
+                votedTalkIds.value.add(vote.id);
+            }
+        });
+    }
+    
+    // Store in localStorage for persistence
+    localStorage.setItem('current_voter', result.email);
+    localStorage.setItem(`voted_${result.email}`, JSON.stringify({
+        votes: result.votes,
+        timestamp: result.verified_at || new Date().toISOString(),
+        verified: true
+    }));
+};
+
+// Close verification modal
+const closeVerificationModal = () => {
+    showVerificationModal.value = false;
+    verificationResult.value = null;
+};
+
+
         // Computed properties
         const votesRemaining = computed(() => {
             return 5 - votedTalkIds.value.size;
@@ -79,20 +148,6 @@ createApp({
             emailSubmitting.value = true;
             
             try {
-                // Here you'll replace with actual API call to your Cloudflare Worker
-                // const response = await fetch('https://hardware-voting-api-staging.forsakenlegacy.workers.dev/api/vote', {
-                //     method: 'POST',
-                //     headers: { 'Content-Type': 'application/json' },
-                //     body: JSON.stringify({
-                //         email: email.value,
-                //         talkId: pendingVoteTalk.value?.id
-                //     })
-                // });
-                
-                // Simulate API call for now
-                // await new Promise(resolve => setTimeout(resolve, 200));
-                
-                // For development, store in localStorage
                 emailVerified.value = true;
                 showEmailModal.value = false;
                 
@@ -287,29 +342,35 @@ createApp({
 
         // Check for existing voter on load
         const checkExistingVoter = () => {
-            const currentVoter = localStorage.getItem('current_voter');
-            if (currentVoter) {
-                email.value = currentVoter;
-                emailVerified.value = true;
-                
-                // Restore any existing votes
-                const existingVotes = localStorage.getItem(`voted_${currentVoter}`);
-                if (existingVotes) {
-                    try {
-                        const voteData = JSON.parse(existingVotes);
-                        voteData.votes.forEach(vote => {
-                            const talk = talks.value.find(t => t.id === vote.id);
-                            if (talk) {
-                                talk.voted = true;
-                                votedTalkIds.value.add(vote.id);
-                            }
-                        });
-                    } catch (error) {
-                        console.error('Error restoring votes:', error);
-                    }
+    const currentVoter = localStorage.getItem('current_voter');
+    if (currentVoter) {
+        email.value = currentVoter;
+        emailVerified.value = true;
+        showEmailModal.value = false; // Don't show email modal for existing voters
+        
+        // Restore any existing votes
+        const existingVotes = localStorage.getItem(`voted_${currentVoter}`);
+        if (existingVotes) {
+            try {
+                const voteData = JSON.parse(existingVotes);
+                if (voteData.verified) {
+                    voteData.votes.forEach(vote => {
+                        const talk = talks.value.find(t => t.id === vote.id);
+                        if (talk) {
+                            talk.voted = true;
+                            votedTalkIds.value.add(vote.id);
+                        }
+                    });
                 }
+            } catch (error) {
+                console.error('Error restoring votes:', error);
             }
-        };
+        }
+    }
+    
+    // Always check for verification token (even for existing voters)
+    checkVerificationToken();
+};
 
         // Lifecycle hooks
         window.addEventListener('keydown', handleKeydown);
@@ -333,6 +394,12 @@ createApp({
             showCompletionModal,
             talks,
             votedTalkIds,
+
+            showVerificationModal,
+            verificationResult,
+            closeVerificationModal,
+            checkVerificationToken,
+            checkExistingVoter,
             
             // Computed
             votesRemaining,
