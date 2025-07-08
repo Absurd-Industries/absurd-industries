@@ -10,7 +10,8 @@
     <!-- Space Mono Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
 
     <!-- FontAwesome -->
     <script src="https://kit.fontawesome.com/e0c6d65845.js" crossorigin="anonymous"></script>
@@ -97,33 +98,30 @@
                     <span>{{ talks.length }} PROPOSALS AVAILABLE</span>
                 </div>
                 <div class="bg-white border-2 border-black h-8 relative overflow-hidden">
-                    <div 
-                        class="bg-black h-full transition-all duration-500"
-                        :style="{ width: `${((5 - votesRemaining) / 5) * 100}%` }"
-                    ></div>
+                    <div class="bg-black h-full transition-all duration-500"
+                        :style="{ width: `${((5 - votesRemaining) / 5) * 100}%` }"></div>
                     <div class="absolute inset-0 flex items-center justify-center text-xs font-bold">
                         {{ 5 - votesRemaining }}/5 VOTES CAST
                     </div>
                 </div>
-                
+
                 <!-- Voted Talks Display -->
                 <div v-if="votedTalks.length > 0" class="mt-4">
                     <div class="text-xs font-bold mb-2 uppercase tracking-wide">YOUR VOTES:</div>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mb-4">
-                        <div v-for="(vote, index) in votedTalks" :key="vote.id" class="border border-black p-2 bg-white text-xs">
+                        <div v-for="(vote, index) in votedTalks" :key="vote.id"
+                            class="border border-black p-2 bg-white text-xs">
                             <div class="font-bold flex items-center">
                                 <i class="fas fa-check text-green-600 mr-2"></i>
                                 {{ index + 1 }}. {{ vote.title }}
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Verify Email Button -->
                     <div v-if="votedTalks.length > 0 && votedTalks.length <= 5" class="flex justify-center">
-                        <button 
-                            @click="showVerificationPrompt"
-                            class="bg-black text-white font-bold py-2 px-6 uppercase text-xs tracking-wider hover:bg-gray-800 transition-all border-2 border-black"
-                        >
+                        <button @click="showVerificationPrompt"
+                            class="bg-black text-white font-bold py-2 px-6 uppercase text-xs tracking-wider hover:bg-gray-800 transition-all border-2 border-black">
                             <i class="fas fa-envelope-check mr-2"></i>
                             SUBMIT
                         </button>
@@ -136,13 +134,9 @@
         <section class="container mx-auto px-4 py-8">
             <!-- Talks Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div 
-                    v-for="talk in talks" 
-                    :key="talk.id"
+                <div v-for="talk in talks" :key="talk.id"
                     class="border-2 border-black bg-white hover-lift transition-all duration-300 animate-slide-in"
-                    :class="{ 'border-gray-600 bg-gray-50': talk.voted }"
-                    :data-talk-id="talk.id"
-                >
+                    :class="{ 'border-gray-600 bg-gray-50': talk.voted }" :data-talk-id="talk.id">
                     <div class="p-6">
                         <!-- Talk Header -->
                         <div class="flex items-start justify-between mb-4">
@@ -161,18 +155,13 @@
 
                         <!-- Action Buttons -->
                         <div class="flex gap-2">
-                            <button 
-                                @click="openModal(talk)"
-                                class="flex-1 border-2 border-black bg-white text-black py-2 px-4 font-bold uppercase text-xs tracking-wider hover:bg-black hover:text-white transition-all"
-                            >
+                            <button @click="openModal(talk)"
+                                class="flex-1 border-2 border-black bg-white text-black py-2 px-4 font-bold uppercase text-xs tracking-wider hover:bg-black hover:text-white transition-all">
                                 VIEW
                             </button>
-                            <button 
-                                @click="handleVoteClick(talk)"
-                                :disabled="!talk.voted && votesRemaining === 0"
+                            <button @click="handleVoteClick(talk)" :disabled="!talk.voted && votesRemaining === 0"
                                 class="vote-button border-2 border-black font-bold py-2 px-4 uppercase text-xs tracking-wider disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-                                :class="talk.voted ? 'bg-black text-white' : 'bg-white text-black hover:bg-black hover:text-white'"
-                            >
+                                :class="talk.voted ? 'bg-black text-white' : 'bg-white text-black hover:bg-black hover:text-white'">
                                 {{ talk.voted ? 'VOTED' : 'VOTE' }}
                             </button>
                         </div>
@@ -182,12 +171,15 @@
         </section>
 
         <!-- Email Input Modal -->
-        <div v-if="showEmailModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop bg-black bg-opacity-50" @click="cancelEmailEntry">
+        <div v-if="showEmailModal"
+            class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop bg-black bg-opacity-50"
+            @click="cancelEmailEntry">
             <div class="border-2 border-black bg-white max-w-md w-full animate-scale-in" @click.stop>
                 <div class="p-6 border-b-2 border-black bg-gray-100">
                     <div class="flex items-center justify-between">
                         <h2 class="text-xl font-bold">ENTER YOUR EMAIL</h2>
-                        <button @click="cancelEmailEntry" class="text-black hover:text-gray-600 transition-colors text-2xl font-bold">
+                        <button @click="cancelEmailEntry"
+                            class="text-black hover:text-gray-600 transition-colors text-2xl font-bold">
                             ×
                         </button>
                     </div>
@@ -197,20 +189,12 @@
                 <div class="p-6">
                     <form @submit.prevent="submitEmail" class="space-y-4">
                         <div class="relative">
-                            <input 
-                                v-model="email" 
-                                type="email" 
-                                placeholder="address@provider.com" 
-                                required
+                            <input v-model="email" type="email" placeholder="address@provider.com" required
                                 class="w-full px-4 py-3 border-2 border-black focus:outline-none focus:border-gray-600 bg-white text-black placeholder-gray-500 font-mono tracking-wide"
-                                ref="emailInput"
-                            >
+                                ref="emailInput">
                         </div>
-                        <button 
-                            type="submit" 
-                            :disabled="!email || emailSubmitting"
-                            class="vote-button w-full bg-black text-white font-bold py-3 px-6 uppercase tracking-widest hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed border-2 border-black"
-                        >
+                        <button type="submit" :disabled="!email || emailSubmitting"
+                            class="vote-button w-full bg-black text-white font-bold py-3 px-6 uppercase tracking-widest hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed border-2 border-black">
                             {{ emailSubmitting ? 'SUBMITTING...' : 'CAST VOTE' }}
                         </button>
                     </form>
@@ -219,7 +203,8 @@
         </div>
 
         <!-- Completion Modal -->
-        <div v-if="showCompletionModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop bg-black bg-opacity-50">
+        <div v-if="showCompletionModal"
+            class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop bg-black bg-opacity-50">
             <div class="border-2 border-black bg-white max-w-md w-full animate-scale-in">
                 <div class="p-6 border-b-2 border-black bg-black text-white text-center">
                     <div class="text-4xl mb-4">
@@ -230,20 +215,16 @@
 
                 <div class="p-6 text-center">
                     <p class="text-sm mb-4">You've selected all 5 talks. Ready to submit and verify your email?</p>
-                    
+
                     <div class="space-y-3">
-                        <button 
-                            @click="proceedToEmailVerification"
-                            class="w-full bg-black text-white font-bold py-3 px-6 uppercase text-xs tracking-wider hover:bg-gray-800 transition-all border-2 border-black"
-                        >
+                        <button @click="proceedToEmailVerification"
+                            class="w-full bg-black text-white font-bold py-3 px-6 uppercase text-xs tracking-wider hover:bg-gray-800 transition-all border-2 border-black">
                             <i class="fas fa-envelope-check mr-2"></i>
                             SUBMIT AND VERIFY EMAIL
                         </button>
-                        
-                        <button 
-                            @click="showCompletionModal = false"
-                            class="w-full border-2 border-black bg-white text-black font-bold py-2 px-6 uppercase text-xs tracking-wider hover:bg-black hover:text-white transition-all"
-                        >
+
+                        <button @click="showCompletionModal = false"
+                            class="w-full border-2 border-black bg-white text-black font-bold py-2 px-6 uppercase text-xs tracking-wider hover:bg-black hover:text-white transition-all">
                             CONTINUE REVIEWING
                         </button>
                     </div>
@@ -251,14 +232,97 @@
             </div>
         </div>
 
+        <!-- Verification Success Modal -->
+        <div v-if="showVerificationModal"
+            class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop bg-black bg-opacity-50">
+            <div class="border-2 border-green-600 bg-white max-w-md w-full animate-scale-in">
+                <!-- Header - Green because success is beautiful -->
+                <div class="p-6 border-b-2 border-green-600 bg-green-600 text-white text-center">
+                    <div class="text-4xl mb-4">
+                        <i class="fas fa-check-circle animate-bounce-gentle"></i>
+                    </div>
+                    <h2 class="text-xl font-bold">EMAIL VERIFIED!</h2>
+                    <p class="text-sm opacity-90 mt-2">Your votes are now officially counted</p>
+                </div>
+
+                <!-- Content - Pure democratic satisfaction -->
+                <div class="p-6">
+                    <div class="text-center mb-6">
+                        <h3 class="text-lg font-bold text-green-600 mb-2">Democracy Successful! 🎉</h3>
+                        <p class="text-sm text-gray-700 mb-4">
+                            Thank you for participating in the Hardware DevRoom selection process.
+                        </p>
+
+                        <!-- Show verified email -->
+                        <div class="bg-gray-100 border-2 border-gray-300 p-3 mb-4">
+                            <div class="text-xs uppercase tracking-wider text-gray-500 mb-1">VERIFIED VOTER</div>
+                            <div class="font-bold text-sm">{{ verificationResult?.email }}</div>
+                        </div>
+
+                        <!-- Show vote count -->
+                        <div v-if="verificationResult?.votes" class="bg-green-50 border-2 border-green-200 p-3 mb-4">
+                            <div class="text-xs uppercase tracking-wider text-green-600 mb-1">VOTES COUNTED</div>
+                            <div class="font-bold text-lg text-green-700">
+                                {{ verificationResult.votes.length }} {{ verificationResult.votes.length === 1 ? 'TALK'
+                                : 'TALKS' }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- What's next section -->
+                    <div class="border-t-2 border-gray-200 pt-4 mb-6">
+                        <h4 class="font-bold text-sm mb-2 uppercase tracking-wide">What's Next?</h4>
+                        <p class="text-xs text-gray-600 leading-relaxed">
+                            The Hardware DevRoom organizers will review all votes and announce the selected talks soon.
+                            Keep an eye on the IndiaFOSS 2025 announcements!
+                        </p>
+                    </div>
+
+                    <!-- Action buttons -->
+                    <div class="space-y-3">
+                        <!-- Primary action - Close and continue -->
+                        <button @click="closeVerificationModal"
+                            class="w-full bg-green-600 text-white font-bold py-3 px-6 uppercase text-sm tracking-wider hover:bg-green-700 transition-all border-2 border-green-600">
+                            <i class="fas fa-thumbs-up mr-2"></i>
+                            AWESOME! CONTINUE
+                        </button>
+
+                        <!-- Secondary actions -->
+                        <div class="grid grid-cols-2 gap-2">
+                            <a href="https://indiafoss.org" target="_blank"
+                                class="text-center border-2 border-gray-300 bg-white text-gray-700 font-bold py-2 px-4 uppercase text-xs tracking-wider hover:bg-gray-100 transition-all">
+                                INDIAFOSS 2025
+                            </a>
+                            <a href="https://absurd.industries" target="_blank"
+                                class="text-center border-2 border-black bg-black text-white font-bold py-2 px-4 uppercase text-xs tracking-wider hover:bg-gray-800 transition-all">
+                                ABSURD INDUSTRIES
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer - Because branding is important -->
+                <div class="bg-gray-50 border-t-2 border-gray-200 p-4 text-center">
+                    <div class="text-xs text-gray-500">
+                        <i class="fas fa-heart text-red-400 mx-1"></i>
+                        Powered by democracy and excessive amounts of caffeine
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Talk Details Modal -->
-        <div v-if="selectedTalk" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop bg-black bg-opacity-50" @click="closeModal">
-            <div class="border-2 border-black bg-white max-w-4xl w-full max-h-[90vh] overflow-hidden animate-scale-in" @click.stop>
+        <div v-if="selectedTalk"
+            class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop bg-black bg-opacity-50"
+            @click="closeModal">
+            <div class="border-2 border-black bg-white max-w-4xl w-full max-h-[90vh] overflow-hidden animate-scale-in"
+                @click.stop>
                 <!-- Modal Header -->
                 <div class="p-6 border-b-2 border-black bg-gray-100">
                     <div class="flex items-center justify-between">
                         <h2 class="text-xl font-bold pr-4">{{ selectedTalk.title }}</h2>
-                        <button @click="closeModal" class="text-black hover:text-gray-600 transition-colors text-2xl font-bold">
+                        <button @click="closeModal"
+                            class="text-black hover:text-gray-600 transition-colors text-2xl font-bold">
                             ×
                         </button>
                     </div>
@@ -274,32 +338,25 @@
                     <div class="prose max-w-none">
                         <div v-if="selectedTalk.description" class="mb-6">
                             <h3 class="text-lg font-bold mb-3 uppercase tracking-wide">DESCRIPTION</h3>
-                            <div class="text-sm leading-relaxed" v-html="formatDescription(selectedTalk.description)"></div>
+                            <div class="text-sm leading-relaxed" v-html="formatDescription(selectedTalk.description)">
+                            </div>
                         </div>
-                        
+
                         <div v-if="selectedTalk.links && selectedTalk.links.length > 0" class="mb-6">
                             <h3 class="text-lg font-bold mb-3 uppercase tracking-wide">LINKS</h3>
                             <div class="space-y-2">
-                                <a 
-                                    v-for="link in selectedTalk.links" 
-                                    :key="link.url"
-                                    :href="link.url" 
-                                    target="_blank"
-                                    class="block underline hover:no-underline text-black font-bold text-sm"
-                                >
+                                <a v-for="link in selectedTalk.links" :key="link.url" :href="link.url" target="_blank"
+                                    class="block underline hover:no-underline text-black font-bold text-sm">
                                     {{ link.title || link.url }} <i class="fas fa-external-link-alt ml-1 text-xs"></i>
                                 </a>
                             </div>
                         </div>
-                        
+
                         <div class="border-2 border-black p-4 bg-gray-50 mb-6">
                             <h3 class="text-sm font-bold mb-2 uppercase tracking-wide">FULL PROPOSAL</h3>
                             <p class="text-xs opacity-70 mb-3">View complete details on FOSS United platform</p>
-                            <a 
-                                :href="selectedTalk.url" 
-                                target="_blank"
-                                class="inline-block bg-black text-white font-bold py-2 px-4 uppercase text-xs tracking-wider transition-all"
-                            >
+                            <a :href="selectedTalk.url" target="_blank"
+                                class="inline-block bg-black text-white font-bold py-2 px-4 uppercase text-xs tracking-wider transition-all">
                                 OPEN PROPOSAL <i class="fas fa-external-link-alt ml-2"></i>
                             </a>
                         </div>
@@ -309,15 +366,14 @@
                 <!-- Modal Footer -->
                 <div class="p-6 border-t-2 border-black bg-gray-100">
                     <div class="flex justify-between items-center">
-                        <button @click="closeModal" class="border-2 border-black bg-white text-black py-2 px-4 font-bold uppercase text-xs tracking-wider hover:bg-black hover:text-white transition-all">
+                        <button @click="closeModal"
+                            class="border-2 border-black bg-white text-black py-2 px-4 font-bold uppercase text-xs tracking-wider hover:bg-black hover:text-white transition-all">
                             ← BACK
                         </button>
-                        <button 
-                            @click="handleVoteClick(selectedTalk); closeModal()"
+                        <button @click="handleVoteClick(selectedTalk); closeModal()"
                             :disabled="!selectedTalk.voted && votesRemaining === 0"
                             class="vote-button border-2 border-black font-bold py-2 px-4 uppercase text-xs tracking-wider disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-                            :class="selectedTalk.voted ? 'bg-black text-white' : 'bg-white text-black hover:bg-black hover:text-white'"
-                        >
+                            :class="selectedTalk.voted ? 'bg-black text-white' : 'bg-white text-black hover:bg-black hover:text-white'">
                             {{ selectedTalk.voted ? 'REMOVE VOTE' : 'VOTE FOR THIS' }}
                         </button>
                     </div>
@@ -327,8 +383,8 @@
     </div>
 
     <!-- Scripts -->
-    <script src="talks.js?v10"></script>
-    <script src="script.js?v10"></script>
+    <script src="talks.js?v11"></script>
+    <script src="script.js?v11"></script>
 </body>
 
 </html>
