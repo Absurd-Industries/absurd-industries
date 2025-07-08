@@ -90,7 +90,7 @@ createApp({
                 // });
                 
                 // Simulate API call for now
-                // await new Promise(resolve => setTimeout(resolve, 200));
+                await new Promise(resolve => setTimeout(resolve, 200));
                 
                 // For development, store in localStorage
                 // emailVerified.value = true;
