@@ -90,11 +90,11 @@ createApp({
                 // });
                 
                 // Simulate API call for now
-                await new Promise(resolve => setTimeout(resolve, 200));
+                // await new Promise(resolve => setTimeout(resolve, 200));
                 
                 // For development, store in localStorage
-                // emailVerified.value = true;
-                // showEmailModal.value = false;
+                emailVerified.value = true;
+                showEmailModal.value = false;
                 
                 // If there was a pending vote, execute it
                 if (pendingVoteTalk.value) {
