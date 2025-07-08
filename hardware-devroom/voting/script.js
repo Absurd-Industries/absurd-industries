@@ -27,7 +27,7 @@ createApp({
         
         try {
             // Call your beautiful /api/verify endpoint
-            const response = await fetch(`https://hardware-voting-api-staging.forsakenlegacy.workers.dev/api/verify?token=${token}`);
+            const response = await fetch(`hardware-voting-api-production.forsakenlegacy.workers.dev/api/verify?token=${token}`);
             const result = await response.json();
             
             if (result.success) {
@@ -185,13 +185,12 @@ const closeVerificationModal = () => {
         const submitAllVotes = async () => {
             const votes = votedTalks.value.map(talk => ({
                 id: talk.id,
-                title: talk.title,
-                type: talk.type
+                title: talk.title
             }));
             
             try {
-                // Here you'll replace with actual API call to your Cloudflare Worker
-                const response = await fetch('https://hardware-voting-api-staging.forsakenlegacy.workers.dev/api/vote', {
+                // Actual API call to your Cloudflare Worker
+                const response = await fetch('hardware-voting-api-production.forsakenlegacy.workers.dev/api/vote', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -320,7 +319,6 @@ const closeVerificationModal = () => {
             const votes = votedTalks.value.map(talk => ({
                 id: talk.id,
                 title: talk.title,
-                type: talk.type,
                 url: talk.url
             }));
             
