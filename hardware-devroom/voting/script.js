@@ -80,21 +80,21 @@ createApp({
             
             try {
                 // Here you'll replace with actual API call to your Cloudflare Worker
-                // const response = await fetch('/api/submit-vote', {
-                //     method: 'POST',
-                //     headers: { 'Content-Type': 'application/json' },
-                //     body: JSON.stringify({
-                //         email: email.value,
-                //         talkId: pendingVoteTalk.value?.id
-                //     })
-                // });
+                 const response = await fetch('https://hardware-voting-api-staging.forsakenlegacy.workers.dev/api/vote', {
+                     method: 'POST',
+                     headers: { 'Content-Type': 'application/json' },
+                     body: JSON.stringify({
+                         email: email.value,
+                         talkId: pendingVoteTalk.value?.id
+                     })
+                 });
                 
                 // Simulate API call for now
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                // await new Promise(resolve => setTimeout(resolve, 1000));
                 
                 // For development, store in localStorage
-                emailVerified.value = true;
-                showEmailModal.value = false;
+                // emailVerified.value = true;
+                // showEmailModal.value = false;
                 
                 // If there was a pending vote, execute it
                 if (pendingVoteTalk.value) {
@@ -136,15 +136,15 @@ createApp({
             
             try {
                 // Here you'll replace with actual API call to your Cloudflare Worker
-                // const response = await fetch('/api/submit-votes', {
-                //     method: 'POST',
-                //     headers: { 'Content-Type': 'application/json' },
-                //     body: JSON.stringify({
-                //         email: email.value,
-                //         votes: votes,
-                //         timestamp: new Date().toISOString()
-                //     })
-                // });
+                const response = await fetch('https://hardware-voting-api-staging.forsakenlegacy.workers.dev/api/vote', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: email.value,
+                        votes: votes,
+                        timestamp: new Date().toISOString()
+                    })
+                });
                 
                 console.log('SUBMITTING VOTES:', { 
                     email: email.value, 
@@ -153,11 +153,11 @@ createApp({
                 });
                 
                 // For development, store in localStorage
-                localStorage.setItem(`voted_${email.value}`, JSON.stringify({
-                    votes,
-                    timestamp: new Date().toISOString(),
-                    verified: emailVerified.value
-                }));
+                //localStorage.setItem(`voted_${email.value}`, JSON.stringify({
+                //    votes,
+                //    timestamp: new Date().toISOString(),
+                //    verified: emailVerified.value
+                //}));
                 
                 // Show success notification
                 showNotification('Votes submitted successfully! Check your email to verify.', 'success');
