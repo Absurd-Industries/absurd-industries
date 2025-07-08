@@ -80,17 +80,17 @@ createApp({
             
             try {
                 // Here you'll replace with actual API call to your Cloudflare Worker
-                 const response = await fetch('https://hardware-voting-api-staging.forsakenlegacy.workers.dev/api/vote', {
-                     method: 'POST',
-                     headers: { 'Content-Type': 'application/json' },
-                     body: JSON.stringify({
-                         email: email.value,
-                         talkId: pendingVoteTalk.value?.id
-                     })
-                 });
+                // const response = await fetch('https://hardware-voting-api-staging.forsakenlegacy.workers.dev/api/vote', {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify({
+                //         email: email.value,
+                //         talkId: pendingVoteTalk.value?.id
+                //     })
+                // });
                 
                 // Simulate API call for now
-                // await new Promise(resolve => setTimeout(resolve, 1000));
+                // await new Promise(resolve => setTimeout(resolve, 200));
                 
                 // For development, store in localStorage
                 // emailVerified.value = true;
