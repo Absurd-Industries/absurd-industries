@@ -141,7 +141,7 @@ createApp({
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         email: email.value,
-                        vote_data: votes,
+                        vote_data: {'votes': votes},
                         timestamp: new Date().toISOString()
                     })
                 });
