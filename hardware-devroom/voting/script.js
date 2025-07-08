@@ -185,8 +185,7 @@ const closeVerificationModal = () => {
         const submitAllVotes = async () => {
             const votes = votedTalks.value.map(talk => ({
                 id: talk.id,
-                title: talk.title,
-                type: talk.type
+                title: talk.title
             }));
             
             try {
@@ -320,7 +319,6 @@ const closeVerificationModal = () => {
             const votes = votedTalks.value.map(talk => ({
                 id: talk.id,
                 title: talk.title,
-                type: talk.type,
                 url: talk.url
             }));
             
