@@ -141,14 +141,14 @@ createApp({
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         email: email.value,
-                        votes: votes,
+                        vote_data: votes,
                         timestamp: new Date().toISOString()
                     })
                 });
                 
                 console.log('SUBMITTING VOTES:', { 
                     email: email.value, 
-                    votes,
+                    vote_data: votes,
                     timestamp: new Date().toISOString()
                 });
                 
