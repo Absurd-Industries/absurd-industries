@@ -8,7 +8,7 @@ createApp({
         const email = ref('');
         const emailSubmitting = ref(false);
         const selectedTalk = ref(null);
-        const showEmailModal = ref(true);
+        const showEmailModal = ref(false);
         const showCompletionModal = ref(false);
         const pendingVoteTalk = ref(null);
         const votedTalkIds = ref(new Set());

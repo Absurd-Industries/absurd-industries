@@ -246,7 +246,7 @@
     class="bg-dark text-white font-jura bg-[url('/assets/images/workdesk.jpg')] bg-cover bg-fixed bg-center min-h-screen">
     <div class="min-h-screen backdrop-blur-sm backdrop-brightness-50 overflow-x-hidden">
         <!-- Marquee Announcement - UNTOUCHED AS REQUESTED -->
-        <div class="marquee py-2 bg-orange text-dark font-bold overflow-hidden">
+        <div class="hidden marquee py-2 bg-orange text-dark font-bold overflow-hidden">
             <div class="marquee-content">
                 ⚡️ VOTE FOR YOUR FAVORITE TALKS ⚡️ SEPTEMBER 2025 ⚡️ VOTE FOR YOUR FAVORITE TALKS ⚡️ SEPTEMBER 2025 ⚡️ VOTE FOR YOUR FAVORITE TALKS ⚡️ SEPTEMBER 2025 ⚡️ VOTE FOR YOUR FAVORITE TALKS ⚡️ SEPTEMBER 2025 ⚡️ VOTE FOR YOUR FAVORITE TALKS ⚡️ SEPTEMBER 2025 ⚡️
             </div>
@@ -275,15 +275,16 @@
                         required—just curiosity and a willingness to try!
                     </p>
 
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="https://absurd.industries/hardware-devroom/voting/" target="_blank"
-                            class="bg-orange uppercase text-dark font-bold py-3 px-6 rounded-lg text-center hover:bg-opacity-90 transition-all transform hover:scale-105 group">
+                    <div class="flex flex-col sm:flex-row gap-4 items-center">
+                        <a href="#" target="_blank"
+                            class="hidden bg-orange uppercase text-dark font-bold py-3 px-6 rounded-lg text-center hover:bg-opacity-90 transition-all transform hover:scale-105 group">
                             <i class="fa-solid fa-microchip mr-2"></i>Vote for Talks
                         </a>
                         <a href="https://fossunited.org/dashboard/buy-tickets?event=qvn4nr1b28" target="_blank"
-                            class="bg-transparent uppercase border border-orange text-orange font-bold py-3 px-6 rounded-lg text-center hover:bg-orange hover:bg-opacity-10 transition-all">
+                            class="bg-orange uppercase text-dark font-bold py-3 px-6 rounded-lg text-center hover:bg-opacity-90 transition-all transform hover:scale-105 group">
                             <i class="fa-solid fa-ticket mr-2"></i>Register to Attend
                         </a>
+                        <span class="opacity-50">Talk scheudule incoming!</span>
                     </div>
                 </div>
 
@@ -587,13 +588,6 @@
                 <div>
                     <h3 class="text-2xl font-bold mb-4">Important Links</h3>
                     <ul class="space-y-3">
-                        <li>
-                            <a href="https://absurd.industries/hardware-devroom/voting/"
-                                class="hover:text-orange transition-colors flex items-center">
-                                <i class="fa-solid fa-microchip text-orange mr-3"></i>
-                                Vote For Talks
-                            </a>
-                        </li>
                         <li>
                             <a href="https://forum.fossunited.org/t/talk-proposal-guidelines-for-a-foss-conference-meetup/1923"
                                 class="hidden hover:text-orange transition-colors flex items-center">
