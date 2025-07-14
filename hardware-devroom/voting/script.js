@@ -27,7 +27,7 @@ createApp({
         
         try {
             // Call your beautiful /api/verify endpoint
-            const response = await fetch(`https://hardware-voting-api-production.forsakenlegacy.workers.dev/api/verify?token=${token}`);
+            const response = await fetch(``);
             const result = await response.json();
             
             if (result.success) {
@@ -190,7 +190,7 @@ const closeVerificationModal = () => {
             
             try {
                 // Actual API call to your Cloudflare Worker
-                const response = await fetch('https://hardware-voting-api-production.forsakenlegacy.workers.dev/api/vote', {
+                const response = await fetch('', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
