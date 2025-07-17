@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marie Curie - Workspace | Absurd Industries</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'radium': '#FF6B35',
+                        'laboratory': '#2A5F41',
+                        'uranium': '#8B9A46',
+                        'polonium': '#D4A574',
+                        'beige-warm': '#F5F0E8',
+                        'beige-cool': '#E8E2D4',
+                        'text-dark': '#2D2D2D',
+                        'text-mid': '#6B6B6B',
+                        'text-light': '#9B9B9B'
+                    },
+                    fontFamily: {
+                        'rubik': ['Rubik', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-beige-cool font-rubik text-text-dark">
+    
+    <div id="workspace-app">
+        <!-- Navigation Header -->
+        <div class="bg-white border-b border-beige-cool p-4">
+            <div class="max-w-7xl mx-auto flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <a href="index.html" class="flex items-center gap-2 text-radium hover:text-radium/80">
+                        <i class="fas fa-arrow-left"></i>
+                        <span class="text-sm font-medium">Back to Profile</span>
+                    </a>
+                    <div class="h-4 w-px bg-beige-cool"></div>
+                    <h1 class="text-xl font-bold text-text-dark uppercase tracking-wide">WORKSPACE</h1>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="w-2 h-2 bg-uranium rounded-full animate-pulse"></div>
+                    <span class="text-xs font-medium text-uranium uppercase">LIVE</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+            
+            <!-- Workspace Overview -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                
+                <!-- Main Workspace Image -->
+                <div class="lg:col-span-2 bg-white rounded-2xl p-6 subtle-shadow">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-bold text-text-dark uppercase tracking-wide">CURIE LABORATORY</h2>
+                        <div class="flex items-center gap-2">
+                            <button @click="toggleLiveView" :class="['px-3 py-1 rounded-full text-xs font-bold transition-colors', liveView ? 'bg-red-500 text-white' : 'bg-beige-cool text-text-dark']">
+                                <i class="fas fa-video mr-1"></i>{{ liveView ? 'LIVE' : 'VIEW' }}
+                            </button>
+                            <button class="text-text-mid hover:text-radium"><i class="fas fa-expand-alt"></i></button>
+                        </div>
+                    </div>
+                    
+                    <!-- Workspace Image -->
+                    <div class="relative rounded-xl overflow-hidden bg-beige-warm mb-4">
+                        <img src="https://lh3.googleusercontent.com/ci/AL18g_QAASZa6Ujz-942aAIZGDnZqSWO3thGODBBP-kqk3INUe1ioJq3SDGpDEspGOggMdnHVAty_B0=s1200" 
+                             alt="Marie's Laboratory" class="w-full h-64 sm:h-80 object-cover">
+                        
+                        <!-- Live Indicators -->
+                        <div v-if="liveView" class="absolute top-4 left-4">
+                            <div class="bg-red-500 text-white px-2 py-1 rounded text-xs font-bold flex items-center gap-1">
+                                <div class="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                                LIVE
+                            </div>
+                        </div>
+                        
+                        <!-- Temperature Overlay -->
+                        <div class="absolute bottom-4 right-4 bg-black/70 text-white px-3 py-2 rounded-lg">
+                            <div class="text-xs">Current Temp</div>
+                            <div class="text-lg font-bold">{{ currentTemp }}°C</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Workspace Stats -->
+                    <div class="grid grid-cols-4 gap-4">
+                        <div class="text-center">
+                            <div class="text-xl font-bold text-radium">{{ workspaceStats.activeExperiments }}</div>
+                            <div class="text-xs text-text-mid">ACTIVE</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-xl font-bold text-uranium">{{ workspaceStats.samples }}</div>
+                            <div class="text-xs text-text-mid">SAMPLES</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-xl font-bold text-laboratory">{{ workspaceStats.safety }}%</div>
+                            <div class="text-xs text-text-mid">SAFETY</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-xl font-bold text-polonium">{{ workspaceStats.efficiency }}%</div>
+                            <div class="text-xs text-text-mid">EFFICIENCY</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Live Conditions -->
+                <div class="bg-white rounded-2xl p-6 subtle-shadow">
+                    <h3 class="text-lg font-bold text-text-dark mb-4 uppercase tracking-wide">LAB CONDITIONS</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium text-text-mid">Temperature</span>
+                            <span class="text-lg font-bold text-text-dark">{{ currentTemp }}°C</span>
+                        </div>
+                        <div class="w-full bg-beige-cool rounded-full h-2">
+                            <div class="bg-radium h-2 rounded-full transition-all duration-1000" :style="`width: ${(currentTemp / 30) * 100}%`"></div>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium text-text-mid">Humidity</span>
+                            <span class="text-lg font-bold text-uranium">{{ humidity }}%</span>
+                        </div>
+                        <div class="w-full bg-beige-cool rounded-full h-2">
+                            <div class="bg-uranium h-2 rounded-full transition-all duration-1000" :style="`width: ${humidity}%`"></div>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium text-text-mid">Radiation Level</span>
+                            <span class="text-lg font-bold text-red-500">EXTREME</span>
+                        </div>
+                        <div class="w-full bg-beige-cool rounded-full h-2">
+                            <div class="bg-red-500 h-2 rounded-full animate-pulse" style="width: 95%"></div>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium text-text-mid">Air Quality</span>
+                            <span class="text-lg font-bold text-yellow-600">POOR</span>
+                        </div>
+                        <div class="w-full bg-beige-cool rounded-full h-2">
+                            <div class="bg-yellow-600 h-2 rounded-full" style="width: 30%"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Safety Alert -->
+                    <div class="mt-6 bg-red-50 border border-red-200 rounded-lg p-3">
+                        <div class="flex items-center gap-2 mb-1">
+                            <i class="fas fa-exclamation-triangle text-red-500"></i>
+                            <span class="text-sm font-bold text-red-700">SAFETY ALERT</span>
+                        </div>
+                        <p class="text-xs text-red-600">Radiation levels exceed modern safety standards. Marie operates under 1902 protocols.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Equipment & Zones -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                
+                <!-- Active Equipment -->
+                <div class="bg-white rounded-2xl p-6 subtle-shadow">
+                    <h3 class="text-lg font-bold text-text-dark mb-4 uppercase tracking-wide">ACTIVE EQUIPMENT</h3>
+                    
+                    <div class="space-y-3">
+                        <div v-for="equipment in activeEquipment" :key="equipment.id" 
+                             class="flex items-center justify-between p-3 bg-beige-warm rounded-lg hover:bg-beige-cool transition-colors">
+                            <div class="flex items-center gap-3">
+                                <i :class="equipment.icon" :style="`color: ${equipment.color}`"></i>
+                                <div>
+                                    <div class="text-sm font-bold text-text-dark">{{ equipment.name }}</div>
+                                    <div class="text-xs text-text-mid">{{ equipment.status }}</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-xs text-text-mid">{{ equipment.uptime }}</div>
+                                <div :class="['w-2 h-2 rounded-full', equipment.active ? 'bg-green-500' : 'bg-red-500']"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Lab Zones -->
+                <div class="bg-white rounded-2xl p-6 subtle-shadow">
+                    <h3 class="text-lg font-bold text-text-dark mb-4 uppercase tracking-wide">LAB ZONES</h3>
+                    
+                    <div class="space-y-3">
+                        <div v-for="zone in labZones" :key="zone.id"
+                             class="p-3 border-l-4 rounded-lg" :style="`border-color: ${zone.color}; background: ${zone.color}20`">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="text-sm font-bold text-text-dark">{{ zone.name }}</h4>
+                                <span class="text-xs px-2 py-1 rounded-full" :style="`background: ${zone.color}; color: white`">
+                                    {{ zone.activity }}
+                                </span>
+                            </div>
+                            <p class="text-xs text-text-mid">{{ zone.description }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Current Projects -->
+                <div class="bg-white rounded-2xl p-6 subtle-shadow">
+                    <h3 class="text-lg font-bold text-text-dark mb-4 uppercase tracking-wide">IN PROGRESS</h3>
+                    
+                    <div class="space-y-4">
+                        <div v-for="project in currentProjects" :key="project.id"
+                             class="p-3 bg-beige-warm rounded-lg">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="text-sm font-bold text-text-dark">{{ project.name }}</h4>
+                                <span class="text-xs text-text-mid">Day {{ project.day }}</span>
+                            </div>
+                            <div class="w-full bg-beige-cool rounded-full h-2 mb-2">
+                                <div class="bg-radium h-2 rounded-full transition-all duration-1000" :style="`width: ${project.progress}%`"></div>
+                            </div>
+                            <div class="flex justify-between text-xs">
+                                <span class="text-text-mid">{{ project.progress }}% complete</span>
+                                <span class="text-uranium font-medium">{{ project.status }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Activity Log -->
+            <div class="bg-white rounded-2xl p-6 subtle-shadow">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-bold text-text-dark uppercase tracking-wide">ACTIVITY LOG</h3>
+                    <div class="flex gap-2">
+                        <button @click="filterLogs('all')" :class="['px-3 py-1 rounded text-xs font-medium transition-colors', logFilter === 'all' ? 'bg-radium text-white' : 'bg-beige-cool text-text-dark']">
+                            ALL
+                        </button>
+                        <button @click="filterLogs('experiments')" :class="['px-3 py-1 rounded text-xs font-medium transition-colors', logFilter === 'experiments' ? 'bg-radium text-white' : 'bg-beige-cool text-text-dark']">
+                            EXPERIMENTS
+                        </button>
+                        <button @click="filterLogs('safety')" :class="['px-3 py-1 rounded text-xs font-medium transition-colors', logFilter === 'safety' ? 'bg-radium text-white' : 'bg-beige-cool text-text-dark']">
+                            SAFETY
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="space-y-3 max-h-64 overflow-y-auto custom-scrollbar">
+                    <div v-for="log in filteredLogs" :key="log.id"
+                         class="flex items-start gap-3 p-3 bg-beige-warm rounded-lg">
+                        <div class="flex-shrink-0">
+                            <i :class="log.icon" :style="`color: ${log.color}`"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start mb-1">
+                                <span class="text-sm font-medium text-text-dark">{{ log.message }}</span>
+                                <span class="text-xs text-text-light">{{ log.timestamp }}</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <span class="px-2 py-1 bg-white text-xs rounded" :style="`color: ${log.color}`">
+                                    {{ log.category }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+        
+        createApp({
+            data() {
+                return {
+                    liveView: false,
+                    currentTemp: 18,
+                    humidity: 78,
+                    logFilter: 'all',
+                    workspaceStats: {
+                        activeExperiments: 3,
+                        samples: 23,
+                        safety: 15,
+                        efficiency: 87
+                    },
+                    activeEquipment: [
+                        {
+                            id: 1,
+                            name: 'Electrometer',
+                            status: 'Measuring radiation',
+                            icon: 'fas fa-flask',
+                            color: '#FF6B35',
+                            active: true,
+                            uptime: '847h'
+                        },
+                        {
+                            id: 2,
+                            name: 'Centrifuge',
+                            status: 'Separating pitchblende',
+                            icon: 'fas fa-atom',
+                            color: '#2A5F41',
+                            active: true,
+                            uptime: '23h'
+                        },
+                        {
+                            id: 3,
+                            name: 'Microscope',
+                            status: 'Crystal analysis',
+                            icon: 'fas fa-microscope',
+                            color: '#D4A574',
+                            active: false,
+                            uptime: '0h'
+                        }
+                    ],
+                    labZones: [
+                        {
+                            id: 1,
+                            name: 'Extraction Zone',
+                            description: 'Primary radium isolation area',
+                            color: '#FF6B35',
+                            activity: 'ACTIVE'
+                        },
+                        {
+                            id: 2,
+                            name: 'Analysis Station',
+                            description: 'Sample testing and measurement',
+                            color: '#8B9A46',
+                            activity: 'STANDBY'
+                        },
+                        {
+                            id: 3,
+                            name: 'Storage Area',
+                            description: 'Radioactive material storage',
+                            color: '#2A5F41',
+                            activity: 'SECURE'
+                        }
+                    ],
+                    currentProjects: [
+                        {
+                            id: 1,
+                            name: 'Radium Purification',
+                            day: 847,
+                            progress: 78,
+                            status: 'CRYSTALLIZING'
+                        },
+                        {
+                            id: 2,
+                            name: 'Polonium Analysis',
+                            day: 234,
+                            progress: 45,
+                            status: 'MEASURING'
+                        },
+                        {
+                            id: 3,
+                            name: 'Decay Rate Study',
+                            day: 12,
+                            progress: 12,
+                            status: 'OBSERVING'
+                        }
+                    ],
+                    activityLogs: [
+                        {
+                            id: 1,
+                            message: 'Radiation spike detected in extraction zone',
+                            timestamp: '2 min ago',
+                            category: 'SAFETY',
+                            icon: 'fas fa-exclamation-triangle',
+                            color: '#ef4444'
+                        },
+                        {
+                            id: 2,
+                            message: 'Radium sample purity increased to 99.7%',
+                            timestamp: '15 min ago',
+                            category: 'EXPERIMENT',
+                            icon: 'fas fa-flask',
+                            color: '#FF6B35'
+                        },
+                        {
+                            id: 3,
+                            message: 'Electrometer calibration completed',
+                            timestamp: '1 hour ago',
+                            category: 'EQUIPMENT',
+                            icon: 'fas fa-tools',
+                            color: '#8B9A46'
+                        },
+                        {
+                            id: 4,
+                            message: 'Lab assistant reported unusual glow from sample',
+                            timestamp: '2 hours ago',
+                            category: 'OBSERVATION',
+                            icon: 'fas fa-eye',
+                            color: '#D4A574'
+                        },
+                        {
+                            id: 5,
+                            message: 'Temperature exceeded 20°C threshold',
+                            timestamp: '3 hours ago',
+                            category: 'SAFETY',
+                            icon: 'fas fa-thermometer-half',
+                            color: '#ef4444'
+                        }
+                    ]
+                }
+            },
+            
+            computed: {
+                filteredLogs() {
+                    if (this.logFilter === 'all') {
+                        return this.activityLogs;
+                    }
+                    return this.activityLogs.filter(log => 
+                        log.category.toLowerCase().includes(this.logFilter.toLowerCase())
+                    );
+                }
+            },
+            
+            methods: {
+                toggleLiveView() {
+                    this.liveView = !this.liveView;
+                },
+                
+                filterLogs(filter) {
+                    this.logFilter = filter;
+                }
+            },
+            
+            mounted() {
+                // Simulate live environmental changes
+                setInterval(() => {
+                    this.currentTemp = 18 + Math.random() * 4;
+                    this.humidity = 75 + Math.random() * 10;
+                }, 3000);
+                
+                // Add new log entries occasionally
+                setInterval(() => {
+                    if (Math.random() < 0.3) {
+                        const newLog = {
+                            id: this.activityLogs.length + 1,
+                            message: 'Automated system check completed',
+                            timestamp: 'Just now',
+                            category: 'SYSTEM',
+                            icon: 'fas fa-cog',
+                            color: '#6B7280'
+                        };
+                        this.activityLogs.unshift(newLog);
+                        
+                        // Keep only last 20 logs
+                        if (this.activityLogs.length > 20) {
+                            this.activityLogs = this.activityLogs.slice(0, 20);
+                        }
+                    }
+                }, 15000);
+            }
+        }).mount('#workspace-app');
+    </script>
+</body>
+</html>

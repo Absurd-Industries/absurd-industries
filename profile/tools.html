@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marie Curie - Tools & Equipment | Absurd Industries</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'radium': '#FF6B35',
+                        'laboratory': '#2A5F41',
+                        'uranium': '#8B9A46',
+                        'polonium': '#D4A574',
+                        'beige-warm': '#F5F0E8',
+                        'beige-cool': '#E8E2D4',
+                        'text-dark': '#2D2D2D',
+                        'text-mid': '#6B6B6B',
+                        'text-light': '#9B9B9B'
+                    },
+                    fontFamily: {
+                        'rubik': ['Rubik', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-beige-cool font-rubik text-text-dark">
+    
+    <div id="tools-app">
+        <!-- Navigation Header -->
+        <div class="bg-white border-b border-beige-cool p-4">
+            <div class="max-w-7xl mx-auto flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <a href="index.html" class="flex items-center gap-2 text-radium hover:text-radium/80">
+                        <i class="fas fa-arrow-left"></i>
+                        <span class="text-sm font-medium">Back to Profile</span>
+                    </a>
+                    <div class="h-4 w-px bg-beige-cool"></div>
+                    <h1 class="text-xl font-bold text-text-dark uppercase tracking-wide">TOOLS & EQUIPMENT</h1>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button @click="viewMode = 'grid'" :class="['p-2 rounded', viewMode === 'grid' ? 'bg-radium text-white' : 'bg-beige-cool text-text-mid']">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button @click="viewMode = 'list'" :class="['p-2 rounded', viewMode === 'list' ? 'bg-radium text-white' : 'bg-beige-cool text-text-mid']">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Filters & Search -->
+        <div class="max-w-7xl mx-auto p-4 sm:p-6">
+            <div class="bg-white rounded-2xl p-4 sm:p-6 subtle-shadow mb-6">
+                <div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
+                    <div class="flex-1 w-full sm:w-auto">
+                        <div class="relative">
+                            <i class="fas fa-search absolute left-3 top-3 text-text-light"></i>
+                            <input 
+                                v-model="searchQuery"
+                                type="text" 
+                                placeholder="Search tools and equipment..."
+                                class="w-full pl-10 pr-4 py-2 border border-beige-cool rounded-lg focus:ring-2 focus:ring-radium focus:border-radium">
+                        </div>
+                    </div>
+                    <div class="flex gap-2 flex-wrap">
+                        <button @click="filterCategory('all')" :class="['px-3 py-2 rounded-lg text-xs font-medium transition-colors', categoryFilter === 'all' ? 'bg-radium text-white' : 'bg-beige-cool text-text-dark']">
+                            ALL ({{ tools.length }})
+                        </button>
+                        <button @click="filterCategory('measurement')" :class="['px-3 py-2 rounded-lg text-xs font-medium transition-colors', categoryFilter === 'measurement' ? 'bg-radium text-white' : 'bg-beige-cool text-text-dark']">
+                            MEASUREMENT
+                        </button>
+                        <button @click="filterCategory('extraction')" :class="['px-3 py-2 rounded-lg text-xs font-medium transition-colors', categoryFilter === 'extraction' ? 'bg-radium text-white' : 'bg-beige-cool text-text-dark']">
+                            EXTRACTION
+                        </button>
+                        <button @click="filterCategory('analysis')" :class="['px-3 py-2 rounded-lg text-xs font-medium transition-colors', categoryFilter === 'analysis' ? 'bg-radium text-white' : 'bg-beige-cool text-text-dark']">
+                            ANALYSIS
+                        </button>
+                        <button @click="filterCategory('safety')" :class="['px-3 py-2 rounded-lg text-xs font-medium transition-colors', categoryFilter === 'safety' ? 'bg-radium text-white' : 'bg-beige-cool text-text-dark']">
+                            SAFETY
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tools Grid/List -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 pb-8">
+            
+            <!-- Grid View -->
+            <div v-if="viewMode === 'grid'" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div v-for="tool in filteredTools" :key="tool.id"
+                     class="bg-white rounded-2xl p-6 subtle-shadow hover-lift cursor-pointer"
+                     @click="selectTool(tool)">
+                    
+                    <!-- Tool Status Indicator -->
+                    <div class="flex justify-between items-start mb-4">
+                        <div :class="['w-3 h-3 rounded-full', tool.status === 'active' ? 'bg-green-500' : tool.status === 'maintenance' ? 'bg-yellow-500' : 'bg-red-500']"></div>
+                        <span class="text-xs px-2 py-1 rounded-full bg-beige-cool text-text-mid">{{ tool.category.toUpperCase() }}</span>
+                    </div>
+                    
+                    <!-- Tool Icon -->
+                    <div class="flex justify-center mb-4">
+                        <div class="w-16 h-16 rounded-xl flex items-center justify-center" :style="`background: ${tool.color}20`">
+                            <i :class="tool.icon" :style="`color: ${tool.color}; font-size: 1.5rem`"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Tool Info -->
+                    <div class="text-center mb-4">
+                        <h3 class="text-lg font-bold text-text-dark mb-1">{{ tool.name }}</h3>
+                        <p class="text-sm text-text-mid">{{ tool.description }}</p>
+                    </div>
+                    
+                    <!-- Tool Stats -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-xs">
+                            <span class="text-text-mid">Usage</span>
+                            <span class="text-text-dark font-medium">{{ tool.usage }}h</span>
+                        </div>
+                        <div class="flex justify-between text-xs">
+                            <span class="text-text-mid">Efficiency</span>
+                            <span class="text-text-dark font-medium">{{ tool.efficiency }}%</span>
+                        </div>
+                        <div class="flex justify-between text-xs">
+                            <span class="text-text-mid">Last Used</span>
+                            <span class="text-text-dark font-medium">{{ tool.lastUsed }}</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="flex gap-2 mt-4">
+                        <button @click.stop="operateTool(tool)" 
+                                :disabled="tool.status !== 'active'"
+                                :class="['flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-colors', tool.status === 'active' ? 'bg-radium text-white hover:bg-radium/90' : 'bg-beige-cool text-text-mid cursor-not-allowed']">
+                            {{ tool.status === 'active' ? 'OPERATE' : 'OFFLINE' }}
+                        </button>
+                        <button @click.stop="viewSpecs(tool)" class="px-3 py-2 border border-beige-cool rounded-lg text-xs text-text-mid hover:border-radium hover:text-radium transition-colors">
+                            <i class="fas fa-info"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- List View -->
+            <div v-if="viewMode === 'list'" class="space-y-4">
+                <div v-for="tool in filteredTools" :key="tool.id"
+                     class="bg-white rounded-2xl p-6 subtle-shadow hover-lift cursor-pointer"
+                     @click="selectTool(tool)">
+                    
+                    <div class="flex items-center gap-6">
+                        <!-- Tool Icon -->
+                        <div class="w-16 h-16 rounded-xl flex items-center justify-center flex-shrink-0" :style="`background: ${tool.color}20`">
+                            <i :class="tool.icon" :style="`color: ${tool.color}; font-size: 1.5rem`"></i>
+                        </div>
+                        
+                        <!-- Tool Info -->
+                        <div class="flex-1">
+                            <div class="flex items-start justify-between mb-2">
+                                <div>
+                                    <h3 class="text-lg font-bold text-text-dark">{{ tool.name }}</h3>
+                                    <p class="text-sm text-text-mid">{{ tool.description }}</p>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="text-xs px-2 py-1 rounded-full bg-beige-cool text-text-mid">{{ tool.category.toUpperCase() }}</span>
+                                    <div :class="['w-3 h-3 rounded-full', tool.status === 'active' ? 'bg-green-500' : tool.status === 'maintenance' ? 'bg-yellow-500' : 'bg-red-500']"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Stats Row -->
+                            <div class="grid grid-cols-4 gap-4 mb-3">
+                                <div>
+                                    <div class="text-xs text-text-mid">Usage</div>
+                                    <div class="text-sm font-bold text-text-dark">{{ tool.usage }}h</div>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-text-mid">Efficiency</div>
+                                    <div class="text-sm font-bold text-text-dark">{{ tool.efficiency }}%</div>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-text-mid">Last Used</div>
+                                    <div class="text-sm font-bold text-text-dark">{{ tool.lastUsed }}</div>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-text-mid">Status</div>
+                                    <div class="text-sm font-bold" :class="tool.status === 'active' ? 'text-green-600' : tool.status === 'maintenance' ? 'text-yellow-600' : 'text-red-600'">
+                                        {{ tool.status.toUpperCase() }}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Progress Bars -->
+                            <div class="grid grid-cols-2 gap-4 mb-3">
+                                <div>
+                                    <div class="text-xs text-text-mid mb-1">Usage Progress</div>
+                                    <div class="w-full bg-beige-cool rounded-full h-2">
+                                        <div class="bg-radium h-2 rounded-full" :style="`width: ${(tool.usage / 1000) * 100}%`"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-text-mid mb-1">Efficiency</div>
+                                    <div class="w-full bg-beige-cool rounded-full h-2">
+                                        <div class="bg-uranium h-2 rounded-full" :style="`width: ${tool.efficiency}%`"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Actions -->
+                        <div class="flex flex-col gap-2 flex-shrink-0">
+                            <button @click.stop="operateTool(tool)" 
+                                    :disabled="tool.status !== 'active'"
+                                    :class="['px-4 py-2 rounded-lg text-xs font-bold transition-colors', tool.status === 'active' ? 'bg-radium text-white hover:bg-radium/90' : 'bg-beige-cool text-text-mid cursor-not-allowed']">
+                                {{ tool.status === 'active' ? 'OPERATE' : 'OFFLINE' }}
+                            </button>
+                            <button @click.stop="viewSpecs(tool)" class="px-4 py-2 border border-beige-cool rounded-lg text-xs text-text-mid hover:border-radium hover:text-radium transition-colors">
+                                SPECS
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tool Detail Modal -->
+        <div v-if="selectedTool" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" @click="selectedTool = null">
+            <div class="bg-white rounded-2xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto" @click.stop>
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-text-dark">{{ selectedTool.name }}</h2>
+                    <button @click="selectedTool = null" class="text-text-light hover:text-text-dark">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <!-- Tool Image/Diagram -->
+                <div class="bg-beige-warm rounded-xl p-8 mb-6 text-center">
+                    <i :class="selectedTool.icon" :style="`color: ${selectedTool.color}; font-size: 4rem`"></i>
+                </div>
+                
+                <!-- Tool Specifications -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <h3 class="text-lg font-bold text-text-dark mb-3">SPECIFICATIONS</h3>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-sm text-text-mid">Model</span>
+                                <span class="text-sm font-medium text-text-dark">{{ selectedTool.specs.model }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-text-mid">Year</span>
+                                <span class="text-sm font-medium text-text-dark">{{ selectedTool.specs.year }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-text-mid">Accuracy</span>
+                                <span class="text-sm font-medium text-text-dark">{{ selectedTool.specs.accuracy }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-text-mid">Range</span>
+                                <span class="text-sm font-medium text-text-dark">{{ selectedTool.specs.range }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-lg font-bold text-text-dark mb-3">MAINTENANCE</h3>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-sm text-text-mid">Last Service</span>
+                                <span class="text-sm font-medium text-text-dark">{{ selectedTool.maintenance.lastService }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-text-mid">Next Service</span>
+                                <span class="text-sm font-medium text-text-dark">{{ selectedTool.maintenance.nextService }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-text-mid">Condition</span>
+                                <span class="text-sm font-medium text-text-dark">{{ selectedTool.maintenance.condition }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Usage History -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-text-dark mb-3">RECENT USAGE</h3>
+                    <div class="space-y-2">
+                        <div v-for="usage in selectedTool.recentUsage" :key="usage.id" 
+                             class="flex justify-between items-center p-3 bg-beige-warm rounded-lg">
+                            <div>
+                                <div class="text-sm font-medium text-text-dark">{{ usage.project }}</div>
+                                <div class="text-xs text-text-mid">{{ usage.duration }} • {{ usage.date }}</div>
+                            </div>
+                            <span :class="['text-xs px-2 py-1 rounded-full', usage.result === 'success' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700']">
+                                {{ usage.result.toUpperCase() }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="flex gap-3">
+                    <button @click="operateTool(selectedTool)" 
+                            :disabled="selectedTool.status !== 'active'"
+                            :class="['flex-1 py-3 px-4 rounded-lg font-bold transition-colors', selectedTool.status === 'active' ? 'bg-radium text-white hover:bg-radium/90' : 'bg-beige-cool text-text-mid cursor-not-allowed']">
+                        {{ selectedTool.status === 'active' ? 'START OPERATION' : 'EQUIPMENT OFFLINE' }}
+                    </button>
+                    <button @click="scheduleMaintenance(selectedTool)" class="px-4 py-3 border border-uranium text-uranium rounded-lg hover:bg-uranium hover:text-white transition-colors">
+                        SCHEDULE MAINTENANCE
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+        
+        createApp({
+            data() {
+                return {
+                    viewMode: 'grid',
+                    searchQuery: '',
+                    categoryFilter: 'all',
+                    selectedTool: null,
+                    tools: [
+                        {
+                            id: 1,
+                            name: 'Piezoelectric Electrometer',
+                            description: 'Measures electrical charge and radiation levels',
+                            category: 'measurement',
+                            icon: 'fas fa-bolt',
+                            color: '#FF6B35',
+                            status: 'active',
+                            usage: 847,
+                            efficiency: 94,
+                            lastUsed: '2 hours ago',
+                            specs: {
+                                model: 'Curie-Piezo-1901',
+                                year: '1901',
+                                accuracy: '±0.1%',
+                                range: '0-1000 pC'
+                            },
+                            maintenance: {
+                                lastService: 'March 1, 1902',
+                                nextService: 'June 1, 1902',
+                                condition: 'Excellent'
+                            },
+                            recentUsage: [
+                                { id: 1, project: 'Radium Sample Analysis', duration: '3.2h', date: 'Today', result: 'success' },
+                                { id: 2, project: 'Polonium Measurement', duration: '1.8h', date: 'Yesterday', result: 'success' }
+                            ]
+                        },
+                        {
+                            id: 2,
+                            name: 'Manual Centrifuge',
+                            description: 'Separates materials by density using centrifugal force',
+                            category: 'extraction',
+                            icon: 'fas fa-atom',
+                            color: '#2A5F41',
+                            status: 'active',
+                            usage: 523,
+                            efficiency: 87,
+                            lastUsed: '6 hours ago',
+                            specs: {
+                                model: 'Lab-Centrifuge-1900',
+                                year: '1900',
+                                accuracy: 'Manual operation',
+                                range: '100-2000 RPM'
+                            },
+                            maintenance: {
+                                lastService: 'February 15, 1902',
+                                nextService: 'May 15, 1902',
+                                condition: 'Good'
+                            },
+                            recentUsage: [
+                                { id: 1, project: 'Pitchblende Separation', duration: '2.5h', date: 'Today', result: 'success' },
+                                { id: 2, project: 'Sample Preparation', duration: '1.2h', date: '2 days ago', result: 'success' }
+                            ]
+                        },
+                        {
+                            id: 3,
+                            name: 'Compound Microscope',
+                            description: 'High-magnification analysis of crystal structures',
+                            category: 'analysis',
+                            icon: 'fas fa-microscope',
+                            color: '#D4A574',
+                            status: 'maintenance',
+                            usage: 234,
+                            efficiency: 78,
+                            lastUsed: '2 days ago',
+                            specs: {
+                                model: 'Zeiss-Compound-1895',
+                                year: '1895',
+                                accuracy: '400x magnification',
+                                range: '10x-400x'
+                            },
+                            maintenance: {
+                                lastService: 'In progress',
+                                nextService: 'March 20, 1902',
+                                condition: 'Lens cleaning required'
+                            },
+                            recentUsage: [
+                                { id: 1, project: 'Crystal Structure Study', duration: '4.1h', date: '3 days ago', result: 'partial' },
+                                { id: 2, project: 'Sample Contamination Check', duration: '0.8h', date: '1 week ago', result: 'success' }
+                            ]
+                        },
+                        {
+                            id: 4,
+                            name: 'Analytical Balance',
+                            description: 'Precision weighing of radioactive samples',
+                            category: 'measurement',
+                            icon: 'fas fa-balance-scale',
+                            color: '#8B9A46',
+                            status: 'active',
+                            usage: 445,
+                            efficiency: 96,
+                            lastUsed: '1 hour ago',
+                            specs: {
+                                model: 'Precision-Balance-1898',
+                                year: '1898',
+                                accuracy: '±0.001g',
+                                range: '0-200g'
+                            },
+                            maintenance: {
+                                lastService: 'March 10, 1902',
+                                nextService: 'June 10, 1902',
+                                condition: 'Excellent'
+                            },
+                            recentUsage: [
+                                { id: 1, project: 'Radium Sample Weighing', duration: '0.5h', date: 'Today', result: 'success' },
+                                { id: 2, project: 'Yield Calculation', duration: '0.3h', date: 'Yesterday', result: 'success' }
+                            ]
+                        },
+                        {
+                            id: 5,
+                            name: 'Lead Aprons',
+                            description: 'Basic radiation protection equipment',
+                            category: 'safety',
+                            icon: 'fas fa-shield-alt',
+                            color: '#6B7280',
+                            status: 'offline',
+                            usage: 12,
+                            efficiency: 25,
+                            lastUsed: '3 weeks ago',
+                            specs: {
+                                model: 'Lead-Protection-1901',
+                                year: '1901',
+                                accuracy: 'Minimal protection',
+                                range: 'Light radiation only'
+                            },
+                            maintenance: {
+                                lastService: 'Never',
+                                nextService: 'Unknown',
+                                condition: 'Marie rarely uses'
+                            },
+                            recentUsage: [
+                                { id: 1, project: 'Visitor Protection', duration: '0.2h', date: '3 weeks ago', result: 'partial' }
+                            ]
+                        },
+                        {
+                            id: 6,
+                            name: 'Crystallization Dishes',
+                            description: 'Glass vessels for radium crystal formation',
+                            category: 'extraction',
+                            icon: 'fas fa-flask',
+                            color: '#FF6B35',
+                            status: 'active',
+                            usage: 789,
+                            efficiency: 92,
+                            lastUsed: '30 minutes ago',
+                            specs: {
+                                model: 'Hand-blown-Glass-1899',
+                                year: '1899',
+                                accuracy: 'Visual inspection',
+                                range: '10ml-500ml'
+                            },
+                            maintenance: {
+                                lastService: 'Daily cleaning',
+                                nextService: 'Daily cleaning',
+                                condition: 'Some cracking from radiation'
+                            },
+                            recentUsage: [
+                                { id: 1, project: 'Radium Crystallization', duration: '847h', date: 'Ongoing', result: 'success' },
+                                { id: 2, project: 'Polonium Isolation', duration: '234h', date: 'Ongoing', result: 'partial' }
+                            ]
+                        }
+                    ]
+                }
+            },
+            
+            computed: {
+                filteredTools() {
+                    let filtered = this.tools;
+                    
+                    // Filter by category
+                    if (this.categoryFilter !== 'all') {
+                        filtered = filtered.filter(tool => tool.category === this.categoryFilter);
+                    }
+                    
+                    // Filter by search query
+                    if (this.searchQuery) {
+                        filtered = filtered.filter(tool => 
+                            tool.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+                            tool.description.toLowerCase().includes(this.searchQuery.toLowerCase())
+                        );
+                    }
+                    
+                    return filtered;
+                }
+            },
+            
+            methods: {
+                filterCategory(category) {
+                    this.categoryFilter = category;
+                },
+                
+                selectTool(tool) {
+                    this.selectedTool = tool;
+                },
+                
+                operateTool(tool) {
+                    if (tool.status !== 'active') return;
+                    
+                    alert(`Operating ${tool.name}...\n\nStarting ${tool.category} procedure.\nEstimated completion: ${Math.floor(Math.random() * 4) + 1} hours.`);
+                    
+                    // Update usage
+                    tool.usage += Math.floor(Math.random() * 10) + 1;
+                    tool.lastUsed = 'Just now';
+                },
+                
+                viewSpecs(tool) {
+                    this.selectedTool = tool;
+                },
+                
+                scheduleMaintenance(tool) {
+                    alert(`Maintenance scheduled for ${tool.name}\n\nNext available slot: ${new Date(Date.now() + Math.random() * 7 * 24 * 60 * 60 * 1000).toLocaleDateString()}\n\nEstimated duration: ${Math.floor(Math.random() * 4) + 1} hours`);
+                }
+            }
+        }).mount('#tools-app');
+    </script>
+</body>
+</html>

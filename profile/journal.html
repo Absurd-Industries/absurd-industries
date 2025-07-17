@@ -1,0 +1,560 @@
+We must balance scientific progress with personal wellbeing, though the former often takes precedence in moments of discovery.`,
+                            tags: ['safety', 'health', 'radiation', 'observation'],
+                            likes: 89,
+                            comments: 234,
+                            shares: 67
+                        },
+                        {
+                            id: 4,
+                            title: 'Electrometer Calibration Protocol',
+                            date: 'January 12, 1902',
+                            day: 785,
+                            type: 'experiment',
+                            breakthrough: false,
+                            readTime: 5,
+                            excerpt: 'Detailed protocol for calibrating the piezoelectric electrometer to ensure accurate radiation measurements. This instrument has become essential for our quantitative studies.',
+                            fullContent: `Detailed protocol for calibrating the piezoelectric electrometer to ensure accurate radiation measurements. This instrument has become essential for our quantitative studies.
+
+CALIBRATION PROCEDURE:
+
+1. Environmental Preparation:
+   - Ensure room temperature stability (±1°C)
+   - Minimize air currents and vibrations
+   - Remove all radioactive samples from vicinity
+
+2. Initial Setup:
+   - Zero the instrument using non-radioactive reference
+   - Check mechanical stability of quartz crystal
+   - Verify electrical connections and insulation
+
+3. Standard Reference Testing:
+   - Use uranium oxide standard (known activity)
+   - Record baseline measurements over 30-minute period
+   - Calculate measurement drift and stability
+
+4. Sensitivity Verification:
+   - Test with samples of varying radioactivity
+   - Establish linear response curve
+   - Document detection limits
+
+This protocol has dramatically improved the reproducibility of our measurements. Pierre's expertise with electrical instruments has been invaluable in refining this procedure.
+
+The electrometer now allows us to quantify radioactivity with unprecedented precision, enabling systematic comparison between different radioactive substances.`,
+                            tags: ['electrometer', 'calibration', 'measurement', 'protocol'],
+                            likes: 45,
+                            comments: 23,
+                            shares: 12
+                        },
+                        {
+                            id: 5,
+                            title: 'Theoretical Framework for Radioactive Decay',
+                            date: 'December 3, 1901',
+                            day: 745,
+                            type: 'theory',
+                            breakthrough: false,
+                            readTime: 7,
+                            excerpt: 'Proposing a theoretical model to explain the spontaneous emission of radiation from certain elements. This may represent a fundamental property of atomic structure.',
+                            fullContent: `Proposing a theoretical model to explain the spontaneous emission of radiation from certain elements. This may represent a fundamental property of atomic structure.
+
+THEORETICAL FRAMEWORK:
+
+Hypothesis: Radioactivity is an intrinsic atomic property, not dependent on molecular composition or external conditions.
+
+Supporting Evidence:
+1. Radioactive intensity correlates with quantity of radioactive element, not its chemical form
+2. Physical conditions (temperature, pressure, chemical state) do not affect radiation emission
+3. Certain elements consistently exhibit radioactive properties regardless of source
+
+Proposed Mechanism:
+The atom itself may be the source of radiation, suggesting that atomic structure is more complex than previously assumed. This challenges the prevailing view of atoms as indivisible units.
+
+Implications:
+- Atoms may have internal structure capable of spontaneous change
+- Energy release suggests mass-energy relationship
+- New elements may be discovered through radioactive decay chains
+
+This theory contradicts established atomic theory but explains our experimental observations. Future work must focus on understanding the source of atomic energy and the mechanism of radiation emission.
+
+Pierre believes this work may revolutionize our understanding of matter itself.`,
+                            tags: ['theory', 'atomic-structure', 'radioactivity', 'decay'],
+                            likes: 167,
+                            comments: 89,
+                            shares: 134
+                        }
+                    ]
+                }
+            },
+            
+            computed: {
+                filteredEntries() {
+                    let filtered = this.entries;
+                    
+                    // Filter by type
+                    if (this.typeFilter !== 'all') {
+                        filtered = filtered.filter(entry => entry.type === this.typeFilter);
+                    }
+                    
+                    // Filter by search query
+                    if (this.searchQuery) {
+                        filtered = filtered.filter(entry => 
+                            entry.title.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+                            entry.excerpt.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+                            entry.tags.some(tag => tag.toLowerCase().includes(this.searchQuery.toLowerCase()))
+                        );
+                    }
+                    
+                    return filtered.sort((a, b) => b.day - a.day);
+                }
+            },
+            
+            methods: {
+                filterType(type) {
+                    this.typeFilter = type;
+                },
+                
+                selectEntry(entry) {
+                    this.selectedEntry = entry;
+                },
+                
+                editEntry(entry) {
+                    alert(`Edit functionality would open for: "${entry.title}"\n\nThis would allow Marie to modify her research notes and add new observations.`);
+                },
+                
+                createEntry() {
+                    if (!this.newEntry.title || !this.newEntry.content) {
+                        alert('Please fill in both title and content.');
+                        return;
+                    }
+                    
+                    const newEntry = {
+                        id: this.entries.length + 1,
+                        title: this.newEntry.title,
+                        date: new Date().toLocaleDateString('en-US', { 
+                            year: 'numeric', 
+                            month: 'long', 
+                            day: 'numeric' 
+                        }),
+                        day: this.newEntry.day,
+                        type: this.newEntry.type,
+                        breakthrough: this.newEntry.breakthrough,
+                        readTime: Math.ceil(this.newEntry.content.length / 200),
+                        excerpt: this.newEntry.content.substring(0, 200) + '...',
+                        fullContent: this.newEntry.content,
+                        tags: this.newEntry.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
+                        likes: 0,
+                        comments: 0,
+                        shares: 0
+                    };
+                    
+                    this.entries.unshift(newEntry);
+                    this.journalStats.totalEntries++;
+                    this.journalStats.thisMonth++;
+                    
+                    if (this.newEntry.breakthrough) {
+                        this.journalStats.breakthroughs++;
+                    }
+                    
+                    // Reset form
+                    this.newEntry = {
+                        title: '',
+                        type: 'experiment',
+                        day: this.newEntry.day + 1,
+                        content: '',
+                        tags: '',
+                        breakthrough: false
+                    };
+                    
+                    this.showNewEntryModal = false;
+                    alert('Journal entry published successfully!');
+                },
+                
+                getTypeColor(type) {
+                    const colors = {
+                        'experiment': 'bg-radium/20 text-radium',
+                        'discovery': 'bg-uranium/20 text-uranium',
+                        'observation': 'bg-laboratory/20 text-laboratory',
+                        'theory': 'bg-polonium/20 text-polonium'
+                    };
+                    return colors[type] || 'bg-beige-cool text-text-dark';
+                }
+            }
+        }).mount('#journal-app');
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marie Curie - Research Journal | Absurd Industries</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'radium': '#FF6B35',
+                        'laboratory': '#2A5F41',
+                        'uranium': '#8B9A46',
+                        'polonium': '#D4A574',
+                        'beige-warm': '#F5F0E8',
+                        'beige-cool': '#E8E2D4',
+                        'text-dark': '#2D2D2D',
+                        'text-mid': '#6B6B6B',
+                        'text-light': '#9B9B9B'
+                    },
+                    fontFamily: {
+                        'rubik': ['Rubik', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-beige-cool font-rubik text-text-dark">
+    
+    <div id="journal-app">
+        <!-- Navigation Header -->
+        <div class="bg-white border-b border-beige-cool p-4">
+            <div class="max-w-7xl mx-auto flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <a href="index.html" class="flex items-center gap-2 text-radium hover:text-radium/80">
+                        <i class="fas fa-arrow-left"></i>
+                        <span class="text-sm font-medium">Back to Profile</span>
+                    </a>
+                    <div class="h-4 w-px bg-beige-cool"></div>
+                    <h1 class="text-xl font-bold text-text-dark uppercase tracking-wide">RESEARCH JOURNAL</h1>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button @click="showNewEntryModal = true" class="bg-radium text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-radium/90 transition-colors">
+                        <i class="fas fa-plus mr-2"></i>NEW ENTRY
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Filters & Search -->
+        <div class="max-w-7xl mx-auto p-4 sm:p-6">
+            <div class="bg-white rounded-2xl p-4 sm:p-6 subtle-shadow mb-6">
+                <div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
+                    <div class="flex-1 w-full sm:w-auto">
+                        <div class="relative">
+                            <i class="fas fa-search absolute left-3 top-3 text-text-light"></i>
+                            <input 
+                                v-model="searchQuery"
+                                type="text" 
+                                placeholder="Search journal entries..."
+                                class="w-full pl-10 pr-4 py-2 border border-beige-cool rounded-lg focus:ring-2 focus:ring-radium focus:border-radium">
+                        </div>
+                    </div>
+                    <div class="flex gap-2 flex-wrap">
+                        <button @click="filterType('all')" :class="['px-3 py-2 rounded-lg text-xs font-medium transition-colors', typeFilter === 'all' ? 'bg-radium text-white' : 'bg-beige-cool text-text-dark']">
+                            ALL ({{ entries.length }})
+                        </button>
+                        <button @click="filterType('experiment')" :class="['px-3 py-2 rounded-lg text-xs font-medium transition-colors', typeFilter === 'experiment' ? 'bg-radium text-white' : 'bg-beige-cool text-text-dark']">
+                            EXPERIMENTS
+                        </button>
+                        <button @click="filterType('discovery')" :class="['px-3 py-2 rounded-lg text-xs font-medium transition-colors', typeFilter === 'discovery' ? 'bg-radium text-white' : 'bg-beige-cool text-text-dark']">
+                            DISCOVERIES
+                        </button>
+                        <button @click="filterType('observation')" :class="['px-3 py-2 rounded-lg text-xs font-medium transition-colors', typeFilter === 'observation' ? 'bg-radium text-white' : 'bg-beige-cool text-text-dark']">
+                            OBSERVATIONS
+                        </button>
+                        <button @click="filterType('theory')" :class="['px-3 py-2 rounded-lg text-xs font-medium transition-colors', typeFilter === 'theory' ? 'bg-radium text-white' : 'bg-beige-cool text-text-dark']">
+                            THEORIES
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Journal Entries -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 pb-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <!-- Main Entries Column -->
+                <div class="lg:col-span-2 space-y-6">
+                    <div v-for="entry in filteredEntries" :key="entry.id"
+                         class="bg-white rounded-2xl p-6 subtle-shadow hover-lift cursor-pointer"
+                         @click="selectEntry(entry)">
+                        
+                        <!-- Entry Header -->
+                        <div class="flex items-start justify-between mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-text-dark mb-1">{{ entry.title }}</h3>
+                                <div class="flex items-center gap-3 text-sm text-text-mid">
+                                    <span>{{ entry.date }}</span>
+                                    <span>•</span>
+                                    <span>Day {{ entry.day }} of research</span>
+                                    <span>•</span>
+                                    <span>{{ entry.readTime }} min read</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span :class="['px-2 py-1 text-xs rounded-full font-medium', getTypeColor(entry.type)]">
+                                    {{ entry.type.toUpperCase() }}
+                                </span>
+                                <div v-if="entry.breakthrough" class="text-radium">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Entry Excerpt -->
+                        <p class="text-text-mid mb-4 leading-relaxed">{{ entry.excerpt }}</p>
+                        
+                        <!-- Entry Metrics -->
+                        <div v-if="entry.metrics" class="grid grid-cols-3 gap-4 mb-4 p-3 bg-beige-warm rounded-lg">
+                            <div v-for="metric in entry.metrics" :key="metric.label" class="text-center">
+                                <div class="text-lg font-bold" :style="`color: ${metric.color}`">{{ metric.value }}</div>
+                                <div class="text-xs text-text-mid">{{ metric.label }}</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Tags -->
+                        <div class="flex gap-2 flex-wrap mb-4">
+                            <span v-for="tag in entry.tags" :key="tag" 
+                                  class="px-2 py-1 bg-beige-cool text-text-dark text-xs rounded-full">
+                                {{ tag }}
+                            </span>
+                        </div>
+                        
+                        <!-- Entry Actions -->
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-4 text-text-mid">
+                                <button class="flex items-center gap-1 hover:text-radium transition-colors">
+                                    <i class="far fa-heart"></i>
+                                    <span class="text-xs">{{ entry.likes }}</span>
+                                </button>
+                                <button class="flex items-center gap-1 hover:text-uranium transition-colors">
+                                    <i class="far fa-comment"></i>
+                                    <span class="text-xs">{{ entry.comments }}</span>
+                                </button>
+                                <button class="flex items-center gap-1 hover:text-laboratory transition-colors">
+                                    <i class="far fa-share"></i>
+                                    <span class="text-xs">{{ entry.shares }}</span>
+                                </button>
+                            </div>
+                            <button @click.stop="editEntry(entry)" class="text-text-light hover:text-text-dark transition-colors">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sidebar -->
+                <div class="space-y-6">
+                    
+                    <!-- Quick Stats -->
+                    <div class="bg-white rounded-2xl p-6 subtle-shadow">
+                        <h3 class="text-lg font-bold text-text-dark mb-4 uppercase tracking-wide">JOURNAL STATS</h3>
+                        
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-text-mid">Total Entries</span>
+                                <span class="text-lg font-bold text-radium">{{ journalStats.totalEntries }}</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-text-mid">Breakthroughs</span>
+                                <span class="text-lg font-bold text-uranium">{{ journalStats.breakthroughs }}</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-text-mid">Research Days</span>
+                                <span class="text-lg font-bold text-laboratory">{{ journalStats.researchDays }}</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-text-mid">Citations</span>
+                                <span class="text-lg font-bold text-polonium">{{ journalStats.citations }}</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Progress This Month -->
+                        <div class="mt-6">
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-text-mid">This Month</span>
+                                <span class="text-text-dark font-medium">{{ journalStats.thisMonth }}/30 entries</span>
+                            </div>
+                            <div class="w-full bg-beige-cool rounded-full h-2">
+                                <div class="bg-radium h-2 rounded-full" :style="`width: ${(journalStats.thisMonth / 30) * 100}%`"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Recent Discoveries -->
+                    <div class="bg-white rounded-2xl p-6 subtle-shadow">
+                        <h3 class="text-lg font-bold text-text-dark mb-4 uppercase tracking-wide">RECENT DISCOVERIES</h3>
+                        
+                        <div class="space-y-3">
+                            <div v-for="discovery in recentDiscoveries" :key="discovery.id"
+                                 class="p-3 bg-beige-warm rounded-lg">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <i :class="discovery.icon" :style="`color: ${discovery.color}`"></i>
+                                    <span class="text-sm font-bold text-text-dark">{{ discovery.title }}</span>
+                                </div>
+                                <p class="text-xs text-text-mid">{{ discovery.description }}</p>
+                                <span class="text-xs text-text-light">{{ discovery.date }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Research Collaborations -->
+                    <div class="bg-white rounded-2xl p-6 subtle-shadow">
+                        <h3 class="text-lg font-bold text-text-dark mb-4 uppercase tracking-wide">COLLABORATORS</h3>
+                        
+                        <div class="space-y-3">
+                            <div v-for="collab in collaborators" :key="collab.id"
+                                 class="flex items-center gap-3 p-3 bg-beige-warm rounded-lg">
+                                <div class="w-10 h-10 rounded-full overflow-hidden bg-text-light">
+                                    <img :src="collab.avatar" :alt="collab.name" class="w-full h-full object-cover">
+                                </div>
+                                <div class="flex-1">
+                                    <div class="text-sm font-bold text-text-dark">{{ collab.name }}</div>
+                                    <div class="text-xs text-text-mid">{{ collab.role }}</div>
+                                </div>
+                                <div class="text-xs text-radium font-medium">{{ collab.entries }} entries</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- New Entry Modal -->
+        <div v-if="showNewEntryModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" @click="showNewEntryModal = false">
+            <div class="bg-white rounded-2xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto" @click.stop>
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-text-dark">NEW JOURNAL ENTRY</h2>
+                    <button @click="showNewEntryModal = false" class="text-text-light hover:text-text-dark">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <form @submit.prevent="createEntry">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-sm font-bold text-text-dark uppercase tracking-wide block mb-2">TITLE</label>
+                            <input v-model="newEntry.title" type="text" placeholder="Enter entry title..." 
+                                   class="w-full p-3 border border-beige-cool rounded-lg focus:ring-2 focus:ring-radium focus:border-radium">
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-sm font-bold text-text-dark uppercase tracking-wide block mb-2">TYPE</label>
+                                <select v-model="newEntry.type" class="w-full p-3 border border-beige-cool rounded-lg focus:ring-2 focus:ring-radium focus:border-radium">
+                                    <option value="experiment">Experiment</option>
+                                    <option value="discovery">Discovery</option>
+                                    <option value="observation">Observation</option>
+                                    <option value="theory">Theory</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-sm font-bold text-text-dark uppercase tracking-wide block mb-2">RESEARCH DAY</label>
+                                <input v-model="newEntry.day" type="number" placeholder="847" 
+                                       class="w-full p-3 border border-beige-cool rounded-lg focus:ring-2 focus:ring-radium focus:border-radium">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="text-sm font-bold text-text-dark uppercase tracking-wide block mb-2">CONTENT</label>
+                            <textarea v-model="newEntry.content" placeholder="Describe your research, observations, and findings..." 
+                                      class="w-full p-3 border border-beige-cool rounded-lg focus:ring-2 focus:ring-radium focus:border-radium resize-none" 
+                                      rows="8"></textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="text-sm font-bold text-text-dark uppercase tracking-wide block mb-2">TAGS</label>
+                            <input v-model="newEntry.tags" type="text" placeholder="radium, extraction, crystallization..." 
+                                   class="w-full p-3 border border-beige-cool rounded-lg focus:ring-2 focus:ring-radium focus:border-radium">
+                            <p class="text-xs text-text-light mt-1">Separate tags with commas</p>
+                        </div>
+                        
+                        <div class="flex items-center gap-3">
+                            <input v-model="newEntry.breakthrough" type="checkbox" id="breakthrough" class="rounded border-beige-cool">
+                            <label for="breakthrough" class="text-sm font-medium text-text-dark">Mark as breakthrough discovery</label>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-3 mt-6">
+                        <button type="button" @click="showNewEntryModal = false" 
+                                class="flex-1 px-4 py-3 border border-beige-cool text-text-dark rounded-lg hover:bg-beige-warm transition-colors">
+                            CANCEL
+                        </button>
+                        <button type="submit" 
+                                class="flex-1 px-4 py-3 bg-radium text-white rounded-lg hover:bg-radium/90 transition-colors">
+                            PUBLISH ENTRY
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Entry Detail Modal -->
+        <div v-if="selectedEntry" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" @click="selectedEntry = null">
+            <div class="bg-white rounded-2xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto" @click.stop>
+                <div class="flex items-start justify-between mb-6">
+                    <div>
+                        <h2 class="text-3xl font-bold text-text-dark mb-2">{{ selectedEntry.title }}</h2>
+                        <div class="flex items-center gap-4 text-text-mid">
+                            <span>{{ selectedEntry.date }}</span>
+                            <span>•</span>
+                            <span>Day {{ selectedEntry.day }} of research</span>
+                            <span v-if="selectedEntry.breakthrough" class="flex items-center gap-1 text-radium">
+                                <i class="fas fa-star"></i>
+                                <span class="font-medium">BREAKTHROUGH</span>
+                            </span>
+                        </div>
+                    </div>
+                    <button @click="selectedEntry = null" class="text-text-light hover:text-text-dark">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <!-- Full Content -->
+                <div class="prose prose-sm max-w-none mb-6">
+                    <p class="text-text-dark leading-relaxed whitespace-pre-line">{{ selectedEntry.fullContent }}</p>
+                </div>
+                
+                <!-- Metrics -->
+                <div v-if="selectedEntry.metrics" class="grid grid-cols-3 gap-4 mb-6 p-4 bg-beige-warm rounded-lg">
+                    <div v-for="metric in selectedEntry.metrics" :key="metric.label" class="text-center">
+                        <div class="text-2xl font-bold" :style="`color: ${metric.color}`">{{ metric.value }}</div>
+                        <div class="text-sm text-text-mid">{{ metric.label }}</div>
+                    </div>
+                </div>
+                
+                <!-- Tags -->
+                <div class="flex gap-2 flex-wrap mb-6">
+                    <span v-for="tag in selectedEntry.tags" :key="tag" 
+                          class="px-3 py-1 bg-beige-cool text-text-dark text-sm rounded-full">
+                        {{ tag }}
+                    </span>
+                </div>
+                
+                <!-- Actions -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-6 text-text-mid">
+                        <button class="flex items-center gap-2 hover:text-radium transition-colors">
+                            <i class="far fa-heart"></i>
+                            <span class="text-sm">{{ selectedEntry.likes }}</span>
+                        </button>
+                        <button class="flex items-center gap-2 hover:text-uranium transition-colors">
+                            <i class="far fa-comment"></i>
+                            <span class="text-sm">{{ selectedEntry.comments }}</span>
+                        </button>
+                        <button class="flex items-center gap-2 hover:text-laboratory transition-colors">
+                            <i class="far fa-share"></i>
+                            <span class="text-sm">Share</span>
+                        </button>
+                    </div>
+                    <button @click="editEntry(selectedEntry)" class="px-4 py-2 border border-radium text-radium rounded-lg hover:bg-radium hover:text-white transition-colors">
+                        EDIT ENTRY
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
