@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marie Curie - Trade & Commerce | Absurd Industries</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'radium': '#FF6B35',
+                        'laboratory': '#2A5F41',
+                        'uranium': '#8B9A46',
+                        'polonium': '#D4A574',
+                        'beige-warm': '#F5F0E8',
+                        'beige-cool': '#E8E2D4',
+                        'text-dark': '#2D2D2D',
+                        'text-mid': '#6B6B6B',
+                        'text-light': '#9B9B9B'
+                    },
+                    fontFamily: {
+                        'rubik': ['Rubik', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-beige-cool font-rubik text-text-dark">
+    
+    <div id="trade-app">
+        <!-- Navigation Header -->
+        <div class="bg-white border-b border-beige-cool p-4">
+            <div class="max-w-7xl mx-auto flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <a href="index.html" class="flex items-center gap-2 text-radium hover:text-radium/80">
+                        <i class="fas fa-arrow-left"></i>
+                        <span class="text-sm font-medium">Back to Profile</span>
+                    </a>
+                    <div class="h-4 w-px bg-beige-cool"></div>
+                    <h1 class="text-xl font-bold text-text-dark uppercase tracking-wide">MARKETPLACE</h1>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button @click="activeTab = 'buy'" :class="['px-4 py-2 rounded-lg text-sm font-bold transition-colors', activeTab === 'buy' ? 'bg-laboratory text-white' : 'bg-beige-cool text-text-dark']">
+                        <i class="fas fa-shopping-cart mr-2"></i>BUY
+                    </button>
+                    <button @click="activeTab = 'sell'" :class="['px-4 py-2 rounded-lg text-sm font-bold transition-colors', activeTab === 'sell' ? 'bg-radium text-white' : 'bg-beige-cool text-text-dark']">
+                        <i class="fas fa-tag mr-2"></i>SELL
+                    </button>
+                    <button @click="activeTab = 'orders'" :class="['px-4 py-2 rounded-lg text-sm font-bold transition-colors', activeTab === 'orders' ? 'bg-uranium text-white' : 'bg-beige-cool text-text-dark']">
+                        <i class="fas fa-list mr-2"></i>ORDERS
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Marketplace Stats -->
+        <div class="max-w-7xl mx-auto p-4 sm:p-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <div class="bg-white rounded-2xl p-4 subtle-shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-2xl font-bold text-radium">${{ marketStats.totalSales.toLocaleString() }}</div>
+                            <div class="text-sm text-text-mid">Total Sales</div>
+                        </div>
+                        <i class="fas fa-chart-line text-radium text-xl"></i>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl p-4 subtle-shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-2xl font-bold text-uranium">{{ marketStats.activeListings }}</div>
+                            <div class="text-sm text-text-mid">Active Listings</div>
+                        </div>
+                        <i class="fas fa-store text-uranium text-xl"></i>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl p-4 subtle-shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-2xl font-bold text-laboratory">{{ marketStats.completedOrders }}</div>
+                            <div class="text-sm text-text-mid">Completed Orders</div>
+                        </div>
+                        <i class="fas fa-check-circle text-laboratory text-xl"></i>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl p-4 subtle-shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-2xl font-bold text-polonium">{{ marketStats.rating }}/5</div>
+                            <div class="text-sm text-text-mid">Seller Rating</div>
+                        </div>
+                        <i class="fas fa-star text-polonium text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 pb-8">
+            
+            <!-- Buy Tab -->
+            <div v-if="activeTab === 'buy'" class="space-y-6">
+                
+                <!-- Search & Filters -->
+                <div class="bg-white rounded-2xl p-6 subtle-shadow">
+                    <div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
+                        <div class="flex-1 w-full sm:w-auto">
+                            <div class="relative">
+                                <i class="fas fa-search absolute left-3 top-3 text-text-light"></i>
+                                <input 
+                                    v-model="searchQuery"
+                                    type="text" 
+                                    placeholder="Search marketplace..."
+                                    class="w-full pl-10 pr-4 py-2 border border-beige-cool rounded-lg focus:ring-2 focus:ring-radium focus:border-radium">
+                            </div>
+                        </div>
+                        <div class="flex gap-2 flex-wrap">
+                            <button @click="filterCategory('all')" :class="['px-3 py-2 rounded-lg text-xs font-medium transition-colors', categoryFilter === 'all' ? 'bg-radium text-white' : 'bg-beige-cool text-text-dark']">
+                                ALL
+                            </button>
+                            <button @click="filterCategory('materials')" :class="['px-3 py-2 rounded-lg text-xs font-medium transition-colors', categoryFilter === 'materials' ? 'bg-radium text-white' : 'bg-beige-cool text-text-dark']">
+                                MATERIALS
+                            </button>
+                            <button @click="filterCategory('documents')" :class="['px-3 py-2 rounded-lg text-xs font-medium transition-colors', categoryFilter === 'documents' ? 'bg-radium text-white' : 'bg-beige-cool text-text-dark']">
+                                DOCUMENTS
+                            </button>
+                            <button @click="filterCategory('equipment')" :class="['px-3 py-2 rounded-lg text-xs font-medium transition-colors', categoryFilter === 'equipment' ? 'bg-radium text-white' : 'bg-beige-cool text-text-dark']">
+                                EQUIPMENT
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Featured Items -->
+                <div class="bg-white rounded-2xl p-6 subtle-shadow">
+                    <h2 class="text-xl font-bold text-text-dark mb-4 uppercase tracking-wide">FEATURED ITEMS</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div v-for="item in featuredItems" :key="item.id"
+                             class="border-2 border-radium/20 rounded-2xl p-6 hover:border-radium/40 transition-all hover-lift cursor-pointer"
+                             @click="viewItem(item)">
+                            
+                            <!-- Featured Badge -->
+                            <div class="flex justify-between items-start mb-4">
+                                <span class="bg-radium text-white px-2 py-1 text-xs font-bold rounded-full">FEATURED</span>
+                                <div class="flex items-center gap-1">
+                                    <i class="fas fa-star text-yellow-500 text-sm"></i>
+                                    <span class="text-sm font-medium">{{ item.rating }}</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Item Image/Icon -->
+                            <div class="flex justify-center mb-4">
+                                <div class="w-20 h-20 rounded-xl flex items-center justify-center" :style="`background: ${item.color}20`">
+                                    <i :class="item.icon" :style="`color: ${item.color}; font-size: 2rem`"></i>
+                                </div>
+                            </div>
+                            
+                            <!-- Item Info -->
+                            <div class="text-center mb-4">
+                                <h3 class="text-lg font-bold text-text-dark mb-1">{{ item.name }}</h3>
+                                <p class="text-sm text-text-mid mb-2">{{ item.description }}</p>
+                                <div class="text-2xl font-bold text-radium">${{ item.price.toLocaleString() }}</div>
+                                <div class="text-xs text-text-light">{{ item.stock }} available</div>
+                            </div>
+                            
+                            <!-- Quick Stats -->
+                            <div class="grid grid-cols-2 gap-2 mb-4 text-xs">
+                                <div class="text-center">
+                                    <div class="text-text-dark font-medium">{{ item.purity }}</div>
+                                    <div class="text-text-light">Purity</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-text-dark font-medium">{{ item.origin }}</div>
+                                    <div class="text-text-light">Origin</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Action Button -->
+                            <button @click.stop="purchaseItem(item)" 
+                                    class="w-full bg-radium text-white py-2 rounded-lg font-bold hover:bg-radium/90 transition-colors">
+                                ADD TO CART
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- All Marketplace Items -->
+                <div class="bg-white rounded-2xl p-6 subtle-shadow">
+                    <h2 class="text-xl font-bold text-text-dark mb-4 uppercase tracking-wide">ALL ITEMS</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div v-for="item in filteredMarketItems" :key="item.id"
+                             class="border border-beige-cool rounded-xl p-4 hover:border-radium/40 transition-all cursor-pointer"
+                             @click="viewItem(item)">
+                            
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0" :style="`background: ${item.color}20`">
+                                    <i :class="item.icon" :style="`color: ${item.color}`"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="font-bold text-text-dark">{{ item.name }}</h4>
+                                    <p class="text-sm text-text-mid">{{ item.seller }}</p>
+                                    <div class="flex justify-between items-center mt-2">
+                                        <span class="text-lg font-bold text-radium">${{ item.price.toLocaleString() }}</span>
+                                        <button @click.stop="purchaseItem(item)" 
+                                                class="px-3 py-1 bg-laboratory text-white rounded text-xs font-bold hover:bg-laboratory/90 transition-colors">
+                                            BUY
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sell Tab -->
+            <div v-if="activeTab === 'sell'" class="space-y-6">
+                
+                <!-- My Listings -->
+                <div class="bg-white rounded-2xl p-6 subtle-shadow">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-bold text-text-dark uppercase tracking-wide">MY LISTINGS</h2>
+                        <button @click="showNewListingModal = true" class="bg-radium text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-radium/90 transition-colors">
+                            <i class="fas fa-plus mr-2"></i>NEW LISTING
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div v-for="listing in myListings" :key="listing.id"
+                             class="border border-beige-cool rounded-xl p-4">
+                            
+                            <div class="flex justify-between items-start mb-3">
+                                <h4 class="font-bold text-text-dark">{{ listing.name }}</h4>
+                                <span :class="['px-2 py-1 text-xs rounded-full font-medium', getStatusColor(listing.status)]">
+                                    {{ listing.status.toUpperCase() }}
+                                </span>
+                            </div>
+                            
+                            <div class="space-y-2 mb-4">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-text-mid">Price:</span>
+                                    <span class="font-bold text-radium">${{ listing.price.toLocaleString() }}</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-text-mid">Stock:</span>
+                                    <span class="text-text-dark">{{ listing.stock }}</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-text-mid">Views:</span>
+                                    <span class="text-text-dark">{{ listing.views }}</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-text-mid">Orders:</span>
+                                    <span class="text-text-dark">{{ listing.orders }}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex gap-2">
+                                <button @click="editListing(listing)" 
+                                        class="flex-1 px-3 py-2 border border-beige-cool rounded-lg text-xs text-text-dark hover:border-radium hover:text-radium transition-colors">
+                                    EDIT
+                                </button>
+                                <button @click="toggleListing(listing)" 
+                                        :class="['flex-1 px-3 py-2 rounded-lg text-xs font-bold transition-colors', listing.status === 'active' ? 'bg-yellow-500 text-white hover:bg-yellow-600' : 'bg-green-500 text-white hover:bg-green-600']">
+                                    {{ listing.status === 'active' ? 'PAUSE' : 'ACTIVATE' }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sales Analytics -->
+                <div class="bg-white rounded-2xl p-6 subtle-shadow">
+                    <h2 class="text-xl font-bold text-text-dark mb-4 uppercase tracking-wide">SALES ANALYTICS</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-radium mb-2">${{ salesAnalytics.thisMonth.toLocaleString() }}</div>
+                            <div class="text-sm text-text-mid">This Month</div>
+                            <div class="text-xs text-green-600">+23% from last month</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-uranium mb-2">{{ salesAnalytics.orders }}</div>
+                            <div class="text-sm text-text-mid">Total Orders</div>
+                            <div class="text-xs text-green-600">+12 this week</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-laboratory mb-2">{{ salesAnalytics.avgRating }}/5</div>
+                            <div class="text-sm text-text-mid">Avg Rating</div>
+                            <div class="text-xs text-text-mid">{{ salesAnalytics.reviews }} reviews</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Orders Tab -->
+            <div v-if="activeTab === 'orders'" class="space-y-6">
+                
+                <!-- Order Filters -->
+                <div class="bg-white rounded-2xl p-6 subtle-shadow">
+                    <div class="flex gap-2 flex-wrap">
+                        <button @click="orderFilter = 'all'" :class="['px-3 py-2 rounded-lg text-xs font-medium transition-colors', orderFilter === 'all' ? 'bg-radium text-white' : 'bg-beige-cool text-text-dark']">
+                            ALL ORDERS
+                        </button>
+                        <button @click="orderFilter = 'pending'" :class="['px-3 py-2 rounded-lg text-xs font-medium transition-colors', orderFilter === 'pending' ? 'bg-radium text-white' : 'bg-beige-cool text-text-dark']">
+                            PENDING
+                        </button>
+                        <button @click="orderFilter = 'processing'" :class="['px-3 py-2 rounded-lg text-xs font-medium transition-colors', orderFilter === 'processing' ? 'bg-radium text-white' : 'bg-beige-cool text-text-dark']">
+                            PROCESSING
+                        </button>
+                        <button @click="orderFilter = 'completed'" :class="['px-3 py-2 rounded-lg text-xs font-medium transition-colors', orderFilter === 'completed' ? 'bg-radium text-white' : 'bg-beige-cool text-text-dark']">
+                            COMPLETED
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Orders List -->
+                <div class="bg-white rounded-2xl p-6 subtle-shadow">
+                    <h2 class="text-xl font-bold text-text-dark mb-4 uppercase tracking-wide">ORDER HISTORY</h2>
+                    
+                    <div class="space-y-4">
+                        <div v-for="order in filteredOrders" :key="order.id"
+                             class="border border-beige-cool rounded-xl p-4">
+                            
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <h4 class="font-bold text-text-dark">Order #{{ order.id }}</h4>
+                                    <p class="text-sm text-text-mid">{{ order.date }} • {{ order.buyer }}</p>
+                                </div>
+                                <span :class="['px-3 py-1 text-xs rounded-full font-medium', getStatusColor(order.status)]">
+                                    {{ order.status.toUpperCase() }}
+                                </span>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                <div>
+                                    <div class="text-sm text-text-mid">Items</div>
+                                    <div class="font-medium text-text-dark">{{ order.items }}</div>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-text-mid">Total</div>
+                                    <div class="font-bold text-radium">${{ order.total.toLocaleString() }}</div>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-text-mid">Payment</div>
+                                    <div class="font-medium text-text-dark">{{ order.payment }}</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex gap-2">
+                                <button @click="viewOrder(order)" 
+                                        class="px-4 py-2 border border-beige-cool rounded-lg text-xs text-text-dark hover:border-radium hover:text-radium transition-colors">
+                                    VIEW DETAILS
+                                </button>
+                                <button v-if="order.status === 'pending'" @click="processOrder(order)" 
+                                        class="px-4 py-2 bg-uranium text-white rounded-lg text-xs font-bold hover:bg-uranium/90 transition-colors">
+                                    PROCESS ORDER
+                                </button>
+                                <button v-if="order.status === 'processing'" @click="completeOrder(order)" 
+                                        class="px-4 py-2 bg-green-500 text-white rounded-lg text-xs font-bold hover:bg-green-600 transition-colors">
+                                    COMPLETE ORDER
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- New Listing Modal -->
+        <div v-if="showNewListingModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" @click="showNewListingModal = false">
+            <div class="bg-white rounded-2xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto" @click.stop>
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-text-dark">NEW LISTING</h2>
+                    <button @click="showNewListingModal = false" class="text-text-light hover:text-text-dark">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <form @submit.prevent="createListing">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-sm font-bold text-text-dark uppercase tracking-wide block mb-2">ITEM NAME</label>
+                            <input v-model="newListing.name" type="text" placeholder="Enter item name..." 
+                                   class="w-full p-3 border border-beige-cool rounded-lg focus:ring-2 focus:ring-radium focus:border-radium">
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-sm font-bold text-text-dark uppercase tracking-wide block mb-2">CATEGORY</label>
+                                <select v-model="newListing.category" class="w-full p-3 border border-beige-cool rounded-lg focus:ring-2 focus:ring-radium focus:border-radium">
+                                    <option value="materials">Materials</option>
+                                    <option value="documents">Documents</option>
+                                    <option value="equipment">Equipment</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-sm font-bold text-text-dark uppercase tracking-wide block mb-2">PRICE ($)</label>
+                                <input v-model="newListing.price" type="number" placeholder="0" 
+                                       class="w-full p-3 border border-beige-cool rounded-lg focus:ring-2 focus:ring-radium focus:border-radium">
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-sm font-bold text-text-dark uppercase tracking-wide block mb-2">STOCK QUANTITY</label>
+                                <input v-model="newListing.stock" type="number" placeholder="1" 
+                                       class="w-full p-3 border border-beige-cool rounded-lg focus:ring-2 focus:ring-radium focus:border-radium">
+                            </div>
+                            <div>
+                                <label class="text-sm font-bold text-text-dark uppercase tracking-wide block mb-2">CONDITION</label>
+                                <select v-model="newListing.condition" class="w-full p-3 border border-beige-cool rounded-lg focus:ring-2 focus:ring-radium focus:border-radium">
+                                    <option value="new">New</option>
+                                    <option value="excellent">Excellent</option>
+                                    <option value="good">Good</option>
+                                    <option value="fair">Fair</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="text-sm font-bold text-text-dark uppercase tracking-wide block mb-2">DESCRIPTION</label>
+                            <textarea v-model="newListing.description" placeholder="Describe your item, its properties, and applications..." 
+                                      class="w-full p-3 border border-beige-cool rounded-lg focus:ring-2 focus:ring-radium focus:border-radium resize-none" 
+                                      rows="4"></textarea>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-sm font-bold text-text-dark uppercase tracking-wide block mb-2">PURITY/GRADE</label>
+                                <input v-model="newListing.purity" type="text" placeholder="99.7%" 
+                                       class="w-full p-3 border border-beige-cool rounded-lg focus:ring-2 focus:ring-radium focus:border-radium">
+                            </div>
+                            <div>
+                                <label class="text-sm font-bold text-text-dark uppercase tracking-wide block mb-2">ORIGIN/SOURCE</label>
+                                <input v-model="newListing.origin" type="text" placeholder="Laboratory extracted" 
+                                       class="w-full p-3 border border-beige-cool rounded-lg focus:ring-2 focus:ring-radium focus:border-radium">
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-3">
+                            <input v-model="newListing.featured" type="checkbox" id="featured" class="rounded border-beige-cool">
+                            <label for="featured" class="text-sm font-medium text-text-dark">Feature this listing (+$50 fee)</label>
+                        </div>
+                        
+                        <div class="bg-beige-warm rounded-lg p-4">
+                            <h4 class="font-bold text-text-dark mb-2">SAFETY NOTICE</h4>
+                            <p class="text-sm text-text-mid">All radioactive materials must comply with 1902 safety standards. Buyers assume all risks associated with handling radioactive substances.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-3 mt-6">
+                        <button type="button" @click="showNewListingModal = false" 
+                                class="flex-1 px-4 py-3 border border-beige-cool text-text-dark rounded-lg hover:bg-beige-warm transition-colors">
+                            CANCEL
+                        </button>
+                        <button type="submit" 
+                                class="flex-1 px-4 py-3 bg-radium text-white rounded-lg hover:bg-radium/90 transition-colors">
+                            CREATE LISTING
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Item Detail Modal -->
+        <div v-if="selectedItem" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" @click="selectedItem = null">
+            <div class="bg-white rounded-2xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto" @click.stop>
+                <div class="flex items-start justify-between mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-text-dark mb-2">{{ selectedItem.name }}</h2>
+                        <p class="text-text-mid">Sold by {{ selectedItem.seller }}</p>
+                    </div>
+                    <button @click="selectedItem = null" class="text-text-light hover:text-text-dark">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <!-- Item Visual -->
+                <div class="flex justify-center mb-6">
+                    <div class="w-32 h-32 rounded-2xl flex items-center justify-center" :style="`background: ${selectedItem.color}20`">
+                        <i :class="selectedItem.icon" :style="`color: ${selectedItem.color}; font-size: 3rem`"></i>
+                    </div>
+                </div>
+                
+                <!-- Item Details -->
+                <div class="grid grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <h3 class="text-lg font-bold text-text-dark mb-3">SPECIFICATIONS</h3>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-sm text-text-mid">Price</span>
+                                <span class="text-lg font-bold text-radium">${{ selectedItem.price.toLocaleString() }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-text-mid">Stock</span>
+                                <span class="text-sm font-medium text-text-dark">{{ selectedItem.stock }} available</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-text-mid">Purity</span>
+                                <span class="text-sm font-medium text-text-dark">{{ selectedItem.purity }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-text-mid">Origin</span>
+                                <span class="text-sm font-medium text-text-dark">{{ selectedItem.origin }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-lg font-bold text-text-dark mb-3">SELLER INFO</h3>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-sm text-text-mid">Rating</span>
+                                <div class="flex items-center gap-1">
+                                    <i class="fas fa-star text-yellow-500"></i>
+                                    <span class="text-sm font-medium text-text-dark">{{ selectedItem.rating }}/5</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-text-mid">Sales</span>
+                                <span class="text-sm font-medium text-text-dark">{{ selectedItem.sales }} completed</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-text-mid">Response</span>
+                                <span class="text-sm font-medium text-text-dark">{{ selectedItem.responseTime }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Description -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-text-dark mb-3">DESCRIPTION</h3>
+                    <p class="text-sm text-text-mid leading-relaxed">{{ selectedItem.description }}</p>
+                </div>
+                
+                <!-- Purchase Options -->
+                <div class="flex gap-3">
+                    <button @click="addToCart(selectedItem)" class="flex-1 px-4 py-3 border border-radium text-radium rounded-lg hover:bg-radium hover:text-white transition-colors">
+                        ADD TO CART
+                    </button>
+                    <button @click="purchaseNow(selectedItem)" class="flex-1 px-4 py-3 bg-radium text-white rounded-lg hover:bg-radium/90 transition-colors">
+                        BUY NOW
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+        
+        createApp({
+            data() {
+                return {
+                    activeTab: 'buy',
+                    searchQuery: '',
+                    categoryFilter: 'all',
+                    orderFilter: 'all',
+                    showNewListingModal: false,
+                    selectedItem: null,
+                    newListing: {
+                        name: '',
+                        category: 'materials',
+                        price: 0,
+                        stock: 1,
+                        condition: 'new',
+                        description: '',
+                        purity: '',
+                        origin: '',
+                        featured: false
+                    },
+                    marketStats: {
+                        totalSales: 47580,
+                        activeListings: 12,
+                        completedOrders: 67,
+                        rating: 4.9
+                    },
+                    salesAnalytics: {
+                        thisMonth: 12450,
+                        orders: 23,
+                        avgRating: 4.9,
+                        reviews: 156
+                    },
+                    featuredItems: [
+                        {
+                            id: 1,
+                            name: 'Pure Radium Sample',
+                            description: 'Laboratory-grade radium with continuous luminescence',
+                            price: 2500,
+                            stock: 12,
+                            purity: '99.7%',
+                            origin: 'Pitchblende',
+                            rating: 4.9,
+                            sales: 47,
+                            responseTime: '< 1 hour',
+                            seller: 'Marie Curie',
+                            icon: 'fas fa-radiation',
+                            color: '#FF6B35',
+                            category: 'materials'
+                        },
+                        {
+                            id: 2,
+                            name: 'Research Documentation',
+                            description: 'Complete radioactivity research notes and procedures',
+                            price: 150,
+                            stock: 47,
+                            purity: 'Complete',
+                            origin: 'Original',
+                            rating: 4.8,
+                            sales: 234,
+                            responseTime: '< 2 hours',
+                            seller: 'Marie Curie',
+                            icon: 'fas fa-file-alt',
+                            color: '#8B9A46',
+                            category: 'documents'
+                        },
+                        {
+                            id: 3,
+                            name: 'Electrometer Plans',
+                            description: 'Detailed schematics for radiation detection equipment',
+                            price: 75,
+                            stock: 23,
+                            purity: 'Technical',
+                            origin: 'Laboratory',
+                            rating: 4.7,
+                            sales: 89,
+                            responseTime: '< 3 hours',
+                            seller: 'Marie Curie',
+                            icon: 'fas fa-bolt',
+                            color: '#D4A574',
+                            category: 'documents'
+                        }
+                    ],
+                    marketItems: [
+                        {
+                            id: 4,
+                            name: 'Polonium Extract',
+                            price: 1200,
+                            seller: 'Marie Curie',
+                            icon: 'fas fa-atom',
+                            color: '#D4A574',
+                            category: 'materials'
+                        },
+                        {
+                            id: 5,
+                            name: 'Crystallization Guide',
+                            price: 45,
+                            seller: 'Marie Curie',
+                            icon: 'fas fa-book',
+                            color: '#2A5F41',
+                            category: 'documents'
+                        }
+                    ],
+                    myListings: [
+                        {
+                            id: 1,
+                            name: 'Radium Sample 0.1g',
+                            price: 2500,
+                            stock: 12,
+                            status: 'active',
+                            views: 234,
+                            orders: 8
+                        },
+                        {
+                            id: 2,
+                            name: 'Lab Procedures Manual',
+                            price: 150,
+                            stock: 47,
+                            status: 'active',
+                            views: 567,
+                            orders: 23
+                        },
+                        {
+                            id: 3,
+                            name: 'Polonium Research Notes',
+                            price: 89,
+                            stock: 15,
+                            status: 'paused',
+                            views: 123,
+                            orders: 5
+                        }
+                    ],
+                    orders: [
+                        {
+                            id: 1001,
+                            date: 'March 16, 1902',
+                            buyer: 'Dr. Henri Becquerel',
+                            items: 'Radium Sample 0.05g',
+                            total: 1250,
+                            payment: 'Bank Transfer',
+                            status: 'completed'
+                        },
+                        {
+                            id: 1002,
+                            date: 'March 15, 1902',
+                            buyer: 'University of Paris',
+                            items: 'Research Documentation Set',
+                            total: 450,
+                            payment: 'Institution Credit',
+                            status: 'processing'
+                        },
+                        {
+                            id: 1003,
+                            date: 'March 14, 1902',
+                            buyer: 'Dr. Ernest Rutherford',
+                            items: 'Electrometer Plans',
+                            total: 75,
+                            payment: 'Gold Coins',
+                            status: 'pending'
+                        }
+                    ]
+                }
+            },
+            
+            computed: {
+                filteredMarketItems() {
+                    let filtered = this.marketItems;
+                    
+                    if (this.categoryFilter !== 'all') {
+                        filtered = filtered.filter(item => item.category === this.categoryFilter);
+                    }
+                    
+                    if (this.searchQuery) {
+                        filtered = filtered.filter(item => 
+                            item.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+                        );
+                    }
+                    
+                    return filtered;
+                },
+                
+                filteredOrders() {
+                    if (this.orderFilter === 'all') {
+                        return this.orders;
+                    }
+                    return this.orders.filter(order => order.status === this.orderFilter);
+                }
+            },
+            
+            methods: {
+                filterCategory(category) {
+                    this.categoryFilter = category;
+                },
+                
+                viewItem(item) {
+                    // Add full details for modal
+                    this.selectedItem = {
+                        ...item,
+                        description: item.description || 'High-quality laboratory materials extracted using advanced radiochemical techniques. All items are carefully prepared and tested to ensure maximum purity and safety for research purposes.'
+                    };
+                },
+                
+                purchaseItem(item) {
+                    alert(`Added "${item.name}" to cart!\n\nPrice: ${item.price.toLocaleString()}\nSeller: ${item.seller}\n\nProceed to checkout to complete purchase.`);
+                },
+                
+                addToCart(item) {
+                    alert(`"${item.name}" added to shopping cart!`);
+                    this.selectedItem = null;
+                },
+                
+                purchaseNow(item) {
+                    alert(`Initiating immediate purchase of "${item.name}"\n\nTotal: ${item.price.toLocaleString()}\n\nRedirecting to secure payment...`);
+                    this.selectedItem = null;
+                },
+                
+                createListing() {
+                    if (!this.newListing.name || !this.newListing.price) {
+                        alert('Please fill in name and price fields.');
+                        return;
+                    }
+                    
+                    const listing = {
+                        id: this.myListings.length + 1,
+                        name: this.newListing.name,
+                        price: parseInt(this.newListing.price),
+                        stock: parseInt(this.newListing.stock),
+                        status: 'active',
+                        views: 0,
+                        orders: 0
+                    };
+                    
+                    this.myListings.unshift(listing);
+                    this.marketStats.activeListings++;
+                    
+                    // Reset form
+                    this.newListing = {
+                        name: '',
+                        category: 'materials',
+                        price: 0,
+                        stock: 1,
+                        condition: 'new',
+                        description: '',
+                        purity: '',
+                        origin: '',
+                        featured: false
+                    };
+                    
+                    this.showNewListingModal = false;
+                    alert('Listing created successfully!');
+                },
+                
+                editListing(listing) {
+                    alert(`Edit functionality would open for: "${listing.name}"\n\nThis would allow modification of price, stock, description, etc.`);
+                },
+                
+                toggleListing(listing) {
+                    listing.status = listing.status === 'active' ? 'paused' : 'active';
+                    alert(`Listing "${listing.name}" is now ${listing.status}.`);
+                },
+                
+                viewOrder(order) {
+                    alert(`Order Details:\n\nOrder #${order.id}\nBuyer: ${order.buyer}\nItems: ${order.items}\nTotal: ${order.total.toLocaleString()}\nStatus: ${order.status.toUpperCase()}`);
+                },
+                
+                processOrder(order) {
+                    order.status = 'processing';
+                    alert(`Order #${order.id} is now being processed.\n\nEstimated completion: 2-3 days\nTracking information will be provided.`);
+                },
+                
+                completeOrder(order) {
+                    order.status = 'completed';
+                    this.marketStats.completedOrders++;
+                    alert(`Order #${order.id} marked as completed!\n\nPayment has been released.\nThank you for your business.`);
+                },
+                
+                getStatusColor(status) {
+                    const colors = {
+                        'active': 'bg-green-100 text-green-700',
+                        'paused': 'bg-yellow-100 text-yellow-700',
+                        'pending': 'bg-blue-100 text-blue-700',
+                        'processing': 'bg-orange-100 text-orange-700',
+                        'completed': 'bg-green-100 text-green-700'
+                    };
+                    return colors[status] || 'bg-gray-100 text-gray-700';
+                }
+            }
+        }).mount('#trade-app');
+    </script>
+</body>
+</html>
