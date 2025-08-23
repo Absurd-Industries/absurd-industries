@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IndiaFOSS Menu</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['Crimson Text', 'serif'],
+                        sans: ['Inter', 'sans-serif']
+                    },
+                    colors: {
+                        charcoal: '#1a1a1a',
+                        cream: '#faf8f5',
+                        warm: '#2a2a2a',
+                        accent: '#8b7355',
+                        light: '#f5f2ee'
+                    },
+                    backgroundImage: {
+                        'paper-texture': 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23f0ede8" fill-opacity="0.03"%3E%3Ccircle cx="7" cy="7" r="1"/%3E%3Ccircle cx="47" cy="13" r="1"/%3E%3Ccircle cx="21" cy="27" r="1"/%3E%3Ccircle cx="35" cy="41" r="1"/%3E%3Ccircle cx="13" cy="53" r="1"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .paper-shadow {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+        }
+        
+        .sketch-line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: sketch 2s ease-out forwards;
+        }
+        
+        @keyframes sketch {
+            to { stroke-dashoffset: 0; }
+        }
+        
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+        
+        .fade-in-delay {
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.5s forwards;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        
+        .price-tag {
+            font-feature-settings: 'tnum';
+        }
+        
+        .menu-border {
+            border-image: linear-gradient(45deg, transparent, #8b7355, transparent) 1;
+        }
+        
+        body {
+            background: #faf8f5;
+            background-image: 
+                radial-gradient(circle at 25% 25%, #f5f2ee 2px, transparent 2px),
+                radial-gradient(circle at 75% 75%, #f0ede8 1px, transparent 1px);
+            background-size: 50px 50px, 30px 30px;
+        }
+    </style>
+</head>
+
+<body class="text-charcoal font-sans">
+    <div class="min-h-screen p-6 md:p-12">
+        <div class="max-w-4xl mx-auto p-10 bg-cream paper-shadow rounded-sm" style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23f0ede8\" fill-opacity=\"0.02\"%3E%3Ccircle cx=\"7\" cy=\"7\" r=\"1\"/%3E%3Ccircle cx=\"47\" cy=\"13\" r=\"1\"/%3E%3Ccircle cx=\"21\" cy=\"27\" r=\"1\"/%3E%3Ccircle cx=\"35\" cy=\"41\" r=\"1\"/%3E%3Ccircle cx=\"13\" cy=\"53\" r=\"1\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');">
+            
+            <!-- Header -->
+            <header class="text-center py-12 border-b border-charcoal border-opacity-10">
+                <div class="mb-6">
+                    <svg width="120" height="60" viewBox="0 0 120 60" class="mx-auto">
+                        <path class="sketch-line" d="M10,30 Q30,10 50,30 Q70,50 90,30 Q110,10 120,30" 
+                              stroke="#8b7355" stroke-width="1" fill="none"/>
+                        <text x="60" y="45" text-anchor="middle" class="text-lg font-serif font-semibold fill-charcoal"></text>
+                    </svg>
+                </div>
+                <h1 class="font-serif text-5xl md:text-6xl font-semibold mb-4 fade-in">IndiaFOSS Menu Planning</h1>
+                <div class="mt-6 text-accent fade-in-delay">
+                    <p class="text-lg">Sunday, 24 August 2025 • 2:00 PM</p>
+                    <p class="text-base mt-1">Deku, Bengaluru</p>
+                </div>
+            </header>
+
+            <!-- Featured Items -->
+            <section class="py-12">
+                <h2 class="font-serif text-3xl font-semibold mb-8 text-center">Classics</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                    <!-- Lampy & Bloom -->
+                    <div class="border-b border-charcoal border-opacity-10 pb-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-serif text-xl font-semibold">Lampy & Bloom</h3>
+                            <span class="price-tag font-mono text-lg">₹4,444 each</span>
+                        </div>
+                        <p class="text-warm text-sm mb-2 italic">@layogtima<br>ambient lighting collection</p>
+                        <p class="text-base leading-relaxed">Mood lighting with developer SDK. Because sometimes your code needs the right ambiance to compile properly.</p>
+                    </div>
+
+                    <!-- CoryDora -->
+                    <div class="border-b border-charcoal border-opacity-10 pb-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-serif text-xl font-semibold">CoryDora</h3>
+                            <span class="price-tag font-mono text-lg">₹4,949</span>
+                        </div>
+                        <p class="text-warm text-sm mb-2 italic">@deku<br>QMK compatible macropad</p>
+                        <p class="text-base leading-relaxed">Open-source programmable macropad for the discerning developer who refuses to use default keybindings.</p>
+                    </div>
+
+                    <!-- T1E Watch -->
+                    <div class="border-b border-charcoal border-opacity-10 pb-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-serif text-xl font-semibold">T1E ePaper Watch</h3>
+                            <span class="price-tag font-mono text-lg">₹7,777</span>
+                        </div>
+                        <p class="text-warm text-sm mb-2 italic">@ampere.works<br>smart timepiece</p>
+                        <p class="text-base leading-relaxed">A watch that tells you time, with ePaper goodness and week between charges.</p>
+                    </div>
+
+                    <!-- Sidekick -->
+                    <div class="border-b border-charcoal border-opacity-10 pb-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-serif text-xl font-semibold">Sidekick Companion</h3>
+                            <span class="price-tag font-mono text-lg">₹3,333</span>
+                        </div>
+                        <p class="text-warm text-sm mb-2 italic">@burnthishardware<br>tamagochi revival</p>
+                        <p class="text-base leading-relaxed">Digital pet for the modern age. Interact with it and watch it evolve into your perfect tamagochi companion.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+                    <!-- Starters -->
+                    <div>
+                        <h3 class="font-serif text-2xl font-semibold mb-6 border-b border-charcoal border-opacity-20 pb-2">Appetizers</h3>
+                        
+                        <div class="space-y-4 mb-8">
+                            <div class="flex justify-between">
+                                <div class="flex-1">
+                                    <h4 class="font-medium">Hello World</h4>
+                                    <p class="text-sm text-warm">Arduino Nano + LED + Resistor + Breadboard</p>
+                                </div>
+                                <span class="price-tag font-mono ml-4">₹299</span>
+                            </div>
+                            
+                            <div class="flex justify-between">
+                                <div class="flex-1">
+                                    <h4 class="font-medium">Stim Clicker</h4>
+                                    <p class="text-sm text-warm">ESP32 + OLED + 5 tactile switches</p>
+                                </div>
+                                <span class="price-tag font-mono ml-4">₹699</span>
+                            </div>
+                            
+                            <div class="flex justify-between">
+                                <div class="flex-1">
+                                    <h4 class="font-medium">MODO Ring</h4>
+                                    <p class="text-sm text-warm">NeoPixel LED + Temperature Sensor + ESP32</p>
+                                </div>
+                                <span class="price-tag font-mono ml-4">₹899</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Courses -->
+                    <div>
+                        <h3 class="font-serif text-2xl font-semibold mb-6 border-b border-charcoal border-opacity-20 pb-2">Main Courses</h3>
+                        
+                        <div class="space-y-4 mb-8">
+                            <div class="flex justify-between">
+                                <div class="flex-1">
+                                    <h4 class="font-medium">Cube</h4>
+                                    <p class="text-sm text-warm">Aluminum extrusion + 3D printed fittings</p>
+                                </div>
+                                <span class="price-tag font-mono ml-4">₹4,444</span>
+                            </div>
+                            
+                            <div class="flex justify-between">
+                                <div class="flex-1">
+                                    <h4 class="font-medium">Deutron (Quadwalker)</h4>
+                                    <p class="text-sm text-warm">Arduino Nano + MG90 servos + 3D printed body</p>
+                                </div>
+                                <span class="price-tag font-mono ml-4">₹5,555</span>
+                            </div>
+                            
+                            <div class="flex justify-between">
+                                <div class="flex-1">
+                                    <h4 class="font-medium">Open Mouse (Cheddar Cheese Kit)</h4>
+                                    <p class="text-sm text-warm">ESP32C3 + motor controller + IR LEDs + Chassis</p>
+                                    <p></p>
+                                </div>
+                                <span class="price-tag font-mono ml-4">₹3,333</span>
+                            </div>
+
+                            <div class="flex justify-between">
+                                <div class="flex-1">
+                                    <h4 class="font-medium">Open Mouse (Parmesan Cheese Kit)</h4>
+                                    <p class="text-sm text-warm">ESP32C3 + motor controller + IR LEDs + Chassis</p>
+                                </div>
+                                <span class="price-tag font-mono ml-4">₹3,333</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Premium Selection -->
+                    <div class="md:col-span-2">
+                        <h3 class="font-serif text-2xl font-semibold mb-6 border-b border-charcoal border-opacity-20 pb-2"></h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                            <div class="flex justify-between">
+                                <div class="flex-1">
+                                    <h4 class="font-medium">Smart Mirror Kit</h4>
+                                    <p class="text-sm text-warm">Raspberry Pi + 2-way mirror + display + frame</p>
+                                </div>
+                                <span class="price-tag font-mono ml-4">₹8,999</span>
+                            </div>
+                            
+                            <div class="flex justify-between">
+                                <div class="flex-1">
+                                    <h4 class="font-medium">Retro Game Console</h4>
+                                    <p class="text-sm text-warm">Custom PCB + buttons + OLED + 3D printed case</p>
+                                </div>
+                                <span class="price-tag font-mono ml-4">₹6,777</span>
+                            </div>
+                            
+                            <div class="flex justify-between">
+                                <div class="flex-1">
+                                    <h4 class="font-medium">Plant Whisperer</h4>
+                                    <p class="text-sm text-warm">Soil sensors + pump + ESP32 + app integration</p>
+                                </div>
+                                <span class="price-tag font-mono ml-4">₹3,499</span>
+                            </div>
+                            
+                            <div class="flex justify-between">
+                                <div class="flex-1">
+                                    <h4 class="font-medium">Wireless Charger Pad</h4>
+                                    <p class="text-sm text-warm">Qi coil + custom PCB + bamboo enclosure</p>
+                                </div>
+                                <span class="price-tag font-mono ml-4">₹2,299</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PCB Cupid Special -->
+                    <div class="md:col-span-2 mt-8 p-6 bg-light rounded border border-accent border-opacity-20">
+                        <h3 class="font-serif text-2xl font-semibold mb-4">PCB Cupid Special Collection</h3>
+                        <p class="text-base mb-4 italic text-warm">Curated components and kits from pcbcupid.com</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <h4 class="font-medium">Cupid MP3 Player</h4>
+                                <p class="text-sm text-warm">Custom PCB audio player</p>
+                                <span class="price-tag font-mono text-sm">Market Price</span>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Glyph ESP32 Series</h4>
+                                <p class="text-sm text-warm">C3/C6/H2 development boards</p>
+                                <span class="price-tag font-mono text-sm">Market Price</span>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Sensor Collection</h4>
+                                <p class="text-sm text-warm">Various sensors and components</p>
+                                <span class="price-tag font-mono text-sm">Market Price</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Planning Session Details -->
+            <section id="planning" class="hidden py-12 border-t border-charcoal border-opacity-10">
+                <h2 class="font-serif text-3xl font-semibold mb-8 text-center">Today's Discussion</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div>
+                        <h3 class="font-serif text-xl font-semibold mb-4">Agenda</h3>
+                        <ul class="space-y-3">
+                            <li class="flex">
+                                <span class="font-mono text-accent w-8">01</span>
+                                <span>IndiaFOSS booth strategy and layout</span>
+                            </li>
+                            <li class="flex">
+                                <span class="font-mono text-accent w-8">02</span>
+                                <span>Menu finalization and pricing review</span>
+                            </li>
+                            <li class="flex">
+                                <span class="font-mono text-accent w-8">03</span>
+                                <span>Kit production and distribution planning</span>
+                            </li>
+                            <li class="flex">
+                                <span class="font-mono text-accent w-8">04</span>
+                                <span>Community showcase coordination</span>
+                            </li>
+                            <li class="flex">
+                                <span class="font-mono text-accent w-8">05</span>
+                                <span>Collaborative opportunities discussion</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h3 class="font-serif text-xl font-semibold mb-4">Location & Contact</h3>
+                        <address class="not-italic mb-6">
+                            <p class="font-medium">Balu's Laboratory</p>
+                            <a href="https://www.google.com/maps/place/Periyanayagi+Thunai+Store/@13.0118161,77.6316039,17z" 
+                               class="text-accent underline hover:no-underline">View on Maps</a>
+                        </address>
+                        
+                        <div class="space-y-2 mb-6">
+                            <p>Balu: <a href="tel:+917760579605" class="font-mono text-accent">77605 79605</a></p>
+                            <p>Amit: <a href="tel:+919892836471" class="font-mono text-accent">98928 36471</a></p>
+                        </div>
+                        
+                        <p class="text-sm text-warm italic">Calendar invites will be sent to confirmed attendees</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="py-8 border-t border-charcoal border-opacity-10 text-center text-sm text-warm">
+                <div class="flex justify-center mb-4">
+                    <svg width="80" height="20" viewBox="0 0 80 20">
+                        <path class="sketch-line" d="M5,10 Q20,5 35,10 Q50,15 65,10 Q75,5 80,10" 
+                              stroke="#8b7355" stroke-width="1" fill="none"/>
+                    </svg>
+                </div>
+                <p>Add your dishes to the menu!</p>
+                <p class="mt-1 opacity-60"><a href="https://wa.me/9892836471">Ping Amit on +91 9892836471</a> or <a href="https://discord.gg/KZvZpw8HK5">message him on Discord</a></p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#rsvp',
+            data: {
+                form: {
+                    name: '',
+                    email: '',
+                    project: ''
+                },
+                submitted: false
+            },
+            methods: {
+                handleRSVP() {
+                    this.submitted = true;
+                    
+                    const subject = encodeURIComponent('Hardware Menu Planning - ' + this.form.name);
+                    const body = encodeURIComponent(`
+Name: ${this.form.name}
+Email: ${this.form.email}
+Current Project: ${this.form.project || 'Exploring options'}
+
+Confirming attendance for the IndiaFOSS menu planning session.
+                    `);
+                    
+                    const mailtoLink = `mailto:amit@absurd.industries?subject=${subject}&body=${body}`;
+                    
+                    setTimeout(() => {
+                        window.open(mailtoLink);
+                    }, 800);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

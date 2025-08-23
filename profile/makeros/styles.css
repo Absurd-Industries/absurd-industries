@@ -1,0 +1,348 @@
+/* Absurd OS - Minimal Crisp Styling */
+/* Because less is more, but better is everything */
+
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap');
+
+/* Reset and Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Rubik', system-ui, sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* Selection Styling */
+::selection {
+    background: rgba(255, 107, 53, 0.2);
+    color: #1a1a1a;
+}
+
+::-moz-selection {
+    background: rgba(255, 107, 53, 0.2);
+    color: #1a1a1a;
+}
+
+/* Focus States */
+button:focus,
+input:focus,
+textarea:focus {
+    outline: 2px solid #FF6B35;
+    outline-offset: 2px;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #F5F0E8;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #FF6B35;
+    border-radius: 3px;
+    transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #e55a2b;
+}
+
+/* Firefox scrollbar */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #FF6B35 #F5F0E8;
+}
+
+/* Input Styling */
+input, textarea {
+    font-family: inherit;
+    transition: all 0.2s ease;
+}
+
+input:focus, textarea:focus {
+    border-color: #FF6B35;
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+}
+
+/* Button Hover States */
+button {
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    background: none;
+}
+
+button:hover {
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* Card Shadows */
+.hover\:shadow-lg:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.hover\:shadow-md:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* Smooth Transitions */
+.transition-all {
+    transition: all 0.2s ease;
+}
+
+.transition-colors {
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.transition-shadow {
+    transition: box-shadow 0.2s ease;
+}
+
+/* Animation Classes */
+.animate-expand {
+    animation: expand 0.2s ease-out forwards;
+}
+
+.animate-contract {
+    animation: contract 0.2s ease-in forwards;
+}
+
+.animate-gentle-float {
+    animation: gentle-float 4s ease-in-out infinite;
+}
+
+/* Keyframes */
+@keyframes expand {
+    0% {
+        opacity: 0;
+        transform: scale(0.95) translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes contract {
+    0% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.95) translateY(-10px);
+    }
+}
+
+@keyframes gentle-float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-2px);
+    }
+}
+
+/* Disabled States */
+button:disabled,
+input:disabled,
+textarea:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* Loading States */
+.loading {
+    position: relative;
+    pointer-events: none;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    margin: -8px 0 0 -8px;
+    border: 2px solid #F5F0E8;
+    border-top: 2px solid #FF6B35;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Typography Enhancements */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    letter-spacing: -0.025em;
+}
+
+.uppercase {
+    letter-spacing: 0.05em;
+}
+
+/* Interactive Elements */
+.group:hover .group-hover\:bg-maker-orange\/20 {
+    background-color: rgba(255, 107, 53, 0.2);
+}
+
+.group:hover .group-hover\:text-maker-orange {
+    color: #FF6B35;
+}
+
+/* Utility Classes */
+.text-shadow {
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.border-subtle {
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+/* Mobile Optimizations */
+@media (max-width: 640px) {
+    body {
+        font-size: 14px;
+    }
+    
+    .p-8 {
+        padding: 1.5rem;
+    }
+    
+    .text-2xl {
+        font-size: 1.5rem;
+    }
+    
+    .text-xl {
+        font-size: 1.25rem;
+    }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+    button {
+        border: 1px solid currentColor;
+    }
+    
+    .border {
+        border-width: 2px;
+    }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .animate-expand,
+    .animate-contract,
+    .animate-gentle-float {
+        animation: none;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    body {
+        background: white !important;
+        color: black !important;
+        font-size: 12pt;
+    }
+    
+    .bg-maker-orange {
+        background: #666 !important;
+    }
+    
+    .text-maker-orange {
+        color: #333 !important;
+    }
+}
+
+/* Dark Mode Support (future-ready) */
+@media (prefers-color-scheme: dark) {
+    /* Commenting out for now since we're keeping it light and minimal */
+    /*
+    body {
+        background: #1a1a1a;
+        color: #f5f5f5;
+    }
+    */
+}
+
+/* Custom Properties for Easy Theming */
+:root {
+    --maker-orange: #FF6B35;
+    --maker-beige: #F5F0E8;
+    --maker-dark: #1a1a1a;
+    --maker-gray: #666666;
+    --border-radius: 0.5rem;
+    --border-radius-lg: 1rem;
+    --border-radius-xl: 1.5rem;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Micro-interactions */
+.hover-lift:hover {
+    transform: translateY(-1px);
+}
+
+.active:active {
+    transform: scale(0.98);
+}
+
+/* Text Utilities */
+.text-balance {
+    text-wrap: balance;
+}
+
+.text-pretty {
+    text-wrap: pretty;
+}
+
+/* Modern CSS Features */
+@supports (backdrop-filter: blur(10px)) {
+    .backdrop-blur {
+        backdrop-filter: blur(10px);
+    }
+}
+
+/* Container Queries (future-ready) */
+@container (min-width: 768px) {
+    .container-md\:grid-cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
