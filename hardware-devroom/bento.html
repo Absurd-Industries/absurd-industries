@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary Meta Tags -->
+    <title>Science Bento Box - Premium Electronics Experience</title>
+    <meta name="title" content="Science Bento Box - Premium Electronics Experience">
+    <meta name="description" content="Curated electronics for the curious mind. From ESP32s to lightsabers - served fresh with a side of engineering excellence.">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bento.absurd.industries/">
+    <meta property="og:title" content="Science Bento Box - Premium Electronics Experience">
+    <meta property="og:description" content="Curated electronics for the curious mind. From ESP32s to lightsabers - served fresh with a side of engineering excellence.">
+    <meta property="og:image" content="https://bento.absurd.industries/images/og-image.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://bento.absurd.industries/">
+    <meta property="twitter:title" content="Science Bento Box - Premium Electronics Experience">
+    <meta property="twitter:description" content="Curated electronics for the curious mind. From ESP32s to lightsabers - served fresh with a side of engineering excellence.">
+    <meta property="twitter:image" content="https://bento.absurd.industries/images/og-image.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        mono: ['Space Mono', 'monospace']
+                    },
+                    colors: {
+                        primary: '#ee780d',
+                        accent: '#fba311',
+                        kepler: {
+                            50: "#fef8f3",
+                            100: "#fdf2e7",
+                            200: "#fce4cf",
+                            300: "#f8c99e",
+                            400: "#f5ae6e",
+                            500: "#ee780d",
+                            600: "#ca660b",
+                            700: "#a75409",
+                            800: "#773c07",
+                            900: "#5f3005",
+                            950: "#301803",
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- External Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="bg-white text-gray-900 font-mono antialiased">
+    <div id="app">
+        <!-- Header -->
+        <header class="bg-white border-b border-gray-200 sticky top-0 z-40">
+            <div class="flex items-center justify-between px-6 py-4">
+                <!-- Logo & Brand -->
+                <div class="flex items-center space-x-4">
+                    <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                        <i class="fas fa-flask text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold">SCIENCE BENTO BOX</h1>
+                        <p class="text-sm text-gray-600">Premium Electronics Experience</p>
+                    </div>
+                </div>
+                
+                <!-- Header Controls -->
+                <div class="flex items-center space-x-4">
+                    <!-- View Toggle (Desktop) -->
+                    <div class="view-toggle hidden md:flex">
+                        <button @click="viewMode = 'grid'" :class="viewMode === 'grid' ? 'active' : ''">
+                            <i class="fas fa-th"></i>
+                        </button>
+                        <button @click="viewMode = 'list'" :class="viewMode === 'list' ? 'active' : ''">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Bento Cart Toggle -->
+                    <button 
+                        @click="bentoOpen = !bentoOpen"
+                        class="relative bg-primary text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors"
+                    >
+                        <i class="fas fa-shopping-cart mr-2"></i>
+                        Bento ({{ bentoItems.length }})
+                        <span v-if="bentoItems.length > 0" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                            {{ bentoItems.length }}
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Layout -->
+        <div class="flex min-h-screen">
+            <!-- Filter Sidebar -->
+            <aside class="w-80 filter-sidebar hidden md:block">
+                <!-- Search Section -->
+                <div class="filter-section">
+                    <h3 class="filter-title">
+                        <i class="fas fa-search mr-2 text-primary"></i>
+                        SEARCH
+                    </h3>
+                    <input 
+                        v-model="searchQuery"
+                        placeholder="Search products..."
+                        class="search-input w-full"
+                        type="search"
+                    >
+                </div>
+                
+                <!-- Categories Filter -->
+                <div class="filter-section">
+                    <h3 class="filter-title">
+                        <i class="fas fa-filter mr-2 text-primary"></i>
+                        CATEGORIES
+                    </h3>
+                    <div class="space-y-2">
+                        <label v-for="category in categories" :key="category" class="filter-checkbox">
+                            <input 
+                                type="checkbox" 
+                                v-model="selectedCategories" 
+                                :value="category"
+                                class="mr-3 accent-primary"
+                            >
+                            <span class="text-sm">{{ category }}</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Price Range Filter -->
+                <div class="filter-section">
+                    <h3 class="filter-title">
+                        <i class="fas fa-rupee-sign mr-2 text-primary"></i>
+                        PRICE RANGE
+                    </h3>
+                    <div class="space-y-3">
+                        <label v-for="range in priceRanges" :key="range.label" class="filter-radio">
+                            <input 
+                                type="radio" 
+                                v-model="selectedPriceRange" 
+                                :value="range"
+                                name="priceRange"
+                                class="mr-3 accent-primary"
+                            >
+                            <span class="text-sm">{{ range.label }}</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Sort Options -->
+                <div class="filter-section">
+                    <h3 class="filter-title">
+                        <i class="fas fa-sort mr-2 text-primary"></i>
+                        SORT BY
+                    </h3>
+                    <select v-model="sortBy" class="search-input w-full">
+                        <option value="name">Name A-Z</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="category">Category</option>
+                    </select>
+                </div>
+                
+                <!-- Clear Filters -->
+                <div class="filter-section">
+                    <button @click="clearFilters" class="btn-secondary w-full">
+                        <i class="fas fa-times mr-2"></i>
+                        Clear Filters
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="flex-1 overflow-y-auto">
+                <!-- Results Header -->
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 class="text-2xl font-bold">{{ filteredProducts.length }} Products</h2>
+                            <p class="text-gray-600 text-sm">Curated electronics for the curious mind</p>
+                        </div>
+                        
+                        <!-- Mobile Filter Toggle -->
+                        <button class="md:hidden btn-secondary" @click="mobileFiltersOpen = true">
+                            <i class="fas fa-filter mr-2"></i>
+                            Filters
+                        </button>
+                    </div>
+
+                    <!-- Grid View -->
+                    <div v-if="viewMode === 'grid'" class="product-grid">
+                        <div 
+                            v-for="product in filteredProducts" 
+                            :key="product.id"
+                            @click="openProductModal(product)"
+                            class="product-card"
+                        >
+                            <div class="product-image">
+                                <div class="text-4xl">{{ product.emoji || '🔧' }}</div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">{{ product.name }}</h3>
+                                <p class="product-category">{{ product.category }}</p>
+                                <p class="product-description">{{ product.description.substring(0, 80) }}...</p>
+                                <div class="product-footer">
+                                    <span class="product-price">₹{{ product.price.toLocaleString() }}</span>
+                                    <button 
+                                        @click.stop="addToBento(product)"
+                                        class="btn-add-to-bento"
+                                    >
+                                        Add to Bento
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- List View -->
+                    <div v-if="viewMode === 'list'" class="product-list">
+                        <div 
+                            v-for="product in filteredProducts" 
+                            :key="product.id"
+                            @click="openProductModal(product)"
+                            class="product-list-item"
+                        >
+                            <div class="product-list-image">
+                                {{ product.emoji || '🔧' }}
+                            </div>
+                            <div class="product-list-content">
+                                <h3 class="font-bold text-lg">{{ product.name }}</h3>
+                                <p class="text-sm text-gray-600 mb-1">{{ product.category }}</p>
+                                <p class="text-sm text-gray-700">{{ product.description }}</p>
+                            </div>
+                            <div class="product-list-actions">
+                                <div class="product-price mb-2">₹{{ product.price.toLocaleString() }}</div>
+                                <button 
+                                    @click.stop="addToBento(product)"
+                                    class="btn-primary text-sm"
+                                >
+                                    Add to Bento
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Bento Slide-out Tray -->
+        <div :class="['bento-tray', bentoOpen ? 'open' : '']">
+            <div class="h-full flex flex-col">
+                <!-- Bento Header -->
+                <div class="bento-header">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold flex items-center">
+                            <i class="fas fa-shopping-basket mr-3"></i>
+                            Your Bento Box
+                        </h3>
+                        <button @click="bentoOpen = false" class="text-white hover:text-gray-200">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="text-sm opacity-90">
+                        {{ bentoItems.length }} items • ₹{{ bentoTotal.toLocaleString() }}
+                    </div>
+                </div>
+
+                <!-- Bento Items -->
+                <div class="flex-1 overflow-y-auto">
+                    <div v-if="bentoItems.length === 0" class="bento-empty">
+                        <i class="fas fa-shopping-basket text-4xl mb-4 opacity-50"></i>
+                        <p class="text-lg mb-2">Your bento is empty</p>
+                        <p class="text-sm">Add some delicious electronics!</p>
+                    </div>
+                    
+                    <div v-else class="bento-grid">
+                        <div 
+                            v-for="item in bentoItems" 
+                            :key="`bento-${item.id}`"
+                            class="bento-item"
+                            @click="removeFromBento(item.id)"
+                            :title="'Click to remove ' + item.name"
+                        >
+                            <div class="text-lg mb-1">{{ item.emoji || '🔧' }}</div>
+                            <div class="font-bold text-xs mb-1">{{ item.name }}</div>
+                            <div class="text-xs text-gray-600 mb-2">₹{{ item.price.toLocaleString() }}</div>
+                            <div v-if="item.quantity > 1" class="bento-quantity">
+                                {{ item.quantity }}
+                            </div>
+                            <div class="bento-remove-overlay">
+                                <i class="fas fa-trash text-red-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bento Footer -->
+                <div v-if="bentoItems.length > 0" class="bento-footer">
+                    <div class="bento-total">
+                        <div class="flex justify-between items-center text-lg font-bold">
+                            <span>Total:</span>
+                            <span class="product-price">₹{{ bentoTotal.toLocaleString() }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bento-actions">
+                        <button class="btn-primary w-full mb-3">
+                            <i class="fas fa-whatsapp mr-2"></i>
+                            Order via WhatsApp
+                        </button>
+                        <button @click="clearBento" class="btn-secondary w-full">
+                            <i class="fas fa-trash mr-2"></i>
+                            Clear All
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Modal -->
+        <div v-if="selectedProduct" @click="closeProductModal" class="modal-overlay">
+            <div @click.stop class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h2 class="text-2xl font-bold">{{ selectedProduct.name }}</h2>
+                    <button @click="closeProductModal" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <!-- Product iframe placeholder -->
+                    <div class="product-showcase">
+                        <div class="text-center">
+                            <div class="text-6xl mb-4">{{ selectedProduct.emoji || '🔧' }}</div>
+                            <p class="text-gray-600">Interactive Product Experience</p>
+                            <p class="text-sm text-gray-500">(iframe will load here)</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Product Details -->
+                    <div class="product-details">
+                        <div class="product-details-left">
+                            <h3 class="font-bold text-lg mb-2">Description</h3>
+                            <p class="text-gray-700 mb-4">{{ selectedProduct.description }}</p>
+                            
+                            <h3 class="font-bold text-lg mb-2">Features</h3>
+                            <ul class="space-y-2">
+                                <li v-for="feature in selectedProduct.features" :key="feature" class="flex items-center">
+                                    <i class="fas fa-check text-primary mr-2"></i>
+                                    {{ feature }}
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="product-details-right">
+                            <div class="product-purchase-card">
+                                <div class="text-sm text-gray-600 mb-2">{{ selectedProduct.category }}</div>
+                                <div class="product-price text-3xl mb-6">₹{{ selectedProduct.price.toLocaleString() }}</div>
+                                
+                                <button @click="addToBento(selectedProduct)" class="btn-primary w-full mb-4">
+                                    <i class="fas fa-cart-plus mr-2"></i>
+                                    Add to Bento
+                                </button>
+                                
+                                <div class="text-xs text-gray-500">
+                                    <i class="fas fa-info-circle mr-1"></i>
+                                    Free shipping on orders over ₹5,000
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Filters Modal -->
+        <div v-if="mobileFiltersOpen" @click="mobileFiltersOpen = false" class="modal-overlay md:hidden">
+            <div @click.stop class="mobile-filters-modal">
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold">Filters</h3>
+                        <button @click="mobileFiltersOpen = false">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Mobile filter content (simplified) -->
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="font-bold mb-3">Search</h4>
+                            <input 
+                                v-model="searchQuery"
+                                placeholder="Search products..."
+                                class="search-input w-full"
+                            >
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-bold mb-3">Sort By</h4>
+                            <select v-model="sortBy" class="search-input w-full">
+                                <option value="name">Name A-Z</option>
+                                <option value="price-low">Price: Low to High</option>
+                                <option value="price-high">Price: High to Low</option>
+                                <option value="category">Category</option>
+                            </select>
+                        </div>
+                        
+                        <button @click="clearFilters" class="btn-secondary w-full">
+                            Clear Filters
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Backdrop for bento and modals -->
+        <div v-if="bentoOpen || selectedProduct || mobileFiltersOpen" 
+             @click="closeAllModals" 
+             class="modal-backdrop">
+        </div>
+    </div>
+
+    <!-- Vue.js CDN -->
+    <script src="https://unpkg.com/vue@2/dist/vue.js"></script>
+    
+    <!-- Product Data -->
+    <script src="products.js"></script>
+    
+    <!-- Main Application Script -->
+    <script src="script.js"></script>
+</body>
+</html>
