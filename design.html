@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absurd Industries - Design System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'absurd-orange': '#FF6B35',
+                        'absurd-yellow': '#f19f16', 
+                        'absurd-cream': '#eeede9',
+                        'absurd-dark': '#141c1c'
+                    },
+                    fontFamily: {
+                        'rubik': ['Rubik', 'system-ui', 'sans-serif']
+                    },
+                    fontSize: {
+                        'hero': '4rem',
+                        'display': '3rem',
+                        'heading': '2rem',
+                        'title': '1.5rem',
+                        'body': '1.125rem',
+                        'small': '1rem',
+                        'caption': '0.875rem'
+                    },
+                    spacing: {
+                        '18': '4.5rem',
+                        '22': '5.5rem',
+                        '26': '6.5rem',
+                        '30': '7.5rem',
+                        '34': '8.5rem',
+                        '38': '9.5rem'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        * {
+            font-family: 'Rubik', system-ui, sans-serif;
+        }
+        
+        .law-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .law-card:hover {
+            transform: translateY(-4px);
+        }
+        
+        .geometric-shape {
+            border-radius: 0;
+        }
+        
+        .proximity-dots {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+        
+        .proximity-dots .dot {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+        }
+        
+        .proximity-dots .close-group .dot {
+            margin-right: 0.25rem;
+        }
+        
+        .fitts-target {
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
+        }
+        
+        .hick-complexity {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+        }
+    </style>
+</head>
+
+<body class="bg-absurd-cream font-rubik text-absurd-dark leading-relaxed">
+    
+    <!-- Header with generous spacing -->
+    <header class="bg-absurd-dark text-absurd-cream py-18 px-8">
+        <div class="max-w-6xl mx-auto text-center">
+            <h1 class="text-hero font-bold mb-8">ABSURD DESIGN SYSTEM</h1>
+            <p class="text-title font-medium opacity-80 max-w-2xl mx-auto">
+                Principles of human-centered design applied to maker experiences
+            </p>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto py-18 px-8">
+        
+        <!-- Typography Scale -->
+        <section class="mb-26">
+            <h2 class="text-display font-bold mb-12">Typography Hierarchy</h2>
+            <div class="space-y-8">
+                <div class="bg-white p-12 rounded-none border-2 border-absurd-dark">
+                    <h1 class="text-hero font-bold text-absurd-dark mb-4">Hero Text</h1>
+                    <code class="text-small bg-absurd-cream px-3 py-1">text-hero (4rem) - font-bold</code>
+                </div>
+                
+                <div class="bg-white p-12 rounded-none border-2 border-absurd-dark">
+                    <h2 class="text-display font-bold text-absurd-dark mb-4">Display Heading</h2>
+                    <code class="text-small bg-absurd-cream px-3 py-1">text-display (3rem) - font-bold</code>
+                </div>
+                
+                <div class="bg-white p-12 rounded-none border-2 border-absurd-dark">
+                    <h3 class="text-heading font-bold text-absurd-dark mb-4">Section Heading</h3>
+                    <code class="text-small bg-absurd-cream px-3 py-1">text-heading (2rem) - font-bold</code>
+                </div>
+                
+                <div class="bg-white p-12 rounded-none border-2 border-absurd-dark">
+                    <h4 class="text-title font-semibold text-absurd-dark mb-4">Card Title</h4>
+                    <code class="text-small bg-absurd-cream px-3 py-1">text-title (1.5rem) - font-semibold</code>
+                </div>
+                
+                <div class="bg-white p-12 rounded-none border-2 border-absurd-dark">
+                    <p class="text-body text-absurd-dark mb-4">Body text for comfortable reading with optimal line height and spacing for extended content consumption.</p>
+                    <code class="text-small bg-absurd-cream px-3 py-1">text-body (1.125rem) - font-normal</code>
+                </div>
+                
+                <div class="bg-white p-12 rounded-none border-2 border-absurd-dark">
+                    <p class="text-small text-absurd-dark mb-4">Small text for secondary information</p>
+                    <code class="text-small bg-absurd-cream px-3 py-1">text-small (1rem) - font-normal</code>
+                </div>
+            </div>
+        </section>
+
+        <!-- Color System -->
+        <section class="mb-26">
+            <h2 class="text-display font-bold mb-12">Color Psychology</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="w-full h-32 bg-absurd-orange mb-6 border-2 border-absurd-dark"></div>
+                    <h3 class="text-title font-bold mb-4">ORANGE</h3>
+                    <p class="text-body mb-4">#FF6B35</p>
+                    <p class="text-small opacity-75">Primary actions, energy, creation</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-full h-32 bg-absurd-yellow mb-6 border-2 border-absurd-dark"></div>
+                    <h3 class="text-title font-bold mb-4">YELLOW</h3>
+                    <p class="text-body mb-4">#f19f16</p>
+                    <p class="text-small opacity-75">Attention, warnings, highlights</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-full h-32 bg-absurd-cream mb-6 border-2 border-absurd-dark"></div>
+                    <h3 class="text-title font-bold mb-4">CREAM</h3>
+                    <p class="text-body mb-4">#eeede9</p>
+                    <p class="text-small opacity-75">Background, neutral space</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-full h-32 bg-absurd-dark mb-6 border-2 border-absurd-dark"></div>
+                    <h3 class="text-title font-bold mb-4 text-absurd-dark">DARK</h3>
+                    <p class="text-body mb-4">#141c1c</p>
+                    <p class="text-small opacity-75">Text, borders, structure</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- UX Laws Applied -->
+        <section class="mb-26">
+            <h2 class="text-display font-bold mb-12">UX Laws in Action</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-12">
+                
+                <!-- Fitts's Law -->
+                <div class="law-card bg-absurd-orange p-12 rounded-none border-2 border-absurd-dark">
+                    <div class="bg-absurd-cream p-8 mb-8 border-2 border-absurd-dark">
+                        <div class="grid grid-cols-3 gap-4 items-end">
+                            <div class="w-6 h-6 bg-absurd-dark"></div>
+                            <div class="w-12 h-12 bg-absurd-dark fitts-target"></div>
+                            <div class="w-6 h-6 bg-absurd-dark"></div>
+                        </div>
+                    </div>
+                    <h3 class="text-title font-bold text-white mb-6">FITTS'S LAW</h3>
+                    <p class="text-body text-white opacity-90">
+                        Larger targets are easier to click. Critical actions get more space.
+                    </p>
+                </div>
+
+                <!-- Law of Proximity -->
+                <div class="law-card bg-absurd-yellow p-12 rounded-none border-2 border-absurd-dark">
+                    <div class="bg-absurd-cream p-8 mb-8 border-2 border-absurd-dark">
+                        <div class="proximity-dots">
+                            <div class="dot bg-absurd-dark"></div>
+                            <div class="dot bg-absurd-dark"></div>
+                            <div class="dot bg-absurd-dark opacity-30"></div>
+                            <div class="dot bg-absurd-dark opacity-30"></div>
+                            <div class="dot bg-absurd-dark"></div>
+                            <div class="dot bg-absurd-dark"></div>
+                            <div class="dot bg-absurd-dark opacity-30"></div>
+                            <div class="dot bg-absurd-dark opacity-30"></div>
+                        </div>
+                    </div>
+                    <h3 class="text-title font-bold text-absurd-dark mb-6">LAW OF PROXIMITY</h3>
+                    <p class="text-body text-absurd-dark opacity-90">
+                        Related elements grouped together through spacing.
+                    </p>
+                </div>
+
+                <!-- Hick's Law -->
+                <div class="law-card bg-absurd-dark p-12 rounded-none border-2 border-absurd-dark">
+                    <div class="bg-absurd-cream p-8 mb-8 border-2 border-absurd-dark">
+                        <div class="space-y-4">
+                            <div class="hick-complexity">
+                                <div class="h-3 bg-absurd-orange"></div>
+                                <div class="h-3 bg-absurd-orange"></div>
+                                <div class="h-3 bg-absurd-orange"></div>
+                            </div>
+                            <div class="text-center text-small font-bold">VS</div>
+                            <div class="h-3 bg-absurd-orange"></div>
+                        </div>
+                    </div>
+                    <h3 class="text-title font-bold text-white mb-6">HICK'S LAW</h3>
+                    <p class="text-body text-white opacity-90">
+                        Fewer choices lead to faster decisions. Simplify interfaces.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Component Library -->
+        <section class="mb-26">
+            <h2 class="text-display font-bold mb-12">Interface Components</h2>
+            
+            <!-- Buttons with Fitts's Law Applied -->
+            <div class="mb-18">
+                <h3 class="text-heading font-semibold mb-8">Buttons (Fitts's Law)</h3>
+                <div class="space-y-6">
+                    <div class="bg-white p-12 border-2 border-absurd-dark">
+                        <div class="flex flex-wrap gap-6 items-center">
+                            <!-- Primary - Large Target -->
+                            <button class="bg-absurd-orange text-white px-12 py-6 text-body font-bold border-2 border-absurd-dark hover:translate-y-1 transition-transform">
+                                PRIMARY ACTION
+                            </button>
+                            
+                            <!-- Secondary - Medium Target -->
+                            <button class="bg-white text-absurd-dark px-8 py-4 text-body font-bold border-2 border-absurd-dark hover:translate-y-1 transition-transform">
+                                SECONDARY
+                            </button>
+                            
+                            <!-- Small - Less Critical -->
+                            <button class="bg-absurd-yellow text-absurd-dark px-6 py-3 text-small font-bold border-2 border-absurd-dark hover:translate-y-1 transition-transform">
+                                TERTIARY
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cards with Proximity Grouping -->
+            <div class="mb-18">
+                <h3 class="text-heading font-semibold mb-8">Information Cards (Proximity)</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    
+                    <!-- Campaign Card -->
+                    <div class="bg-white border-2 border-absurd-dark p-0">
+                        <!-- Image Section -->
+                        <div class="h-48 bg-gradient-to-br from-blue-500 to-purple-600 border-b-2 border-absurd-dark flex items-center justify-center relative">
+                            <i class="fas fa-clock text-white text-3xl"></i>
+                            <div class="absolute top-6 right-6 bg-green-500 text-white px-4 py-2 text-small font-bold border border-white">
+                                FUNDED
+                            </div>
+                        </div>
+                        
+                        <!-- Content Section - Tight Proximity -->
+                        <div class="p-8 space-y-6">
+                            <!-- Title Group -->
+                            <div>
+                                <h3 class="text-title font-bold mb-2">T1E EPAPER WATCH</h3>
+                                <p class="text-body text-gray-600">Time. For time's sake. 4+ days battery life.</p>
+                            </div>
+                            
+                            <!-- Progress Group -->
+                            <div>
+                                <div class="w-full bg-gray-200 h-3 border border-absurd-dark mb-3">
+                                    <div class="bg-green-500 h-full" style="width: 134%"></div>
+                                </div>
+                                <div class="flex justify-between text-small">
+                                    <span class="font-bold">134% funded</span>
+                                    <span>12 days left</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Action Group -->
+                            <div class="flex justify-between items-center pt-4 border-t-2 border-gray-200">
+                                <span class="text-title font-bold text-absurd-orange">₹9,999</span>
+                                <button class="bg-absurd-dark text-white px-6 py-3 text-body font-bold">
+                                    VIEW CAMPAIGN
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Maker Profile Card -->
+                    <div class="bg-white border-2 border-absurd-dark p-8">
+                        <!-- Header Group -->
+                        <div class="flex items-center mb-8">
+                            <div class="w-20 h-20 bg-absurd-orange border-2 border-absurd-dark mr-6 flex items-center justify-center">
+                                <span class="text-white font-bold text-title">A</span>
+                            </div>
+                            <div>
+                                <h3 class="text-title font-bold mb-1">AMIT GOYAL</h3>
+                                <p class="text-body text-gray-600">Hardware Hacker</p>
+                                <div class="flex items-center mt-2">
+                                    <div class="w-3 h-3 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+                                    <span class="text-small font-bold">ONLINE</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Stats Group -->
+                        <div class="grid grid-cols-3 gap-4 mb-8">
+                            <div class="text-center">
+                                <div class="text-title font-bold text-absurd-orange">3</div>
+                                <div class="text-small text-gray-600">CAMPAIGNS</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-title font-bold text-absurd-orange">12</div>
+                                <div class="text-small text-gray-600">PROJECTS</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-title font-bold text-absurd-orange">47</div>
+                                <div class="text-small text-gray-600">TOOLS</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Skills Group -->
+                        <div class="space-y-3 mb-8">
+                            <div class="bg-absurd-cream px-4 py-3 border border-absurd-dark">
+                                <div class="flex items-center">
+                                    <i class="fas fa-microchip text-absurd-orange mr-3"></i>
+                                    <span class="text-body font-medium">CIRCUIT PYTHON</span>
+                                </div>
+                            </div>
+                            <div class="bg-absurd-cream px-4 py-3 border border-absurd-dark">
+                                <div class="flex items-center">
+                                    <i class="fas fa-lightbulb text-absurd-yellow mr-3"></i>
+                                    <span class="text-body font-medium">LED MATRICES</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Action Group -->
+                        <button class="w-full bg-absurd-dark text-white py-4 text-body font-bold">
+                            VIEW PROFILE
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation (Hick's Law) -->
+            <div class="mb-18">
+                <h3 class="text-heading font-semibold mb-8">Navigation (Hick's Law)</h3>
+                <div class="bg-white border-2 border-absurd-dark p-8">
+                    <div class="space-y-8">
+                        <!-- Complex Navigation (Bad) -->
+                        <div>
+                            <h4 class="text-title font-semibold mb-4 text-red-600">❌ Complex (Violates Hick's Law)</h4>
+                            <div class="flex flex-wrap gap-3 p-6 bg-red-50 border border-red-200">
+                                <a href="#" class="px-3 py-2 bg-white border border-gray-300 text-small">CAMPAIGNS</a>
+                                <a href="#" class="px-3 py-2 bg-white border border-gray-300 text-small">ACTIVE CAMPAIGNS</a>
+                                <a href="#" class="px-3 py-2 bg-white border border-gray-300 text-small">ENDED CAMPAIGNS</a>
+                                <a href="#" class="px-3 py-2 bg-white border border-gray-300 text-small">SHOP</a>
+                                <a href="#" class="px-3 py-2 bg-white border border-gray-300 text-small">COMPONENTS</a>
+                                <a href="#" class="px-3 py-2 bg-white border border-gray-300 text-small">KITS</a>
+                                <a href="#" class="px-3 py-2 bg-white border border-gray-300 text-small">TOOLS</a>
+                                <a href="#" class="px-3 py-2 bg-white border border-gray-300 text-small">GUILD</a>
+                                <a href="#" class="px-3 py-2 bg-white border border-gray-300 text-small">PROFILES</a>
+                                <a href="#" class="px-3 py-2 bg-white border border-gray-300 text-small">TRADE</a>
+                                <a href="#" class="px-3 py-2 bg-white border border-gray-300 text-small">FORUM</a>
+                                <a href="#" class="px-3 py-2 bg-white border border-gray-300 text-small">HELP</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Simple Navigation (Good) -->
+                        <div>
+                            <h4 class="text-title font-semibold mb-4 text-green-600">✅ Simple (Follows Hick's Law)</h4>
+                            <div class="flex gap-6 p-6 bg-green-50 border border-green-200">
+                                <a href="#" class="px-6 py-4 bg-absurd-orange text-white border-2 border-absurd-dark text-body font-bold">CAMPAIGNS</a>
+                                <a href="#" class="px-6 py-4 bg-white text-absurd-dark border-2 border-absurd-dark text-body font-bold">SHOP</a>
+                                <a href="#" class="px-6 py-4 bg-white text-absurd-dark border-2 border-absurd-dark text-body font-bold">GUILD</a>
+                                <a href="#" class="px-6 py-4 bg-white text-absurd-dark border-2 border-absurd-dark text-body font-bold">TRADE</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Forms -->
+            <div class="mb-18">
+                <h3 class="text-heading font-semibold mb-8">Forms</h3>
+                <div class="bg-white border-2 border-absurd-dark p-12">
+                    <form class="max-w-md space-y-8">
+                        <div>
+                            <label class="block text-body font-bold mb-4">EMAIL ADDRESS</label>
+                            <input type="email" class="w-full border-2 border-absurd-dark px-6 py-4 text-body font-medium focus:outline-none focus:border-absurd-orange" placeholder="your@email.com">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-body font-bold mb-4">PROJECT DESCRIPTION</label>
+                            <textarea class="w-full border-2 border-absurd-dark px-6 py-4 text-body font-medium h-32 resize-none focus:outline-none focus:border-absurd-orange" placeholder="Tell us about your project..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-absurd-orange text-white border-2 border-absurd-dark px-8 py-6 text-body font-bold hover:translate-y-1 transition-transform">
+                            SUBMIT PROJECT
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Spacing System -->
+        <section class="mb-26">
+            <h2 class="text-display font-bold mb-12">Spatial Rhythm</h2>
+            <div class="bg-white border-2 border-absurd-dark p-12">
+                <div class="space-y-8">
+                    <div class="flex items-center justify-between py-4 border-b border-gray-200">
+                        <span class="text-body font-medium">Section spacing (py-18)</span>
+                        <code class="text-small bg-absurd-cream px-3 py-1">4.5rem (72px)</code>
+                    </div>
+                    <div class="flex items-center justify-between py-4 border-b border-gray-200">
+                        <span class="text-body font-medium">Component spacing (mb-12)</span>
+                        <code class="text-small bg-absurd-cream px-3 py-1">3rem (48px)</code>
+                    </div>
+                    <div class="flex items-center justify-between py-4 border-b border-gray-200">
+                        <span class="text-body font-medium">Element spacing (p-8)</span>
+                        <code class="text-small bg-absurd-cream px-3 py-1">2rem (32px)</code>
+                    </div>
+                    <div class="flex items-center justify-between py-4 border-b border-gray-200">
+                        <span class="text-body font-medium">Content spacing (mb-6)</span>
+                        <code class="text-small bg-absurd-cream px-3 py-1">1.5rem (24px)</code>
+                    </div>
+                    <div class="flex items-center justify-between py-4">
+                        <span class="text-body font-medium">Text spacing (mb-4)</span>
+                        <code class="text-small bg-absurd-cream px-3 py-1">1rem (16px)</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Implementation Guidelines -->
+    <footer class="bg-absurd-dark text-absurd-cream py-18 px-8">
+        <div class="max-w-6xl mx-auto text-center">
+            <h2 class="text-display font-bold mb-8">Implementation Guidelines</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-left">
+                <div>
+                    <h3 class="text-title font-bold mb-6">ACCESSIBILITY FIRST</h3>
+                    <ul class="space-y-3 text-body opacity-90">
+                        <li>• WCAG AA contrast ratios</li>
+                        <li>• Large touch targets (44px+)</li>
+                        <li>• Clear visual hierarchy</li>
+                        <li>• Keyboard navigation</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-title font-bold mb-6">MOBILE PRIORITY</h3>
+                    <ul class="space-y-3 text-body opacity-90">
+                        <li>• Thumb-friendly design</li>
+                        <li>• Single-column layouts</li>
+                        <li>• Generous spacing</li>
+                        <li>• Clear tap targets</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-title font-bold mb-6">COGNITIVE EASE</h3>
+                    <ul class="space-y-3 text-body opacity-90">
+                        <li>• Limit choices (Hick's Law)</li>
+                        <li>• Group related items</li>
+                        <li>• Progressive disclosure</li>
+                        <li>• Consistent patterns</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

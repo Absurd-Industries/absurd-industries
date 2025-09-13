@@ -1,676 +1,351 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en" class="dark"> <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>T1E: Time for Time's Sake | Ampere Works</title>
+    <title>Absurd Industries - The Open Maker Platform</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/e0c6d65845.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'cream': '#FFFEF9',
-                        'ash': '#F8F8F8',
-                        'charcoal': '#1A1A1A',
-                        'steel': '#4A5568',
-                        'copper': '#B7791F',
-                        'sage': '#68D391',
-                        'mint': '#9AE6B4',
-                        'teal': {
-                            50: '#F0FDFA',
-                            400: '#2DD4BF',
-                            500: '#14B8A6',
-                            600: '#0D9488',
-                            800: '#115E59',
-                            900: '#134E4A'
-                        }
-                    },
-                    fontFamily: {
-                        'sans': ['Inter', 'system-ui', 'sans-serif'],
-                        'mono': ['Space Mono', 'monospace']
-                    },
-                    animation: {
-                        'float': 'float 12s ease-in-out infinite',
-                        'orb-contain': 'orb-contain 20s ease-in-out infinite',
-                        'fade-in': 'fade-in 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                        'slide-up': 'slide-up 0.8s cubic-bezier(0.16, 1, 0.3, 1)'
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0px)' },
-                            '50%': { transform: 'translateY(-6px)' }
-                        },
-                        'orb-contain': {
-                            '0%, 100%': { transform: 'scale(1) rotateY(0deg)' },
-                            '50%': { transform: 'scale(1.02) rotateY(180deg)' }
-                        },
-                        'fade-in': {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' }
-                        },
-                        'slide-up': {
-                            '0%': { opacity: '0', transform: 'translateY(24px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' }
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    
+    <link href="https://fonts.googleapis.com/css2?family=Jura:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        /* Skeumorphic Glass Orb containing unstable matter */
-        .skeumorphic-orb {
-            background: 
-                radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.8), transparent 50%),
-                radial-gradient(circle at 75% 75%, rgba(104, 211, 145, 0.1), transparent 70%),
-                linear-gradient(135deg, rgba(255, 254, 249, 0.95), rgba(248, 248, 248, 0.8));
-            border: 1px solid rgba(183, 121, 31, 0.2);
-            box-shadow: 
-                inset 0 1px 0 rgba(255, 255, 255, 0.6),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.05),
-                0 2px 8px rgba(0, 0, 0, 0.08),
-                0 0 0 1px rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(8px);
+        /* This is my flawless, centralized theming system. Do not touch it. */
+        :root {
+            --font-main: 'Jura', monospace;
+            
+            /* Light Theme (The Default) */
+            --bg-primary: #ECE0CF;      /* Cream */
+            --bg-secondary: #FFFFFF;    /* White */
+            --bg-tertiary: #E0D4C3;     /* Darker Cream */
+            --text-primary: #1a1a1a;    /* Dark */
+            --text-secondary: #5c5c5c;  /* Gray */
+            --border-color: #D1C4B3;    /* Light Border */
+
+            --accent-orange: #FF4500;
+            --accent-yellow: #FFD700;
+            --text-on-accent: #FFFFFF;
         }
 
-        .contained-matter {
-            animation: orb-contain 20s ease-in-out infinite;
-        }
-
-        .electron-orbit { animation: orbit 25s linear infinite; }
-        .electron-orbit-2 { animation: orbit-reverse 30s linear infinite; }
-        .nucleus-glow { 
-            animation: pulse-glow 8s ease-in-out infinite;
-            filter: drop-shadow(0 0 4px rgba(183, 121, 31, 0.6));
+        html.dark {
+            /* Dark Theme Overrides */
+            --bg-primary: #1a1a1a;      /* Dark */
+            --bg-secondary: #2a2a2a;    /* Gray */
+            --bg-tertiary: #111111;     /* Darker */
+            --text-primary: #ECE0CF;    /* Cream */
+            --text-secondary: #9ca3af;  /* Tailwind gray-400 */
+            --border-color: #3a3a3a;    /* Dark Border */
         }
         
-        @keyframes orbit { 
-            from { transform: rotate(0deg) translateX(12px) rotate(0deg); } 
-            to { transform: rotate(360deg) translateX(12px) rotate(-360deg); } 
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
-        @keyframes orbit-reverse { 
-            from { transform: rotate(0deg) translateX(12px) rotate(0deg); } 
-            to { transform: rotate(-360deg) translateX(12px) rotate(360deg); } 
+        
+        /* Helper classes */
+        .bg-primary { background-color: var(--bg-primary); }
+        .bg-secondary { background-color: var(--bg-secondary); }
+        .bg-tertiary { background-color: var(--bg-tertiary); }
+        .text-primary { color: var(--text-primary); }
+        .text-secondary { color: var(--text-secondary); }
+        .border-theme { border-color: var(--border-color); }
+        .accent-orange { background-color: var(--accent-orange); }
+        .accent-orange-text { color: var(--accent-orange); }
+        .text-on-accent { color: var(--text-on-accent); }
+        
+        @keyframes shimmer {
+            100% { transform: translateX(100%); }
         }
-        @keyframes pulse-glow { 
-            0%, 100% { opacity: 0.8; }
-            50% { opacity: 1; }
-        }
-
-        /* Dieter Rams inspired clean layouts */
-        .rams-grid {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 1.5rem;
-        }
-
-        .portal-glow {
-            box-shadow: 0 0 0 1px rgba(104, 211, 145, 0.2), 0 2px 12px rgba(104, 211, 145, 0.1);
-        }
-
-        .commitment-card {
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid rgba(74, 85, 104, 0.1);
-        }
-
-        .commitment-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-            border-color: rgba(183, 121, 31, 0.3);
-        }
-
-        .funding-bar {
-            background: linear-gradient(90deg, 
-                #14B8A6 0%, 
-                #14B8A6 var(--progress, 67%), 
-                rgba(20, 184, 166, 0.1) var(--progress, 67%), 
-                rgba(20, 184, 166, 0.1) 100%);
-        }
-
-        /* Teenage Engineering inspired typography */
-        .te-mono {
-            font-feature-settings: 'tnum', 'ss01';
-            letter-spacing: 0.025em;
-        }
-
-        /* Solarpunk sustainability indicators */
-        .sustainability-badge {
-            background: linear-gradient(135deg, rgba(104, 211, 145, 0.1), rgba(154, 230, 180, 0.1));
-            border: 1px solid rgba(104, 211, 145, 0.2);
-        }
-
-        /* Portal-inspired interaction feedback */
-        .portal-interaction {
+        .skeleton {
             position: relative;
             overflow: hidden;
+            background-color: var(--bg-tertiary);
         }
-
-        .portal-interaction::before {
+        .skeleton::after {
             content: '';
             position: absolute;
             top: 0;
-            left: -100%;
+            left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(104, 211, 145, 0.1), transparent);
-            transition: left 0.6s ease;
-        }
-
-        .portal-interaction:hover::before {
-            left: 100%;
+            transform: translateX(-100%);
+            background-image: linear-gradient(90deg, 
+                rgba(255, 255, 255, 0) 0, 
+                rgba(255, 255, 255, 0.05) 20%, 
+                rgba(255, 255, 255, 0.1) 60%, 
+                rgba(255, 255, 255, 0)
+            );
+            animation: shimmer 2s infinite;
         }
     </style>
 </head>
 
-<body class="bg-cream text-charcoal font-sans antialiased">
-    <div id="app">
-        <!-- Ampere Works Header -->
-        <header class="fixed top-0 left-0 right-0 z-50 bg-cream/90 backdrop-blur-md border-b border-steel/10">
-            <div class="max-w-7xl mx-auto px-6 py-4">
-                <div class="flex items-center justify-between">
-                    <!-- Ampere Works Brand -->
-                    <div class="flex items-center gap-6">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 bg-charcoal rounded-sm flex items-center justify-center">
-                                <span class="text-cream text-sm font-bold font-mono">A</span>
-                            </div>
-                            <div>
-                                <div class="text-sm font-semibold text-charcoal">AMPERE WORKS</div>
-                                <div class="text-xs text-steel font-mono">Hardware Studio</div>
-                            </div>
-                        </div>
-                        
-                        <div class="hidden md:flex items-center gap-1 text-steel/60">
-                            <span class="text-xs font-mono">/</span>
-                            <span class="text-xs font-mono">T1E Campaign</span>
-                        </div>
+<body class="min-h-screen">
+    <div id="app" class="pb-24 md:pb-0">
+
+        <header class="md:hidden bg-secondary border-b border-theme sticky top-0 z-40">
+            <div class="flex items-center justify-between p-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 accent-orange rounded-full flex items-center justify-center">
+                        <i class="fas fa-atom text-lg text-on-accent"></i>
                     </div>
-                    
-                    <!-- Navigation -->
-                    <nav class="hidden md:flex items-center gap-8">
-                        <a href="#story" class="text-sm text-steel hover:text-charcoal transition-colors">Story</a>
-                        <a href="#specifications" class="text-sm text-steel hover:text-charcoal transition-colors">Specifications</a>
-                        <a href="#maker" class="text-sm text-steel hover:text-charcoal transition-colors">Maker</a>
-                        <a href="#community" class="text-sm text-steel hover:text-charcoal transition-colors">Community</a>
-                    </nav>
-                    
-                    <button class="bg-charcoal text-cream px-4 py-2 text-sm font-medium portal-interaction" @click="scrollToCommit">
-                        Support Project
+                    <h1 class="text-lg font-bold text-primary">ABSURD</h1>
+                </div>
+                <button @click="toggleTheme" class="w-10 h-10 rounded-full bg-tertiary flex items-center justify-center hover:accent-orange transition-colors">
+                    <i :class="isDark ? 'fas fa-sun' : 'fas fa-moon'" class="text-sm text-primary"></i>
+                </button>
+            </div>
+        </header>
+
+        <header class="hidden md:block bg-secondary/80 backdrop-blur-sm border-b border-theme sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto flex items-center justify-between py-4 px-6">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 accent-orange rounded-full flex items-center justify-center">
+                        <img src="absurd-industries-logo.svg" alt="http://absurd.industries" />
+                    </div>
+                    <h1 class="text-2xl font-bold text-primary">ABSURD INDUSTRIES</h1>
+                </div>
+                <nav class="flex items-center space-x-8 text-primary">
+                    <a href="#campaigns" class="hover:accent-orange-text transition-colors">Campaigns</a>
+                    <a href="#shop" class="hover:accent-orange-text transition-colors">Shop</a>
+                    <a href="#guild" class="hover:accent-orange-text transition-colors">Guild</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <button @click="toggleTheme" class="w-10 h-10 rounded-full bg-tertiary flex items-center justify-center hover:accent-orange transition-colors">
+                        <i :class="isDark ? 'fas fa-sun' : 'fas fa-moon'" class="text-primary"></i>
+                    </button>
+                    <button class="accent-orange text-on-accent px-6 py-2 rounded-lg hover:bg-orange-600 transition-colors font-semibold">
+                        Join Guild
                     </button>
                 </div>
             </div>
         </header>
 
-        <!-- Hero Section -->
-        <section class="pt-24 pb-16">
-            <div class="max-w-7xl mx-auto px-6">
-                <div class="rams-grid items-center">
-                    <!-- Product Showcase -->
-                    <div class="col-span-12 lg:col-span-7 order-2 lg:order-1">
-                        <!-- Main Product Visual -->
-                        <div class="relative mb-12">
-                            <div class="aspect-[4/3] bg-ash rounded-lg overflow-hidden portal-glow">
-                                <div class="w-full h-full bg-gradient-to-br from-teal-800 to-teal-900 flex items-center justify-center">
-                                    <div class="text-center text-white">
-                                        <div class="text-8xl mb-6 animate-float">⌚</div>
-                                        <div class="font-mono text-lg text-teal-300">T1E_VISUALIZATION</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Floating specs -->
-                            <div class="absolute -right-4 top-8 bg-cream border border-steel/20 rounded-lg p-4 shadow-lg animate-float" style="animation-delay: 0.5s;">
-                                <div class="text-xs text-steel font-mono mb-1">BATTERY</div>
-                                <div class="text-lg font-bold text-charcoal">4+ days</div>
-                            </div>
-                            
-                            <div class="absolute -left-4 bottom-8 bg-cream border border-steel/20 rounded-lg p-4 shadow-lg animate-float" style="animation-delay: 1s;">
-                                <div class="text-xs text-steel font-mono mb-1">DISPLAY</div>
-                                <div class="text-lg font-bold text-charcoal">ePaper</div>
-                            </div>
-                        </div>
-                        
-                        <!-- Product Gallery Thumbnails -->
-                        <div class="grid grid-cols-4 gap-3">
-                            <div class="aspect-square bg-ash rounded border border-steel/10 flex items-center justify-center cursor-pointer hover:border-copper/30 transition-colors">
-                                <span class="text-steel/60 text-sm">01</span>
-                            </div>
-                            <div class="aspect-square bg-ash rounded border border-steel/10 flex items-center justify-center cursor-pointer hover:border-copper/30 transition-colors">
-                                <span class="text-steel/60 text-sm">02</span>
-                            </div>
-                            <div class="aspect-square bg-ash rounded border border-steel/10 flex items-center justify-center cursor-pointer hover:border-copper/30 transition-colors">
-                                <span class="text-steel/60 text-sm">03</span>
-                            </div>
-                            <div class="aspect-square bg-ash rounded border border-steel/10 flex items-center justify-center cursor-pointer hover:border-copper/30 transition-colors">
-                                <span class="text-steel/60 text-sm">04</span>
-                            </div>
+        <main>
+            <section class="py-16 md:py-24 px-4 md:px-6">
+                <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+                    <div class="space-y-8 text-center lg:text-left">
+                        <h2 class="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight text-primary">
+                            Handcrafted
+                            <span class="accent-orange-text">Open-Source</span>
+                            Hardware
+                        </h2>
+                        <p class="text-lg md:text-xl text-secondary leading-relaxed">
+                            Where makers fund makers, share knowledge, and build the future together. Because collaboration is just a more efficient form of glorious competition.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                            <button class="accent-orange text-on-accent px-8 py-4 rounded-xl text-lg font-semibold hover:bg-orange-600 transition-transform transform hover:scale-105">
+                                Explore Campaigns
+                            </button>
+                            <button class="border-2 border-theme text-primary px-8 py-4 rounded-xl text-lg font-semibold hover:accent-orange hover:text-on-accent hover:border-transparent transition-all">
+                                Shop Inventions
+                            </button>
                         </div>
                     </div>
-                    
-                    <!-- Product Information -->
-                    <div class="col-span-12 lg:col-span-5 order-1 lg:order-2 lg:pl-8">
-                        <div class="space-y-8">
-                            <!-- Title & Description -->
-                            <div class="space-y-6">
-                                <div class="sustainability-badge inline-flex items-center gap-2 px-3 py-1 rounded-full">
-                                    <div class="w-2 h-2 bg-sage rounded-full"></div>
-                                    <span class="text-xs font-medium text-sage">Open Source Hardware</span>
-                                </div>
-                                
-                                <h1 class="text-5xl font-light text-charcoal leading-tight">
-                                    T1E
-                                    <span class="block text-2xl text-steel font-mono mt-2">Time for time's sake</span>
-                                </h1>
-                                
-                                <p class="text-lg text-steel leading-relaxed max-w-md">
-                                    An ePaper smartwatch designed for those who understand that the best technology 
-                                    quietly serves without demanding constant attention.
-                                </p>
-                            </div>
-                            
-                            <!-- Key Features Grid -->
-                            <div class="grid grid-cols-2 gap-4">
-                                <div class="space-y-1">
-                                    <div class="text-2xl font-light text-charcoal te-mono">4+</div>
-                                    <div class="text-xs text-steel uppercase tracking-wide">Days Battery</div>
-                                </div>
-                                <div class="space-y-1">
-                                    <div class="text-2xl font-light text-charcoal te-mono">100%</div>
-                                    <div class="text-xs text-steel uppercase tracking-wide">Open Source</div>
-                                </div>
-                                <div class="space-y-1">
-                                    <div class="text-2xl font-light text-charcoal te-mono">ESP32</div>
-                                    <div class="text-xs text-steel uppercase tracking-wide">Powered</div>
-                                </div>
-                                <div class="space-y-1">
-                                    <div class="text-2xl font-light text-charcoal te-mono">∞</div>
-                                    <div class="text-xs text-steel uppercase tracking-wide">Hackable</div>
-                                </div>
-                            </div>
-                            
-                            <!-- Commitment Section -->
-                            <div class="space-y-6 pt-8 border-t border-steel/10">
-                                <div class="space-y-4">
-                                    <div class="flex items-baseline gap-4">
-                                        <span class="text-3xl font-light text-charcoal te-mono">₹{{ selectedPrice.toLocaleString() }}</span>
-                                        <span class="text-sm text-steel">{{ selectedTier }}</span>
-                                    </div>
-                                    
-                                    <!-- India-First Commitment Display -->
-                                    <div class="bg-sage/10 rounded-lg p-4 space-y-2">
-                                        <div class="text-xs text-steel font-mono uppercase tracking-wide">India-First Commitment</div>
-                                        <div class="flex items-center justify-between">
-                                            <div>
-                                                <div class="text-sm text-steel">Commit now</div>
-                                                <div class="text-lg font-medium text-charcoal te-mono">₹{{ Math.round(selectedPrice * 0.3).toLocaleString() }}</div>
-                                            </div>
-                                            <div class="text-steel/60">→</div>
-                                            <div class="text-right">
-                                                <div class="text-sm text-steel">Pay on delivery</div>
-                                                <div class="text-lg font-medium text-charcoal te-mono">₹{{ Math.round(selectedPrice * 0.7).toLocaleString() }}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Tier Selection -->
-                                <div class="space-y-3">
-                                    <div class="commitment-card rounded-lg p-4 cursor-pointer" 
-                                         :class="{ 'border-copper/50 bg-copper/5': selectedTier === 'Kit' }"
-                                         @click="selectTier('Kit', 5555)">
-                                        <div class="flex items-center justify-between">
-                                            <div>
-                                                <div class="font-medium text-charcoal">T1E Kit</div>
-                                                <div class="text-sm text-steel">DIY Assembly Required</div>
-                                            </div>
-                                            <div class="text-right">
-                                                <div class="font-medium text-charcoal te-mono">₹5,555</div>
-                                                <div class="text-xs text-steel">₹1,667 now</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="commitment-card rounded-lg p-4 cursor-pointer"
-                                         :class="{ 'border-copper/50 bg-copper/5': selectedTier === 'Assembled' }"
-                                         @click="selectTier('Assembled', 9999)">
-                                        <div class="flex items-center justify-between">
-                                            <div>
-                                                <div class="font-medium text-charcoal">T1E Watch</div>
-                                                <div class="text-sm text-steel">Fully Assembled</div>
-                                            </div>
-                                            <div class="text-right">
-                                                <div class="font-medium text-charcoal te-mono">₹9,999</div>
-                                                <div class="text-xs text-steel">₹3,000 now</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <button class="w-full bg-charcoal text-cream py-4 font-medium portal-interaction" @click="commitToBacking">
-                                    Commit ₹{{ Math.round(selectedPrice * 0.3).toLocaleString() }}
-                                </button>
-                                
-                                <!-- Trust Indicators -->
-                                <div class="space-y-2 text-xs text-steel">
-                                    <div class="flex items-center gap-2">
-                                        <i class="fas fa-shield-alt text-sage"></i>
-                                        <span>Cancel anytime before delivery</span>
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <i class="fas fa-leaf text-sage"></i>
-                                        <span>Sustainable materials & repairable design</span>
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <i class="fas fa-code text-sage"></i>
-                                        <span>Complete schematics & code available</span>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="bg-secondary rounded-2xl p-6 relative overflow-hidden shadow-lg">
+                        <div class="aspect-square bg-tertiary rounded-xl mb-6 flex items-center justify-center">
+                             <img src="https://i.imgur.com/gO0268A.jpeg" alt="Lampy - Open Source Mood Lighting" class="w-full h-full object-cover rounded-xl">
                         </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Campaign Progress -->
-        <section class="py-16 bg-ash/50">
-            <div class="max-w-7xl mx-auto px-6">
-                <div class="max-w-4xl">
-                    <div class="space-y-8">
-                        <!-- Funding Progress -->
-                        <div class="space-y-4">
-                            <div class="flex items-baseline gap-4">
-                                <span class="text-4xl font-light text-charcoal te-mono">₹{{ currentFunding.toLocaleString() }}</span>
-                                <span class="text-steel">of ₹{{ fundingGoal.toLocaleString() }} goal</span>
+                        <div class="bg-primary rounded-xl p-6">
+                            <div class="flex items-start justify-between mb-4">
+                                <h3 class="text-2xl font-bold text-primary">Lampy</h3>
+                                <span class="accent-orange text-on-accent px-3 py-1 rounded-full text-sm font-semibold whitespace-nowrap">
+                                    <i class="fas fa-heart mr-1"></i> 89% Funded
+                                </span>
                             </div>
-                            
-                            <div class="w-full bg-steel/10 rounded-full h-2">
-                                <div class="funding-bar h-2 rounded-full transition-all duration-1000" 
-                                     :style="{ '--progress': fundingPercentage + '%' }"></div>
-                            </div>
-                            
-                            <div class="grid grid-cols-3 gap-8 text-center">
-                                <div>
-                                    <div class="text-2xl font-light text-charcoal te-mono">{{ backerCount }}</div>
-                                    <div class="text-xs text-steel uppercase tracking-wide">Backers</div>
-                                </div>
-                                <div>
-                                    <div class="text-2xl font-light text-charcoal te-mono">{{ fundingPercentage }}%</div>
-                                    <div class="text-xs text-steel uppercase tracking-wide">Funded</div>
-                                </div>
-                                <div>
-                                    <div class="text-2xl font-light text-charcoal te-mono">{{ daysRemaining }}</div>
-                                    <div class="text-xs text-steel uppercase tracking-wide">Days Left</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Maker Profile Section -->
-        <section id="maker" class="py-20">
-            <div class="max-w-7xl mx-auto px-6">
-                <div class="max-w-4xl">
-                    <div class="space-y-12">
-                        <div class="text-center space-y-4">
-                            <h2 class="text-3xl font-light text-charcoal">Meet the Maker</h2>
-                            <p class="text-steel max-w-2xl mx-auto">
-                                Every Absurd project is driven by passionate makers who believe technology should serve humanity, 
-                                not the other way around.
+                            <p class="text-secondary mb-4">
+                                Handmade with ❤️ in Bengaluru! Mesmerizing ambient modes, so you can contemplate your next absurd invention in style.
                             </p>
-                        </div>
-                        
-                        <!-- Kailash Profile Card -->
-                        <div class="bg-white rounded-lg border border-steel/10 p-8 cursor-pointer hover:shadow-lg transition-all duration-300"
-                             @click="showMakerModal = true">
-                            <div class="rams-grid items-center">
-                                <div class="col-span-12 md:col-span-3">
-                                    <div class="text-center md:text-left">
-                                        <div class="w-20 h-20 bg-teal-600 rounded-lg mx-auto md:mx-0 mb-4 flex items-center justify-center text-white text-2xl font-bold">
-                                            K
-                                        </div>
-                                        <h3 class="text-xl font-medium text-charcoal mb-1">Kailash</h3>
-                                        <p class="text-sm text-steel mb-3">Hardware Engineer</p>
-                                        <div class="flex items-center gap-2 justify-center md:justify-start">
-                                            <span class="text-xs bg-ash text-steel px-2 py-1 rounded">Ampere Works</span>
-                                            <span class="text-xs bg-ash text-steel px-2 py-1 rounded">Bengaluru</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-span-12 md:col-span-9 md:pl-8">
-                                    <div class="space-y-4">
-                                        <p class="text-steel leading-relaxed">
-                                            "I've always been fascinated by devices that respect both human attention and natural resources. 
-                                            The T1E represents my belief that thoughtful engineering can create technology that enhances life 
-                                            without creating dependency."
-                                        </p>
-                                        
-                                        <div class="grid grid-cols-3 gap-6 text-sm">
-                                            <div>
-                                                <div class="font-medium text-charcoal">7</div>
-                                                <div class="text-steel">Projects</div>
-                                            </div>
-                                            <div>
-                                                <div class="font-medium text-charcoal">342</div>
-                                                <div class="text-steel">Backers</div>
-                                            </div>
-                                            <div>
-                                                <div class="font-medium text-charcoal">5 years</div>
-                                                <div class="text-steel">Experience</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="flex items-center justify-between">
+                                <div class="text-2xl font-bold accent-orange-text">₹4,444</div>
+                                <button class="accent-orange text-on-accent px-6 py-2 rounded-lg hover:bg-orange-600 font-semibold">
+                                    Back This
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- Absurd Industries Footer -->
-        <footer class="py-16 bg-charcoal text-cream">
-            <div class="max-w-7xl mx-auto px-6">
-                <div class="space-y-12">
-                    <!-- Absurd Industries Branding -->
-                    <div class="text-center space-y-6">
-                        <div class="flex items-center justify-center gap-4">
-                            <!-- Skeumorphic Atomic Orb -->
-                            <div class="w-12 h-12 rounded-full skeumorphic-orb flex items-center justify-center">
-                                <div class="contained-matter relative w-6 h-6">
-                                    <div class="absolute inset-0 opacity-60">
-                                        <div class="absolute inset-0 border border-copper/40 rounded-full"></div>
-                                        <div class="absolute inset-0 border border-copper/40 rounded-full transform rotate-60"></div>
-                                        <div class="absolute inset-0 border border-copper/40 rounded-full transform rotate-120"></div>
-                                    </div>
-                                    <div class="nucleus-glow absolute top-1/2 left-1/2 w-2 h-2 bg-copper rounded-full transform -translate-x-1/2 -translate-y-1/2"></div>
-                                    <div class="electron-orbit absolute top-1/2 left-1/2 w-1 h-1 bg-sage rounded-full transform -translate-x-1/2 -translate-y-1/2" style="transform-origin: 0 0;"></div>
-                                    <div class="electron-orbit-2 absolute top-1/2 left-1/2 w-1 h-1 bg-sage rounded-full transform -translate-x-1/2 -translate-y-1/2" style="transform-origin: 0 0;"></div>
-                                </div>
-                            </div>
-                            <div class="text-left">
-                                <div class="text-xl font-medium">ABSURD INDUSTRIES</div>
-                                <div class="text-sm text-cream/60 font-mono">Open Hardware Guild</div>
-                            </div>
-                        </div>
-                        
-                        <p class="text-cream/80 max-w-2xl mx-auto leading-relaxed">
-                            A warm community of makers building the future one experiment at a time. 
-                            Where curiosity meets craftsmanship, and technology serves humanity.
+            </section>
+            
+            <section class="py-16 md:py-24 px-4 md:px-6 bg-secondary">
+                <div class="max-w-7xl mx-auto">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl md:text-5xl font-bold mb-4 text-primary">
+                            Maker <span class="accent-orange-text">Magic</span> in Progress
+                        </h2>
+                        <p class="text-lg text-secondary max-w-3xl mx-auto">
+                           Discover what happens when makers are free to make things that are probably a bad idea, but brilliant nonetheless.
                         </p>
                     </div>
-                    
-                    <!-- Platform Info -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8 border-t border-cream/10">
-                        <div class="space-y-4">
-                            <h4 class="font-medium text-cream">Platform</h4>
-                            <ul class="space-y-2 text-sm text-cream/60">
-                                <li><a href="#" class="hover:text-cream transition-colors">Browse Projects</a></li>
-                                <li><a href="#" class="hover:text-cream transition-colors">Maker Profiles</a></li>
-                                <li><a href="#" class="hover:text-cream transition-colors">Open Blueprints</a></li>
-                                <li><a href="#" class="hover:text-cream transition-colors">Workshops</a></li>
-                            </ul>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="bg-primary rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
+                           <div class="aspect-video bg-tertiary relative">
+                                <img src="https://i.imgur.com/gO0268A.jpeg" alt="Lampy Campaign" class="w-full h-full object-cover">
+                           </div>
+                           <div class="p-6">
+                               <div class="flex justify-between items-center mb-4">
+                                   <span class="text-green-500 text-sm font-semibold">89% Funded</span>
+                                   <span class="text-secondary text-sm">12 days left</span>
+                               </div>
+                               <h3 class="text-2xl font-bold mb-2 text-primary">Lampy Mood Light</h3>
+                               <p class="text-secondary text-sm mb-4">Mesmerizing ambient lighting that's 100% open source.</p>
+                               <div class="w-full bg-tertiary rounded-full h-2.5 mb-4">
+                                   <div class="accent-orange h-2.5 rounded-full" style="width: 89%"></div>
+                               </div>
+                               <button class="w-full accent-orange text-on-accent py-3 rounded-xl font-semibold hover:bg-orange-600 transition-colors">Back This Project</button>
+                           </div>
                         </div>
-                        <div class="space-y-4">
-                            <h4 class="font-medium text-cream">Community</h4>
-                            <ul class="space-y-2 text-sm text-cream/60">
-                                <li><a href="#" class="hover:text-cream transition-colors">Discord</a></li>
-                                <li><a href="#" class="hover:text-cream transition-colors">GitHub</a></li>
-                                <li><a href="#" class="hover:text-cream transition-colors">Local Meets</a></li>
-                                <li><a href="#" class="hover:text-cream transition-colors">Newsletter</a></li>
-                            </ul>
+                        <div class="bg-primary rounded-2xl overflow-hidden shadow-lg">
+                           <div class="aspect-video skeleton"></div>
+                           <div class="p-6 space-y-4">
+                               <div class="h-4 w-3/4 skeleton rounded"></div><div class="h-6 w-1/2 skeleton rounded"></div>
+                               <div class="space-y-2"><div class="h-4 skeleton rounded"></div><div class="h-4 w-5/6 skeleton rounded"></div></div>
+                               <div class="h-10 w-full skeleton rounded-xl"></div>
+                           </div>
                         </div>
-                        <div class="space-y-4">
-                            <h4 class="font-medium text-cream">Philosophy</h4>
-                            <ul class="space-y-2 text-sm text-cream/60">
-                                <li><a href="#" class="hover:text-cream transition-colors">Open Source</a></li>
-                                <li><a href="#" class="hover:text-cream transition-colors">Right to Repair</a></li>
-                                <li><a href="#" class="hover:text-cream transition-colors">Sustainable Tech</a></li>
-                                <li><a href="#" class="hover:text-cream transition-colors">India-First</a></li>
-                            </ul>
+                        <div class="bg-primary rounded-2xl overflow-hidden shadow-lg hidden lg:block">
+                           <div class="aspect-video skeleton"></div>
+                           <div class="p-6 space-y-4">
+                               <div class="h-4 w-3/4 skeleton rounded"></div><div class="h-6 w-1/2 skeleton rounded"></div>
+                               <div class="space-y-2"><div class="h-4 skeleton rounded"></div><div class="h-4 w-5/6 skeleton rounded"></div></div>
+                               <div class="h-10 w-full skeleton rounded-xl"></div>
+                           </div>
                         </div>
                     </div>
-                    
-                    <div class="pt-8 border-t border-cream/10 text-center text-sm text-cream/40">
-                        <p>© 2025 Absurd Industries × Curated by curious minds, powered by dangerous levels of scientific enthusiasm</p>
+                </div>
+            </section>
+
+            <section class="py-16 md:py-24 px-4 md:px-6">
+                <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+                    <div class="space-y-8 text-center lg:text-left">
+                        <h2 class="text-4xl md:text-5xl font-bold leading-tight text-primary">
+                            Open Source is About
+                            <span class="accent-orange-text">Collaboration</span>
+                        </h2>
+                        <p class="text-lg md:text-xl text-secondary leading-relaxed">
+                            We believe the best innovations happen when makers share knowledge, support each other, and build on each other's work. Every project here comes with complete documentation, schematics, and code. Progress is a team sport.
+                        </p>
+                        <button class="inline-flex items-center justify-center accent-orange text-on-accent px-8 py-4 rounded-xl text-lg font-semibold hover:bg-orange-600 transition-transform transform hover:scale-105">
+                            <i class="fab fa-github mr-3"></i>
+                            Explore on GitHub
+                        </button>
                     </div>
+                     <div class="relative order-first lg:order-last">
+                        <div class="bg-secondary rounded-2xl p-6 relative overflow-hidden shadow-lg">
+                            <div class="aspect-square bg-tertiary rounded-xl flex items-center justify-center text-center">
+                                <div class="text-primary">
+                                    <i class="fab fa-github text-6xl mb-4 accent-orange-text"></i>
+                                    <p class="text-lg">Open Source in Action</p>
+                                    <p class="text-sm text-secondary mt-2">Schematics • Code • Community</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="py-16 md:py-24 px-4 md:px-6 bg-secondary">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6 text-primary">
+                        Ready to Make Something <span class="accent-orange-text">Absurd</span>?
+                    </h2>
+                    <p class="text-lg text-secondary mb-12 max-w-2xl mx-auto">
+                        Join a community where your wildest hardware dreams get the support, funding, and collaboration they deserve. Because the future belongs to makers.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button class="accent-orange text-on-accent px-10 py-5 rounded-xl text-lg font-bold hover:bg-orange-600 transition-transform transform hover:scale-105">
+                           Join the Guild
+                        </button>
+                        <button class="border-2 border-theme text-primary px-10 py-5 rounded-xl text-lg font-bold hover:accent-orange hover:text-on-accent hover:border-transparent transition-all">
+                           Launch a Campaign
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="bg-tertiary py-16">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+                    <div class="md:col-span-1 space-y-6">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 accent-orange rounded-full flex items-center justify-center">
+                                <i class="fas fa-atom text-xl text-on-accent"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-primary">ABSURD</h3>
+                        </div>
+                        <p class="text-secondary leading-relaxed">
+                            Building the future, one maker at a time.
+                        </p>
+                        <div class="flex space-x-2">
+                             <a href="#" class="w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-secondary hover:accent-orange hover:text-on-accent transition-colors"><i class="fab fa-github"></i></a>
+                             <a href="#" class="w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-secondary hover:accent-orange hover:text-on-accent transition-colors"><i class="fab fa-discord"></i></a>
+                             <a href="#" class="w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-secondary hover:accent-orange hover:text-on-accent transition-colors"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                    <div class="space-y-6">
+                        <h4 class="text-lg font-semibold accent-orange-text">Platform</h4>
+                        <nav class="space-y-3"><a href="#" class="block text-secondary hover:text-primary transition-colors">Campaigns</a><a href="#" class="block text-secondary hover:text-primary transition-colors">Shop</a><a href="#" class="block text-secondary hover:text-primary transition-colors">Guild</a><a href="#" class="block text-secondary hover:text-primary transition-colors">API</a></nav>
+                    </div>
+                    <div class="space-y-6">
+                        <h4 class="text-lg font-semibold accent-orange-text">Community</h4>
+                        <nav class="space-y-3"><a href="#" class="block text-secondary hover:text-primary transition-colors">Discord</a><a href="#" class="block text-secondary hover:text-primary transition-colors">Blog</a><a href="#" class="block text-secondary hover:text-primary transition-colors">Newsletter</a></nav>
+                    </div>
+                    <div class="space-y-6">
+                        <h4 class="text-lg font-semibold accent-orange-text">Support</h4>
+                        <nav class="space-y-3"><a href="#" class="block text-secondary hover:text-primary transition-colors">Help Center</a><a href="#" class="block text-secondary hover:text-primary transition-colors">Privacy</a><a href="#" class="block text-secondary hover:text-primary transition-colors">Terms</a></nav>
+                    </div>
+                </div>
+                <div class="border-t border-theme mt-12 pt-8 text-center">
+                    <p class="text-secondary text-sm">
+                        © 2025 Absurd Explorations (OPC) Private Limited. Made with ❤️ in Bengaluru.
+                    </p>
                 </div>
             </div>
         </footer>
 
-        <!-- Maker Profile Modal -->
-        <div v-if="showMakerModal" class="fixed inset-0 z-50 flex items-center justify-center p-4" @click="showMakerModal = false">
-            <div class="absolute inset-0 bg-charcoal/80 backdrop-blur-sm"></div>
-            <div class="relative bg-cream rounded-lg p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto" @click.stop>
-                <button @click="showMakerModal = false" class="absolute top-6 right-6 w-8 h-8 bg-steel/10 rounded-full flex items-center justify-center hover:bg-steel/20 transition-colors">
-                    <i class="fas fa-times text-steel text-sm"></i>
-                </button>
-                
-                <div class="space-y-8">
-                    <!-- Maker Header -->
-                    <div class="text-center space-y-4">
-                        <div class="w-24 h-24 bg-teal-600 rounded-lg mx-auto flex items-center justify-center text-white text-3xl font-bold">
-                            K
-                        </div>
-                        <div>
-                            <h2 class="text-2xl font-medium text-charcoal mb-1">Kailash</h2>
-                            <p class="text-steel">Hardware Engineer & Ampere Works Founder</p>
-                        </div>
-                    </div>
-                    
-                    <!-- Detailed Profile -->
-                    <div class="space-y-6">
-                        <div class="bg-ash rounded-lg p-6">
-                            <h3 class="font-medium text-charcoal mb-3">Philosophy</h3>
-                            <p class="text-steel leading-relaxed">
-                                "Technology should enhance human capability without creating dependency. Every device I design 
-                                follows three principles: open documentation, repairable construction, and respectful interaction 
-                                with human attention."
-                            </p>
-                        </div>
-                        
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="bg-teal-50 rounded-lg p-4">
-                                <h4 class="font-medium text-teal-800 mb-2">Expertise</h4>
-                                <ul class="text-sm text-steel space-y-1">
-                                    <li>• Low-power electronics</li>
-                                    <li>• ePaper display systems</li>
-                                    <li>• ESP32 development</li>
-                                    <li>• Open hardware design</li>
-                                </ul>
-                            </div>
-                            <div class="bg-sage/10 rounded-lg p-4">
-                                <h4 class="font-medium text-sage mb-2">Previous Projects</h4>
-                                <ul class="text-sm text-steel space-y-1">
-                                    <li>• IoT sensor networks</li>
-                                    <li>• Educational electronics</li>
-                                    <li>• Sustainable dev boards</li>
-                                    <li>• Community workshops</li>
-                                </ul>
-                            </div>
-                        </div>
-                        
-                        <div class="flex gap-3">
-                            <a href="https://github.com/hifinoise" target="_blank" 
-                               class="flex-1 bg-charcoal text-cream py-3 px-4 rounded-lg font-medium text-center hover:bg-steel transition-colors portal-interaction">
-                                <i class="fab fa-github mr-2"></i>GitHub
-                            </a>
-                            <a href="https://ampere.works" target="_blank" 
-                               class="flex-1 bg-teal-600 text-white py-3 px-4 rounded-lg font-medium text-center hover:bg-teal-700 transition-colors portal-interaction">
-                                <i class="fas fa-external-link-alt mr-2"></i>Ampere Works
-                            </a>
-                        </div>
-                    </div>
-                </div>
+        <nav class="md:hidden fixed bottom-0 left-0 w-full bg-secondary border-t border-theme z-50">
+            <div class="grid grid-cols-4 h-16">
+                <a href="#campaigns" class="flex flex-col items-center justify-center text-secondary hover:accent-orange-text transition-colors">
+                    <i class="fas fa-rocket text-xl"></i><span class="text-xs mt-1">Campaigns</span>
+                </a>
+                <a href="#shop" class="flex flex-col items-center justify-center text-secondary hover:accent-orange-text transition-colors">
+                    <i class="fas fa-shopping-cart text-xl"></i><span class="text-xs mt-1">Shop</span>
+                </a>
+                <a href="#guild" class="flex flex-col items-center justify-center text-secondary hover:accent-orange-text transition-colors">
+                    <i class="fas fa-users text-xl"></i><span class="text-xs mt-1">Guild</span>
+                </a>
+                <a href="#account" class="flex flex-col items-center justify-center text-secondary hover:accent-orange-text transition-colors">
+                    <i class="fas fa-user-circle text-xl"></i><span class="text-xs mt-1">You</span>
+                </a>
             </div>
-        </div>
+        </nav>
     </div>
 
     <script>
-        const { createApp } = Vue;
-        
+        const { createApp, ref, onMounted } = Vue;
         createApp({
-            data() {
-                return {
-                    currentFunding: 167420,
-                    fundingGoal: 250000,
-                    backerCount: 47,
-                    daysRemaining: 23,
-                    selectedTier: 'Kit',
-                    selectedPrice: 5555,
-                    showMakerModal: false
-                }
-            },
-            computed: {
-                fundingPercentage() {
-                    return Math.min(Math.round((this.currentFunding / this.fundingGoal) * 100), 100);
-                }
-            },
-            methods: {
-                selectTier(tier, price) {
-                    this.selectedTier = tier;
-                    this.selectedPrice = price;
-                },
-                scrollToCommit() {
-                    document.querySelector('[data-commit-section]')?.scrollIntoView({ 
-                        behavior: 'smooth', 
-                        block: 'center' 
-                    });
-                },
-                commitToBacking() {
-                    // Handle commitment logic
-                    console.log(`Committing ₹${Math.round(this.selectedPrice * 0.3)} for ${this.selectedTier}`);
-                }
-            },
-            mounted() {
-                // Animate funding progress on load
-                let start = 0;
-                const target = this.currentFunding;
-                const duration = 2000;
-                const increment = target / (duration / 16);
-                
-                const animate = () => {
-                    start += increment;
-                    if (start < target) {
-                        this.currentFunding = Math.floor(start);
-                        requestAnimationFrame(animate);
+            setup() {
+                const isDark = ref(localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches));
+                const applyTheme = () => {
+                    if (isDark.value) {
+                        document.documentElement.classList.add('dark');
+                        localStorage.theme = 'dark';
                     } else {
-                        this.currentFunding = target;
+                        document.documentElement.classList.remove('dark');
+                        localStorage.theme = 'light';
                     }
                 };
-                
-                setTimeout(animate, 800);
+                const toggleTheme = () => {
+                    isDark.value = !isDark.value;
+                    applyTheme();
+                };
+                onMounted(applyTheme);
+                return { isDark, toggleTheme };
             }
         }).mount('#app');
     </script>
