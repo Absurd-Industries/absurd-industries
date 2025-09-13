@@ -101,13 +101,71 @@
             </div>
         </header>
 
-        <header class="hidden md:block bg-secondary/80 backdrop-blur-sm border-b border-theme sticky top-0 z-50">
+        <header class="hidden bg-secondary/80 backdrop-blur-sm border-b border-theme sticky top-0 z-50">
             <div class="max-w-7xl mx-auto flex items-center justify-between py-4 px-6">
                 <div class="flex items-center space-x-4">
-                    <div class="w-12 h-12 accent-orange rounded-full flex items-center justify-center">
-                        <img src="absurd-industries-logo.svg" alt="http://absurd.industries" />
+                    <div class="w-24 h-24 rounded-full flex items-center justify-center">
+                        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradient for the nucleus -->
+    <radialGradient id="nucleusGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFB347" />
+      <stop offset="100%" stop-color="#FF6B35" />
+    </radialGradient>
+    
+    <!-- Gradient for orbital glow -->
+    <radialGradient id="orbitalGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#40E0D0" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#40E0D0" stop-opacity="0.2" />
+    </radialGradient>
+    
+    <!-- Filter for glow effect -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background circle for subtle depth -->
+  <circle cx="100" cy="100" r="95" fill="none" stroke="#40E0D0" stroke-width="0.5" opacity="0.3"/>
+  
+  <!-- Orbital rings -->
+  <g transform="translate(100,100)" filter="url(#glow)">
+    <!-- First orbital (horizontal) -->
+    <ellipse cx="0" cy="0" rx="60" ry="20" fill="none" stroke="#40E0D0" stroke-width="2.5" opacity="0.9"/>
+    
+    <!-- Second orbital (60 degrees) -->
+    <ellipse cx="0" cy="0" rx="60" ry="20" fill="none" stroke="#40E0D0" stroke-width="2.5" opacity="0.9" transform="rotate(60)"/>
+    
+    <!-- Third orbital (120 degrees) -->
+    <ellipse cx="0" cy="0" rx="60" ry="20" fill="none" stroke="#40E0D0" stroke-width="2.5" opacity="0.9" transform="rotate(120)"/>
+  </g>
+  
+  <!-- Central nucleus -->
+  <circle cx="100" cy="100" r="18" fill="url(#nucleusGradient)" filter="url(#glow)"/>
+  
+  <!-- Inner core highlight -->
+  <circle cx="100" cy="100" r="12" fill="#FFF" opacity="0.6"/>
+  <circle cx="100" cy="100" r="8" fill="url(#nucleusGradient)"/>
+  
+  <!-- Electrons (small dots on orbitals) -->
+  <g filter="url(#glow)">
+    <!-- Electron 1 -->
+    <circle cx="160" cy="100" r="3" fill="#40E0D0"/>
+    <!-- Electron 2 -->
+    <circle cx="70" cy="148" r="3" fill="#40E0D0" transform="rotate(60 100 100)"/>
+    <!-- Electron 3 -->
+    <circle cx="130" cy="52" r="3" fill="#40E0D0" transform="rotate(120 100 100)"/>
+  </g>
+  
+  <!-- Subtle energy field -->
+  <circle cx="100" cy="100" r="85" fill="url(#orbitalGlow)" opacity="0.1"/>
+</svg>
                     </div>
-                    <h1 class="text-2xl font-bold text-primary">ABSURD INDUSTRIES</h1>
+                    <h1 class="text-4xl font-bold text-primary">Absurd</h1>
                 </div>
                 <nav class="flex items-center space-x-8 text-primary">
                     <a href="#campaigns" class="hover:accent-orange-text transition-colors">Campaigns</a>
@@ -127,45 +185,21 @@
 
         <main>
             <section class="py-16 md:py-24 px-4 md:px-6">
-                <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-                    <div class="space-y-8 text-center lg:text-left">
+                <div class="max-w-4xl mx-auto text-center">
+                    <div class="space-y-8 text-center">
                         <h2 class="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight text-primary">
-                            Handcrafted
-                            <span class="accent-orange-text">Open-Source</span>
-                            Hardware
+                            Handcrafted products for nerds!
                         </h2>
                         <p class="text-lg md:text-xl text-secondary leading-relaxed">
                             Where makers fund makers, share knowledge, and build the future together. Because collaboration is just a more efficient form of glorious competition.
                         </p>
-                        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center">
                             <button class="accent-orange text-on-accent px-8 py-4 rounded-xl text-lg font-semibold hover:bg-orange-600 transition-transform transform hover:scale-105">
                                 Explore Campaigns
                             </button>
                             <button class="border-2 border-theme text-primary px-8 py-4 rounded-xl text-lg font-semibold hover:accent-orange hover:text-on-accent hover:border-transparent transition-all">
                                 Shop Inventions
                             </button>
-                        </div>
-                    </div>
-                    <div class="bg-secondary rounded-2xl p-6 relative overflow-hidden shadow-lg">
-                        <div class="aspect-square bg-tertiary rounded-xl mb-6 flex items-center justify-center">
-                             <img src="https://i.imgur.com/gO0268A.jpeg" alt="Lampy - Open Source Mood Lighting" class="w-full h-full object-cover rounded-xl">
-                        </div>
-                        <div class="bg-primary rounded-xl p-6">
-                            <div class="flex items-start justify-between mb-4">
-                                <h3 class="text-2xl font-bold text-primary">Lampy</h3>
-                                <span class="accent-orange text-on-accent px-3 py-1 rounded-full text-sm font-semibold whitespace-nowrap">
-                                    <i class="fas fa-heart mr-1"></i> 89% Funded
-                                </span>
-                            </div>
-                            <p class="text-secondary mb-4">
-                                Handmade with ❤️ in Bengaluru! Mesmerizing ambient modes, so you can contemplate your next absurd invention in style.
-                            </p>
-                            <div class="flex items-center justify-between">
-                                <div class="text-2xl font-bold accent-orange-text">₹4,444</div>
-                                <button class="accent-orange text-on-accent px-6 py-2 rounded-lg hover:bg-orange-600 font-semibold">
-                                    Back This
-                                </button>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -273,8 +307,8 @@
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
                     <div class="md:col-span-1 space-y-6">
                         <div class="flex items-center space-x-4">
-                            <div class="w-12 h-12 accent-orange rounded-full flex items-center justify-center">
-                                <i class="fas fa-atom text-xl text-on-accent"></i>
+                            <div class="w-24 h-24 rounded-full flex items-center justify-center">
+                                <img src="absurd-industries-logo.svg" />
                             </div>
                             <h3 class="text-xl font-bold text-primary">ABSURD</h3>
                         </div>
