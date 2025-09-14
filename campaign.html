@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T1E | Time for Time's Sake - Absurd Industries Campaign</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/e0c6d65845.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jura:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'jura': ['Jura', 'sans-serif'],
+                    },
+                    fontSize: {
+                        '7xl': ['4.5rem', { lineHeight: '1.1' }],
+                        '8xl': ['6rem', { lineHeight: '1' }],
+                        '9xl': ['8rem', { lineHeight: '1' }],
+                    },
+                    animation: {
+                        'progress': 'progress 2s ease-out',
+                        'fade-up': 'fade-up 0.6s ease-out',
+                        'slide-up': 'slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+                        'bounce-subtle': 'bounce-subtle 2s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        'progress': {
+                            '0%': { width: '0%' },
+                            '100%': { width: '73%' }
+                        },
+                        'fade-up': {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        'slide-up': {
+                            '0%': { transform: 'translateY(100%)' },
+                            '100%': { transform: 'translateY(0)' }
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        },
+                        'pulse-glow': {
+                            '0%, 100%': { boxShadow: '0 0 20px rgba(255, 69, 0, 0.4)' },
+                            '50%': { boxShadow: '0 0 40px rgba(255, 69, 0, 0.8)' }
+                        },
+                        'bounce-subtle': {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-4px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            /* Light Theme */
+            --bg-primary: #ECE0CF;
+            --bg-secondary: #FFFFFF;
+            --bg-tertiary: #E0D4C3;
+            --text-primary: #1a1a1a;
+            --text-secondary: #5c5c5c;
+            --border-color: #D1C4B3;
+
+            --accent-orange: #FF4500;
+            --accent-yellow: #FFD700;
+            --text-on-accent: #FFFFFF;
+        }
+
+        html.dark {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2a2a2a;
+            --bg-tertiary: #111111;
+            --text-primary: #ECE0CF;
+            --text-secondary: #9ca3af;
+            --border-color: #3a3a3a;
+        }
+        
+        body {
+            font-family: 'Jura', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        .bg-primary { background-color: var(--bg-primary); }
+        .bg-secondary { background-color: var(--bg-secondary); }
+        .bg-tertiary { background-color: var(--bg-tertiary); }
+        .text-primary { color: var(--text-primary); }
+        .text-secondary { color: var(--text-secondary); }
+        .border-theme { border-color: var(--border-color); }
+        .accent-orange { background-color: var(--accent-orange); }
+        .accent-orange-text { color: var(--accent-orange); }
+        .text-on-accent { color: var(--text-on-accent); }
+
+        /* Video Hero */
+        .video-hero {
+            background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M 8 0 L 0 0 0 8" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+        }
+
+        /* Progress Bar */
+        .campaign-progress {
+            background: linear-gradient(90deg, var(--accent-orange) 0%, #FF6B35 100%);
+            height: 6px;
+            border-radius: 3px;
+            animation: progress 2s ease-out;
+        }
+
+        /* Floating Panel */
+        .floating-panel {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 50;
+            max-width: 400px;
+            transform: scale(1);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .floating-panel.collapsed {
+            transform: scale(0.95);
+        }
+
+        .floating-panel.expanded {
+            bottom: 1rem;
+            right: 1rem;
+            max-width: 450px;
+        }
+
+        /* Mobile Floating Panel */
+        @media (max-width: 1023px) {
+            .floating-panel {
+                bottom: 0;
+                left: 0;
+                right: 0;
+                max-width: none;
+                transform: translateY(calc(100% - 80px));
+                border-radius: 20px 20px 0 0;
+            }
+            
+            .floating-panel.expanded {
+                transform: translateY(0);
+                bottom: 0;
+                left: 0;
+                right: 0;
+            }
+            
+            .floating-panel-content {
+                max-height: 70vh;
+                overflow-y: auto;
+            }
+        }
+
+        /* Desktop Floating Panel */
+        @media (min-width: 1024px) {
+            .floating-panel:not(.expanded) {
+                cursor: pointer;
+            }
+            
+            .floating-panel-content {
+                max-height: 80vh;
+                overflow-y: auto;
+            }
+        }
+
+        /* Content Spacing */
+        .section { margin-bottom: 8rem; }
+        .subsection { margin-bottom: 4rem; }
+        
+        /* Hover Effects */
+        .hover-lift {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-4px);
+        }
+
+        /* Content Placeholders */
+        .content-placeholder {
+            background: var(--bg-tertiary);
+            border: 2px dashed var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 2rem;
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .content-placeholder:hover {
+            border-color: var(--accent-orange);
+            background: var(--bg-secondary);
+        }
+
+        /* Share Button Effects */
+        .share-btn {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .share-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen font-jura" id="app">
+    
+    <!-- Navigation -->
+    <header class="bg-secondary/90 backdrop-blur-sm border-b border-theme sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto flex items-center justify-between py-4 px-6">
+            <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center">
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                        <defs>
+                            <radialGradient id="nucleusGradient" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="#FFB347" />
+                                <stop offset="100%" stop-color="#FF6B35" />
+                            </radialGradient>
+                        </defs>
+                        <g transform="translate(100,100)">
+                            <ellipse cx="0" cy="0" rx="50" ry="15" fill="none" stroke="#40E0D0" stroke-width="2" opacity="0.8"/>
+                            <ellipse cx="0" cy="0" rx="50" ry="15" fill="none" stroke="#40E0D0" stroke-width="2" opacity="0.8" transform="rotate(60)"/>
+                            <ellipse cx="0" cy="0" rx="50" ry="15" fill="none" stroke="#40E0D0" stroke-width="2" opacity="0.8" transform="rotate(120)"/>
+                        </g>
+                        <circle cx="100" cy="100" r="15" fill="url(#nucleusGradient)"/>
+                    </svg>
+                </div>
+                <h1 class="text-xl font-bold text-primary">Absurd</h1>
+                <span class="text-text-secondary">/</span>
+                <span class="text-lg font-medium text-secondary">Campaigns</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <!-- Share Buttons -->
+                <div class="hidden md:flex items-center space-x-2">
+                    <button @click="share('twitter')" class="share-btn w-10 h-10 rounded-full bg-tertiary flex items-center justify-center text-secondary hover:bg-blue-500 hover:text-white">
+                        <i class="fab fa-twitter"></i>
+                    </button>
+                    <button @click="share('linkedin')" class="share-btn w-10 h-10 rounded-full bg-tertiary flex items-center justify-center text-secondary hover:bg-blue-600 hover:text-white">
+                        <i class="fab fa-linkedin"></i>
+                    </button>
+                    <button @click="share('whatsapp')" class="share-btn w-10 h-10 rounded-full bg-tertiary flex items-center justify-center text-secondary hover:bg-green-500 hover:text-white">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <button @click="toggleTheme" class="w-10 h-10 rounded-full bg-tertiary flex items-center justify-center hover:accent-orange transition-colors">
+                    <i :class="isDark ? 'fas fa-sun' : 'fas fa-moon'" class="text-primary"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="py-12 px-6">
+        <div class="max-w-6xl mx-auto">
+            
+            <!-- Title -->
+            <div class="text-center mb-16 animate-fade-up">
+            
+                <h1 class="text-6xl md:text-8xl lg:text-9xl font-bold text-primary leading-none mb-6">
+                    T1E
+                </h1>
+                <p class="text-2xl md:text-4xl font-medium text-secondary mb-8">
+                    Time for Time's Sake
+                </p>
+                <p class="text-xl md:text-2xl text-secondary max-w-4xl mx-auto leading-relaxed">
+                    An ePaper smartwatch that lasts for days, not hours.<br>
+                    Minimal. Hackable. Open-source.
+                </p>
+            </div>
+
+            <!-- Video Hero -->
+            <div class="max-w-5xl mx-auto mb-16">
+                <div class="aspect-video video-hero rounded-3xl border-2 border-theme flex items-center justify-center cursor-pointer hover-lift group" @click="playVideo">
+                    <div class="text-center">
+                        <div class="text-8xl mb-6 accent-orange-text group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <div class="text-3xl font-bold text-primary mb-3">Watch Campaign Video</div>
+                        <div class="text-lg text-secondary">3:42 - Behind the Scenes</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-6 space-y-20 pb-32">
+        
+        <!-- The Problem -->
+        <section class="section animate-fade-up">
+            <h2 class="text-5xl md:text-6xl font-bold text-primary mb-12">
+                The Problem with Time
+            </h2>
+            
+            <div class="space-y-8">
+                <p class="text-2xl md:text-3xl text-secondary leading-relaxed">
+                    Smartwatches today are glorified notification buzzers that die faster than a mayfly in winter.
+                </p>
+                
+                <p class="text-xl md:text-2xl text-secondary leading-relaxed">
+                    We're trapped in a cycle of daily charging, proprietary everything, and devices that become 
+                    e-waste the moment the company decides to "innovate."
+                </p>
+
+                <div class="grid md:grid-cols-2 gap-8 mt-16">
+                    <div class="content-placeholder hover-lift">
+                        <i class="fas fa-battery-empty text-4xl text-secondary"></i>
+                        <div class="text-lg font-bold text-primary">Battery Anxiety Infographic</div>
+                        <div class="text-sm text-secondary">Daily charging cycles visualization</div>
+                    </div>
+                    <div class="content-placeholder hover-lift">
+                        <i class="fas fa-trash text-4xl text-secondary"></i>
+                        <div class="text-lg font-bold text-primary">E-waste Statistics</div>
+                        <div class="text-sm text-secondary">Smartwatch disposal rates chart</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Solution -->
+        <section class="section animate-fade-up">
+            <h2 class="text-5xl md:text-6xl font-bold text-primary mb-12">
+                How we're fixing it?
+            </h2>
+            
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="space-y-8">
+                    <p class="text-2xl md:text-3xl text-secondary leading-relaxed">
+                        The T1E is an ePaper smartwatch built with intention.
+                    </p>
+                    <p class="text-xl md:text-2xl text-secondary leading-relaxed">
+                        4+ days of battery life, completely open-source, and designed to be repaired, not replaced.
+                    </p>
+                    <div class="bg-secondary rounded-2xl p-8 border-2 border-theme hover-lift">
+                        <div class="text-lg font-bold text-primary mb-4">Core Philosophy</div>
+                        <p class="text-secondary leading-relaxed">
+                            Time should be about living, not constantly charging. Your device should enhance your life, 
+                            not become another thing you need to babysit.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="content-placeholder aspect-square hover-lift">
+                    <div class="text-8xl mb-4 animate-float">⌚</div>
+                    <div class="text-xl font-bold text-primary">T1E Prototype</div>
+                    <div class="text-secondary">360° Interactive Model</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Features -->
+        <section class="section animate-fade-up">
+            <h2 class="text-5xl md:text-6xl font-bold text-primary mb-12">
+                What makes the T1E absurdly good?
+            </h2>
+            
+            <div class="space-y-12">
+                
+                <!-- Feature 1: Battery Life -->
+                <div class="bg-secondary rounded-3xl p-12 border-2 border-theme hover-lift">
+                    <div class="grid lg:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <div class="accent-orange text-on-accent w-20 h-20 rounded-2xl flex items-center justify-center text-3xl font-bold mb-6">
+                                4+
+                            </div>
+                            <h3 class="text-4xl font-bold text-primary mb-6">Days of Battery Life</h3>
+                            <p class="text-xl text-secondary leading-relaxed mb-6">
+                                Target: 16 days with partial refreshes. The ePaper display only uses power when updating, 
+                                giving you weeks of timekeeping on a single charge.
+                            </p>
+                            <div class="text-lg font-bold text-primary">How we did it:</div>
+                            <ul class="text-secondary space-y-2 mt-4">
+                                <li>• Optimized partial refresh algorithms</li>
+                                <li>• Deep sleep power management</li>
+                                <li>• Smart wake-up scheduling</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="content-placeholder aspect-video hover-lift">
+                            <i class="fas fa-chart-line text-4xl text-secondary"></i>
+                            <div class="text-lg font-bold text-primary">Battery Performance Chart</div>
+                            <div class="text-sm text-secondary">16-day test results visualization</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 2: ePaper Display -->
+                <div class="bg-secondary rounded-3xl p-12 border-2 border-theme hover-lift">
+                    <div class="grid lg:grid-cols-2 gap-12 items-center">
+                        <div class="content-placeholder aspect-video order-2 lg:order-1 hover-lift">
+                            <i class="fas fa-sun text-4xl text-secondary"></i>
+                            <div class="text-lg font-bold text-primary">Sunlight Readability Demo</div>
+                            <div class="text-sm text-secondary">Side-by-side comparison video</div>
+                        </div>
+                        
+                        <div class="order-1 lg:order-2">
+                            <div class="bg-blue-500 text-white w-20 h-20 rounded-2xl flex items-center justify-center text-3xl mb-6">
+                                <i class="fas fa-sun"></i>
+                            </div>
+                            <h3 class="text-4xl font-bold text-primary mb-6">ePaper Display</h3>
+                            <p class="text-xl text-secondary leading-relaxed mb-6">
+                                Crystal clear in direct sunlight, no glare, no eye strain. The display stays on without 
+                                draining your battery - it's like magic, but it's just physics.
+                            </p>
+                            <div class="text-lg font-bold text-primary">The science:</div>
+                            <ul class="text-secondary space-y-2 mt-4">
+                                <li>• Reflective display technology</li>
+                                <li>• No backlight required</li>
+                                <li>• Bistable pixel technology</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 3: Open Source -->
+                <div class="bg-secondary rounded-3xl p-12 border-2 border-theme hover-lift">
+                    <div class="grid lg:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <div class="accent-orange text-on-accent w-20 h-20 rounded-2xl flex items-center justify-center text-3xl mb-6">
+                                <i class="fab fa-osi"></i>
+                            </div>
+                            <h3 class="text-4xl font-bold text-primary mb-6">100% Open Source</h3>
+                            <p class="text-xl text-secondary leading-relaxed mb-6">
+                                Hardware designs, firmware, CAD files - everything is yours. Fork it, modify it, improve it. 
+                                No secrets, no lock-ins, no bullshit.
+                            </p>
+                            <div class="text-lg font-bold text-primary">What you get:</div>
+                            <ul class="text-secondary space-y-2 mt-4">
+                                <li>• Complete schematics (KiCad)</li>
+                                <li>• 3D printable case files</li>
+                                <li>• Full firmware source code</li>
+                                <li>• Assembly documentation</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="content-placeholder aspect-video hover-lift">
+                            <i class="fab fa-github text-4xl text-secondary"></i>
+                            <div class="text-lg font-bold text-primary">GitHub Repository Tour</div>
+                            <div class="text-sm text-secondary">Live code exploration video</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Specs -->
+        <section class="section animate-fade-up">
+            <h2 class="text-5xl md:text-6xl font-bold text-primary mb-12">
+                For the Nerds<br><span class="text-secondary">(We Love You)</span>
+            </h2>
+            
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                
+                <div class="bg-secondary rounded-2xl p-8 border-2 border-theme hover-lift">
+                    <div class="text-center mb-8">
+                        <i class="fas fa-microchip text-4xl accent-orange-text mb-4"></i>
+                        <h3 class="text-2xl font-bold text-primary">Hardware</h3>
+                    </div>
+                    <div class="space-y-4 text-lg">
+                        <div class="flex justify-between">
+                            <span class="text-secondary">MCU</span>
+                            <span class="font-bold text-primary">ESP32</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-secondary">Display</span>
+                            <span class="font-bold text-primary">2.9" ePaper</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-secondary">RTC</span>
+                            <span class="font-bold text-primary">DS3231</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-secondary">Battery</span>
+                            <span class="font-bold text-primary">400mAh LiPo</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-secondary">Wireless</span>
+                            <span class="font-bold text-primary">WiFi + BT</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-secondary rounded-2xl p-8 border-2 border-theme hover-lift">
+                    <div class="text-center mb-8">
+                        <i class="fas fa-code text-4xl accent-orange-text mb-4"></i>
+                        <h3 class="text-2xl font-bold text-primary">Software</h3>
+                    </div>
+                    <div class="space-y-4 text-lg">
+                        <div class="flex justify-between">
+                            <span class="text-secondary">Framework</span>
+                            <span class="font-bold text-primary">Arduino</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-secondary">Display</span>
+                            <span class="font-bold text-primary">GxEPD2_BW</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-secondary">Time Sync</span>
+                            <span class="font-bold text-primary">NTP/WiFi</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-secondary">Power</span>
+                            <span class="font-bold text-primary">Deep Sleep</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-secondary">Updates</span>
+                            <span class="font-bold text-primary">OTA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-secondary rounded-2xl p-8 border-2 border-theme hover-lift">
+                    <div class="text-center mb-8">
+                        <i class="fas fa-tools text-4xl accent-orange-text mb-4"></i>
+                        <h3 class="text-2xl font-bold text-primary">Tools</h3>
+                    </div>
+                    <div class="space-y-4 text-lg">
+                        <div class="flex justify-between">
+                            <span class="text-secondary">IDE</span>
+                            <span class="font-bold text-primary">Arduino/PlatformIO</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-secondary">PCB</span>
+                            <span class="font-bold text-primary">KiCad</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-secondary">3D</span>
+                            <span class="font-bold text-primary">Fusion 360</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-secondary">License</span>
+                            <span class="font-bold text-primary">MIT</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-secondary">Repo</span>
+                            <span class="font-bold text-primary">GitHub</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Schematics & 3D Models -->
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="content-placeholder aspect-video hover-lift">
+                    <i class="fas fa-drafting-compass text-4xl text-secondary"></i>
+                    <div class="text-xl font-bold text-primary">Interactive Schematic</div>
+                    <div class="text-secondary">Explore the circuit design</div>
+                </div>
+                <div class="content-placeholder aspect-video hover-lift">
+                    <i class="fas fa-cube text-4xl text-secondary"></i>
+                    <div class="text-xl font-bold text-primary">3D Exploded View</div>
+                    <div class="text-secondary">See how it all fits together</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Community & Updates Tabs -->
+        <section class="section animate-fade-up">
+            <div class="bg-secondary rounded-3xl border-2 border-theme overflow-hidden">
+                
+                <!-- Tab Navigation -->
+                <div class="flex border-b-2 border-theme">
+                    <button 
+                        @click="activeTab = 'updates'"
+                        :class="activeTab === 'updates' ? 'accent-orange text-on-accent' : 'text-primary hover:bg-tertiary'"
+                        class="flex-1 py-6 px-8 text-xl font-bold transition-colors">
+                        Updates
+                    </button>
+                    <button 
+                        @click="activeTab = 'community'"
+                        :class="activeTab === 'community' ? 'accent-orange text-on-accent' : 'text-primary hover:bg-tertiary'"
+                        class="flex-1 py-6 px-8 text-xl font-bold transition-colors">
+                        Community
+                    </button>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="p-12" style="min-height: 400px;">
+                    
+                    <!-- Updates Tab -->
+                    <div v-show="activeTab === 'updates'">
+                        <div class="space-y-8">
+                            <div v-for="update in updates" :key="update.id" 
+                                 class="border-2 border-theme rounded-2xl p-8 hover:border-orange-300 hover-lift">
+                                <div class="flex justify-between items-start mb-6">
+                                    <div>
+                                        <h3 class="text-2xl font-bold text-primary mb-2">{{ update.title }}</h3>
+                                        <div class="text-secondary">{{ update.date }} • {{ update.readTime }} read</div>
+                                    </div>
+                                    <div class="flex space-x-2">
+                                        <span v-for="tag in update.tags" :key="tag"
+                                              class="bg-tertiary text-primary px-3 py-1 rounded text-sm font-bold">
+                                            {{ tag }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <p class="text-xl text-secondary leading-relaxed">{{ update.content }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Community Tab -->
+                    <div v-show="activeTab === 'community'">
+                        <div class="text-center py-16">
+                            <div class="text-6xl mb-6">🔒</div>
+                            <h3 class="text-3xl font-bold text-primary mb-4">Back First, Then Join the Guild</h3>
+                            <p class="text-xl text-secondary max-w-2xl mx-auto">
+                                Community discussions, maker profiles, and guild access are available after you back the project. 
+                                247+ makers are waiting to welcome you!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="section animate-fade-up">
+            <h2 class="text-5xl md:text-6xl font-bold text-primary mb-12">
+                Questions?
+            </h2>
+            
+            <div class="space-y-6">
+                <div v-for="faq in faqs" :key="faq.id"
+                     class="bg-secondary rounded-2xl border-2 border-theme overflow-hidden hover-lift">
+                    <button @click="toggleFaq(faq.id)"
+                        class="w-full p-8 text-left hover:bg-tertiary transition-colors flex justify-between items-center">
+                        <h3 class="text-xl md:text-2xl font-bold text-primary">{{ faq.question }}</h3>
+                        <i :class="faq.isOpen ? 'fas fa-minus' : 'fas fa-plus'" 
+                           class="text-2xl text-secondary transition-transform"></i>
+                    </button>
+                    <div v-show="faq.isOpen" class="px-8 pb-8 border-t-2 border-theme">
+                        <p class="text-lg text-secondary leading-relaxed pt-6">{{ faq.answer }}</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Floating Campaign Panel -->
+    <div class="floating-panel bg-secondary border-2 border-theme rounded-2xl shadow-2xl animate-bounce-subtle" 
+         :class="{ 'expanded': panelExpanded, 'collapsed': !panelExpanded }"
+         @click="!panelExpanded && togglePanel()">
+        
+        <!-- Collapsed State (Desktop) / Header (Mobile) -->
+        <div class="p-4 lg:p-6 cursor-pointer lg:cursor-auto" 
+             :class="{ 'lg:cursor-pointer': !panelExpanded }"
+             @click="panelExpanded && togglePanel()">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <!-- Campaign Progress Ring (Small) -->
+                    <div class="relative w-12 h-12 lg:w-16 lg:h-16">
+                        <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                            <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                  fill="none" stroke="var(--bg-tertiary)" stroke-width="2"/>
+                            <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                  fill="none" stroke="var(--accent-orange)" stroke-width="2"
+                                  stroke-dasharray="73, 100" stroke-linecap="round"/>
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-sm font-bold text-primary">73%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="lg:block">
+                        <div class="text-xl lg:text-2xl font-bold text-primary">₹{{ selectedReward ? Math.round(selectedReward.price * 0.4).toLocaleString() : '2,222' }}</div>
+                        <div class="text-sm text-secondary">commitment • 23 days left</div>
+                    </div>
+                </div>
+             
+            </div>
+        </div>
+        
+        <!-- Expanded Content -->
+        <div v-show="panelExpanded" class="floating-panel-content border-t-2 border-theme animate-slide-up">
+            <div class="p-6 space-y-6">
+                
+                <!-- Full Campaign Stats -->
+                <div class="grid grid-cols-3 gap-4 text-center">
+                    <div>
+                        <div class="text-2xl font-bold text-primary">₹4.05L</div>
+                        <div class="text-sm text-secondary">raised</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-primary">147</div>
+                        <div class="text-sm text-secondary">backers</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold accent-orange-text">73%</div>
+                        <div class="text-sm text-secondary">funded</div>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-tertiary rounded-full h-3">
+                    <div class="campaign-progress rounded-full"></div>
+                </div>
+
+                <!-- India-First System -->
+                <div class="bg-white rounded-xl p-4">
+                    <div class="text-xs font-bold text-secondary mb-3 text-center">INDIA-FIRST COMMITMENT</div>
+                    <div class="grid grid-cols-2 gap-3 text-center text-sm">
+                        <div>
+                            <div class="font-bold text-primary">Commit now</div>
+                            <div class="text-xl font-bold accent-orange-text">₹{{ selectedReward ? Math.round(selectedReward.price * 0.4).toLocaleString() : '2,222' }}</div>
+                        </div>
+                        <div>
+                            <div class="font-bold text-primary">Pay on delivery</div>
+                            <div class="text-xl font-bold text-primary">₹{{ selectedReward ? Math.round(selectedReward.price * 0.6).toLocaleString() : '3,333' }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reward Selection -->
+                <div class="space-y-3">
+                    <div class="text-sm font-bold text-secondary mb-3">SELECT YOUR T1E:</div>
+                    <div v-for="reward in rewards" :key="reward.id" 
+                         @click="selectReward(reward)"
+                         :class="selectedReward?.id === reward.id ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/10' : 'border-theme'"
+                         class="border-2 rounded-xl p-4 cursor-pointer transition-all hover-lift">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <div class="font-bold text-primary">{{ reward.title }}</div>
+                                <div class="text-sm text-secondary">{{ reward.shortDescription }}</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="font-bold text-primary">₹{{ reward.price.toLocaleString() }}</div>
+                                <div class="text-xs text-secondary">₹{{ Math.round(reward.price * 0.4).toLocaleString() }} now</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Big Action Button -->
+                <button class="w-full accent-orange text-on-accent py-4 rounded-2xl font-bold text-xl">
+                    HOLD MY T1E!
+                    <div class="text-sm font-normal">₹{{ selectedReward ? selectedReward.price.toLocaleString() : '5,555' }} total</div>
+                </button>
+
+                <!-- Trust Indicators -->
+                <div class="space-y-2 text-sm">
+                    <div class="flex items-center space-x-2 text-secondary">
+                        <i class="fas fa-shield-check text-green-500"></i>
+                        <span>Cancel anytime before delivery</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-secondary">
+                        <i class="fas fa-leaf text-green-500"></i>
+                        <span>Sustainable & repairable design</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-secondary">
+                        <i class="fas fa-code text-blue-400"></i>
+                        <span>Complete source code included</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Simplified Footer -->
+    <footer class="bg-secondary border-t-2 border-theme py-12 mt-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8 items-center">
+                
+                <!-- Brand -->
+                <div class="text-center md:text-left">
+                    <div class="flex items-center justify-center md:justify-start space-x-3 mb-4">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center">
+                            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                                <defs>
+                                    <radialGradient id="nucleusGradient2" cx="50%" cy="50%" r="50%">
+                                        <stop offset="0%" stop-color="#FFB347" />
+                                        <stop offset="100%" stop-color="#FF6B35" />
+                                    </radialGradient>
+                                </defs>
+                                <g transform="translate(100,100)">
+                                    <ellipse cx="0" cy="0" rx="40" ry="12" fill="none" stroke="#40E0D0" stroke-width="2" opacity="0.7"/>
+                                    <ellipse cx="0" cy="0" rx="40" ry="12" fill="none" stroke="#40E0D0" stroke-width="2" opacity="0.7" transform="rotate(60)"/>
+                                    <ellipse cx="0" cy="0" rx="40" ry="12" fill="none" stroke="#40E0D0" stroke-width="2" opacity="0.7" transform="rotate(120)"/>
+                                </g>
+                                <circle cx="100" cy="100" r="12" fill="url(#nucleusGradient2)"/>
+                            </svg>
+                        </div>
+                        <span class="text-xl font-bold text-primary">Absurd Industries</span>
+                    </div>
+                    <p class="text-sm text-secondary">Building the future, one maker at a time.</p>
+                </div>
+
+                <!-- Share Section -->
+                <div class="text-center">
+                    <div class="text-lg font-bold text-primary mb-4">Spread the Word</div>
+                    <div class="flex justify-center space-x-3">
+                        <button @click="share('twitter')" class="share-btn w-12 h-12 rounded-full bg-tertiary flex items-center justify-center text-secondary hover:bg-blue-500 hover:text-white">
+                            <i class="fab fa-twitter text-lg"></i>
+                        </button>
+                        <button @click="share('linkedin')" class="share-btn w-12 h-12 rounded-full bg-tertiary flex items-center justify-center text-secondary hover:bg-blue-600 hover:text-white">
+                            <i class="fab fa-linkedin text-lg"></i>
+                        </button>
+                        <button @click="share('whatsapp')" class="share-btn w-12 h-12 rounded-full bg-tertiary flex items-center justify-center text-secondary hover:bg-green-500 hover:text-white">
+                            <i class="fab fa-whatsapp text-lg"></i>
+                        </button>
+                        <button @click="share('reddit')" class="share-btn w-12 h-12 rounded-full bg-tertiary flex items-center justify-center text-secondary hover:bg-orange-600 hover:text-white">
+                            <i class="fab fa-reddit text-lg"></i>
+                        </button>
+                        <button @click="copyLink" class="share-btn w-12 h-12 rounded-full bg-tertiary flex items-center justify-center text-secondary hover:accent-orange hover:text-on-accent">
+                            <i class="fas fa-link text-lg"></i>
+                        </button>
+                    </div>
+                    <div v-show="linkCopied" class="text-sm text-green-500 mt-2 animate-fade-up">Link copied!</div>
+                </div>
+
+                <!-- Links -->
+                <div class="text-center md:text-right">
+                    <div class="space-y-2 text-sm">
+                        <div><a href="#" class="text-secondary hover:accent-orange-text transition-colors">Campaign Terms</a></div>
+                        <div><a href="#" class="text-secondary hover:accent-orange-text transition-colors">Privacy Policy</a></div>
+                        <div><a href="#" class="text-secondary hover:accent-orange-text transition-colors">Contact Support</a></div>
+                    </div>
+                    <div class="text-xs text-secondary mt-4">
+                        © 2025 Absurd Explorations (OPC) Pvt Ltd
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Vue.js Application -->
+    <script>
+        const { createApp, ref, onMounted } = Vue;
+        createApp({
+            setup() {
+                const isDark = ref(localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches));
+                const panelExpanded = ref(false);
+                const selectedReward = ref(null);
+                const activeTab = ref('updates');
+                const linkCopied = ref(false);
+                
+                const rewards = [
+                    {
+                        id: 1,
+                        title: 'T1E Kit',
+                        price: 5555,
+                        shortDescription: 'DIY Assembly Required',
+                        backers: 32,
+                        shipping: 'Dec 2025'
+                    },
+                    {
+                        id: 2,
+                        title: 'T1E Watch',
+                        price: 9999,
+                        shortDescription: 'Fully Assembled',
+                        backers: 89,
+                        shipping: 'Nov 2025'
+                    },
+                    {
+                        id: 3,
+                        title: 'T1E Cyberdeck',
+                        price: 15999,
+                        shortDescription: 'Limited Edition (100 units)',
+                        backers: 26,
+                        shipping: 'Jan 2026'
+                    }
+                ];
+
+                const updates = [
+                    {
+                        id: 1,
+                        title: 'Battery Life Breakthrough: 16 Days Achieved!',
+                        date: '3 days ago',
+                        readTime: '3 min',
+                        content: 'We hit our target! With optimized partial refresh routines and deep sleep improvements, we\'re consistently getting 16+ days of battery life in testing. The ePaper display technology is truly game-changing for wearable devices.',
+                        tags: ['HARDWARE', 'MILESTONE']
+                    },
+                    {
+                        id: 2,
+                        title: 'Open Source Repository Now Live',
+                        date: '1 week ago',
+                        readTime: '5 min',
+                        content: 'Every line of code, schematic, and CAD file is now available on GitHub. We believe in radical transparency - if you\'re backing this project, you should own it completely. The community response has been incredible!',
+                        tags: ['SOFTWARE', 'OPEN SOURCE']
+                    },
+                    {
+                        id: 3,
+                        title: 'Manufacturing Update: Production Ready',
+                        date: '2 weeks ago',
+                        readTime: '4 min',
+                        content: 'Our manufacturing partner has completed production line setup and quality control processes. We\'ve successfully produced 150 test units with a 99.3% success rate. We\'re on track for December shipping.',
+                        tags: ['MANUFACTURING', 'TIMELINE']
+                    }
+                ];
+
+                const faqs = [
+                    {
+                        id: 1,
+                        question: 'How does the India-First commitment system work?',
+                        answer: 'You pay 40% now to secure your T1E, and the remaining 60% only when we\'re ready to ship. If we don\'t deliver or you change your mind, you get a full refund. This system reduces risk for backers while helping us fund production.',
+                        isOpen: false
+                    },
+                    {
+                        id: 2,
+                        question: 'What programming languages can I use?',
+                        answer: 'The T1E runs on Arduino framework with C++, but we also support MicroPython and JavaScript through Espruino. All development tools are free and open-source. We\'ll provide extensive documentation and examples.',
+                        isOpen: false
+                    },
+                    {
+                        id: 3,
+                        question: 'Is it water resistant?',
+                        answer: 'The T1E is rated IPX4 for splash resistance - it can handle rain and handwashing but shouldn\'t be submerged. The case is made from durable ABS plastic with reinforced stress points.',
+                        isOpen: false
+                    },
+                    {
+                        id: 4,
+                        question: 'How do software updates work?',
+                        answer: 'Updates can be delivered over WiFi (OTA) or via USB-C. You have full control - the watch will never update without your permission. Since it\'s open-source, you can also build and flash your own firmware.',
+                        isOpen: false
+                    },
+                    {
+                        id: 5,
+                        question: 'What if the display breaks?',
+                        answer: 'The display is replaceable! We\'ll sell replacement screens and provide detailed repair guides. The modular design means you won\'t need to throw away the entire device for a cracked screen.',
+                        isOpen: false
+                    }
+                ];
+
+                // Initialize with first reward selected
+                selectedReward.value = rewards[0];
+
+                const applyTheme = () => {
+                    if (isDark.value) {
+                        document.documentElement.classList.add('dark');
+                        localStorage.theme = 'dark';
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.theme = 'light';
+                    }
+                };
+                
+                const toggleTheme = () => {
+                    isDark.value = !isDark.value;
+                    applyTheme();
+                };
+
+                const togglePanel = () => {
+                    panelExpanded.value = !panelExpanded.value;
+                };
+
+                const selectReward = (reward) => {
+                    selectedReward.value = reward;
+                };
+
+                const toggleFaq = (faqId) => {
+                    const faq = faqs.find(f => f.id === faqId);
+                    if (faq) {
+                        faq.isOpen = !faq.isOpen;
+                    }
+                };
+                
+                const playVideo = () => {
+                    console.log('Video clicked - would open modal or navigate to video');
+                };
+
+                const share = (platform) => {
+                    const url = encodeURIComponent(window.location.href);
+                    const text = encodeURIComponent('Check out the T1E - an ePaper smartwatch that lasts for days! 🚀');
+                    
+                    const shareUrls = {
+                        twitter: `https://twitter.com/intent/tweet?text=${text}&url=${url}`,
+                        linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
+                        whatsapp: `https://wa.me/?text=${text}%20${url}`,
+                        reddit: `https://reddit.com/submit?url=${url}&title=${text}`
+                    };
+                    
+                    if (shareUrls[platform]) {
+                        window.open(shareUrls[platform], '_blank', 'width=600,height=400');
+                    }
+                };
+
+                const copyLink = () => {
+                    navigator.clipboard.writeText(window.location.href).then(() => {
+                        linkCopied.value = true;
+                        setTimeout(() => {
+                            linkCopied.value = false;
+                        }, 2000);
+                    });
+                };
+
+                onMounted(applyTheme);
+                
+                return { 
+                    isDark, 
+                    toggleTheme,
+                    panelExpanded,
+                    togglePanel,
+                    selectedReward,
+                    selectReward,
+                    activeTab,
+                    rewards,
+                    updates,
+                    faqs,
+                    toggleFaq,
+                    playVideo,
+                    share,
+                    copyLink,
+                    linkCopied
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
