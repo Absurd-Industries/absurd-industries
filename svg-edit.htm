@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="svg-image">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <!-- Gradient for the nucleus -->
+          <radialGradient id="nucleusGradient" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#FFB347"></stop>
+            <stop offset="100%" stop-color="#FF6B35"></stop>
+          </radialGradient>
+
+          <!-- Gradient for orbital glow -->
+          <radialGradient id="orbitalGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#40E0D0" stop-opacity="0.8"></stop>
+            <stop offset="100%" stop-color="#40E0D0" stop-opacity="0.2"></stop>
+          </radialGradient>
+
+          <!-- Filter for glow effect -->
+          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur
+              stdDeviation="3"
+              result="coloredBlur"
+            ></feGaussianBlur>
+            <feMerge>
+              <feMergeNode in="coloredBlur"></feMergeNode>
+              <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+          </filter>
+        </defs>
+
+        <!-- Background circle for subtle depth -->
+        <!-- <circle cx="100" cy="100" r="95" fill="none" stroke="#40E0D0" stroke-width="0.5" opacity="0.3"/> -->
+
+        <!-- Orbital rings -->
+        <g transform="translate(100,100)" filter="url(#glow)" id="main-group">
+          <!-- First orbital (horizontal) -->
+          <ellipse
+            cx="0"
+            cy="0"
+            rx="60"
+            ry="20"
+            fill="none"
+            stroke="#40E0D0"
+            stroke-width="2.5"
+            opacity="0.9"
+          ></ellipse>
+
+          <!-- Second orbital (60 degrees) -->
+          <ellipse
+            cx="0"
+            cy="0"
+            rx="60"
+            ry="20"
+            fill="none"
+            stroke="#40E0D0"
+            stroke-width="2.5"
+            opacity="0.9"
+            transform="rotate(60)"
+          ></ellipse>
+
+          <!-- Third orbital (120 degrees) -->
+          <ellipse
+            cx="0"
+            cy="0"
+            rx="60"
+            ry="20"
+            fill="none"
+            stroke="#40E0D0"
+            stroke-width="2.5"
+            opacity="0.9"
+            transform="rotate(120)"
+          ></ellipse>
+        </g>
+
+        <!-- Central nucleus -->
+        <circle
+          cx="100"
+          cy="100"
+          r="18"
+          fill="url(#nucleusGradient)"
+          filter="url(#glow)"
+        ></circle>
+
+        <!-- Inner core highlight -->
+        <circle cx="100" cy="100" r="12" fill="#FFF" opacity="0.6"></circle>
+        <circle cx="100" cy="100" r="8" fill="url(#nucleusGradient)"></circle>
+
+        <!-- Electrons (small dots on orbitals) -->
+        <g filter="url(#glow)">
+          <!-- Electron 1 -->
+          <circle cx="160" cy="100" r="3" fill="#40E0D0"></circle>
+          <!-- Electron 2 -->
+          <circle
+            cx="70"
+            cy="148"
+            r="3"
+            fill="#40E0D0"
+            transform="rotate(60 100 100)"
+          ></circle>
+          <!-- Electron 3 -->
+          <circle
+            cx="130"
+            cy="52"
+            r="3"
+            fill="#40E0D0"
+            transform="rotate(120 100 100)"
+          ></circle>
+        </g>
+
+        <!-- Subtle energy field -->
+        <circle
+          cx="100"
+          cy="100"
+          r="85"
+          fill="url(#orbitalGlow)"
+          opacity="0.1"
+        ></circle>
+      </svg>
+    </div>
+  </body>
+</html>
