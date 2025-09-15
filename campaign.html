@@ -656,7 +656,7 @@
     </main>
 
     <!-- Floating Campaign Panel -->
-    <div class="floating-panel bg-secondary border-2 border-theme rounded-2xl shadow-2xl animate-bounce-subtle" 
+    <div class="floating-panel bg-secondary border-2 border-theme rounded-2xl shadow-2xl" 
          :class="{ 'expanded': panelExpanded, 'collapsed': !panelExpanded }"
          @click="!panelExpanded && togglePanel()">
         
@@ -715,7 +715,7 @@
                 </div>
 
                 <!-- India-First System -->
-                <div class="bg-white rounded-xl p-4">
+                <div class="hidden bg-white rounded-xl p-4">
                     <div class="text-xs font-bold text-secondary mb-3 text-center">INDIA-FIRST COMMITMENT</div>
                     <div class="grid grid-cols-2 gap-3 text-center text-sm">
                         <div>
@@ -731,7 +731,6 @@
 
                 <!-- Reward Selection -->
                 <div class="space-y-3">
-                    <div class="text-sm font-bold text-secondary mb-3">SELECT YOUR T1E:</div>
                     <div v-for="reward in rewards" :key="reward.id" 
                          @click="selectReward(reward)"
                          :class="selectedReward?.id === reward.id ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/10' : 'border-theme'"
@@ -752,24 +751,7 @@
                 <!-- Big Action Button -->
                 <button class="w-full accent-orange text-on-accent py-4 rounded-2xl font-bold text-xl">
                     HOLD MY T1E!
-                    <div class="text-sm font-normal">₹{{ selectedReward ? selectedReward.price.toLocaleString() : '5,555' }} total</div>
                 </button>
-
-                <!-- Trust Indicators -->
-                <div class="space-y-2 text-sm">
-                    <div class="flex items-center space-x-2 text-secondary">
-                        <i class="fas fa-shield-check text-green-500"></i>
-                        <span>Cancel anytime before delivery</span>
-                    </div>
-                    <div class="flex items-center space-x-2 text-secondary">
-                        <i class="fas fa-leaf text-green-500"></i>
-                        <span>Sustainable & repairable design</span>
-                    </div>
-                    <div class="flex items-center space-x-2 text-secondary">
-                        <i class="fas fa-code text-blue-400"></i>
-                        <span>Complete source code included</span>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
