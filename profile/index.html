@@ -1,416 +1,428 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Absurd OS - Amit's Digital Workspace</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#FF6B35">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Amit - The LED Whisperer | Absurd Industries</title>
     
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/e0c6d65845.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jura:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
-                    colors: {
-                        'absurd-orange': '#FF6B35',
-                        'warm-orange': '#FF8A5B',
-                        'soft-orange': '#FFA678',
-                        'paper-beige': '#F8F6F0',
-                        'grid-beige': '#F2F0E8',
-                        'warm-beige': '#EDE8DC',
-                        'sage-green': '#8BA888',
-                        'forest-green': '#5A6B5D',
-                        'charcoal': '#2D2D2A',
-                        'soft-gray': '#6B6B68',
-                        'light-gray': '#9B9B98'
-                    },
                     fontFamily: {
-                        'rubik': ['Rubik', 'system-ui', 'sans-serif']
+                        'jura': ['Jura', 'sans-serif'],
                     },
                     animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'float-delayed': 'float 6s ease-in-out infinite 2s',
-                        'float-slow': 'float 8s ease-in-out infinite 1s',
-                        'pulse-soft': 'pulse-soft 4s ease-in-out infinite',
-                        'morph': 'morph 10s ease-in-out infinite',
-                        'drift': 'drift 15s linear infinite',
-                        'appear': 'appear 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
-                        'card-hover': 'card-hover 0.3s cubic-bezier(0.23, 1, 0.32, 1)'
+                        'spin-slow': 'spin 3s linear infinite',
+                        'fade-in': 'fade-in 0.4s ease-out',
+                        'slide-up': 'slide-up 0.3s ease-out',
                     },
                     keyframes: {
-                        'float': {
-                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
-                            '50%': { transform: 'translateY(-12px) rotate(1deg)' }
+                        'fade-in': {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
                         },
-                        'pulse-soft': {
-                            '0%, 100%': { transform: 'scale(1)', opacity: '0.8' },
-                            '50%': { transform: 'scale(1.05)', opacity: '1' }
-                        },
-                        'morph': {
-                            '0%, 100%': { borderRadius: '60% 40% 30% 70% / 60% 30% 70% 40%' },
-                            '50%': { borderRadius: '30% 60% 70% 40% / 50% 60% 30% 60%' }
-                        },
-                        'drift': {
-                            '0%': { transform: 'translateX(-100px) translateY(100vh) rotate(0deg)' },
-                            '100%': { transform: 'translateX(calc(100vw + 100px)) translateY(-100px) rotate(360deg)' }
-                        },
-                        'appear': {
-                            '0%': { opacity: '0', transform: 'scale(0.8) translateY(40px)' },
-                            '100%': { opacity: '1', transform: 'scale(1) translateY(0px)' }
-                        },
-                        'card-hover': {
-                            '0%': { transform: 'translateY(0px) scale(1)' },
-                            '100%': { transform: 'translateY(-8px) scale(1.02)' }
+                        'slide-up': {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
                         }
-                    },
-                    backdropBlur: {
-                        'xs': '2px'
                     }
                 }
             }
         }
     </script>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body class="font-rubik bg-paper-beige text-charcoal overflow-x-hidden relative min-h-screen">
-    
-    <!-- Grid Paper Background -->
-    <div class="fixed inset-0 opacity-30 pointer-events-none z-0">
-        <div class="grid-paper w-full h-full"></div>
-    </div>
-    
-    <!-- Floating Ambient Elements -->
-    <div class="fixed inset-0 pointer-events-none z-10 overflow-hidden">
-        <div class="absolute w-32 h-32 bg-absurd-orange/10 rounded-full blur-xl animate-drift" style="animation-delay: 0s;"></div>
-        <div class="absolute w-24 h-24 bg-sage-green/15 rounded-full blur-lg animate-drift" style="animation-delay: 5s; animation-duration: 20s;"></div>
-        <div class="absolute w-16 h-16 bg-warm-orange/20 rounded-full blur-md animate-drift" style="animation-delay: 10s; animation-duration: 18s;"></div>
-        <div class="absolute w-20 h-20 bg-forest-green/10 rounded-full blur-lg animate-drift" style="animation-delay: 15s; animation-duration: 22s;"></div>
-    </div>
 
-    <div id="app" class="relative z-20 min-h-screen">
+    <style>
+        :root {
+            --bg-primary: #ECE0CF;
+            --bg-secondary: #FFFFFF;
+            --bg-tertiary: #E0D4C3;
+            --text-primary: #1a1a1a;
+            --text-secondary: #5c5c5c;
+            --border-color: #D1C4B3;
+            --accent-orange: #FF4500;
+            --text-on-accent: #FFFFFF;
+        }
+
+        html.dark {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2a2a2a;
+            --bg-tertiary: #111111;
+            --text-primary: #ECE0CF;
+            --text-secondary: #9ca3af;
+            --border-color: #3a3a3a;
+        }
         
-        <!-- Organic Sidebar -->
-        <div class="fixed left-0 top-0 h-screen w-80 bg-gradient-to-br from-warm-beige/80 to-grid-beige/60 backdrop-blur-sm z-30 animate-appear">
-            <div class="organic-shape absolute inset-0 bg-gradient-to-br from-sage-green/20 to-forest-green/10"></div>
-            
-            <div class="relative z-10 p-8 h-full flex flex-col">
+        body {
+            font-family: 'Jura', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+        
+        .bg-primary { background-color: var(--bg-primary); }
+        .bg-secondary { background-color: var(--bg-secondary); }
+        .bg-tertiary { background-color: var(--bg-tertiary); }
+        .text-primary { color: var(--text-primary); }
+        .text-secondary { color: var(--text-secondary); }
+        .border-theme { border-color: var(--border-color); }
+        .accent-orange { background-color: var(--accent-orange); }
+        .accent-orange-text { color: var(--accent-orange); }
+        .text-on-accent { color: var(--text-on-accent); }
+
+        .hover-lift {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .hover-lift:hover {
+            transform: translateY(-2px);
+        }
+
+        .modal-backdrop {
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .nav-integration {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            border-bottom: 2px solid var(--border-color);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen font-jura" id="app">
+    
+    <!-- Integrated Navigation -->
+    <header class="bg-secondary/90 backdrop-blur-sm border-b border-theme sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto flex items-center justify-between py-4 px-6">
+            <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center hover-lift">
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="w-full h-full animate-spin-slow">
+                        <defs>
+                            <radialGradient id="nucleusGradient" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="#FFB347" />
+                                <stop offset="100%" stop-color="#FF6B35" />
+                            </radialGradient>
+                        </defs>
+                        <g transform="translate(100,100)">
+                            <ellipse cx="0" cy="0" rx="50" ry="15" fill="none" stroke="#40E0D0" stroke-width="2" opacity="0.8"/>
+                            <ellipse cx="0" cy="0" rx="50" ry="15" fill="none" stroke="#40E0D0" stroke-width="2" opacity="0.8" transform="rotate(60)"/>
+                            <ellipse cx="0" cy="0" rx="50" ry="15" fill="none" stroke="#40E0D0" stroke-width="2" opacity="0.8" transform="rotate(120)"/>
+                        </g>
+                        <circle cx="100" cy="100" r="15" fill="url(#nucleusGradient)"/>
+                    </svg>
+                </div>
+                <nav class="hidden sm:flex items-center space-x-2 text-sm lg:text-base">
+                    <a href="/" class="text-primary font-bold hover:accent-orange-text transition-colors">Absurd</a>
+                    <span class="text-secondary">/</span>
+                    <a href="/makers" class="text-secondary hover:text-primary transition-colors">Makers</a>
+                    <span class="text-secondary">/</span>
+                    <span class="font-bold accent-orange-text">The LED Whisperer</span>
+                </nav>
+                <div class="sm:hidden">
+                    <div class="text-lg font-bold text-primary">Amit</div>
+                    <div class="text-xs text-secondary">LED Whisperer</div>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button @click="toggleTheme" class="hover-lift w-10 h-10 rounded-full bg-tertiary flex items-center justify-center">
+                    <i :class="isDark ? 'fas fa-sun' : 'fas fa-moon'" class="text-base text-primary"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-[70vh] flex items-center justify-center">
+        <div class="relative z-10 max-w-6xl mx-auto px-6 py-20 text-center">
+            <!-- Avatar -->
+            <div class="flex flex-col items-center mb-12 animate-fade-in">
+                <div class="w-32 h-32 lg:w-40 lg:h-40 accent-orange rounded-3xl flex items-center justify-center text-4xl lg:text-5xl font-bold text-on-accent mb-6 hover-lift">
+                    A
+                </div>
                 
-                <!-- Profile Section -->
-                <div class="mb-12 animate-appear" style="animation-delay: 0.2s;">
-                    <div class="relative mb-8">
-                        <!-- Organic Avatar Container -->
-                        <div class="w-32 h-32 mx-auto relative">
-                            <div class="absolute inset-0 bg-gradient-to-br from-absurd-orange to-warm-orange animate-morph"></div>
-                            <div class="absolute inset-2 bg-paper-beige rounded-full flex items-center justify-center">
-                                <!-- Generative Tech Pattern -->
-                                <svg class="w-16 h-16 text-absurd-orange" viewBox="0 0 100 100" fill="currentColor">
-                                    <circle cx="50" cy="30" r="8" opacity="0.9"/>
-                                    <rect x="35" y="45" width="30" height="15" rx="3" opacity="0.7"/>
-                                    <circle cx="35" cy="70" r="4" opacity="0.8"/>
-                                    <circle cx="65" cy="70" r="4" opacity="0.8"/>
-                                    <path d="M20,20 Q50,10 80,20 Q70,50 80,80 Q50,90 20,80 Q30,50 20,20" opacity="0.2"/>
-                                </svg>
+                <!-- Name and tagline -->
+                <h1 class="font-jura text-6xl lg:text-8xl font-bold text-primary mb-4">
+                    Amit
+                </h1>
+                <p class="text-xl lg:text-2xl text-secondary mb-6">
+                    LED Whisperer & Hardware Necromancer
+                </p>
+                
+                <!-- Single Bio -->
+                <div class="max-w-4xl mx-auto mb-12">
+                    <p class="text-xl lg:text-2xl text-secondary leading-relaxed">
+                        Building open-source, repairable, moddable tech because the world needs more things that 
+                        glow unnecessarily. Taking apart electronics since 1997 — putting them back together is entirely optional.
+                    </p>
+                </div>
+                
+                <!-- Action buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button @click="showWorkbenchModal = true" class="accent-orange text-on-accent px-8 py-4 rounded-2xl text-lg font-semibold hover-lift transition-all">
+                        <i class="fas fa-hammer mr-2"></i>
+                        Peek Into The Workbench
+                    </button>
+                    <button @click="showContactModal = true" class="bg-secondary text-primary px-8 py-4 rounded-2xl text-lg font-semibold hover-lift border-2 border-theme hover:border-orange-300 transition-all">
+                        <i class="fas fa-satellite-dish mr-2"></i>
+                        Send Signal
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Sections -->
+    <main class="max-w-7xl mx-auto p-6">
+        
+        <!-- Workbench Section -->
+        <section id="workbench" class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="font-jura text-4xl lg:text-5xl font-bold text-primary mb-4">
+                    Current Experiments
+                </h2>
+                <p class="text-xl text-secondary max-w-3xl mx-auto">
+                    Projects currently consuming sanity and/or making the world unnecessarily illuminated
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div v-for="project in workbenchProjects" :key="project.id" 
+                     @click="openProjectModal(project)"
+                     class="bg-secondary border-2 border-theme rounded-3xl overflow-hidden hover-lift cursor-pointer transition-all">
+                    
+                    <div class="aspect-video relative overflow-hidden bg-gradient-to-br from-orange-100 to-orange-200 dark:from-orange-900 dark:to-orange-800">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center">
+                                <div class="text-6xl mb-4">{{ project.emoji }}</div>
+                                <div class="text-sm text-secondary opacity-75">Click to explore</div>
                             </div>
-                            <!-- Floating Particles -->
-                            <div class="absolute -top-2 -right-2 w-3 h-3 bg-absurd-orange rounded-full animate-pulse-soft"></div>
-                            <div class="absolute -bottom-1 -left-1 w-2 h-2 bg-sage-green rounded-full animate-pulse-soft" style="animation-delay: 1s;"></div>
                         </div>
                         
-                        <div class="text-center">
-                            <h1 class="text-2xl font-bold mb-2">Amit Sharma</h1>
-                            <p class="text-soft-gray text-sm mb-1">Hardware Hacker • Space Dreamer</p>
-                            <p class="text-light-gray text-xs">Bengaluru, India</p>
+                        <div class="absolute top-4 left-4 bg-black/50 backdrop-blur-sm rounded-full px-3 py-1">
+                            <span class="text-white text-sm font-medium">{{ project.status }}</span>
                         </div>
                     </div>
                     
-                    <!-- Quick Stats Orbs -->
-                    <div class="flex justify-center space-x-6 mb-8">
-                        <div class="text-center">
-                            <div class="w-12 h-12 bg-gradient-to-br from-absurd-orange/20 to-warm-orange/30 rounded-full flex items-center justify-center mb-2 mx-auto animate-float">
-                                <span class="text-lg font-bold text-absurd-orange">{{ stats.projects }}</span>
-                            </div>
-                            <div class="text-xs text-soft-gray uppercase tracking-wide">Projects</div>
-                        </div>
-                        <div class="text-center">
-                            <div class="w-12 h-12 bg-gradient-to-br from-sage-green/20 to-forest-green/30 rounded-full flex items-center justify-center mb-2 mx-auto animate-float-delayed">
-                                <span class="text-lg font-bold text-forest-green">{{ stats.components }}</span>
-                            </div>
-                            <div class="text-xs text-soft-gray uppercase tracking-wide">Parts</div>
-                        </div>
-                        <div class="text-center">
-                            <div class="w-12 h-12 bg-gradient-to-br from-warm-orange/20 to-soft-orange/30 rounded-full flex items-center justify-center mb-2 mx-auto animate-float-slow">
-                                <span class="text-lg font-bold text-warm-orange">{{ stats.builds }}</span>
-                            </div>
-                            <div class="text-xs text-soft-gray uppercase tracking-wide">Builds</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Navigation -->
-                <nav class="space-y-2 mb-8 animate-appear" style="animation-delay: 0.4s;">
-                    <button v-for="(item, index) in navItems" :key="item.id"
-                            @click="setActiveView(item.id)"
-                            :class="['w-full p-4 rounded-2xl text-left transition-all duration-300 group relative overflow-hidden', 
-                                     activeView === item.id ? 'bg-absurd-orange text-white' : 'hover:bg-warm-beige/50 text-soft-gray hover:text-charcoal']"
-                            :style="{ animationDelay: (0.6 + index * 0.1) + 's' }"
-                            class="animate-appear">
-                        <div class="relative z-10 flex items-center space-x-3">
-                            <i :class="[item.icon, 'text-lg']"></i>
-                            <span class="font-medium">{{ item.label }}</span>
-                        </div>
-                        <div v-if="activeView === item.id" class="absolute inset-0 bg-gradient-to-r from-absurd-orange to-warm-orange rounded-2xl"></div>
-                    </button>
-                </nav>
-                
-                <!-- Quick Actions -->
-                <div class="mt-auto animate-appear" style="animation-delay: 0.8s;">
-                    <div class="p-4 bg-gradient-to-br from-sage-green/10 to-forest-green/5 rounded-2xl">
-                        <h3 class="text-sm font-semibold mb-3 text-forest-green">Quick Add</h3>
-                        <div class="space-y-2">
-                            <button @click="quickAdd('component')" class="w-full p-2 text-xs bg-white/50 hover:bg-white/80 rounded-lg transition-colors text-left">
-                                <i class="fas fa-microchip mr-2 text-absurd-orange"></i>Component
-                            </button>
-                            <button @click="quickAdd('note')" class="w-full p-2 text-xs bg-white/50 hover:bg-white/80 rounded-lg transition-colors text-left">
-                                <i class="fas fa-sticky-note mr-2 text-sage-green"></i>Quick Note
-                            </button>
+                    <div class="p-6">
+                        <h3 class="font-jura text-2xl font-bold text-primary mb-2">{{ project.name }}</h3>
+                        <p class="text-secondary leading-relaxed mb-4">{{ project.description }}</p>
+                        
+                        <div class="flex flex-wrap gap-2">
+                            <span v-for="tag in project.tags" :key="tag"
+                                  class="bg-tertiary px-3 py-1 rounded-full text-sm text-secondary">
+                                {{ tag }}
+                            </span>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Main Content Area -->
-        <div class="ml-80 min-h-screen p-12">
+        <!-- Products Section -->
+        <section id="products" class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="font-jura text-4xl lg:text-5xl font-bold text-primary mb-4">
+                    Things You Can Actually Buy
+                </h2>
+                <p class="text-xl text-secondary max-w-3xl mx-auto">
+                    Hardware that escaped the lab and made it to production
+                </p>
+            </div>
             
-            <!-- Header -->
-            <header class="mb-12 animate-appear">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h2 class="text-3xl font-bold mb-2">{{ getViewTitle() }}</h2>
-                        <p class="text-soft-gray">{{ getCurrentTime() }}</p>
-                    </div>
-                    <div class="flex items-center space-x-4">
-                        <button @click="playSound('click')" class="w-12 h-12 bg-white/60 hover:bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center transition-all hover:scale-105">
-                            <i class="fas fa-bell text-soft-gray"></i>
-                        </button>
-                        <button @click="playSound('click')" class="w-12 h-12 bg-absurd-orange hover:bg-warm-orange rounded-full flex items-center justify-center transition-all hover:scale-105">
-                            <i class="fas fa-cog text-white"></i>
-                        </button>
-                    </div>
-                </div>
-            </header>
-
-            <!-- Dynamic Content Area -->
-            <div class="animate-appear" style="animation-delay: 0.2s;">
-                
-                <!-- Overview Dashboard -->
-                <div v-if="activeView === 'overview'" class="space-y-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div v-for="product in products" :key="product.id"
+                     class="bg-secondary border-2 border-theme rounded-3xl overflow-hidden hover-lift transition-all">
                     
-                    <!-- Floating Cards Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="aspect-video relative overflow-hidden">
+                        <img :src="product.image" :alt="product.name" class="w-full h-full object-cover">
+                        <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                            In Stock
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <h3 class="font-jura text-2xl font-bold text-primary mb-2">{{ product.name }}</h3>
+                        <p class="text-secondary leading-relaxed mb-4">{{ product.description }}</p>
                         
-                        <!-- Inventory Card -->
-                        <div class="floating-card group cursor-pointer" @click="setActiveView('inventory')">
-                            <div class="absolute inset-0 bg-gradient-to-br from-white/60 to-white/20 backdrop-blur-lg rounded-3xl"></div>
-                            <div class="relative z-10 p-8">
-                                <div class="flex items-center justify-between mb-6">
-                                    <div class="w-14 h-14 bg-gradient-to-br from-absurd-orange/20 to-warm-orange/30 rounded-2xl flex items-center justify-center">
-                                        <i class="fas fa-boxes text-absurd-orange text-xl"></i>
-                                    </div>
-                                    <div class="text-right">
-                                        <div class="text-2xl font-bold text-charcoal">{{ getTotalComponents() }}</div>
-                                        <div class="text-xs text-soft-gray uppercase tracking-wide">Components</div>
-                                    </div>
-                                </div>
-                                <h3 class="text-lg font-semibold mb-2">Inventory</h3>
-                                <p class="text-sm text-soft-gray">{{ Object.keys(inventory).length }} categories tracked</p>
-                            </div>
-                        </div>
-
-                        <!-- Journal Card -->
-                        <div class="floating-card group cursor-pointer" @click="setActiveView('journal')">
-                            <div class="absolute inset-0 bg-gradient-to-br from-white/60 to-white/20 backdrop-blur-lg rounded-3xl"></div>
-                            <div class="relative z-10 p-8">
-                                <div class="flex items-center justify-between mb-6">
-                                    <div class="w-14 h-14 bg-gradient-to-br from-sage-green/20 to-forest-green/30 rounded-2xl flex items-center justify-center">
-                                        <i class="fas fa-feather-alt text-forest-green text-xl"></i>
-                                    </div>
-                                    <div class="text-right">
-                                        <div class="text-2xl font-bold text-charcoal">{{ journalEntries.length }}</div>
-                                        <div class="text-xs text-soft-gray uppercase tracking-wide">Entries</div>
-                                    </div>
-                                </div>
-                                <h3 class="text-lg font-semibold mb-2">Journal</h3>
-                                <p class="text-sm text-soft-gray">Capture thoughts & discoveries</p>
-                            </div>
-                        </div>
-
-                        <!-- Projects Card -->
-                        <div class="floating-card group cursor-pointer" @click="setActiveView('projects')">
-                            <div class="absolute inset-0 bg-gradient-to-br from-white/60 to-white/20 backdrop-blur-lg rounded-3xl"></div>
-                            <div class="relative z-10 p-8">
-                                <div class="flex items-center justify-between mb-6">
-                                    <div class="w-14 h-14 bg-gradient-to-br from-warm-orange/20 to-soft-orange/30 rounded-2xl flex items-center justify-center">
-                                        <i class="fas fa-rocket text-warm-orange text-xl"></i>
-                                    </div>
-                                    <div class="text-right">
-                                        <div class="text-2xl font-bold text-charcoal">{{ activeProjects.length }}</div>
-                                        <div class="text-xs text-soft-gray uppercase tracking-wide">Active</div>
-                                    </div>
-                                </div>
-                                <h3 class="text-lg font-semibold mb-2">Projects</h3>
-                                <p class="text-sm text-soft-gray">Building the future, one project at a time</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Recent Activity Stream -->
-                    <div class="floating-card">
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/40 to-white/10 backdrop-blur-lg rounded-3xl"></div>
-                        <div class="relative z-10 p-8">
-                            <h3 class="text-xl font-semibold mb-6">Recent Activity</h3>
-                            <div class="space-y-4">
-                                <div v-for="activity in recentActivity" :key="activity.id" class="flex items-center space-x-4 p-4 bg-white/30 rounded-2xl">
-                                    <div :class="['w-10 h-10 rounded-full flex items-center justify-center', activity.bgColor]">
-                                        <i :class="[activity.icon, 'text-white']"></i>
-                                    </div>
-                                    <div class="flex-1">
-                                        <p class="text-sm font-medium">{{ activity.title }}</p>
-                                        <p class="text-xs text-soft-gray">{{ activity.time }}</p>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="flex justify-between items-center">
+                            <div class="text-2xl font-bold accent-orange-text">₹{{ product.price.toLocaleString() }}</div>
+                            <a :href="product.shopUrl" target="_blank" 
+                               class="accent-orange text-on-accent px-6 py-3 rounded-xl font-semibold hover-lift transition-all">
+                                <i class="fas fa-shopping-cart mr-2"></i>
+                                Buy Now
+                            </a>
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <!-- Inventory View -->
-                <div v-if="activeView === 'inventory'" class="space-y-8">
-                    <!-- Quick Add Form -->
-                    <div class="floating-card">
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/60 to-white/20 backdrop-blur-lg rounded-3xl"></div>
-                        <div class="relative z-10 p-8">
-                            <h3 class="text-xl font-semibold mb-6">Add Component</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                                <input v-model="newComponent.name" 
-                                       placeholder="Component name" 
-                                       class="px-4 py-3 bg-white/50 border border-white/30 rounded-2xl focus:outline-none focus:ring-2 focus:ring-absurd-orange/50 focus:border-transparent">
-                                <input v-model="newComponent.quantity" 
-                                       type="number" 
-                                       placeholder="Quantity" 
-                                       class="px-4 py-3 bg-white/50 border border-white/30 rounded-2xl focus:outline-none focus:ring-2 focus:ring-absurd-orange/50 focus:border-transparent">
-                                <input v-model="newComponent.location" 
-                                       placeholder="Location" 
-                                       class="px-4 py-3 bg-white/50 border border-white/30 rounded-2xl focus:outline-none focus:ring-2 focus:ring-absurd-orange/50 focus:border-transparent">
-                                <button @click="addComponent()" 
-                                        class="px-6 py-3 bg-absurd-orange hover:bg-warm-orange text-white rounded-2xl transition-all hover:scale-105 font-medium">
-                                    Add Item
-                                </button>
+        <!-- Campaigns Section -->
+        <section id="campaigns" class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="font-jura text-4xl lg:text-5xl font-bold text-primary mb-4">
+                    Future Hardware
+                </h2>
+                <p class="text-xl text-secondary max-w-3xl mx-auto">
+                    Hardware that needs your help to exist
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div v-for="campaign in campaigns" :key="campaign.id"
+                     class="bg-secondary border-2 border-theme rounded-3xl overflow-hidden hover-lift transition-all">
+                    
+                    <div class="aspect-video relative overflow-hidden bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900 dark:to-blue-800">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center">
+                                <div class="text-6xl mb-4">{{ campaign.emoji }}</div>
+                                <div class="text-sm text-secondary opacity-75">Campaign Active</div>
                             </div>
                         </div>
+                        
+                        <div class="absolute top-4 left-4 bg-black/50 backdrop-blur-sm rounded-full px-3 py-1">
+                            <span class="text-white text-sm font-bold">{{ campaign.progress }}% Funded</span>
+                        </div>
                     </div>
-
-                    <!-- Components Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        <div v-for="(value, key) in inventory" :key="key" class="floating-card group">
-                            <div class="absolute inset-0 bg-gradient-to-br from-white/60 to-white/20 backdrop-blur-lg rounded-3xl"></div>
-                            <div class="relative z-10 p-6">
-                                <div class="flex items-center justify-between mb-4">
-                                    <h4 class="font-semibold capitalize">{{ formatComponentName(key) }}</h4>
-                                    <span class="text-xl font-bold text-absurd-orange">{{ value }}</span>
-                                </div>
-                                <div class="flex space-x-2">
-                                    <button @click="adjustQuantity(key, 1)" class="flex-1 py-2 text-xs bg-sage-green/20 hover:bg-sage-green/30 text-forest-green rounded-lg transition-colors">
-                                        <i class="fas fa-plus mr-1"></i>Add
-                                    </button>
-                                    <button @click="adjustQuantity(key, -1)" class="flex-1 py-2 text-xs bg-warm-orange/20 hover:bg-warm-orange/30 text-warm-orange rounded-lg transition-colors">
-                                        <i class="fas fa-minus mr-1"></i>Use
-                                    </button>
-                                </div>
+                    
+                    <div class="p-6">
+                        <h3 class="font-jura text-2xl font-bold text-primary mb-2">{{ campaign.name }}</h3>
+                        <p class="text-secondary leading-relaxed mb-4">{{ campaign.description }}</p>
+                        
+                        <div class="w-full bg-tertiary rounded-full h-2 mb-4">
+                            <div class="accent-orange h-2 rounded-full" :style="`width: ${campaign.progress}%`"></div>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <div class="text-lg font-bold text-primary">₹{{ campaign.raised.toLocaleString() }}</div>
+                                <div class="text-sm text-secondary">raised</div>
                             </div>
+                            <a href="/campaign.html" 
+                               class="accent-orange text-on-accent px-6 py-3 rounded-xl font-semibold hover-lift transition-all">
+                                <i class="fas fa-rocket mr-2"></i>
+                                Back Project
+                            </a>
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <!-- Journal View -->
-                <div v-if="activeView === 'journal'" class="space-y-8">
-                    <!-- Quick Note -->
-                    <div class="floating-card">
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/60 to-white/20 backdrop-blur-lg rounded-3xl"></div>
-                        <div class="relative z-10 p-8">
-                            <h3 class="text-xl font-semibold mb-6">Quick Capture</h3>
-                            <textarea v-model="newEntry" 
-                                      placeholder="What's brewing in the lab today?"
-                                      class="w-full px-4 py-3 bg-white/50 border border-white/30 rounded-2xl resize-none focus:outline-none focus:ring-2 focus:ring-absurd-orange/50 focus:border-transparent"
-                                      rows="4"></textarea>
-                            <div class="flex justify-between items-center mt-4">
-                                <div class="flex space-x-2">
-                                    <button v-for="tag in quickTags" :key="tag"
-                                            @click="addTag(tag)"
-                                            class="px-3 py-1 text-xs bg-sage-green/20 hover:bg-sage-green/30 text-forest-green rounded-full transition-colors">
-                                        #{{ tag }}
-                                    </button>
-                                </div>
-                                <button @click="addJournalEntry()" 
-                                        :disabled="!newEntry.trim()"
-                                        class="px-6 py-2 bg-absurd-orange hover:bg-warm-orange text-white rounded-2xl transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed font-medium">
-                                    Capture
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Journal Entries -->
+        <!-- Skills & Contact -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            
+            <!-- Skills -->
+            <div class="lg:col-span-2">
+                <section class="bg-secondary border-2 border-theme rounded-3xl p-8">
+                    <h2 class="font-jura text-3xl font-bold text-primary mb-6">
+                        <i class="fas fa-brain accent-orange-text mr-3"></i>
+                        Things I Don't Completely Suck At
+                    </h2>
+                    
                     <div class="space-y-6">
-                        <div v-for="entry in journalEntries" :key="entry.id" class="floating-card">
-                            <div class="absolute inset-0 bg-gradient-to-br from-white/40 to-white/10 backdrop-blur-lg rounded-3xl"></div>
-                            <div class="relative z-10 p-6">
-                                <div class="flex justify-between items-start mb-4">
-                                    <div class="text-sm text-soft-gray">{{ entry.date }}</div>
-                                    <div class="flex space-x-1">
-                                        <span v-for="tag in entry.tags" :key="tag" 
-                                              class="px-2 py-1 text-xs bg-absurd-orange/20 text-absurd-orange rounded-full">
-                                            #{{ tag }}
-                                        </span>
-                                    </div>
-                                </div>
-                                <p class="text-charcoal leading-relaxed">{{ entry.content }}</p>
+                        <div v-for="skill in skills" :key="skill.name">
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="font-semibold text-primary text-lg">{{ skill.name }}</span>
+                                <span class="text-sm text-secondary italic">{{ skill.description }}</span>
+                            </div>
+                            <div class="w-full bg-tertiary rounded-full h-2">
+                                <div class="accent-orange h-2 rounded-full transition-all duration-1000" 
+                                     :style="`width: ${skill.level}%`"></div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </section>
+            </div>
 
-                <!-- Projects View -->
-                <div v-if="activeView === 'projects'" class="space-y-8">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div v-for="project in projects" :key="project.id" class="floating-card">
-                            <div class="absolute inset-0 bg-gradient-to-br from-white/60 to-white/20 backdrop-blur-lg rounded-3xl"></div>
-                            <div class="relative z-10 p-6">
-                                <div class="flex items-start justify-between mb-4">
-                                    <div>
-                                        <h4 class="text-lg font-semibold mb-1">{{ project.name }}</h4>
-                                        <p class="text-sm text-soft-gray">{{ project.type }}</p>
-                                    </div>
-                                    <div class="text-right">
-                                        <div class="text-xl font-bold text-absurd-orange">{{ project.progress }}%</div>
-                                        <div class="w-16 h-2 bg-warm-beige rounded-full mt-1">
-                                            <div class="h-2 bg-gradient-to-r from-absurd-orange to-warm-orange rounded-full transition-all" 
-                                                 :style="{ width: project.progress + '%' }"></div>
-                                        </div>
-                                    </div>
+            <!-- Contact & Links -->
+            <div class="space-y-8">
+                <section class="bg-secondary border-2 border-theme rounded-3xl p-6">
+                    <h2 class="font-jura text-2xl font-bold text-primary mb-6">
+                        <i class="fas fa-satellite-dish accent-orange-text mr-2"></i>
+                        Send Signals
+                    </h2>
+                    
+                    <div class="space-y-3">
+                        <button @click="showContactModal = true" 
+                                class="w-full accent-orange text-on-accent py-4 rounded-2xl font-bold hover-lift transition-all">
+                            <i class="fas fa-rocket mr-2"></i>
+                            Launch Collaboration
+                        </button>
+                        
+                        <div class="grid grid-cols-1 gap-3">
+                            <a v-for="link in socialLinks" :key="link.name"
+                               :href="link.url" target="_blank" rel="noopener"
+                               class="bg-tertiary rounded-xl p-4 hover-lift border-2 border-theme hover:border-orange-300 transition-all flex items-center gap-3">
+                                <i :class="link.icon" class="text-xl accent-orange-text"></i>
+                                <div>
+                                    <div class="font-bold text-primary text-sm">{{ link.name }}</div>
+                                    <div class="text-xs text-secondary">{{ link.description }}</div>
                                 </div>
-                                <p class="text-sm text-soft-gray mb-4">{{ project.description }}</p>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-xs text-forest-green bg-sage-green/20 px-2 py-1 rounded-full">{{ project.status }}</span>
-                                    <button class="text-sm text-absurd-orange hover:text-warm-orange transition-colors">
-                                        View Details →
-                                    </button>
-                                </div>
-                            </div>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Workbench Modal -->
+    <div v-if="showWorkbenchModal" class="fixed inset-0 modal-backdrop flex items-center justify-center z-50 p-4" @click="showWorkbenchModal = false">
+        <div class="modal-content rounded-3xl max-w-4xl w-full p-8 animate-slide-up" @click.stop>
+            <div class="flex items-center justify-between mb-8">
+                <h3 class="font-jura text-3xl font-bold text-primary flex items-center gap-3">
+                    <i class="fas fa-hammer accent-orange-text"></i>
+                    Live from the Workbench
+                </h3>
+                <button @click="showWorkbenchModal = false" class="hover-lift text-secondary hover:text-primary">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-6">
+                <div class="aspect-video bg-black rounded-2xl flex items-center justify-center relative overflow-hidden">
+                    <div class="text-center z-10">
+                        <i class="fas fa-tools text-6xl text-gray-600 mb-4"></i>
+                        <h4 class="text-xl text-white mb-2">Workbench Stream Offline</h4>
+                        <p class="text-gray-400">Next session: When the coffee kicks in</p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-tertiary rounded-2xl p-6">
+                        <h4 class="font-bold text-xl text-primary mb-4">What to Expect</h4>
+                        <ul class="space-y-2 text-secondary">
+                            <li>• Questionable soldering techniques</li>
+                            <li>• Creative problem solving</li>
+                            <li>• Excessive LED usage</li>
+                            <li>• Coffee-fueled engineering decisions</li>
+                            <li>• Occasional successes</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-tertiary rounded-2xl p-6">
+                        <h4 class="font-bold text-xl text-primary mb-4">Stream Schedule</h4>
+                        <div class="space-y-2 text-secondary">
+                            <div><strong>Morning Chaos:</strong> 9-11 AM IST</div>
+                            <div><strong>Evening Mayhem:</strong> 7-9 PM IST</div>
+                            <div><strong>Late Night Magic:</strong> When inspiration strikes</div>
                         </div>
                     </div>
                 </div>
@@ -418,6 +430,233 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Project Modal -->
+    <div v-if="selectedProject" class="fixed inset-0 modal-backdrop flex items-center justify-center z-50 p-4" @click="closeProjectModal">
+        <div class="modal-content rounded-3xl max-w-4xl w-full p-8 animate-slide-up" @click.stop>
+            <div class="flex items-center justify-between mb-8">
+                <h3 class="font-jura text-3xl font-bold text-primary">{{ selectedProject.name }}</h3>
+                <button @click="closeProjectModal" class="hover-lift text-secondary hover:text-primary">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-8">
+                <div class="aspect-video bg-gradient-to-br from-orange-100 to-orange-200 dark:from-orange-900 dark:to-orange-800 rounded-2xl flex items-center justify-center">
+                    <div class="text-center">
+                        <div class="text-8xl mb-4">{{ selectedProject.emoji }}</div>
+                        <div class="text-lg text-secondary">Project showcase coming soon!</div>
+                    </div>
+                </div>
+                
+                <div class="prose max-w-none">
+                    <p class="text-lg text-secondary leading-relaxed">{{ selectedProject.fullDescription }}</p>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="bg-tertiary rounded-2xl p-6">
+                        <h4 class="font-bold text-xl text-primary mb-4 flex items-center gap-2">
+                            <i class="fas fa-tools accent-orange-text"></i>
+                            Build Guide
+                        </h4>
+                        <p class="text-secondary mb-4">Step-by-step instructions to recreate this chaos</p>
+                        <button class="bg-secondary text-primary px-4 py-2 rounded-lg hover-lift border border-theme">
+                            View Instructions
+                        </button>
+                    </div>
+                    
+                    <div class="bg-tertiary rounded-2xl p-6">
+                        <h4 class="font-bold text-xl text-primary mb-4 flex items-center gap-2">
+                            <i class="fab fa-github accent-orange-text"></i>
+                            Files & Code
+                        </h4>
+                        <p class="text-secondary mb-4">All the CAD files, schematics, and code you need</p>
+                        <button class="bg-secondary text-primary px-4 py-2 rounded-lg hover-lift border border-theme">
+                            Download Everything
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div v-if="showContactModal" class="fixed inset-0 modal-backdrop flex items-center justify-center z-50 p-4" @click="showContactModal = false">
+        <div class="modal-content rounded-3xl max-w-lg w-full p-8 animate-slide-up" @click.stop>
+            <div class="flex items-center justify-between mb-8">
+                <h3 class="font-jura text-3xl font-bold text-primary">Let's Collaborate!</h3>
+                <button @click="showContactModal = false" class="hover-lift text-secondary hover:text-primary">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-sm font-bold text-primary mb-3">What kind of chaos are we creating?</label>
+                    <select class="w-full bg-tertiary border-2 border-theme rounded-xl p-4 text-primary focus:border-orange-300 outline-none transition-all">
+                        <option>Something with unnecessary LEDs</option>
+                        <option>A product that probably shouldn't exist</option>
+                        <option>Consultation on creative destruction</option>
+                        <option>Workshop on breaking things productively</option>
+                        <option>Just want to chat about maker stuff</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-bold text-primary mb-3">Tell me about your idea</label>
+                    <textarea placeholder="Describe your project, challenge, or just say hi!" 
+                              class="w-full bg-tertiary border-2 border-theme rounded-xl p-4 text-primary h-32 resize-none focus:border-orange-300 outline-none transition-all"></textarea>
+                </div>
+                
+                <button class="w-full accent-orange text-on-accent py-4 rounded-xl text-lg font-bold hover-lift transition-all">
+                    <i class="fas fa-paper-plane mr-2"></i>
+                    Launch This Collaboration
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vue.js Application -->
+    <script>
+        const { createApp, ref, onMounted } = Vue;
+        createApp({
+            setup() {
+                const isDark = ref(localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches));
+                const showContactModal = ref(false);
+                const showWorkbenchModal = ref(false);
+                const selectedProject = ref(null);
+                
+                const workbenchProjects = [
+                    {
+                        id: 1,
+                        name: 'Supersabers',
+                        description: 'DIY lightsaber kits for when regular sword fights lack proper illumination',
+                        fullDescription: 'Fully functional lightsabers with realistic sound effects, motion detection, and the ability to settle disagreements with style. Warning: Does not actually cut through metal.',
+                        status: 'Testing',
+                        emoji: '⚔️',
+                        tags: ['Props', 'Sound', 'Motion Sensing']
+                    },
+                    {
+                        id: 2,
+                        name: 'Quadwalkers',
+                        description: 'Robotic desk companions that judge your coding skills and reorganize your cables',
+                        fullDescription: 'Four-legged robots with personality disorders. They patrol your desk, reorganize your cables, and provide sarcastic commentary on your code quality.',
+                        status: 'Design Phase',
+                        emoji: '🕷️',
+                        tags: ['Robotics', 'AI', 'Servo Motors']
+                    },
+                    {
+                        id: 3,
+                        name: 'Display Cases',
+                        description: 'Modular showcase system for your growing collection of questionable electronic art',
+                        fullDescription: 'Smart display cases with individually controlled lighting, climate monitoring, and theft detection. Perfect for showing off your growing collection of things that blink.',
+                        status: 'Planning',
+                        emoji: '📱',
+                        tags: ['Display', 'Modular', 'IoT']
+                    }
+                ];
+
+                const products = [
+                    {
+                        id: 1,
+                        name: 'Lampy',
+                        description: 'Open-source mood lighting that responds to your emotions, music, and probably your coffee consumption',
+                        price: 5999,
+                        image: 'https://shop.absurd.industries/cdn/shop/files/lampy-shopabsurdindustries-shopabsurdindustries-968591.jpg?v=1731505856&width=1206',
+                        shopUrl: 'https://shop.absurd.industries/products/lampy'
+                    },
+                    {
+                        id: 2,
+                        name: 'Workspace Lights',
+                        description: 'Smart desk illumination that adapts to your focus levels and gently judges your productivity',
+                        price: 7999,
+                        image: 'https://via.placeholder.com/400x300/ff4500/ffffff?text=Workspace+Lights',
+                        shopUrl: 'https://shop.absurd.industries/products/workspace-lights'
+                    }
+                ];
+
+                const campaigns = [
+                    {
+                        id: 1,
+                        name: 'T1E Smartwatch',
+                        description: 'ePaper smartwatch that lasts for days, not hours. Minimal. Hackable. Open-source.',
+                        progress: 73,
+                        raised: 405000,
+                        emoji: '⌚',
+                        campaignUrl: '/campaign.html'
+                    }
+                ];
+
+                const skills = [
+                    { name: 'Hardware Design', level: 90, description: 'Making circuits that actually work' },
+                    { name: 'Firmware Development', level: 85, description: 'Teaching silicon to think' },
+                    { name: 'PCB Design', level: 88, description: 'Turning schematics into reality' },
+                    { name: 'LED Programming', level: 95, description: 'I speak fluent rainbow' },
+                    { name: 'Product Design', level: 75, description: 'Making things people want' },
+                    { name: 'Technical Writing', level: 70, description: 'Explaining complex stuff simply' }
+                ];
+
+                const socialLinks = [
+                    { 
+                        name: 'Absurd Industries', 
+                        url: 'https://absurd.industries',
+                        icon: 'fas fa-atom',
+                        description: 'Open-source hardware guild HQ'
+                    },
+                    { 
+                        name: 'GitHub', 
+                        url: 'https://github.com/amit',
+                        icon: 'fab fa-github',
+                        description: 'Where the code lives'
+                    },
+                    { 
+                        name: 'Code Uncode', 
+                        url: 'https://codeuncode.com',
+                        icon: 'fas fa-code',
+                        description: 'Digital experience experiments'
+                    }
+                ];
+
+                const applyTheme = () => {
+                    if (isDark.value) {
+                        document.documentElement.classList.add('dark');
+                        localStorage.theme = 'dark';
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.theme = 'light';
+                    }
+                };
+                
+                const toggleTheme = () => {
+                    isDark.value = !isDark.value;
+                    applyTheme();
+                };
+
+                const openProjectModal = (project) => {
+                    selectedProject.value = project;
+                };
+
+                const closeProjectModal = () => {
+                    selectedProject.value = null;
+                };
+
+                onMounted(applyTheme);
+                
+                return { 
+                    isDark, 
+                    toggleTheme,
+                    showContactModal,
+                    showWorkbenchModal,
+                    selectedProject,
+                    workbenchProjects,
+                    products,
+                    campaigns,
+                    skills,
+                    socialLinks,
+                    openProjectModal,
+                    closeProjectModal
+                };
+            }
+        }).mount('#app');
+    </script>
 </body>
 </html>

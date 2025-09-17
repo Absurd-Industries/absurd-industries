@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary Meta Tags -->
+    <title>Absurd Industries - The Open Maker Platform</title>
+    <meta name="title" content="Absurd Industries - The Open Maker Platform">
+    <meta name="description" content="">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://absurd.industries/">
+    <meta property="og:title" content="Absurd Industries - The Open Maker Platform">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="https://absurd.industries/absurd-industries-logo.png">
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/assets/favicon/site.webmanifest">
+    <link rel="mask-icon" href="/assets/favicon/safari-pinned-tab.svg" color="#141414">
+    <link rel="shortcut icon" href="/assets/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#ece0cf">
+    <meta name="msapplication-config" content="/assets/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ece0cf">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      src="https://kit.fontawesome.com/e0c6d65845.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jura:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* This is my flawless, centralized theming system. Do not touch it. */
+      :root {
+        --font-main: "Jura", monospace;
+
+        /* Light Theme (The Default) */
+        --bg-primary: #ece0cf; /* Cream */
+        --bg-secondary: #ffffff; /* White */
+        --bg-tertiary: #e0d4c3; /* Darker Cream */
+        --text-primary: #1a1a1a; /* Dark */
+        --text-secondary: #5c5c5c; /* Gray */
+        --border-color: #d1c4b3; /* Light Border */
+
+        --accent-orange: #ff4500;
+        --accent-yellow: #ffd700;
+        --text-on-accent: #ffffff;
+      }
+
+      html.dark {
+        /* Dark Theme Overrides */
+        --bg-primary: #1a1a1a; /* Dark */
+        --bg-secondary: #2a2a2a; /* Gray */
+        --bg-tertiary: #111111; /* Darker */
+        --text-primary: #ece0cf; /* Cream */
+        --text-secondary: #9ca3af; /* Tailwind gray-400 */
+        --border-color: #3a3a3a; /* Dark Border */
+      }
+
+      body {
+        font-family: var(--font-main);
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      /* Helper classes */
+      .bg-primary {
+        background-color: var(--bg-primary);
+      }
+      .bg-secondary {
+        background-color: var(--bg-secondary);
+      }
+      .bg-tertiary {
+        background-color: var(--bg-tertiary);
+      }
+      .text-primary {
+        color: var(--text-primary);
+      }
+      .text-secondary {
+        color: var(--text-secondary);
+      }
+      .border-theme {
+        border-color: var(--border-color);
+      }
+      .accent-orange {
+        background-color: var(--accent-orange);
+      }
+      .accent-orange-text {
+        color: var(--accent-orange);
+      }
+      .text-on-accent {
+        color: var(--text-on-accent);
+      }
+
+      @keyframes shimmer {
+        100% {
+          transform: translateX(100%);
+        }
+      }
+      .skeleton {
+        position: relative;
+        overflow: hidden;
+        background-color: var(--bg-tertiary);
+      }
+      .skeleton::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transform: translateX(-100%);
+        background-image: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0) 0,
+          rgba(255, 255, 255, 0.05) 20%,
+          rgba(255, 255, 255, 0.1) 60%,
+          rgba(255, 255, 255, 0)
+        );
+        animation: shimmer 2s infinite;
+      }
+    </style>
+  </head>
+
+  <body class="min-h-screen">
+    <div id="app" class="pb-24 md:pb-0">
+      <header
+        class="md:hidden bg-secondary border-b border-theme sticky top-0 z-40"
+      >
+        <div class="flex items-center justify-between p-4">
+          <div class="flex items-center space-x-3">
+            <div
+              class="w-10 h-10 accent-orange rounded-full flex items-center justify-center"
+            >
+              <i class="fas fa-atom text-lg text-on-accent"></i>
+            </div>
+            <h1 class="text-lg font-bold text-primary">ABSURD</h1>
+          </div>
+          <button
+            @click="toggleTheme"
+            class="w-10 h-10 rounded-full bg-tertiary flex items-center justify-center hover:accent-orange transition-colors"
+          >
+            <i
+              :class="isDark ? 'fas fa-sun' : 'fas fa-moon'"
+              class="text-sm text-primary"
+            ></i>
+          </button>
+        </div>
+      </header>
+
+      <header
+        class="hidden md:block bg-transparent absolute top-0 left-0 right-0 z-50"
+      >
+        <div
+          class="max-w-7xl mx-auto flex items-center justify-between py-4 px-6"
+        >
+          <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20">
+              <img
+                src="absurd-industries-logo.svg"
+                alt="Absurd Industries Logo"
+                class="w-full h-full"
+              />
+            </div>
+            <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold text-primary">
+              Absurd
+            </h1>
+          </div>
+          <nav class="flex items-center space-x-8 text-primary">
+            <a
+              href="#shop"
+              class="hover:accent-orange-text transition-colors md:text-lg lg:text-xl font-semibold"
+              >Shop</a
+            >
+            <a
+              href="#campaigns"
+              class="hover:accent-orange-text transition-colors md:text-lg lg:text-xl font-semibold"
+              >Campaigns</a
+            >
+            <a
+              href="#guild"
+              class="hover:accent-orange-text transition-colors md:text-lg lg:text-xl font-semibold"
+              >Guild</a
+            >
+          </nav>
+          <div class="flex items-center space-x-4">
+            <button
+              @click="toggleTheme"
+              class="w-10 h-10 rounded-full bg-tertiary flex items-center justify-center hover:accent-orange transition-colors"
+            >
+              <i
+                :class="isDark ? 'fas fa-sun' : 'fas fa-moon'"
+                class="text-primary"
+              ></i>
+            </button>
+            <button
+              class="accent-orange text-on-accent px-6 py-2 rounded-lg hover:bg-orange-600 transition-colors font-semibold"
+            >
+              Join Guild
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <section
+          class="min-h-screen flex items-center justify-center px-4 md:px-6 relative overflow-hidden"
+        >
+          <div
+            class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50"
+            style="background-image: url('assets/images/workdesk.jpg')"
+          ></div>
+          <div
+            class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-primary/90"
+          ></div>
+          <div class="max-w-4xl mx-auto text-center relative z-10">
+            <div class="space-y-8 text-center">
+              <h2
+                class="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight text-primary"
+              >
+                Handcrafted products for nerds!
+              </h2>
+              <p class="text-lg md:text-xl text-white leading-relaxed">
+                We're building open-source hardware.
+              </p>
+              <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button
+                  class="accent-orange text-on-accent px-8 py-4 rounded-xl text-lg font-semibold hover:bg-orange-600 transition-transform transform hover:scale-105"
+                >
+                  Explore Campaigns
+                </button>
+                <button
+                  class="border-2 border-theme text-primary px-8 py-4 rounded-xl text-lg font-semibold hover:accent-orange hover:text-on-accent hover:border-transparent transition-all"
+                >
+                  Shop Inventions
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="py-16 md:py-24 px-4 md:px-6 bg-secondary">
+          <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+              <h2 class="text-4xl md:text-5xl font-bold mb-4 text-primary">
+                Maker <span class="accent-orange-text">Magic</span> in Progress
+              </h2>
+              <p class="text-lg text-secondary max-w-3xl mx-auto">
+                Discover what happens when makers are free to make things that
+                are probably a bad idea, but brilliant nonetheless.
+              </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div
+                class="bg-primary rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300"
+              >
+                <div class="aspect-video bg-tertiary relative">
+                  <img
+                    src="https://shop.absurd.industries/cdn/shop/files/lampy-shopabsurdindustries-shopabsurdindustries-968591.jpg?v=1731505856&width=1206"
+                    alt="Lampy Campaign"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+                <div class="p-6">
+                  <div class="flex justify-between items-center mb-4">
+                    <span class="text-green-500 text-sm font-semibold"
+                      >89% Funded</span
+                    >
+                    <span class="text-secondary text-sm">12 days left</span>
+                  </div>
+                  <h3 class="text-2xl font-bold mb-2 text-primary">
+                    Lampy Mood Light
+                  </h3>
+                  <p class="text-secondary text-sm mb-4">
+                    Mesmerizing ambient lighting that's 100% open source.
+                  </p>
+                  <div class="w-full bg-tertiary rounded-full h-2.5 mb-4">
+                    <div
+                      class="accent-orange h-2.5 rounded-full"
+                      style="width: 89%"
+                    ></div>
+                  </div>
+                  <button
+                    class="w-full accent-orange text-on-accent py-3 rounded-xl font-semibold hover:bg-orange-600 transition-colors"
+                  >
+                    Back This Project
+                  </button>
+                </div>
+              </div>
+              <div class="bg-primary rounded-2xl overflow-hidden shadow-lg">
+                <div class="aspect-video skeleton"></div>
+                <div class="p-6 space-y-4">
+                  <div class="h-4 w-3/4 skeleton rounded"></div>
+                  <div class="h-6 w-1/2 skeleton rounded"></div>
+                  <div class="space-y-2">
+                    <div class="h-4 skeleton rounded"></div>
+                    <div class="h-4 w-5/6 skeleton rounded"></div>
+                  </div>
+                  <div class="h-10 w-full skeleton rounded-xl"></div>
+                </div>
+              </div>
+              <div
+                class="bg-primary rounded-2xl overflow-hidden shadow-lg hidden lg:block"
+              >
+                <div class="aspect-video skeleton"></div>
+                <div class="p-6 space-y-4">
+                  <div class="h-4 w-3/4 skeleton rounded"></div>
+                  <div class="h-6 w-1/2 skeleton rounded"></div>
+                  <div class="space-y-2">
+                    <div class="h-4 skeleton rounded"></div>
+                    <div class="h-4 w-5/6 skeleton rounded"></div>
+                  </div>
+                  <div class="h-10 w-full skeleton rounded-xl"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="py-16 md:py-24 px-4 md:px-6">
+          <div
+            class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center"
+          >
+            <div class="space-y-8 text-center lg:text-left">
+              <h2
+                class="text-4xl md:text-5xl font-bold leading-tight text-primary"
+              >
+                Open Source is About
+                <span class="accent-orange-text">Collaboration</span>
+              </h2>
+              <p class="text-lg md:text-xl text-secondary leading-relaxed">
+                We believe the best innovations happen when makers share
+                knowledge, support each other, and build on each other's work.
+                Every project here comes with complete documentation,
+                schematics, and code. Progress is a team sport.
+              </p>
+              <button
+                class="inline-flex items-center justify-center accent-orange text-on-accent px-8 py-4 rounded-xl text-lg font-semibold hover:bg-orange-600 transition-transform transform hover:scale-105"
+              >
+                <i class="fab fa-github mr-3"></i>
+                Explore on GitHub
+              </button>
+            </div>
+            <div class="relative order-first lg:order-last">
+              <div
+                class="bg-secondary rounded-2xl p-6 relative overflow-hidden shadow-lg"
+              >
+                <div
+                  class="aspect-square bg-tertiary rounded-xl flex items-center justify-center text-center"
+                >
+                  <div class="text-primary">
+                    <i
+                      class="fab fa-github text-6xl mb-4 accent-orange-text"
+                    ></i>
+                    <p class="text-lg">Open Source in Action</p>
+                    <p class="text-sm text-secondary mt-2">
+                      Schematics • Code • Community
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="intro" class="hidden">
+              <div class="portal-frame">
+                  <div class="portal"></div>
+              </div>
+              <h1>Absurd</h1>
+                  <p>We're all about bending the rules and defying the norm, and to make science and technology a whole lot more fun!</p>
+        </section>
+
+        <section class="py-16 md:py-24 px-4 md:px-6 bg-secondary">
+          <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6 text-primary">
+              Ready to Make Something
+              <span class="accent-orange-text">Absurd</span>?
+            </h2>
+            <p class="text-lg text-secondary mb-12 max-w-2xl mx-auto">
+              Join a community where your wildest hardware dreams get the
+              support, funding, and collaboration they deserve. Because the
+              future belongs to makers.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+              <button
+                class="accent-orange text-on-accent px-10 py-5 rounded-xl text-lg font-bold hover:bg-orange-600 transition-transform transform hover:scale-105"
+              >
+                Join the Guild
+              </button>
+              <button
+                class="border-2 border-theme text-primary px-10 py-5 rounded-xl text-lg font-bold hover:accent-orange hover:text-on-accent hover:border-transparent transition-all"
+              >
+                Launch a Campaign
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="bg-tertiary py-16">
+        <div class="max-w-7xl mx-auto px-6">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div class="md:col-span-1 space-y-6">
+              <div class="flex items-center space-x-4">
+                <div
+                  class="w-24 h-24 rounded-full flex items-center justify-center"
+                >
+                  <img src="absurd-industries-logo.svg" />
+                </div>
+                <h3 class="text-xl font-bold text-primary">ABSURD</h3>
+              </div>
+              <p class="text-secondary leading-relaxed">
+                Building the future, one maker at a time.
+              </p>
+              <div class="flex space-x-2">
+                <a
+                  href="#"
+                  class="w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-secondary hover:accent-orange hover:text-on-accent transition-colors"
+                  ><i class="fab fa-github"></i
+                ></a>
+                <a
+                  href="#"
+                  class="w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-secondary hover:accent-orange hover:text-on-accent transition-colors"
+                  ><i class="fab fa-discord"></i
+                ></a>
+                <a
+                  href="#"
+                  class="w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-secondary hover:accent-orange hover:text-on-accent transition-colors"
+                  ><i class="fab fa-twitter"></i
+                ></a>
+              </div>
+            </div>
+            <div class="space-y-6">
+              <h4 class="text-lg font-semibold accent-orange-text">Platform</h4>
+              <nav class="space-y-3">
+                <a
+                  href="#"
+                  class="block text-secondary hover:text-primary transition-colors"
+                  >Campaigns</a
+                ><a
+                  href="#"
+                  class="block text-secondary hover:text-primary transition-colors"
+                  >Shop</a
+                ><a
+                  href="#"
+                  class="block text-secondary hover:text-primary transition-colors"
+                  >Guild</a
+                ><a
+                  href="#"
+                  class="block text-secondary hover:text-primary transition-colors"
+                  >API</a
+                >
+              </nav>
+            </div>
+            <div class="space-y-6">
+              <h4 class="text-lg font-semibold accent-orange-text">
+                Community
+              </h4>
+              <nav class="space-y-3">
+                <a
+                  href="#"
+                  class="block text-secondary hover:text-primary transition-colors"
+                  >Discord</a
+                ><a
+                  href="https://bytes.absurd.industries/"
+                  class="block text-secondary hover:text-primary transition-colors"
+                  >Journal</a
+                ><a
+                  href="#"
+                  class="block text-secondary hover:text-primary transition-colors"
+                  >Newsletter</a
+                >
+              </nav>
+            </div>
+            <div class="space-y-6">
+              <h4 class="text-lg font-semibold accent-orange-text">Support</h4>
+              <nav class="space-y-3">
+                <a
+                  href="#"
+                  class="block text-secondary hover:text-primary transition-colors"
+                  >Help Center</a
+                ><a
+                  href="#"
+                  class="block text-secondary hover:text-primary transition-colors"
+                  >Privacy</a
+                ><a
+                  href="#"
+                  class="block text-secondary hover:text-primary transition-colors"
+                  >Terms</a
+                >
+              </nav>
+            </div>
+          </div>
+          <div class="border-t border-theme mt-12 pt-8 text-center">
+            <p class="text-secondary text-sm">
+              © 2025 Absurd Explorations (OPC) Private Limited. Made with ❤️ in
+              Bengaluru.
+            </p>
+          </div>
+        </div>
+      </footer>
+
+      <nav
+        class="md:hidden fixed bottom-0 left-0 w-full bg-secondary border-t border-theme z-50"
+      >
+        <div class="grid grid-cols-4 h-16">
+          <a
+            href="#campaigns"
+            class="flex flex-col items-center justify-center text-secondary hover:accent-orange-text transition-colors"
+          >
+            <i class="fas fa-rocket text-xl"></i
+            ><span class="text-xs mt-1">Campaigns</span>
+          </a>
+          <a
+            href="#shop"
+            class="flex flex-col items-center justify-center text-secondary hover:accent-orange-text transition-colors"
+          >
+            <i class="fas fa-shopping-cart text-xl"></i
+            ><span class="text-xs mt-1">Shop</span>
+          </a>
+          <a
+            href="#guild"
+            class="flex flex-col items-center justify-center text-secondary hover:accent-orange-text transition-colors"
+          >
+            <i class="fas fa-users text-xl"></i
+            ><span class="text-xs mt-1">Guild</span>
+          </a>
+          <a
+            href="#account"
+            class="flex flex-col items-center justify-center text-secondary hover:accent-orange-text transition-colors"
+          >
+            <i class="fas fa-user-circle text-xl"></i
+            ><span class="text-xs mt-1">You</span>
+          </a>
+        </div>
+      </nav>
+    </div>
+    <script>
+      const { createApp, ref, onMounted } = Vue;
+      createApp({
+        setup() {
+          const isDark = ref(
+            localStorage.theme === "dark" ||
+              (!("theme" in localStorage) &&
+                window.matchMedia("(prefers-color-scheme: dark)").matches)
+          );
+          const applyTheme = () => {
+            if (isDark.value) {
+              document.documentElement.classList.add("dark");
+              localStorage.theme = "dark";
+            } else {
+              document.documentElement.classList.remove("dark");
+              localStorage.theme = "light";
+            }
+          };
+          const toggleTheme = () => {
+            isDark.value = !isDark.value;
+            applyTheme();
+          };
+          onMounted(applyTheme);
+          return { isDark, toggleTheme };
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amit | Profile - Absurd Industries</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/e0c6d65845.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jura:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'jura': ['Jura', 'sans-serif'],
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 8s ease-in-out infinite',
+                        'pulse-gentle': 'pulse-gentle 3s ease-in-out infinite',
+                        'fade-in': 'fade-in 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                        'slide-up': 'slide-up 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                        'scale-in': 'scale-in 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                        'spin-gentle': 'spin-gentle 12s linear infinite',
+                        'bounce-gentle': 'bounce-gentle 4s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-6px)' }
+                        },
+                        'pulse-gentle': {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0.8' }
+                        },
+                        'fade-in': {
+                            '0%': { opacity: '0', transform: 'translateY(8px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        'slide-up': {
+                            '0%': { transform: 'translateY(12px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        },
+                        'scale-in': {
+                            '0%': { transform: 'scale(0.95)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' }
+                        },
+                        'spin-gentle': {
+                            '0%': { transform: 'rotate(0deg)' },
+                            '100%': { transform: 'rotate(360deg)' }
+                        },
+                        'bounce-gentle': {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-2px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-primary: #ECE0CF;
+            --bg-secondary: #FFFFFF;
+            --bg-tertiary: #F5F1E8;
+            --text-primary: #1a1a1a;
+            --text-secondary: #5c5c5c;
+            --border-color: #D1C4B3;
+            --accent-orange: #FF4500;
+            --text-on-accent: #FFFFFF;
+            --edit-state: #10B981;
+        }
+
+        html.dark {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2a2a2a;
+            --bg-tertiary: #1f1f1f;
+            --text-primary: #ECE0CF;
+            --text-secondary: #9ca3af;
+            --border-color: #3a3a3a;
+            --edit-state: #34D399;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .bg-primary { background-color: var(--bg-primary); }
+        .bg-secondary { background-color: var(--bg-secondary); }
+        .bg-tertiary { background-color: var(--bg-tertiary); }
+        .text-primary { color: var(--text-primary); }
+        .text-secondary { color: var(--text-secondary); }
+        .border-theme { border-color: var(--border-color); }
+        .accent-orange { background-color: var(--accent-orange); }
+        .accent-orange-text { color: var(--accent-orange); }
+        .text-on-accent { color: var(--text-on-accent); }
+
+        /* Smooth interactions */
+        .smooth-hover {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .smooth-hover:hover {
+            transform: translateY(-1px);
+        }
+
+        /* Edit state styling */
+        .editable {
+            position: relative;
+            border-radius: 0.5rem;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .editable:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        .edit-indicator {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            background-color: var(--bg-tertiary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--text-secondary);
+        }
+
+        .editable:hover .edit-indicator {
+            opacity: 1;
+        }
+
+        .edit-mode .edit-indicator {
+            opacity: 1;
+            color: var(--edit-state);
+            background-color: var(--bg-secondary);
+        }
+
+        /* Featured image/video */
+        .featured-media {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
+        }
+
+        .featured-media video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Project cards */
+        .project-card {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card:hover {
+            border-color: var(--accent-orange);
+            transform: translateY(-2px);
+        }
+
+        /* Status indicators */
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .status-active {
+            background: var(--accent-orange);
+            animation: pulse-gentle 2s ease-in-out infinite;
+        }
+
+        .status-planning {
+            background: var(--text-secondary);
+            opacity: 0.6;
+        }
+
+        /* Skill tree - HTML/CSS only */
+        .skill-tree {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background: var(--bg-tertiary);
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+
+        .skill-node {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            border: 3px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 1.2rem;
+        }
+
+        .skill-node:hover {
+            transform: scale(1.1);
+            border-color: var(--accent-orange);
+        }
+
+        .skill-node.unlocked {
+            background: var(--accent-orange);
+            border-color: var(--accent-orange);
+            color: var(--text-on-accent);
+        }
+
+        .skill-node.available {
+            border-color: var(--accent-orange);
+            background: var(--bg-tertiary);
+        }
+
+        .skill-line {
+            position: absolute;
+            height: 3px;
+            background: var(--border-color);
+            transform-origin: left center;
+            transition: background-color 0.3s ease;
+        }
+
+        .skill-line.active {
+            background: var(--accent-orange);
+        }
+
+        /* Modal styles */
+        .modal-backdrop {
+            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        /* Edit mode toggle */
+        .edit-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 100;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            background: var(--accent-orange);
+            color: var(--text-on-accent);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .edit-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .edit-toggle.active {
+            background: var(--edit-state);
+        }
+
+        /* Live stream styling */
+        .lab-stream {
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 1rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .lab-stream video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .stream-overlay {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: rgba(255, 0, 0, 0.9);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            animation: pulse-gentle 1s ease-in-out infinite;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen" id="app">
+    
+    <!-- Edit Mode Toggle -->
+    <button @click="toggleEditMode" class="edit-toggle" :class="{ active: editMode }">
+        <i :class="editMode ? 'fas fa-check' : 'fas fa-edit'" class="text-lg"></i>
+    </button>
+
+    <!-- Navigation -->
+    <header class="bg-secondary/90 backdrop-blur-sm border-b border-theme sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto flex items-center justify-between py-4 px-6">
+            <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center smooth-hover">
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="w-full h-full animate-spin-gentle">
+                        <defs>
+                            <radialGradient id="nucleusGradient" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="#FFB347" />
+                                <stop offset="100%" stop-color="#FF6B35" />
+                            </radialGradient>
+                        </defs>
+                        <g transform="translate(100,100)">
+                            <ellipse cx="0" cy="0" rx="50" ry="15" fill="none" stroke="#40E0D0" stroke-width="2" opacity="0.8"/>
+                            <ellipse cx="0" cy="0" rx="50" ry="15" fill="none" stroke="#40E0D0" stroke-width="2" opacity="0.8" transform="rotate(60)"/>
+                            <ellipse cx="0" cy="0" rx="50" ry="15" fill="none" stroke="#40E0D0" stroke-width="2" opacity="0.8" transform="rotate(120)"/>
+                        </g>
+                        <circle cx="100" cy="100" r="15" fill="url(#nucleusGradient)"/>
+                    </svg>
+                </div>
+                <nav class="hidden sm:flex items-center space-x-2 text-sm lg:text-base">
+                    <a href="/" class="text-primary font-bold hover:accent-orange-text transition-colors">Absurd</a>
+                    <span class="text-secondary">/</span>
+                    <a href="/members" class="text-secondary hover:text-primary transition-colors">Makers</a>
+                    <span class="text-secondary">/</span>
+                    <span class="font-bold accent-orange-text">Amit</span>
+                </nav>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button @click="toggleTheme" class="smooth-hover w-10 h-10 rounded-full bg-tertiary flex items-center justify-center">
+                    <i :class="isDark ? 'fas fa-sun' : 'fas fa-moon'" class="text-base text-primary"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Featured Media Section -->
+    <section class="max-w-7xl mx-auto p-6">
+        <div class="featured-media mb-8 editable" :class="{ 'edit-mode': editMode }" @click="editMode && openEditModal('featured')">
+            <video v-if="profile.featuredVideo" autoplay muted loop>
+                <source :src="profile.featuredVideo" type="video/mp4">
+            </video>
+            <div v-else class="w-full h-full flex items-center justify-center">
+                <div class="text-center">
+                    <i class="fas fa-video text-4xl text-secondary mb-4"></i>
+                    <p class="text-lg text-primary">Featured Lab Content</p>
+                    <p class="text-sm text-secondary">{{ editMode ? 'Click to add video/image' : 'Coming Soon' }}</p>
+                </div>
+            </div>
+            <div class="edit-indicator">
+                <i class="fas fa-edit text-sm"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Header -->
+    <section class="max-w-7xl mx-auto px-6 pb-12">
+        <div class="text-center mb-12">
+            <!-- Avatar -->
+            <div class="w-32 h-32 lg:w-40 lg:h-40 accent-orange rounded-3xl flex items-center justify-center text-4xl lg:text-5xl font-bold text-on-accent mb-6 smooth-hover animate-float mx-auto">
+                <span class="animate-bounce-gentle">{{ profile.avatar }}</span>
+            </div>
+            
+            <!-- Subject Information -->
+            <div class="mb-8">
+                <h1 class="font-jura text-6xl lg:text-8xl font-bold text-primary mb-4 editable" :class="{ 'edit-mode': editMode }" @click="editMode && openEditModal('profile')">
+                    {{ profile.name }}
+                    <div class="edit-indicator">
+                        <i class="fas fa-edit text-sm"></i>
+                    </div>
+                </h1>
+                
+                <div class="text-xl lg:text-2xl text-secondary mb-6">
+                    <span class="accent-orange-text font-bold">Classification:</span> {{ profile.classification }}
+                </div>
+                
+                <div class="flex items-center justify-center gap-3 text-lg text-secondary mb-8">
+                    <div class="status-indicator status-active"></div>
+                    <span>{{ profile.status }}</span>
+                    <span>•</span>
+                    <span>{{ profile.location }}</span>
+                </div>
+            </div>
+            
+            <!-- Single Description -->
+            <div class="max-w-4xl mx-auto mb-12 editable" :class="{ 'edit-mode': editMode }" @click="editMode && openEditModal('bio')">
+                <p class="text-xl lg:text-2xl text-secondary leading-relaxed">
+                    {{ profile.bio }}
+                </p>
+                <div class="edit-indicator">
+                    <i class="fas fa-edit text-sm"></i>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button @click="showCollabModal = true" class="accent-orange text-on-accent px-8 py-4 rounded-2xl text-lg font-semibold smooth-hover transition-all">
+                    <i class="fas fa-flask mr-2"></i>
+                    Collabrate
+                </button>
+                <button @click="showLabModal = true" class="bg-secondary text-primary px-8 py-4 rounded-2xl text-lg font-semibold smooth-hover border-2 border-theme hover:border-orange-300 transition-all">
+                    <span class="live-dot inline-block mr-2"></span>
+                    Access Lab Feed
+                </button>
+                <a href="#experiments" class="bg-tertiary text-primary px-8 py-4 rounded-2xl text-lg font-semibold smooth-hover border-2 border-theme hover:border-orange-300 transition-all">
+                    <i class="fas fa-microscope mr-2"></i>
+                    View Experiments
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto p-6">
+        
+        <!-- Current Experiments -->
+        <section id="experiments" class="mb-16">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="font-jura text-4xl lg:text-5xl font-bold text-primary">
+                    Active Experiments
+                </h2>
+                <button v-if="editMode" @click="openEditModal('addProject')" class="accent-orange text-on-accent px-6 py-3 rounded-xl font-semibold smooth-hover">
+                    <i class="fas fa-plus mr-2"></i>
+                    New Experiment
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div v-for="project in projects" :key="project.id" 
+                     class="project-card rounded-3xl overflow-hidden smooth-hover relative group"
+                     @click="!editMode && openProjectModal(project)">
+                    
+                    <!-- Edit controls -->
+                    <div v-if="editMode" class="absolute top-4 right-4 z-10 flex gap-2">
+                        <button @click.stop="openEditModal('editProject', project)" class="w-8 h-8 bg-white/90 text-gray-700 rounded-full flex items-center justify-center">
+                            <i class="fas fa-edit text-xs"></i>
+                        </button>
+                        <button @click.stop="deleteProject(project.id)" class="w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center">
+                            <i class="fas fa-trash text-xs"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Project Visual -->
+                    <div class="aspect-video relative overflow-hidden bg-gradient-to-br from-orange-100 to-orange-200 dark:from-orange-900 dark:to-orange-800">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center">
+                                <div class="text-6xl mb-4 animate-bounce-gentle">{{ project.emoji }}</div>
+                                <div class="text-sm text-secondary opacity-75">{{ editMode ? 'Edit mode' : 'Click for details' }}</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Status indicator -->
+                        <div class="absolute top-4 left-4 bg-black/50 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-2">
+                            <div class="status-indicator" :class="project.statusClass"></div>
+                            <span class="text-white text-sm font-medium">{{ project.status }}</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Project Info -->
+                    <div class="p-6">
+                        <h3 class="font-jura text-2xl font-bold text-primary mb-2">{{ project.name }}</h3>
+                        <p class="text-secondary leading-relaxed mb-4">{{ project.description }}</p>
+                        
+                        <!-- Tags -->
+                        <div class="flex flex-wrap gap-2">
+                            <span v-for="tag in project.tags" :key="tag"
+                                  class="bg-tertiary px-3 py-1 rounded-full text-sm text-secondary">
+                                {{ tag }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Two-column layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            
+            <!-- Left column -->
+            <div class="lg:col-span-2 space-y-12">
+                
+                <!-- Research Tree -->
+                <section class="bg-secondary border-2 border-theme rounded-3xl p-8">
+                    <div class="flex items-center justify-between mb-8">
+                        <h2 class="font-jura text-3xl font-bold text-primary flex items-center gap-3">
+                            <i class="fas fa-atom accent-orange-text"></i>
+                            Research Tree
+                        </h2>
+                        <div v-if="editMode" class="text-sm text-secondary">
+                            Click nodes to unlock/lock
+                        </div>
+                    </div>
+                    
+                    <!-- Skill Tree Visualization -->
+                    <div class="skill-tree">
+                        <!-- Connecting lines -->
+                        <div class="skill-line" style="top: 80px; left: 90px; width: 120px; transform: rotate(0deg);" :class="{ active: isLineActive('electronics', 'neopixels') }"></div>
+                        <div class="skill-line" style="top: 80px; left: 270px; width: 120px; transform: rotate(0deg);" :class="{ active: isLineActive('neopixels', 'programming') }"></div>
+                        <div class="skill-line" style="top: 140px; left: 150px; width: 120px; transform: rotate(45deg);" :class="{ active: isLineActive('neopixels', 'art') }"></div>
+                        <div class="skill-line" style="top: 140px; left: 330px; width: 120px; transform: rotate(-45deg);" :class="{ active: isLineActive('programming', 'web') }"></div>
+                        
+                        <!-- Skill Nodes -->
+                        <div class="skill-node" style="top: 50px; left: 60px;" :class="getSkillClass('electronics')" @click="editMode && toggleSkill('electronics')" title="Electronics Fundamentals">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                        
+                        <div class="skill-node" style="top: 50px; left: 240px;" :class="getSkillClass('neopixels')" @click="editMode && toggleSkill('neopixels')" title="Neopixel Mastery">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        
+                        <div class="skill-node" style="top: 50px; left: 420px;" :class="getSkillClass('programming')" @click="editMode && toggleSkill('programming')" title="Programming Logic">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        
+                        <div class="skill-node" style="top: 200px; left: 150px;" :class="getSkillClass('art')" @click="editMode && toggleSkill('art')" title="Art Installation">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        
+                        <div class="skill-node" style="top: 200px; left: 330px;" :class="getSkillClass('web')" @click="editMode && toggleSkill('web')" title="Web Development">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        
+                        <div class="skill-node" style="top: 320px; left: 240px;" :class="getSkillClass('voice')" @click="editMode && toggleSkill('voice')" title="Voice Acting">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- External Interfaces -->
+                <section class="bg-secondary border-2 border-theme rounded-3xl p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="font-jura text-3xl font-bold text-primary flex items-center gap-3">
+                            <i class="fas fa-satellite-dish accent-orange-text"></i>
+                            External Interfaces
+                        </h2>
+                        <button v-if="editMode" @click="openEditModal('addLink')" class="accent-orange text-on-accent px-4 py-2 rounded-lg font-semibold">
+                            <i class="fas fa-plus mr-1"></i>
+                            Add Interface
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div v-for="link in socialLinks" :key="link.id"
+                             class="bg-tertiary rounded-2xl p-6 smooth-hover border-2 border-theme hover:border-orange-300 transition-all group relative">
+                            
+                            <div v-if="editMode" class="absolute top-2 right-2 flex gap-1">
+                                <button @click="openEditModal('editLink', link)" class="w-6 h-6 bg-white/90 text-gray-700 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-edit text-xs"></i>
+                                </button>
+                                <button @click="deleteSocialLink(link.id)" class="w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center">
+                                    <i class="fas fa-trash text-xs"></i>
+                                </button>
+                            </div>
+                            
+                            <a :href="link.url" target="_blank" rel="noopener" class="flex items-center gap-4">
+                                <i :class="link.icon" class="text-2xl accent-orange-text"></i>
+                                <div>
+                                    <div class="font-bold text-primary">{{ link.name }}</div>
+                                    <div class="text-sm text-secondary">{{ link.description }}</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right column -->
+            <div class="space-y-8">
+                
+                <!-- Lab Access Terminal -->
+                <section class="bg-secondary border-2 border-theme rounded-3xl p-6">
+                    <h2 class="font-jura text-2xl font-bold text-primary mb-6 flex items-center gap-3">
+                        <i class="fas fa-desktop accent-orange-text"></i>
+                        Lab Access Terminal
+                    </h2>
+                    
+                    <div class="space-y-3">
+                        <button @click="showCollabModal = true" class="w-full accent-orange text-on-accent py-4 rounded-2xl font-bold smooth-hover transition-all">
+                            <i class="fas fa-flask mr-2"></i>
+                            Initiate Collaboration
+                        </button>
+                        <button @click="showLabModal = true" class="w-full bg-tertiary text-primary py-3 rounded-2xl font-semibold smooth-hover border-2 border-theme hover:border-orange-300 transition-all">
+                            <span class="live-dot inline-block mr-2"></span>
+                            Access Lab Feed
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Research Objectives -->
+                <section class="bg-secondary border-2 border-theme rounded-3xl p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="font-jura text-2xl font-bold text-primary flex items-center gap-3">
+                            <i class="fas fa-target accent-orange-text"></i>
+                            Research Objectives
+                        </h2>
+                        <button v-if="editMode" @click="openEditModal('addObjective')" class="accent-orange text-on-accent px-3 py-1 rounded text-sm font-semibold">
+                            <i class="fas fa-plus mr-1"></i>
+                            Add
+                        </button>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div v-for="objective in researchObjectives" :key="objective.id"
+                             class="bg-tertiary rounded-2xl p-4 border-2 border-theme hover:border-orange-300 smooth-hover cursor-pointer transition-all relative group">
+                            <div class="font-bold text-primary">{{ objective.name }}</div>
+                            <div class="text-sm text-secondary mt-1">{{ objective.description }}</div>
+                            
+                            <button v-if="editMode" @click="deleteObjective(objective.id)" 
+                                    class="absolute top-2 right-2 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <i class="fas fa-times text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Subject Interests -->
+                <section class="bg-secondary border-2 border-theme rounded-3xl p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="font-jura text-2xl font-bold text-primary flex items-center gap-3">
+                            <i class="fas fa-atom accent-orange-text"></i>
+                            Research Interests
+                        </h2>
+                        <button v-if="editMode" @click="openEditModal('addInterest')" class="accent-orange text-on-accent px-3 py-1 rounded text-sm font-semibold">
+                            <i class="fas fa-plus mr-1"></i>
+                            Add
+                        </button>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-3">
+                        <span v-for="interest in interests" :key="interest.id"
+                              class="bg-tertiary px-3 py-2 rounded-full text-sm text-secondary border-2 border-theme hover:border-orange-300 smooth-hover transition-all cursor-pointer flex items-center gap-2 relative group">
+                            <i :class="interest.icon" class="accent-orange-text"></i>
+                            {{ interest.name }}
+                            
+                            <button v-if="editMode" @click="deleteInterest(interest.id)" 
+                                    class="w-4 h-4 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity ml-1">
+                                <i class="fas fa-times text-xs"></i>
+                            </button>
+                        </span>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Collaboration Modal -->
+    <div v-if="showCollabModal" class="fixed inset-0 modal-backdrop flex items-center justify-center z-50 p-4" @click="showCollabModal = false">
+        <div class="modal-content rounded-3xl max-w-lg w-full p-8 animate-slide-up" @click.stop>
+            <div class="flex items-center justify-between mb-8">
+                <h3 class="font-jura text-3xl font-bold text-primary">Initiate Collaboration</h3>
+                <button @click="showCollabModal = false" class="smooth-hover text-secondary hover:text-primary">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-sm font-bold text-primary mb-3">Collaboration Type</label>
+                    <select v-model="collabForm.type" class="w-full bg-tertiary border-2 border-theme rounded-xl p-4 text-primary focus:border-orange-300 outline-none transition-all">
+                        <option value="">Select collaboration type...</option>
+                        <option value="hardware">Hardware Development</option>
+                        <option value="software">Software Integration</option>
+                        <option value="art">Art Installation</option>
+                        <option value="consulting">Technical Consulting</option>
+                        <option value="workshop">Workshop/Teaching</option>
+                        <option value="lab-visit">Lab Visit</option>
+                        <option value="other">Something Else Entirely</option>
+                    </select>
+                </div>
+
+                <div v-if="collabForm.type === 'lab-visit'" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold text-primary mb-2">Preferred Date</label>
+                        <input type="date" v-model="collabForm.date" class="w-full bg-tertiary border-2 border-theme rounded-xl p-4 text-primary focus:border-orange-300 outline-none transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-primary mb-2">Preferred Time</label>
+                        <select v-model="collabForm.time" class="w-full bg-tertiary border-2 border-theme rounded-xl p-4 text-primary focus:border-orange-300 outline-none transition-all">
+                            <option value="">Select time slot...</option>
+                            <option value="morning">Morning (9-12 AM)</option>
+                            <option value="afternoon">Afternoon (2-5 PM)</option>
+                            <option value="evening">Evening (6-8 PM)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-bold text-primary mb-3">Project Description</label>
+                    <textarea v-model="collabForm.description" 
+                              placeholder="Tell me about your project, idea, or what you'd like to collaborate on..." 
+                              class="w-full bg-tertiary border-2 border-theme rounded-xl p-4 text-primary h-32 resize-none focus:border-orange-300 outline-none transition-all"></textarea>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-bold text-primary mb-3">Preferred Contact Method</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="flex items-center gap-3 cursor-pointer p-3 bg-tertiary rounded-xl border-2 border-theme hover:border-orange-300 transition-all">
+                            <input type="radio" v-model="collabForm.contact" value="whatsapp" class="accent-orange">
+                            <i class="fab fa-whatsapp text-green-500"></i>
+                            <span class="text-primary">WhatsApp</span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer p-3 bg-tertiary rounded-xl border-2 border-theme hover:border-orange-300 transition-all">
+                            <input type="radio" v-model="collabForm.contact" value="discord" class="accent-orange">
+                            <i class="fab fa-discord text-indigo-500"></i>
+                            <span class="text-primary">Discord</span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer p-3 bg-tertiary rounded-xl border-2 border-theme hover:border-orange-300 transition-all">
+                            <input type="radio" v-model="collabForm.contact" value="email" class="accent-orange">
+                            <i class="fas fa-envelope text-gray-500"></i>
+                            <span class="text-primary">Email</span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer p-3 bg-tertiary rounded-xl border-2 border-theme hover:border-orange-300 transition-all">
+                            <input type="radio" v-model="collabForm.contact" value="on-site" class="accent-orange">
+                            <i class="fas fa-map-marker-alt accent-orange-text"></i>
+                            <span class="text-primary">On-site</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <button @click="submitCollaboration" :disabled="!collabForm.type || !collabForm.contact" 
+                        class="w-full accent-orange text-on-accent py-4 rounded-xl text-lg font-bold smooth-hover transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fas fa-rocket mr-2"></i>
+                    Initialize Collaboration Protocol
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lab Feed Modal -->
+    <div v-if="showLabModal" class="fixed inset-0 modal-backdrop flex items-center justify-center z-50 p-4" @click="showLabModal = false">
+        <div class="modal-content rounded-3xl max-w-4xl w-full p-8 animate-slide-up" @click.stop>
+            <div class="flex items-center justify-between mb-8">
+                <h3 class="font-jura text-3xl font-bold text-primary flex items-center gap-3">
+                    <span class="live-dot"></span>
+                    Lab Feed Access
+                </h3>
+                <button @click="showLabModal = false" class="smooth-hover text-secondary hover:text-primary">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <div class="lab-stream mb-6">
+                <video v-if="labVideoUrl" autoplay muted loop>
+                    <source :src="labVideoUrl" type="video/mp4">
+                </video>
+                <div v-else class="w-full h-full flex items-center justify-center">
+                    <div class="text-center">
+                        <i class="fas fa-video text-6xl text-gray-600 mb-4"></i>
+                        <h4 class="text-xl text-white mb-2">Lab Stream Offline</h4>
+                        <p class="text-gray-400">Next session: When inspiration strikes</p>
+                    </div>
+                </div>
+                <div class="stream-overlay">
+                    <div class="live-dot"></div>
+                    <span>SIMULATION</span>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                <div class="bg-tertiary rounded-2xl p-4">
+                    <h4 class="font-bold text-primary mb-2">Current Experiment</h4>
+                    <p class="text-secondary">LED matrix synchronization with quantum fluctuation patterns</p>
+                </div>
+                <div class="bg-tertiary rounded-2xl p-4">
+                    <h4 class="font-bold text-primary mb-2">Lab Status</h4>
+                    <p class="text-secondary">Coffee levels: Critical | Solder fumes: Acceptable | Chaos level: Nominal</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div v-if="showEditModal" class="fixed inset-0 modal-backdrop flex items-center justify-center z-50 p-4" @click="showEditModal = false">
+        <div class="modal-content rounded-3xl max-w-lg w-full p-8 animate-slide-up" @click.stop>
+            <div class="flex items-center justify-between mb-8">
+                <h3 class="font-jura text-2xl font-bold text-primary">{{ editModalTitle }}</h3>
+                <button @click="showEditModal = false" class="smooth-hover text-secondary hover:text-primary">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-4">
+                <!-- Dynamic form content based on editModalType -->
+                <div v-if="editModalType === 'profile'">
+                    <label class="block text-sm font-bold text-primary mb-2">Name</label>
+                    <input v-model="editForm.name" class="w-full bg-tertiary border-2 border-theme rounded-xl p-4 text-primary focus:border-orange-300 outline-none transition-all">
+                </div>
+                
+                <div v-if="editModalType === 'bio'">
+                    <label class="block text-sm font-bold text-primary mb-2">Bio</label>
+                    <textarea v-model="editForm.bio" class="w-full bg-tertiary border-2 border-theme rounded-xl p-4 text-primary h-32 resize-none focus:border-orange-300 outline-none transition-all"></textarea>
+                </div>
+                
+                <button @click="saveEdit" class="w-full accent-orange text-on-accent py-3 rounded-xl font-bold smooth-hover">
+                    <i class="fas fa-save mr-2"></i>
+                    Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vue.js Application -->
+    <script>
+        const { createApp, ref, onMounted } = Vue;
+        createApp({
+            setup() {
+                const isDark = ref(localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches));
+                const editMode = ref(false);
+                const showCollabModal = ref(false);
+                const showLabModal = ref(false);
+                const showEditModal = ref(false);
+                const editModalType = ref('');
+                const editModalTitle = ref('');
+                
+                const profile = ref({
+                    avatar: 'A',
+                    name: 'Amit',
+                    classification: 'LED Whisperer & Professional Toy Destroyer',
+                    status: 'Currently ruining perfectly good electronics',
+                    location: '🇮🇳 Bengaluru, India',
+                    bio: 'Building open-source, repairable, moddable tech because the world needs more things that glow unnecessarily. Been taking apart toys since 1997 - putting them back together is optional.',
+                    featuredVideo: null
+                });
+
+                const labVideoUrl = ref('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
+
+                const collabForm = ref({
+                    type: '',
+                    description: '',
+                    contact: '',
+                    date: '',
+                    time: ''
+                });
+
+                const editForm = ref({});
+
+                const projects = ref([
+                    {
+                        id: 1,
+                        name: 'Lampy',
+                        description: 'Open-source mood lighting that responds to your emotions, music, and probably your coffee consumption',
+                        status: 'Production',
+                        statusClass: 'status-active',
+                        emoji: '💡',
+                        tags: ['Arduino', 'Neopixels', 'WiFi']
+                    },
+                    {
+                        id: 2,
+                        name: 'Quadwalkers',
+                        description: 'Robotic desk companions that judge your coding skills and steal your snacks',
+                        status: 'Research',
+                        statusClass: 'status-planning',
+                        emoji: '🕷️',
+                        tags: ['Robotics', 'AI', 'Attitude']
+                    }
+                ]);
+
+                const socialLinks = ref([
+                    { id: 1, name: 'Absurd Industries', url: 'https://absurd.industries', icon: 'fas fa-atom', description: 'HQ Operations' },
+                    { id: 2, name: 'GitHub Repository', url: 'https://github.com/amit', icon: 'fab fa-github', description: 'Code Archive' },
+                    { id: 3, name: 'Research Log', url: 'https://blog.example.com', icon: 'fas fa-book', description: 'Documentation' }
+                ]);
+
+                const researchObjectives = ref([
+                    { id: 1, name: 'Quantum LED Synthesis', description: 'Making lights do impossible things' },
+                    { id: 2, name: 'Open Hardware Ecosystem', description: 'Breaking proprietary barriers' }
+                ]);
+
+                const interests = ref([
+                    { id: 1, name: 'Applied Science', icon: 'fas fa-flask' },
+                    { id: 2, name: 'Space Technology', icon: 'fas fa-rocket' },
+                    { id: 3, name: 'Photon Manipulation', icon: 'fas fa-sun' },
+                    { id: 4, name: 'Autonomous Systems', icon: 'fas fa-robot' }
+                ]);
+
+                // Skill tree state
+                const skillStates = ref({
+                    electronics: true,
+                    neopixels: true,
+                    programming: true,
+                    art: false,
+                    web: true,
+                    voice: false
+                });
+
+                const applyTheme = () => {
+                    if (isDark.value) {
+                        document.documentElement.classList.add('dark');
+                        localStorage.theme = 'dark';
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.theme = 'light';
+                    }
+                };
+                
+                const toggleTheme = () => {
+                    isDark.value = !isDark.value;
+                    applyTheme();
+                };
+
+                const toggleEditMode = () => {
+                    editMode.value = !editMode.value;
+                };
+
+                const openEditModal = (type, data = null) => {
+                    editModalType.value = type;
+                    editModalTitle.value = getModalTitle(type);
+                    
+                    if (type === 'profile') {
+                        editForm.value = { ...profile.value };
+                    } else if (type === 'bio') {
+                        editForm.value = { bio: profile.value.bio };
+                    }
+                    
+                    showEditModal.value = true;
+                };
+
+                const getModalTitle = (type) => {
+                    const titles = {
+                        profile: 'Edit Subject Profile',
+                        bio: 'Edit Research Background',
+                        featured: 'Edit Featured Content',
+                        addProject: 'New Experiment',
+                        editProject: 'Edit Experiment'
+                    };
+                    return titles[type] || 'Edit';
+                };
+
+                const saveEdit = () => {
+                    if (editModalType.value === 'profile') {
+                        Object.assign(profile.value, editForm.value);
+                    } else if (editModalType.value === 'bio') {
+                        profile.value.bio = editForm.value.bio;
+                    }
+                    showEditModal.value = false;
+                };
+
+                const submitCollaboration = () => {
+                    console.log('Collaboration request:', collabForm.value);
+                    // TODO: Submit to API
+                    showCollabModal.value = false;
+                    collabForm.value = { type: '', description: '', contact: '', date: '', time: '' };
+                };
+
+                // Skill tree functions
+                const toggleSkill = (skill) => {
+                    skillStates.value[skill] = !skillStates.value[skill];
+                };
+
+                const getSkillClass = (skill) => {
+                    return skillStates.value[skill] ? 'unlocked' : '';
+                };
+
+                const isLineActive = (from, to) => {
+                    return skillStates.value[from] && skillStates.value[to];
+                };
+
+                onMounted(applyTheme);
+                
+                return { 
+                    isDark, toggleTheme, editMode, toggleEditMode,
+                    showCollabModal, showLabModal, showEditModal,
+                    editModalType, editModalTitle,
+                    profile, labVideoUrl, collabForm, editForm,
+                    projects, socialLinks, researchObjectives, interests,
+                    skillStates, toggleSkill, getSkillClass, isLineActive,
+                    openEditModal, saveEdit, submitCollaboration
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

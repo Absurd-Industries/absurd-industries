@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - Absurd Industries | Where Dreams Meet Hardware</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/e0c6d65845.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jura:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'jura': ['Jura', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-up': 'fade-up 0.6s ease-out',
+                        'slide-in': 'slide-in 0.8s ease-out',
+                        'product-hover': 'product-hover 0.3s ease-out',
+                        'price-pulse': 'price-pulse 2s ease-in-out infinite',
+                        'cart-bounce': 'cart-bounce 0.6s ease-out',
+                        // 🌟 Celestial animations - Orion's Belt pattern
+                        'orion-twinkle': 'orion-twinkle 3s ease-in-out infinite',
+                        // 🏛️ Greek column rise - Parthenon inspired
+                        'parthenon-rise': 'parthenon-rise 1s ease-out',
+                        // 🌊 Poseidon's tide
+                        'poseidon-tide': 'poseidon-tide 4s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        'fade-up': {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        'slide-in': {
+                            '0%': { opacity: '0', transform: 'translateX(-50px)' },
+                            '100%': { opacity: '1', transform: 'translateX(0)' }
+                        },
+                        'product-hover': {
+                            '0%': { transform: 'scale(1) rotateY(0deg)' },
+                            '100%': { transform: 'scale(1.05) rotateY(5deg)' }
+                        },
+                        'price-pulse': {
+                            '0%, 100%': { transform: 'scale(1)', color: 'var(--accent-orange)' },
+                            '50%': { transform: 'scale(1.1)', color: 'var(--accent-yellow)' }
+                        },
+                        'cart-bounce': {
+                            '0%': { transform: 'scale(1)' },
+                            '50%': { transform: 'scale(1.2)' },
+                            '100%': { transform: 'scale(1)' }
+                        },
+                        // Hidden celestial patterns
+                        'orion-twinkle': {
+                            '0%, 100%': { opacity: '0.3', transform: 'scale(1)' },
+                            '50%': { opacity: '1', transform: 'scale(1.2)' }
+                        },
+                        'parthenon-rise': {
+                            '0%': { opacity: '0', transform: 'translateY(100px) scaleY(0)' },
+                            '100%': { opacity: '1', transform: 'translateY(0) scaleY(1)' }
+                        },
+                        'poseidon-tide': {
+                            '0%, 100%': { transform: 'translateY(0) scaleX(1)' },
+                            '50%': { transform: 'translateY(-10px) scaleX(1.05)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            /* Sacred geometry ratios - Plato's perfect forms */
+            --golden-ratio: 1.618;
+            --divine-proportion: calc(var(--golden-ratio) * 1rem);
+            --sacred-space: calc(var(--divine-proportion) * var(--golden-ratio));
+            
+            /* Light Theme */
+            --bg-primary: #ECE0CF;
+            --bg-secondary: #FFFFFF;
+            --bg-tertiary: #E0D4C3;
+            --text-primary: #1a1a1a;
+            --text-secondary: #5c5c5c;
+            --border-color: #D1C4B3;
+
+            --accent-orange: #FF4500;
+            --accent-yellow: #FFD700;
+            --text-on-accent: #FFFFFF;
+            
+            /* Shop-specific colors */
+            --price-gradient: linear-gradient(135deg, var(--accent-orange), var(--accent-yellow));
+            --discount-green: #10B981;
+            --stock-warning: #F59E0B;
+            --out-of-stock: #EF4444;
+        }
+
+        html.dark {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2a2a2a;
+            --bg-tertiary: #111111;
+            --text-primary: #ECE0CF;
+            --text-secondary: #9ca3af;
+            --border-color: #3a3a3a;
+        }
+        
+        body {
+            font-family: 'Jura', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        .bg-primary { background-color: var(--bg-primary); }
+        .bg-secondary { background-color: var(--bg-secondary); }
+        .bg-tertiary { background-color: var(--bg-tertiary); }
+        .text-primary { color: var(--text-primary); }
+        .text-secondary { color: var(--text-secondary); }
+        .border-theme { border-color: var(--border-color); }
+        .accent-orange { background-color: var(--accent-orange); }
+        .accent-orange-text { color: var(--accent-orange); }
+        .text-on-accent { color: var(--text-on-accent); }
+
+        /* Product Card Styling */
+        .product-card {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: var(--divine-proportion);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--accent-orange);
+            box-shadow: 0 20px 40px rgba(255, 69, 0, 0.15);
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 49%, rgba(255, 215, 0, 0.05) 50%, transparent 51%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .product-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Price Display */
+        .price-display {
+            background: var(--price-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+        }
+
+        /* Stock Status Indicators */
+        .stock-status {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .stock-in { background: var(--discount-green); color: white; }
+        .stock-low { background: var(--stock-warning); color: white; }
+        .stock-out { background: var(--out-of-stock); color: white; }
+
+        /* Category Filters */
+        .category-filter {
+            transition: all 0.3s ease;
+            border: 2px solid var(--border-color);
+        }
+        
+        .category-filter.active {
+            border-color: var(--accent-orange);
+            background: var(--accent-orange);
+            color: var(--text-on-accent);
+        }
+        
+        .category-filter:hover:not(.active) {
+            border-color: var(--accent-orange);
+            background: rgba(255, 69, 0, 0.1);
+        }
+
+        /* Shopping Cart */
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--accent-orange);
+            color: var(--text-on-accent);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Hidden Egyptian Hieroglyph Pattern */
+        .hieroglyph-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.03;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><g fill="currentColor"><circle cx="20" cy="20" r="2"/><circle cx="50" cy="20" r="2"/><circle cx="80" cy="20" r="2"/><rect x="15" y="35" width="10" height="15"/><rect x="45" y="35" width="10" height="15"/><rect x="75" y="35" width="10" height="15"/><polygon points="20,65 25,75 15,75"/><polygon points="50,65 55,75 45,75"/><polygon points="80,65 85,75 75,75"/></g></svg>');
+            pointer-events: none;
+        }
+
+        /* Floating Action Button */
+        .fab-cart {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 64px;
+            height: 64px;
+            background: var(--accent-orange);
+            border-radius: 50%;
+            box-shadow: 0 8px 24px rgba(255, 69, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            transition: all 0.3s ease;
+        }
+        
+        .fab-cart:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 32px rgba(255, 69, 0, 0.6);
+        }
+
+        /* Norse Knot Border Pattern - hidden in product cards */
+        .norse-border {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60"><path d="M0,30 Q15,15 30,30 T60,30" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.1"/></svg>');
+            background-repeat: repeat-x;
+            background-position: bottom;
+            background-size: 60px 4px;
+        }
+
+        /* Sacred Geometry Grid */
+        .sacred-grid {
+            background-image: 
+                linear-gradient(90deg, var(--border-color) 1px, transparent 1px),
+                linear-gradient(var(--border-color) 1px, transparent 1px);
+            background-size: var(--sacred-space) var(--sacred-space);
+            opacity: 0.1;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen font-jura sacred-grid" id="app">
+    
+    <!-- Navigation -->
+    <header class="bg-secondary/90 backdrop-blur-sm border-b border-theme sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto flex items-center justify-between py-4 px-6">
+            <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center">
+                    <!-- Merkaba (3D Star of David) - Sacred geometry symbol -->
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                        <defs>
+                            <radialGradient id="merkaba" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="#FFB347" />
+                                <stop offset="100%" stop-color="#FF6B35" />
+                            </radialGradient>
+                        </defs>
+                        <g transform="translate(100,100)">
+                            <polygon points="0,-50 43.3,25 -43.3,25" fill="none" stroke="#40E0D0" stroke-width="2" opacity="0.8"/>
+                            <polygon points="0,50 -43.3,-25 43.3,-25" fill="none" stroke="#40E0D0" stroke-width="2" opacity="0.8"/>
+                        </g>
+                        <circle cx="100" cy="100" r="12" fill="url(#merkaba)"/>
+                    </svg>
+                </div>
+                <h1 class="text-xl font-bold text-primary">Absurd</h1>
+                <span class="text-text-secondary">/</span>
+                <span class="text-lg font-medium text-secondary">Shop</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button @click="toggleTheme" class="w-10 h-10 rounded-full bg-tertiary flex items-center justify-center hover:accent-orange transition-colors">
+                    <i :class="isDark ? 'fas fa-sun' : 'fas fa-moon'" class="text-primary"></i>
+                </button>
+                <div class="relative">
+                    <button @click="toggleCart" class="w-10 h-10 rounded-full bg-tertiary flex items-center justify-center hover:accent-orange transition-colors">
+                        <i class="fas fa-shopping-cart text-primary"></i>
+                        <div v-if="cartItems.length > 0" class="cart-badge animate-cart-bounce">{{ cartItems.length }}</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="py-16 px-6 bg-gradient-to-br from-primary via-secondary to-tertiary relative overflow-hidden">
+        <div class="hieroglyph-pattern"></div>
+        <div class="max-w-6xl mx-auto text-center relative z-10">
+            <h1 class="text-5xl md:text-7xl font-bold text-primary mb-6 animate-parthenon-rise">
+                Hardware That Doesn't Suck
+            </h1>
+            <p class="text-xl md:text-2xl text-secondary mb-8 max-w-3xl mx-auto">
+                Carefully crafted inventions for makers, by makers. Each product comes with complete 
+                documentation, schematics, and the freedom to hack it to your heart's content.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button @click="scrollToProducts" class="accent-orange text-on-accent px-8 py-4 rounded-xl text-lg font-semibold hover:bg-orange-600 transition-all transform hover:scale-105">
+                    <i class="fas fa-rocket mr-2"></i>
+                    Explore Products
+                </button>
+                <button @click="activeCategory = 'campaigns'" class="border-2 border-theme text-primary px-8 py-4 rounded-xl text-lg font-semibold hover:accent-orange hover:text-on-accent hover:border-transparent transition-all">
+                    <i class="fas fa-fire mr-2"></i>
+                    Active Campaigns
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Filters -->
+    <section class="py-8 px-6 bg-secondary border-b border-theme">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-wrap gap-4 justify-center">
+                <button v-for="category in categories" :key="category.id"
+                        @click="activeCategory = category.id"
+                        :class="activeCategory === category.id ? 'active' : ''"
+                        class="category-filter px-6 py-3 rounded-xl font-semibold transition-all">
+                    <i :class="category.icon" class="mr-2"></i>
+                    {{ category.name }}
+                    <span class="ml-2 text-sm opacity-75">({{ category.count }})</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Grid -->
+    <section class="py-16 px-6" id="products">
+        <div class="max-w-7xl mx-auto">
+            
+            <!-- Section Header -->
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold text-primary mb-4">
+                    {{ getCurrentCategoryName() }}
+                </h2>
+                <p class="text-lg text-secondary max-w-2xl mx-auto">
+                    {{ getCurrentCategoryDescription() }}
+                </p>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div v-for="product in filteredProducts" :key="product.id" 
+                     class="product-card norse-border animate-fade-up"
+                     :style="{ animationDelay: (product.id * 0.1) + 's' }">
+                    
+                    <!-- Stock Status -->
+                    <div class="stock-status" :class="getStockClass(product.stock)">
+                        {{ getStockText(product.stock) }}
+                    </div>
+                    
+                    <!-- Product Image -->
+                    <div class="aspect-video bg-tertiary relative overflow-hidden group">
+                        <img :src="product.image" :alt="product.name" 
+                             class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+                        
+                        <!-- Overlay with Quick Actions -->
+                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4">
+                            <button @click="viewProduct(product)" class="bg-white text-black px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                                <i class="fas fa-eye mr-2"></i>View
+                            </button>
+                            <button v-if="product.githubUrl" @click="openGithub(product)" class="bg-gray-800 text-white px-4 py-2 rounded-lg font-semibold hover:bg-gray-700 transition-colors">
+                                <i class="fab fa-github mr-2"></i>Code
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Product Info -->
+                    <div class="p-6">
+                        
+                        <!-- Product Name & Category -->
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold text-primary">{{ product.name }}</h3>
+                            <span class="text-xs font-medium bg-tertiary text-primary px-2 py-1 rounded">
+                                {{ product.category }}
+                            </span>
+                        </div>
+                        
+                        <!-- Description -->
+                        <p class="text-secondary mb-4 line-clamp-2">{{ product.description }}</p>
+                        
+                        <!-- Features/Tags -->
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span v-for="feature in product.features.slice(0, 3)" :key="feature"
+                                  class="text-xs bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 px-2 py-1 rounded font-medium">
+                                {{ feature }}
+                            </span>
+                            <span v-if="product.features.length > 3" class="text-xs text-secondary">
+                                +{{ product.features.length - 3 }} more
+                            </span>
+                        </div>
+                        
+                        <!-- Pricing -->
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <div class="price-display text-2xl animate-price-pulse">
+                                    ₹{{ product.price.toLocaleString() }}
+                                </div>
+                                <div v-if="product.originalPrice" class="text-sm text-secondary line-through">
+                                    ₹{{ product.originalPrice.toLocaleString() }}
+                                </div>
+                            </div>
+                            <div v-if="product.discount" class="bg-green-500 text-white px-2 py-1 rounded text-sm font-bold">
+                                {{ product.discount }}% OFF
+                            </div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="flex space-x-2">
+                            <button v-if="product.type === 'product'" 
+                                    @click="addToCart(product)"
+                                    :disabled="product.stock === 0"
+                                    class="flex-1 accent-orange text-on-accent py-3 rounded-xl font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-orange-600 transition-colors">
+                                <i class="fas fa-cart-plus mr-2"></i>
+                                {{ product.stock > 0 ? 'Add to Cart' : 'Out of Stock' }}
+                            </button>
+                            <button v-else
+                                    @click="backCampaign(product)"
+                                    class="flex-1 bg-blue-500 text-white py-3 rounded-xl font-semibold hover:bg-blue-600 transition-colors">
+                                <i class="fas fa-rocket mr-2"></i>
+                                Back Campaign
+                            </button>
+                            
+                            <button @click="toggleWishlist(product)" 
+                                    :class="isInWishlist(product) ? 'text-red-500 bg-red-100 dark:bg-red-900/30' : 'text-secondary bg-tertiary'"
+                                    class="w-12 h-12 rounded-xl flex items-center justify-center hover:scale-110 transition-all">
+                                <i :class="isInWishlist(product) ? 'fas fa-heart' : 'far fa-heart'"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Campaign Progress (for campaigns only) -->
+                        <div v-if="product.type === 'campaign'" class="mt-4">
+                            <div class="flex justify-between text-sm text-secondary mb-2">
+                                <span>{{ product.campaignStats.backers }} backers</span>
+                                <span>{{ product.campaignStats.daysLeft }} days left</span>
+                            </div>
+                            <div class="w-full bg-tertiary rounded-full h-2">
+                                <div class="accent-orange h-2 rounded-full transition-all duration-1000" 
+                                     :style="{ width: product.campaignStats.fundedPercentage + '%' }"></div>
+                            </div>
+                            <div class="text-center mt-2">
+                                <span class="text-lg font-bold accent-orange-text">{{ product.campaignStats.fundedPercentage }}% funded</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div v-if="filteredProducts.length === 0" class="text-center py-16">
+                <div class="text-6xl mb-4 animate-orion-twinkle">🌟</div>
+                <h3 class="text-2xl font-bold text-primary mb-4">No products found</h3>
+                <p class="text-secondary max-w-md mx-auto">
+                    We're constantly adding new absurd inventions. Check back soon or explore other categories!
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Floating Action Button - Shopping Cart -->
+    <button v-if="cartItems.length > 0" @click="toggleCart" class="fab-cart animate-poseidon-tide">
+        <i class="fas fa-shopping-cart text-white text-xl"></i>
+        <div class="cart-badge">{{ cartItems.length }}</div>
+    </button>
+
+    <!-- Shopping Cart Sidebar (simplified for now) -->
+    <div v-if="showCart" @click="showCart = false" class="fixed inset-0 bg-black/50 z-50 flex justify-end">
+        <div @click.stop class="w-full max-w-md bg-secondary h-full overflow-y-auto">
+            <div class="p-6 border-b border-theme">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-primary">Shopping Cart</h3>
+                    <button @click="showCart = false" class="text-secondary hover:text-primary">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6">
+                <div v-if="cartItems.length === 0" class="text-center text-secondary">
+                    Your cart is empty
+                </div>
+                <div v-else>
+                    <div v-for="item in cartItems" :key="item.id" class="flex items-center space-x-4 py-4 border-b border-theme">
+                        <img :src="item.image" :alt="item.name" class="w-16 h-16 rounded-lg object-cover">
+                        <div class="flex-1">
+                            <h4 class="font-bold text-primary">{{ item.name }}</h4>
+                            <div class="text-sm text-secondary">₹{{ item.price.toLocaleString() }}</div>
+                        </div>
+                        <button @click="removeFromCart(item)" class="text-red-500 hover:text-red-700">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-theme">
+                        <div class="text-xl font-bold text-primary mb-4">
+                            Total: ₹{{ cartTotal.toLocaleString() }}
+                        </div>
+                        <button class="w-full accent-orange text-on-accent py-3 rounded-xl font-bold">
+                            Proceed to Checkout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vue.js Application -->
+    <script>
+        const { createApp, ref, computed, onMounted } = Vue;
+        createApp({
+            setup() {
+                const isDark = ref(localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches));
+                const activeCategory = ref('all');
+                const cartItems = ref([]);
+                const wishlist = ref([]);
+                const showCart = ref(false);
+                
+                // Categories with hidden mythological references
+                const categories = [
+                    { id: 'all', name: 'All Products', icon: 'fas fa-th-large', count: 15 },
+                    { id: 'lighting', name: 'Lighting', icon: 'fas fa-lightbulb', count: 3 }, // ☉ Ra's domain
+                    { id: 'wearables', name: 'Wearables', icon: 'fas fa-watch', count: 2 }, // ⏰ Chronos
+                    { id: 'iot', name: 'IoT Devices', icon: 'fas fa-wifi', count: 4 }, // ⚡ Zeus
+                    { id: 'tools', name: 'Dev Tools', icon: 'fas fa-tools', count: 3 }, // 🔨 Hephaestus
+                    { id: 'campaigns', name: 'Campaigns', icon: 'fas fa-rocket', count: 3 }, // 🚀 Apollo
+                ];
+
+                // Mock product data - will be replaced with backend
+                const products = ref([
+                    // Lighting Products
+                    {
+                        id: 1,
+                        name: "Lampy Mood Light",
+                        description: "Mesmerizing ambient lighting with 16.7M colors, cosmic patterns, and WiFi control. Your space will never look boring again.",
+                        price: 3999,
+                        originalPrice: 4999,
+                        discount: 20,
+                        image: "https://shop.absurd.industries/cdn/shop/files/lampy-shopabsurdindustries-shopabsurdindustries-968591.jpg?v=1731505856&width=1206",
+                        category: "lighting",
+                        type: "product",
+                        stock: 25,
+                        features: ["16.7M Colors", "WiFi Control", "Open Source", "3D Printed", "Custom Patterns"],
+                        githubUrl: "https://github.com/absurd-industries/lampy"
+                    },
+                    {
+                        id: 2,
+                        name: "Aurora Panel Pro",
+                        description: "Professional-grade ambient lighting panel with DMX control and infinite color possibilities.",
+                        price: 8999,
+                        image: "https://via.placeholder.com/400x300?text=Aurora+Panel",
+                        category: "lighting",
+                        type: "product",
+                        stock: 8,
+                        features: ["DMX Control", "Professional Grade", "Modular Design", "Touch Controls"]
+                    },
+                    {
+                        id: 3,
+                        name: "Nebula Strip Kit",
+                        description: "Addressable LED strip kit with cosmic effects and music synchronization.",
+                        price: 2499,
+                        image: "https://via.placeholder.com/400x300?text=Nebula+Strip",
+                        category: "lighting",
+                        type: "product",
+                        stock: 50,
+                        features: ["Music Sync", "Addressable LEDs", "Easy Install", "App Control"]
+                    },
+                    
+                    // Wearables
+                    {
+                        id: 4,
+                        name: "T1E Smartwatch Kit",
+                        description: "DIY ePaper smartwatch that lasts 16+ days. Because battery anxiety is absurd.",
+                        price: 5555,
+                        image: "https://via.placeholder.com/400x300?text=T1E+Kit",
+                        category: "wearables",
+                        type: "campaign",
+                        stock: 100,
+                        features: ["16+ Day Battery", "ePaper Display", "Open Source", "DIY Assembly"],
+                        campaignStats: {
+                            backers: 147,
+                            daysLeft: 23,
+                            fundedPercentage: 73
+                        },
+                        githubUrl: "https://github.com/absurd-industries/t1e"
+                    },
+                    {
+                        id: 5,
+                        name: "T1E Assembled Watch",
+                        description: "Fully assembled T1E smartwatch for those who want to skip the DIY part.",
+                        price: 9999,
+                        image: "https://via.placeholder.com/400x300?text=T1E+Watch",
+                        category: "wearables",
+                        type: "campaign",
+                        stock: 50,
+                        features: ["Ready to Use", "16+ Day Battery", "Premium Assembly", "Warranty"],
+                        campaignStats: {
+                            backers: 89,
+                            daysLeft: 23,
+                            fundedPercentage: 73
+                        }
+                    },
+                    
+                    // IoT Devices
+                    {
+                        id: 6,
+                        name: "EnvironSense Pro",
+                        description: "Complete environmental monitoring station with air quality, temperature, humidity, and more.",
+                        price: 6999,
+                        image: "https://via.placeholder.com/400x300?text=EnvironSense",
+                        category: "iot",
+                        type: "product",
+                        stock: 15,
+                        features: ["Air Quality", "Multiple Sensors", "WiFi Connected", "Data Logging"]
+                    },
+                    {
+                        id: 7,
+                        name: "PlantBot Guardian",
+                        description: "Smart plant monitoring and auto-watering system that keeps your plants happy.",
+                        price: 4499,
+                        image: "https://via.placeholder.com/400x300?text=PlantBot",
+                        category: "iot",
+                        type: "product",
+                        stock: 30,
+                        features: ["Auto Watering", "Soil Monitoring", "App Alerts", "Solar Powered"]
+                    },
+                    {
+                        id: 8,
+                        name: "SecureNode Hub",
+                        description: "Privacy-focused home automation hub that doesn't spy on you.",
+                        price: 7999,
+                        image: "https://via.placeholder.com/400x300?text=SecureNode",
+                        category: "iot",
+                        type: "product",
+                        stock: 12,
+                        features: ["Local Processing", "No Cloud", "Open Source", "Privacy First"]
+                    },
+                    {
+                        id: 9,
+                        name: "WeatherOrb",
+                        description: "Beautiful weather display that shows conditions through colors and patterns.",
+                        price: 3499,
+                        image: "https://via.placeholder.com/400x300?text=WeatherOrb",
+                        category: "iot",
+                        type: "product",
+                        stock: 0, // Out of stock
+                        features: ["Visual Weather", "API Connected", "Ambient Display", "Desk Accessory"]
+                    },
+                    
+                    // Tools
+                    {
+                        id: 10,
+                        name: "CircuitStudio Portable",
+                        description: "Portable electronics workstation with built-in power supply, scope, and tools.",
+                        price: 15999,
+                        image: "https://via.placeholder.com/400x300?text=CircuitStudio",
+                        category: "tools",
+                        type: "product",
+                        stock: 5,
+                        features: ["All-in-One", "Portable", "Professional Grade", "Multiple Tools"]
+                    },
+                    {
+                        id: 11,
+                        name: "LogicProbe Elite",
+                        description: "Advanced logic analyzer and signal generator for digital circuit debugging.",
+                        price: 8999,
+                        image: "https://via.placeholder.com/400x300?text=LogicProbe",
+                        category: "tools",
+                        type: "product",
+                        stock: 18,
+                        features: ["Logic Analysis", "Signal Generation", "USB Connected", "Software Included"]
+                    },
+                    {
+                        id: 12,
+                        name: "SolderMaster Pro",
+                        description: "Temperature-controlled soldering station with digital display and multiple tips.",
+                        price: 5999,
+                        image: "https://via.placeholder.com/400x300?text=SolderMaster",
+                        category: "tools",
+                        type: "product",
+                        stock: 22,
+                        features: ["Temperature Control", "Digital Display", "Multiple Tips", "ESD Safe"]
+                    },
+
+                    // Campaign-only items
+                    {
+                        id: 13,
+                        name: "SuperSaber Elite",
+                        description: "The ultimate maker's lightsaber with RGB, sound, and motion detection.",
+                        price: 12999,
+                        image: "https://via.placeholder.com/400x300?text=SuperSaber",
+                        category: "campaigns",
+                        type: "campaign",
+                        stock: 100,
+                        features: ["RGB Lighting", "Sound Effects", "Motion Detection", "Premium Materials"],
+                        campaignStats: {
+                            backers: 234,
+                            daysLeft: 45,
+                            fundedPercentage: 156
+                        }
+                    },
+                    {
+                        id: 14,
+                        name: "Deutron Desk Pet",
+                        description: "Quadruped robotic desk companion that learns and interacts with you.",
+                        price: 18999,
+                        image: "https://via.placeholder.com/400x300?text=Deutron",
+                        category: "campaigns",
+                        type: "campaign",
+                        stock: 50,
+                        features: ["AI Powered", "Interactive", "Desk Companion", "Learning Algorithm"],
+                        campaignStats: {
+                            backers: 67,
+                            daysLeft: 67,
+                            fundedPercentage: 23
+                        }
+                    },
+                    {
+                        id: 15,
+                        name: "Maker's Toolkit Ultimate",
+                        description: "Complete electronics maker toolkit with premium tools and components.",
+                        price: 24999,
+                        originalPrice: 35000,
+                        discount: 29,
+                        image: "https://via.placeholder.com/400x300?text=Maker+Toolkit",
+                        category: "campaigns",
+                        type: "campaign",
+                        stock: 25,
+                        features: ["Premium Tools", "Components Included", "Carrying Case", "Lifetime Support"],
+                        campaignStats: {
+                            backers: 123,
+                            daysLeft: 12,
+                            fundedPercentage: 245
+                        }
+                    }
+                ]);
+
+                // Computed properties
+                const filteredProducts = computed(() => {
+                    if (activeCategory.value === 'all') {
+                        return products.value;
+                    }
+                    return products.value.filter(product => product.category === activeCategory.value);
+                });
+
+                const cartTotal = computed(() => {
+                    return cartItems.value.reduce((total, item) => total + item.price, 0);
+                });
+
+                // Methods
+                const applyTheme = () => {
+                    if (isDark.value) {
+                        document.documentElement.classList.add('dark');
+                        localStorage.theme = 'dark';
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.theme = 'light';
+                    }
+                };
+                
+                const toggleTheme = () => {
+                    isDark.value = !isDark.value;
+                    applyTheme();
+                };
+
+                const getCurrentCategoryName = () => {
+                    const category = categories.find(c => c.id === activeCategory.value);
+                    return category ? category.name : 'All Products';
+                };
+
+                const getCurrentCategoryDescription = () => {
+                    const descriptions = {
+                        all: 'Every absurd invention we\'ve ever dreamed up, now available for your making pleasure.',
+                        lighting: 'Illumination devices that make your space more interesting than a disco ball.',
+                        wearables: 'Tech you can wear without looking like you time-traveled from 2050.',
+                        iot: 'Smart devices that are actually smart, not just connected to the internet.',
+                        tools: 'Professional-grade equipment for serious makers and curious tinkerers.',
+                        campaigns: 'Back the next generation of absurd inventions before they hit the shelves.'
+                    };
+                    return descriptions[activeCategory.value] || descriptions.all;
+                };
+
+                const getStockClass = (stock) => {
+                    if (stock === 0) return 'stock-out';
+                    if (stock <= 5) return 'stock-low';
+                    return 'stock-in';
+                };
+
+                const getStockText = (stock) => {
+                    if (stock === 0) return 'Out of Stock';
+                    if (stock <= 5) return `Only ${stock} left`;
+                    return 'In Stock';
+                };
+
+                const addToCart = (product) => {
+                    cartItems.value.push({ ...product });
+                    // Trigger cart bounce animation
+                    document.querySelector('.fab-cart')?.classList.add('animate-cart-bounce');
+                    setTimeout(() => {
+                        document.querySelector('.fab-cart')?.classList.remove('animate-cart-bounce');
+                    }, 600);
+                };
+
+                const removeFromCart = (product) => {
+                    const index = cartItems.value.findIndex(item => item.id === product.id);
+                    if (index > -1) {
+                        cartItems.value.splice(index, 1);
+                    }
+                };
+
+                const toggleCart = () => {
+                    showCart.value = !showCart.value;
+                };
+
+                const toggleWishlist = (product) => {
+                    const index = wishlist.value.findIndex(item => item.id === product.id);
+                    if (index > -1) {
+                        wishlist.value.splice(index, 1);
+                    } else {
+                        wishlist.value.push(product);
+                    }
+                };
+
+                const isInWishlist = (product) => {
+                    return wishlist.value.some(item => item.id === product.id);
+                };
+
+                const viewProduct = (product) => {
+                    // Navigate to product detail page
+                    console.log('View product:', product);
+                };
+
+                const openGithub = (product) => {
+                    if (product.githubUrl) {
+                        window.open(product.githubUrl, '_blank');
+                    }
+                };
+
+                const backCampaign = (product) => {
+                    // Navigate to campaign page
+                    console.log('Back campaign:', product);
+                };
+
+                const scrollToProducts = () => {
+                    document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+                };
+
+                onMounted(applyTheme);
+                
+                return { 
+                    isDark, 
+                    toggleTheme,
+                    activeCategory,
+                    categories,
+                    products,
+                    filteredProducts,
+                    cartItems,
+                    cartTotal,
+                    wishlist,
+                    showCart,
+                    getCurrentCategoryName,
+                    getCurrentCategoryDescription,
+                    getStockClass,
+                    getStockText,
+                    addToCart,
+                    removeFromCart,
+                    toggleCart,
+                    toggleWishlist,
+                    isInWishlist,
+                    viewProduct,
+                    openGithub,
+                    backCampaign,
+                    scrollToProducts
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
