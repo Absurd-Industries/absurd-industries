@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absurd Inventory | Workshop Chaos Manager</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/e0c6d65845.js" crossorigin="anonymous"></script>
+
+    <!-- Google Fonts - Jura -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jura:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        jura: ['Jura', 'sans-serif'],
+                    },
+                    colors: {
+                        'absurd-orange': '#ff4500',
+                    },
+                    animation: {
+                        'spin-slow': 'spin 33s linear infinite',
+                        'pulse-slow': 'pulse 3s ease-in-out infinite',
+                    },
+                },
+            },
+        };
+    </script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body class="font-jura">
+    <div id="app">
+        <!-- Mobile Header -->
+        <header class="sticky top-0 z-40 bg-primary border-b-2 border-theme">
+            <div class="max-w-7xl mx-auto px-4 py-4">
+                <div class="flex items-center justify-between">
+                    <!-- Logo -->
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 flex items-center justify-center">
+                            <i class="fas fa-box-open text-primary text-2xl"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-xl font-bold text-primary">Absurd Inventory</h1>
+                            <p class="text-xs text-secondary">{{ filteredItems.length }} items</p>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex items-center gap-2">
+                        <!-- Panic Button -->
+                        <button @click="panicMode"
+                            class="w-12 h-12 rounded-full bg-secondary border-2 border-theme hover:border-orange-500 flex items-center justify-center transition-all hover:-translate-y-1 group"
+                            title="PANIC MODE: Random component selector">
+                            <i class="fas fa-bolt text-primary group-hover:accent-orange-text transition-colors"
+                                :class="{ 'animate-pulse': isPanicking }"></i>
+                        </button>
+
+                        <!-- View Toggle -->
+                        <button @click="toggleView"
+                            class="w-12 h-12 rounded-full bg-secondary border-2 border-theme hover:border-orange-500 flex items-center justify-center transition-all hover:-translate-y-1">
+                            <i :class="viewMode === 'card' ? 'fas fa-th-list' : 'fas fa-th-large'"
+                                class="text-primary"></i>
+                        </button>
+
+                        <!-- Theme Toggle -->
+                        <button @click="toggleTheme"
+                            class="w-12 h-12 rounded-full bg-secondary border-2 border-theme hover:border-orange-500 flex items-center justify-center transition-all hover:-translate-y-1">
+                            <i :class="isDark ? 'fas fa-sun' : 'fas fa-moon'" class="text-primary theme-icon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="mt-4 relative">
+                    <input v-model="searchQuery" type="search" placeholder="Search inventory..."
+                        class="input-base w-full pr-10">
+                    <i class="fas fa-search absolute right-3 top-1/2 -translate-y-1/2 text-secondary"></i>
+                </div>
+
+                <!-- Filter Pills -->
+                <div class="mt-4 flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                    <button v-for="cat in categories" :key="cat.id" @click="activeCategory = cat.id"
+                        class="px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-2"
+                        :class="activeCategory === cat.id 
+                            ? 'accent-orange text-on-accent' 
+                            : 'bg-secondary border border-theme text-primary hover:border-orange-500'">
+                        <i :class="cat.icon" class="text-sm"></i>
+                        {{ cat.name }}
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Loading State -->
+        <div v-if="isLoading" class="flex items-center justify-center min-h-[60vh]">
+            <div class="text-center">
+                <div class="w-16 h-16 border-4 border-theme border-t-orange-500 rounded-full animate-spin mx-auto mb-4">
+                </div>
+                <p class="text-primary font-semibold">{{ loadingMessage }}</p>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main v-else class="max-w-7xl mx-auto px-4 py-6 pb-24">
+            <!-- Panic Mode Banner -->
+            <div v-if="isPanicking"
+                class="mb-6 bg-orange-500/10 border-2 border-orange-500 rounded-xl p-4 animate-pulse">
+                <div class="flex items-center gap-3">
+                    <i class="fas fa-bolt accent-orange-text text-2xl"></i>
+                    <div class="flex-1">
+                        <h3 class="font-bold text-primary">PANIC MODE ACTIVATED!</h3>
+                        <p class="text-sm text-secondary">Randomly selected {{ panickedItems.length }} components for
+                            emergency hacking</p>
+                    </div>
+                    <button @click="isPanicking = false" class="text-secondary hover:text-primary">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div v-if="filteredItems.length === 0" class="text-center py-16">
+                <i class="fas fa-box-open text-6xl text-secondary mb-4"></i>
+                <h3 class="text-2xl font-bold text-primary mb-2">No items found</h3>
+                <p class="text-secondary">Try adjusting your filters or search query</p>
+            </div>
+
+            <!-- Card View -->
+            <div v-else-if="viewMode === 'card'"
+                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div v-for="item in sortedItems" :key="item.id" class="inventory-card group" :class="{
+                        'card-pinned': item.isPinned,
+                        'card-panic': isPanicking && panickedItems.includes(item.id),
+                        'card-low-stock': item.status === 'low-stock',
+                        'card-out-of-stock': item.status === 'out-of-stock'
+                    }" :data-item-id="item.id" @touchstart="handleTouchStart($event, item)"
+                    @touchmove="handleTouchMove($event, item)" @touchend="handleTouchEnd($event, item)">
+
+                    <!-- Image -->
+                    <div
+                        class="h-48 bg-tertiary rounded-t-xl flex items-center justify-center relative overflow-hidden">
+                        <img v-if="item.images && item.images[0]" :src="item.images[0]" :alt="item.name"
+                            class="w-full h-full object-cover">
+                        <div v-else class="text-center">
+                            <i :class="getCategoryIcon(item.category)" class="text-6xl text-secondary mb-2"></i>
+                            <p class="text-xs text-secondary uppercase tracking-wider">{{ item.category }}</p>
+                        </div>
+
+                        <!-- Pin Badge -->
+                        <button @click.stop="togglePin(item)"
+                            class="absolute top-3 right-3 w-10 h-10 rounded-full bg-secondary/90 backdrop-blur flex items-center justify-center transition-all hover:scale-110 z-10"
+                            :class="item.isPinned ? 'text-orange-500' : 'text-secondary'">
+                            <i :class="item.isPinned ? 'fas fa-star' : 'far fa-star'"></i>
+                        </button>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="p-6">
+                        <!-- Status & Category -->
+                        <div class="flex items-center gap-2 mb-3 flex-wrap">
+                            <span class="badge" :class="getStatusClass(item.status)">
+                                <i :class="getStatusIcon(item.status)" class="mr-1"></i>
+                                {{ item.status.replace('-', ' ').toUpperCase() }}
+                            </span>
+                            <span v-if="item.subcategory" class="text-xs text-secondary capitalize">
+                                {{ item.subcategory }}
+                            </span>
+                        </div>
+
+                        <!-- Name -->
+                        <h3 class="text-xl font-bold text-primary mb-3 line-clamp-2">{{ item.name }}</h3>
+
+                        <!-- Info Grid -->
+                        <div class="space-y-2 text-sm mb-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-secondary">Quantity:</span>
+                                <span class="font-semibold text-primary">{{ formatQuantity(item.quantity) }}</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-secondary">Location:</span>
+                                <span class="font-semibold text-primary text-right">{{ item.location }}</span>
+                            </div>
+                            <div v-if="item.minimumStock" class="flex items-center justify-between">
+                                <span class="text-secondary">Min Stock:</span>
+                                <span class="font-semibold"
+                                    :class="item.quantity !== 'unknown' && item.quantity <= item.minimumStock ? 'accent-orange-text' : 'text-primary'">
+                                    {{ item.minimumStock }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Specs Preview -->
+                        <div v-if="item.specs" class="mb-4 pb-4 border-b border-theme">
+                            <div class="flex flex-wrap gap-2">
+                                <span v-if="item.specs.architecture"
+                                    class="text-xs bg-tertiary px-2 py-1 rounded text-secondary">
+                                    {{ item.specs.architecture }}
+                                </span>
+                                <span v-if="item.specs.clockSpeed"
+                                    class="text-xs bg-tertiary px-2 py-1 rounded text-secondary">
+                                    {{ item.specs.clockSpeed }}
+                                </span>
+                                <span v-if="item.specs.gpio"
+                                    class="text-xs bg-tertiary px-2 py-1 rounded text-secondary">
+                                    {{ item.specs.gpio }} GPIO
+                                </span>
+                                <span v-if="item.specs.connectivity"
+                                    class="text-xs bg-tertiary px-2 py-1 rounded text-secondary">
+                                    {{ item.specs.connectivity.join(', ') }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Notes -->
+                        <p v-if="item.notes" class="text-sm text-secondary italic mb-4 line-clamp-2">{{ item.notes }}
+                        </p>
+
+                        <!-- Actions -->
+                        <div class="flex gap-2">
+                            <button class="flex-1 btn-secondary text-sm py-2">
+                                <i class="fas fa-eye mr-2"></i>Details
+                            </button>
+                            <button class="flex-1 btn-primary text-sm py-2">
+                                <i class="fas fa-plus mr-2"></i>BOM
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table View -->
+            <div v-else class="bg-secondary border-2 border-theme rounded-xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-tertiary border-b-2 border-theme">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-sm font-semibold text-primary cursor-pointer hover:accent-orange-text transition-colors"
+                                    @click="sortBy('name')">
+                                    Name <i class="fas fa-sort text-xs ml-1 opacity-50"></i>
+                                </th>
+                                <th class="px-4 py-3 text-left text-sm font-semibold text-primary cursor-pointer hover:accent-orange-text transition-colors"
+                                    @click="sortBy('category')">
+                                    Category <i class="fas fa-sort text-xs ml-1 opacity-50"></i>
+                                </th>
+                                <th class="px-4 py-3 text-left text-sm font-semibold text-primary cursor-pointer hover:accent-orange-text transition-colors"
+                                    @click="sortBy('quantity')">
+                                    Qty <i class="fas fa-sort text-xs ml-1 opacity-50"></i>
+                                </th>
+                                <th class="px-4 py-3 text-left text-sm font-semibold text-primary cursor-pointer hover:accent-orange-text transition-colors"
+                                    @click="sortBy('location')">
+                                    Location <i class="fas fa-sort text-xs ml-1 opacity-50"></i>
+                                </th>
+                                <th class="px-4 py-3 text-left text-sm font-semibold text-primary cursor-pointer hover:accent-orange-text transition-colors"
+                                    @click="sortBy('status')">
+                                    Status <i class="fas fa-sort text-xs ml-1 opacity-50"></i>
+                                </th>
+                                <th class="px-4 py-3 text-center text-sm font-semibold text-primary">
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item in sortedItems" :key="item.id"
+                                class="border-b border-theme hover:bg-tertiary transition-colors"
+                                :class="{ 'bg-orange-500/5': item.isPinned }">
+                                <td class="px-4 py-3">
+                                    <div class="flex items-center gap-3">
+                                        <i v-if="item.isPinned" class="fas fa-star text-orange-500"></i>
+                                        <span class="font-semibold text-primary">{{ item.name }}</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <span class="text-sm text-secondary capitalize">{{ item.category }}</span>
+                                    <span v-if="item.subcategory" class="text-xs text-secondary block">{{
+                                        item.subcategory }}</span>
+                                </td>
+                                <td class="px-4 py-3 text-sm font-semibold text-primary">{{
+                                    formatQuantity(item.quantity) }}</td>
+                                <td class="px-4 py-3 text-sm text-secondary">{{ item.location }}</td>
+                                <td class="px-4 py-3">
+                                    <span class="badge text-xs" :class="getStatusClass(item.status)">
+                                        <i :class="getStatusIcon(item.status)" class="mr-1"></i>
+                                        {{ item.status.replace('-', ' ').toUpperCase() }}
+                                    </span>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <button @click="togglePin(item)"
+                                            class="w-8 h-8 rounded-lg hover:bg-secondary flex items-center justify-center transition-colors"
+                                            :title="item.isPinned ? 'Unpin' : 'Pin'">
+                                            <i
+                                                :class="item.isPinned ? 'fas fa-star text-orange-500' : 'far fa-star text-secondary'"></i>
+                                        </button>
+                                        <button
+                                            class="w-8 h-8 rounded-lg hover:bg-secondary flex items-center justify-center transition-colors"
+                                            title="View Details">
+                                            <i
+                                                class="fas fa-eye text-secondary hover:text-primary transition-colors"></i>
+                                        </button>
+                                        <button
+                                            class="w-8 h-8 rounded-lg hover:bg-secondary flex items-center justify-center transition-colors"
+                                            title="Add to BOM">
+                                            <i
+                                                class="fas fa-plus text-secondary hover:accent-orange-text transition-colors"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+        <!-- Floating Action Button (Mobile) -->
+        <button
+            class="fixed bottom-6 right-6 w-16 h-16 accent-orange text-on-accent rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform lg:hidden z-50">
+            <i class="fas fa-plus text-2xl"></i>
+        </button>
+    </div>
+
+    <!-- Vue 3 CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <!-- App Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
