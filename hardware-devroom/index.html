@@ -297,6 +297,114 @@
                 padding-bottom: 80px;
             }
         }
+
+        /* Hardware showcase rotation */
+        .hardware-showcase {
+            position: relative;
+            height: 280px;
+        }
+
+        .showcase-item {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            animation: showcase-fade 15s infinite;
+        }
+
+        .showcase-item:nth-child(1) { animation-delay: 0s; }
+        .showcase-item:nth-child(2) { animation-delay: 3s; }
+        .showcase-item:nth-child(3) { animation-delay: 6s; }
+        .showcase-item:nth-child(4) { animation-delay: 9s; }
+        .showcase-item:nth-child(5) { animation-delay: 12s; }
+
+        @keyframes showcase-fade {
+            0% { opacity: 0; transform: translateY(10px); }
+            3% { opacity: 1; transform: translateY(0); }
+            17% { opacity: 1; transform: translateY(0); }
+            20% { opacity: 0; transform: translateY(-10px); }
+            100% { opacity: 0; }
+        }
+
+        /* Carousel */
+        .carousel-track {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 1rem;
+            scrollbar-width: none;
+        }
+
+        .carousel-track::-webkit-scrollbar {
+            display: none;
+        }
+
+        .carousel-card {
+            flex: 0 0 280px;
+            scroll-snap-align: start;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.15s ease;
+        }
+
+        .carousel-card:hover {
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 640px) {
+            .carousel-card {
+                flex: 0 0 250px;
+            }
+        }
+
+        .carousel-nav-btn {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #1A1A1A;
+            background: #FAF3E8;
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+        }
+
+        .carousel-nav-btn:hover {
+            background: #1A1A1A;
+            color: #FAF3E8;
+        }
+
+        /* Project links */
+        .project-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .project-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 3px 4px 0 rgba(0,0,0,0.1);
+        }
+
+        /* Community logo links */
+        .community-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.15s ease;
+        }
+
+        .community-logo:hover {
+            transform: translateY(-3px);
+        }
     </style>
 </head>
 
@@ -328,30 +436,95 @@
                 <div class="torn-bg"></div>
                 <div class="torn-content p-6 md:p-14">
 
-                    <div class="stamp-label mb-6">
-                        <i class="fa-solid fa-microchip mr-1"></i> IndiaFOSS 2026
-                    </div>
+                    <div class="flex flex-col md:flex-row gap-8 md:gap-12 items-start">
+                        <!-- Left column -->
+                        <div class="flex-1">
+                            <div class="stamp-label mb-6">
+                                <i class="fa-solid fa-microchip mr-1"></i> IndiaFOSS 2026
+                            </div>
 
-                    <h1 class="text-6xl md:text-7xl font-bold uppercase mb-6">
-                        Open<br>Hardware<br>Devroom
-                    </h1>
+                            <h1 class="text-6xl md:text-7xl font-bold uppercase mb-6">
+                                Open<br>Hardware<br>Devroom
+                            </h1>
 
-                    <div class="w-48 md:w-72 h-1 bg-ink mb-6"></div>
+                            <div class="w-48 md:w-72 h-1 bg-ink mb-6"></div>
 
-                    <p class="text-lg md:text-xl text-ink-light mt-4 mb-10 max-w-xl">
-                        A welcoming space where anyone can learn, tinker, and build with open hardware. No experience
-                        required &mdash; just curiosity.
-                    </p>
+                            <p class="text-lg md:text-xl text-ink-light mt-4 mb-10 max-w-xl">
+                                Talks, demos, and hard-won lessons from the people building open hardware in India.
+                            </p>
 
-                    <div class="flex flex-col sm:flex-row gap-4 items-start">
-                        <a href="https://fossunited.org/indiafoss/2026/devrooms/hardware" target="_blank"
-                            class="label-btn label-btn-primary">
-                            Submit a Proposal
-                        </a>
-                        <a href="https://fossunited.org/dashboard/buy-tickets?event=ek0supi1tu" target="_blank"
-                            class="label-btn">
-                            Get Tickets
-                        </a>
+                            <div class="flex flex-col sm:flex-row gap-4 items-start">
+                                <a href="https://fossunited.org/indiafoss/2026/devrooms/hardware" target="_blank"
+                                    class="label-btn label-btn-primary">
+                                    Submit a Proposal
+                                </a>
+                                <a href="https://fossunited.org/dashboard/buy-tickets?event=ek0supi1tu" target="_blank"
+                                    class="label-btn">
+                                    Get Tickets
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Right column: rotating hardware showcase -->
+                        <div class="hidden md:block w-72 lg:w-80 pt-8">
+                            <div class="hardware-showcase">
+                                <div class="showcase-item">
+                                    <div class="torn-card">
+                                        <div class="torn-bg"></div>
+                                        <div class="torn-content p-6 text-center">
+                                            <i class="ph-bold ph-lightning text-5xl mb-3 block text-stamp"></i>
+                                            <h4 class="font-bold uppercase tracking-wide text-sm mb-2">SuperSaber</h4>
+                                            <p class="text-xs text-ink-light leading-relaxed">Open-source lightsaber. ESP32 + addressable LEDs + CircuitPython.</p>
+                                            <span class="text-xs text-stencil mt-3 block">Absurd Industries</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="showcase-item">
+                                    <div class="torn-card">
+                                        <div class="torn-bg"></div>
+                                        <div class="torn-content p-6 text-center">
+                                            <i class="ph-bold ph-keyboard text-5xl mb-3 block text-stamp"></i>
+                                            <h4 class="font-bold uppercase tracking-wide text-sm mb-2">CoryDora</h4>
+                                            <p class="text-xs text-ink-light leading-relaxed">Open-source macropad. Designed, assembled, and shipped from India.</p>
+                                            <span class="text-xs text-stencil mt-3 block">Balu Babu</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="showcase-item">
+                                    <div class="torn-card">
+                                        <div class="torn-bg"></div>
+                                        <div class="torn-content p-6 text-center">
+                                            <i class="ph-bold ph-identification-badge text-5xl mb-3 block text-stamp"></i>
+                                            <h4 class="font-bold uppercase tracking-wide text-sm mb-2">Makerville Badge</h4>
+                                            <p class="text-xs text-ink-light leading-relaxed">Community devboard badge. ESP32-C3, KiCad, Zephyr, WebBluetooth.</p>
+                                            <span class="text-xs text-stencil mt-3 block">Makerville</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="showcase-item">
+                                    <div class="torn-card">
+                                        <div class="torn-bg"></div>
+                                        <div class="torn-content p-6 text-center">
+                                            <i class="ph-bold ph-compass text-5xl mb-3 block text-stamp"></i>
+                                            <h4 class="font-bold uppercase tracking-wide text-sm mb-2">Engotta</h4>
+                                            <p class="text-xs text-ink-light leading-relaxed">Navigation display for two-wheelers. ESP32 + OLED + real-time clock.</p>
+                                            <span class="text-xs text-stencil mt-3 block">Rishi K S</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="showcase-item">
+                                    <div class="torn-card">
+                                        <div class="torn-bg"></div>
+                                        <div class="torn-content p-6 text-center">
+                                            <i class="ph-bold ph-hard-drives text-5xl mb-3 block text-stamp"></i>
+                                            <h4 class="font-bold uppercase tracking-wide text-sm mb-2">Minirack</h4>
+                                            <p class="text-xs text-ink-light leading-relaxed">DIY 10-inch homelab server rack. Aluminium extrusions + custom PSU.</p>
+                                            <span class="text-xs text-stencil mt-3 block">Kiran Jonnalagadda</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="hidden md:flex postal-stamp absolute right-10 top-10">
@@ -637,13 +810,98 @@
 
     <div class="torn-divider"></div>
 
-    <!-- From the 2025 Archives -->
+    <!-- From the Community -->
     <section class="py-12 md:py-16">
-        <div class="max-w-4xl mx-auto px-4">
-            <div class="stamp-label mb-8">From the 2025 Archives</div>
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="stamp-label mb-4">From the Community</div>
+            <p class="text-base text-ink-light mb-8">Projects from past devrooms and the broader open hardware community.</p>
 
-            <!-- Highlight Reel -->
-            <div class="torn-card mb-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 torn-grid">
+                <a href="https://github.com/balub/CoryDora" target="_blank" class="project-link torn-card">
+                    <div class="torn-bg"></div>
+                    <div class="torn-content p-5">
+                        <i class="ph-bold ph-keyboard text-2xl mb-2 block text-stamp"></i>
+                        <h4 class="font-bold text-sm uppercase tracking-wide mb-1">CoryDora</h4>
+                        <p class="text-xs text-ink-light">Open-source macropad, designed and shipped from India using KiCad, QMK, and FreeCAD.</p>
+                    </div>
+                </a>
+                <a href="https://github.com/Absurd-Industries/supersaber" target="_blank" class="project-link torn-card">
+                    <div class="torn-bg"></div>
+                    <div class="torn-content p-5">
+                        <i class="ph-bold ph-lightning text-2xl mb-2 block text-stamp"></i>
+                        <h4 class="font-bold text-sm uppercase tracking-wide mb-1">SuperSaber</h4>
+                        <p class="text-xs text-ink-light">Open-source lightsaber powered by ESP32 and CircuitPython with addressable LEDs.</p>
+                    </div>
+                </a>
+                <a href="https://github.com/makerville/makerville-badge" target="_blank" class="project-link torn-card">
+                    <div class="torn-bg"></div>
+                    <div class="torn-content p-5">
+                        <i class="ph-bold ph-identification-badge text-2xl mb-2 block text-stamp"></i>
+                        <h4 class="font-bold text-sm uppercase tracking-wide mb-1">Makerville Badge</h4>
+                        <p class="text-xs text-ink-light">Community devboard badge built with ESP32-C3, KiCad, Zephyr, and WebBluetooth.</p>
+                    </div>
+                </a>
+                <a href="https://mecha.so/comet" target="_blank" class="project-link torn-card">
+                    <div class="torn-bg"></div>
+                    <div class="torn-content p-5">
+                        <i class="ph-bold ph-device-mobile text-2xl mb-2 block text-stamp"></i>
+                        <h4 class="font-bold text-sm uppercase tracking-wide mb-1">Mecha Comet</h4>
+                        <p class="text-xs text-ink-light">Modular open-source Linux handheld computer with a custom UI framework built on Bevy.</p>
+                    </div>
+                </a>
+                <a href="https://github.com/Rishi-k-s/scooter-hud" target="_blank" class="project-link torn-card">
+                    <div class="torn-bg"></div>
+                    <div class="torn-content p-5">
+                        <i class="ph-bold ph-compass text-2xl mb-2 block text-stamp"></i>
+                        <h4 class="font-bold text-sm uppercase tracking-wide mb-1">Engotta</h4>
+                        <p class="text-xs text-ink-light">Navigation display for two-wheelers so you never have to glance at your phone while riding.</p>
+                    </div>
+                </a>
+                <a href="https://github.com/shreekumar3d/jigita" target="_blank" class="project-link torn-card">
+                    <div class="torn-bg"></div>
+                    <div class="torn-content p-5">
+                        <i class="ph-bold ph-cube text-2xl mb-2 block text-stamp"></i>
+                        <h4 class="font-bold text-sm uppercase tracking-wide mb-1">JigIta</h4>
+                        <p class="text-xs text-ink-light">Generate 3D-printable soldering jigs from any PCB design in minutes. One step, perfect results.</p>
+                    </div>
+                </a>
+                <a href="https://circuitverse.org/" target="_blank" class="project-link torn-card">
+                    <div class="torn-bg"></div>
+                    <div class="torn-content p-5">
+                        <i class="ph-bold ph-circuitry text-2xl mb-2 block text-stamp"></i>
+                        <h4 class="font-bold text-sm uppercase tracking-wide mb-1">CircuitVerse</h4>
+                        <p class="text-xs text-ink-light">Free, browser-based digital logic simulator with over a million circuits built worldwide.</p>
+                    </div>
+                </a>
+                <a href="https://github.com/jace/minirack" target="_blank" class="project-link torn-card">
+                    <div class="torn-bg"></div>
+                    <div class="torn-content p-5">
+                        <i class="ph-bold ph-hard-drives text-2xl mb-2 block text-stamp"></i>
+                        <h4 class="font-bold text-sm uppercase tracking-wide mb-1">Minirack</h4>
+                        <p class="text-xs text-ink-light">DIY 10-inch homelab server rack built from aluminium extrusions with a custom power supply.</p>
+                    </div>
+                </a>
+                <a href="http://isfixable.com" target="_blank" class="project-link torn-card">
+                    <div class="torn-bg"></div>
+                    <div class="torn-content p-5">
+                        <i class="ph-bold ph-wrench text-2xl mb-2 block text-stamp"></i>
+                        <h4 class="font-bold text-sm uppercase tracking-wide mb-1">isFixable</h4>
+                        <p class="text-xs text-ink-light">Crowdsourced wiki for repair-friendly hardware products in India. Fighting planned obsolescence.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div class="torn-divider"></div>
+
+    <!-- Talks & Videos -->
+    <section class="py-12 md:py-16">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="stamp-label mb-8">Talks &amp; Videos</div>
+
+            <!-- Featured: Highlight Reel -->
+            <div class="torn-card mb-2">
                 <div class="torn-bg"></div>
                 <div class="torn-content p-3 md:p-4">
                     <div class="aspect-video overflow-hidden">
@@ -654,68 +912,95 @@
                     </div>
                 </div>
             </div>
-            <p class="text-sm text-ink-light mb-8 text-center">Highlight reel from the IndiaFOSS 2025 Open Hardware
-                Devroom.</p>
+            <p class="text-sm text-ink-light mb-10 text-center">Highlight reel from the IndiaFOSS 2025 Open Hardware Devroom.</p>
 
-            <!-- Full Playlist -->
-            <div class="torn-card">
-                <div class="torn-bg"></div>
-                <div class="torn-content p-3 md:p-4">
-                    <div class="aspect-video overflow-hidden">
-                        <iframe class="w-full h-full"
-                            src="https://www.youtube.com/embed/videoseries?list=PLOGilj110olzIQ-Z_jM_2eboVqqBPWPhT"
-                            title="IndiaFOSS 2025 Hardware Devroom Playlist" frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
+            <!-- Carousel -->
+            <div class="relative">
+                <div class="carousel-track" id="talks-carousel">
+
+                    <a href="https://www.youtube.com/watch?v=pFYOFzUogiU" target="_blank" class="carousel-card torn-card group">
+                        <div class="torn-bg"></div>
+                        <div class="torn-content">
+                            <div class="relative overflow-hidden">
+                                <img src="https://img.youtube.com/vi/pFYOFzUogiU/mqdefault.jpg" alt="Building Open Hardware with FOSS" class="w-full aspect-video object-cover" loading="lazy">
+                                <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 group-hover:bg-opacity-40 transition-all">
+                                    <i class="ph-bold ph-play-circle text-4xl text-white drop-shadow"></i>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <h4 class="font-bold text-sm leading-snug">Building Open Hardware with FOSS</h4>
+                                <p class="text-xs text-ink-light mt-1">CoryDora macropad &mdash; from design to shipping</p>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="https://www.youtube.com/watch?v=jpTXz0AlL78" target="_blank" class="carousel-card torn-card group">
+                        <div class="torn-bg"></div>
+                        <div class="torn-content">
+                            <div class="relative overflow-hidden">
+                                <img src="https://img.youtube.com/vi/jpTXz0AlL78/mqdefault.jpg" alt="From Concept to Creation" class="w-full aspect-video object-cover" loading="lazy">
+                                <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 group-hover:bg-opacity-40 transition-all">
+                                    <i class="ph-bold ph-play-circle text-4xl text-white drop-shadow"></i>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <h4 class="font-bold text-sm leading-snug">From Concept to Creation</h4>
+                                <p class="text-xs text-ink-light mt-1">The journey of an open-source watch</p>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="https://www.youtube.com/watch?v=xvyl9yv9X3A" target="_blank" class="carousel-card torn-card group">
+                        <div class="torn-bg"></div>
+                        <div class="torn-content">
+                            <div class="relative overflow-hidden">
+                                <img src="https://img.youtube.com/vi/xvyl9yv9X3A/mqdefault.jpg" alt="Open Source in and for Indian Chips" class="w-full aspect-video object-cover" loading="lazy">
+                                <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 group-hover:bg-opacity-40 transition-all">
+                                    <i class="ph-bold ph-play-circle text-4xl text-white drop-shadow"></i>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <h4 class="font-bold text-sm leading-snug">Open Source in and for Indian Chips</h4>
+                                <p class="text-xs text-ink-light mt-1">Open silicon and chip design in India</p>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="https://www.youtube.com/watch?v=Max74m77wUk" target="_blank" class="carousel-card torn-card group">
+                        <div class="torn-bg"></div>
+                        <div class="torn-content">
+                            <div class="relative overflow-hidden">
+                                <img src="https://img.youtube.com/vi/Max74m77wUk/mqdefault.jpg" alt="Open Hardware Hackathon with PCB Cupid" class="w-full aspect-video object-cover" loading="lazy">
+                                <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 group-hover:bg-opacity-40 transition-all">
+                                    <i class="ph-bold ph-play-circle text-4xl text-white drop-shadow"></i>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <h4 class="font-bold text-sm leading-snug">Open Hardware Hackathon</h4>
+                                <p class="text-xs text-ink-light mt-1">Hackathon with PCB Cupid</p>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="https://www.youtube.com/playlist?list=PLOGilj110olybt7FblXW8RctIJ3JBt6IO" target="_blank" class="carousel-card torn-card group">
+                        <div class="torn-bg"></div>
+                        <div class="torn-content p-6 flex flex-col items-center justify-center" style="min-height: 200px;">
+                            <i class="ph-bold ph-playlist text-5xl mb-3 text-ink-light group-hover:text-ink transition-colors"></i>
+                            <h4 class="font-bold text-sm text-center">Watch All 2025 Talks</h4>
+                            <p class="text-xs text-ink-light mt-1 text-center">Full playlist on YouTube &rarr;</p>
+                        </div>
+                    </a>
+
                 </div>
-            </div>
-            <p class="text-sm text-ink-light mt-4 text-center">
-                All talks from the IndiaFOSS 2025 Open Hardware Devroom.
-            </p>
-        </div>
-    </section>
 
-    <div class="torn-divider hidden"></div>
-
-    <!-- References (hidden for now) -->
-    <section class="py-12 md:py-16 hidden">
-        <div class="max-w-4xl mx-auto px-4">
-            <div class="stamp-label mb-8">References</div>
-            <p class="text-base text-ink-light mb-6">A sampling of the kind of things we're looking for:</p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 torn-grid">
-                <a href="https://www.youtube.com/watch?v=Max74m77wUk" target="_blank" class="torn-card group">
-                    <div class="torn-bg"></div>
-                    <div class="torn-content p-5 flex items-start gap-3">
-                        <i class="ph-bold ph-play text-ink mt-1 shrink-0 text-lg"></i>
-                        <div>
-                            <span class="font-bold text-ink group-hover:underline">Open Hardware Hackathon with PCB
-                                Cupid</span>
-                            <span class="block text-xs text-ink-light mt-1">YouTube</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="https://www.kickstarter.com/projects/mecha-systems/mecha-comet-modular-linux-handheld-computer"
-                    target="_blank" class="torn-card group">
-                    <div class="torn-bg"></div>
-                    <div class="torn-content p-5 flex items-start gap-3">
-                        <i class="ph-bold ph-rocket-launch text-ink mt-1 shrink-0 text-lg"></i>
-                        <div>
-                            <span class="font-bold text-ink group-hover:underline">Mecha Comet Kickstarter</span>
-                            <span class="block text-xs text-ink-light mt-1">Modular Linux Handheld Computer</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="https://whybit.in/" target="_blank" class="torn-card group">
-                    <div class="torn-bg"></div>
-                    <div class="torn-content p-5 flex items-start gap-3">
-                        <i class="ph-bold ph-cpu text-ink mt-1 shrink-0 text-lg"></i>
-                        <div>
-                            <span class="font-bold text-ink group-hover:underline">Whybit</span>
-                            <span class="block text-xs text-ink-light mt-1">whybit.in</span>
-                        </div>
-                    </div>
-                </a>
+                <div class="flex justify-center gap-3 mt-4">
+                    <button class="carousel-nav-btn" onclick="document.getElementById('talks-carousel').scrollBy({left:-300,behavior:'smooth'})" aria-label="Previous">
+                        <i class="ph-bold ph-caret-left"></i>
+                    </button>
+                    <button class="carousel-nav-btn" onclick="document.getElementById('talks-carousel').scrollBy({left:300,behavior:'smooth'})" aria-label="Next">
+                        <i class="ph-bold ph-caret-right"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </section>
@@ -732,33 +1017,33 @@
             </p>
 
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 items-center">
-                <div class="flex flex-col items-center gap-3">
+                <a href="https://absurd.industries" target="_blank" class="community-logo">
                     <img src="images/absurd-logo-for-any-background.png" alt="Absurd Industries"
                         class="h-16 md:h-20 object-contain">
                     <span class="font-bold text-xs uppercase tracking-wide text-center">Absurd Industries</span>
-                </div>
-                <div class="flex flex-col items-center gap-3">
+                </a>
+                <a href="https://pcbcupid.com" target="_blank" class="community-logo">
                     <img src="images/pcb-cupid-for-dark-background.png" alt="PCB Cupid"
                         class="h-16 md:h-20 object-contain">
                     <span class="font-bold text-xs uppercase tracking-wide text-center">PCB Cupid</span>
-                </div>
-                <div class="flex flex-col items-center gap-3">
+                </a>
+                <a href="https://ampere.works" target="_blank" class="community-logo">
                     <img src="images/ampere-works-for-dark-background.png" alt="ampere.works"
                         class="h-16 md:h-20 object-contain">
                     <span class="font-bold text-xs uppercase tracking-wide text-center">ampere.works</span>
-                </div>
-                <div class="flex flex-col items-center gap-3">
+                </a>
+                <a href="https://uservader.com" target="_blank" class="community-logo">
                     <img src="images/vader-logo-for-any-background.png" alt="Vader" class="h-16 md:h-20 object-contain">
                     <span class="font-bold text-xs uppercase tracking-wide text-center">Vader</span>
-                </div>
-                <div class="flex flex-col items-center gap-3">
+                </a>
+                <a href="https://makerville.io" target="_blank" class="community-logo">
                     <img src="images/makerville.svg" alt="Makerville" class="h-16 md:h-20 object-contain">
                     <span class="font-bold text-xs uppercase tracking-wide text-center">Makerville</span>
-                </div>
-                <div class="flex flex-col items-center gap-3">
+                </a>
+                <a href="https://fossunited.org" target="_blank" class="community-logo">
                     <img src="images/foss-united.svg" alt="FOSS United" class="h-12 md:h-16 object-contain">
                     <span class="font-bold text-xs uppercase tracking-wide text-center">FOSS United</span>
-                </div>
+                </a>
             </div>
         </div>
     </section>
