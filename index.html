@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Absurd Industries - Open Source Hardware for Makers, Tinkerers & Hardware Rebels</title>
-    <meta name="description" content="The anti-planned obsolescence platform. Back indie hardware campaigns, discover makers, request what you need, and manage your lab. Hack it. Mod it. Repair it. Build it.">
+    <meta name="description" content="The anti-planned obsolescence platform. Back indie hardware campaigns, discover makers, request what you need, and manage your lab.">
 
     <meta property="og:title" content="Absurd Industries - Democracy for Dreamers">
-    <meta property="og:description" content="The anti-planned obsolescence platform. Back indie hardware campaigns, discover makers, request builds, and manage your lab.">
+    <meta property="og:description" content="Back indie open-source hardware. Discover makers. Request what the world needs.">
     <meta property="og:image" content="https://absurd.industries/hardware-devroom/screen.png">
     <meta property="og:url" content="https://absurd.industries">
     <meta name="twitter:card" content="summary_large_image">
@@ -15,12 +15,11 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
-    <link rel="manifest" href="assets/favicon/site.webmanifest">
     <link rel="shortcut icon" href="assets/favicon/favicon.ico">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap" rel="stylesheet">
 
     <script src="https://kit.fontawesome.com/e0c6d65845.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
@@ -33,16 +32,19 @@
                 extend: {
                     colors: {
                         kraft: { DEFAULT: '#D4B896', light: '#E8D5B7', dark: '#B8956A' },
-                        ink: { DEFAULT: '#1A1A1A', light: '#3D3D3D' },
+                        ink: { DEFAULT: '#1A1A1A', light: '#3D3D3D', faint: '#6B5B4A' },
                         stamp: { DEFAULT: '#FF5900', dark: '#CC4700' },
                         tape: '#F5E6C8',
                         paper: '#FAF3E8',
                         stencil: '#6B5B4A',
                         funded: '#2A5F41',
-                        urgent: '#C62828',
                     },
                     fontFamily: {
-                        mono: ['"Space Mono"', 'monospace'],
+                        serif: ['"Fraunces"', 'Georgia', 'serif'],
+                        sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        'card': '1.25rem',
                     },
                 },
             },
@@ -57,1272 +59,464 @@
             background-size: auto;
         }
 
-        /* Torn edge cards */
+        /* Torn edge — used sparingly for accent sections only */
         .torn-card { position: relative; }
         .torn-card > .torn-bg {
-            position: absolute; inset: 0;
-            background: #FAF3E8;
-            filter: url(#torn-edge-filter);
-            z-index: 0;
-        }
-        .torn-card > .torn-bg-kraft {
-            position: absolute; inset: 0;
-            background: #E8D5B7;
-            filter: url(#torn-edge-filter);
-            z-index: 0;
+            position: absolute; inset: 0; background: #FAF3E8;
+            filter: url(#torn-edge-filter); z-index: 0;
         }
         .torn-card > .torn-bg-dark {
-            position: absolute; inset: 0;
-            background: #1A1A1A;
-            filter: url(#torn-edge-filter);
-            z-index: 0;
+            position: absolute; inset: 0; background: #1A1A1A;
+            filter: url(#torn-edge-filter); z-index: 0;
         }
         .torn-card > .torn-content { position: relative; z-index: 1; }
 
-        .torn-grid > .torn-card:nth-child(3n+2) > .torn-bg,
-        .torn-grid > .torn-card:nth-child(3n+2) > .torn-bg-kraft,
-        .torn-grid > .torn-card:nth-child(3n+2) > .torn-bg-dark {
-            filter: url(#torn-edge-filter-2);
-        }
-        .torn-grid > .torn-card:nth-child(3n+3) > .torn-bg,
-        .torn-grid > .torn-card:nth-child(3n+3) > .torn-bg-kraft,
-        .torn-grid > .torn-card:nth-child(3n+3) > .torn-bg-dark {
-            filter: url(#torn-edge-filter-3);
-        }
-
-        .torn-divider {
-            height: 10px;
-            margin: 0 auto;
-            max-width: 80%;
-            background: #B8956A;
-            filter: url(#torn-edge-filter);
-            opacity: 0.5;
-        }
-
-        /* Tape decoration */
-        .tape-piece {
-            position: absolute; top: -16px; left: 50%;
-            transform: translateX(-50%);
-            width: 120px; height: 32px;
-            background-image: url('hardware-devroom/images/paper-tape.webp');
-            background-size: cover;
-            background-position: center;
-            z-index: 2;
-            opacity: 0.9;
-        }
-
-        /* Stamp label */
-        .stamp-label {
-            display: inline-block;
-            padding: 0.3rem 0.85rem;
-            border: 2px solid #1A1A1A;
-            color: #1A1A1A;
-            font-family: 'Space Mono', monospace;
-            font-weight: 700;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-        }
-
-        .stamp-label-stamp {
-            border-color: #FF5900;
-            color: #FF5900;
-        }
-
-        .stamp-label-funded {
-            border-color: #2A5F41;
-            color: #2A5F41;
-        }
-
-        /* Shipping label buttons */
-        .label-btn {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
+        /* Paper card — the default card style */
+        .paper-card {
             background: #FAF3E8;
-            border: 2px dashed #1A1A1A;
-            padding: 0.85rem 1.5rem 0.85rem 2.75rem;
-            font-family: 'Space Mono', monospace;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            font-size: 0.875rem;
-            color: #1A1A1A;
-            text-decoration: none;
+            border-radius: 1.25rem;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05), 0 4px 16px rgba(0,0,0,0.04);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
-            cursor: pointer;
         }
-        .label-btn::before {
-            content: '';
-            position: absolute;
-            left: 14px; top: 50%;
-            transform: translateY(-50%);
-            width: 12px; height: 12px;
-            border: 2px solid #1A1A1A;
-            border-radius: 50%;
+        .paper-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.06);
         }
-        .label-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 3px 5px 0 rgba(0,0,0,0.12);
-        }
-        .label-btn-primary {
+        .paper-card-flat { box-shadow: none; }
+        .paper-card-flat:hover { transform: none; box-shadow: none; }
+        .paper-card-dark {
             background: #1A1A1A;
             color: #FAF3E8;
-            border-color: #1A1A1A;
-            border-style: solid;
         }
-        .label-btn-primary::before { border-color: #FAF3E8; }
-        .label-btn-stamp {
-            background: #FF5900;
-            color: #FAF3E8;
-            border-color: #FF5900;
-            border-style: solid;
+
+        /* Buttons */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 0.75rem 1.75rem;
+            font-family: 'DM Sans', system-ui, sans-serif;
+            font-weight: 600; font-size: 0.875rem;
+            letter-spacing: 0.02em;
+            border-radius: 999px;
+            text-decoration: none;
+            transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+            cursor: pointer;
+            border: none;
         }
-        .label-btn-stamp::before { border-color: #FAF3E8; }
-        .label-btn-small {
-            padding: 0.5rem 1rem 0.5rem 2.25rem;
-            font-size: 0.75rem;
+        .btn:hover { transform: translateY(-1px); }
+        .btn-primary {
+            background: #1A1A1A; color: #FAF3E8;
         }
+        .btn-primary:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .btn-stamp {
+            background: #FF5900; color: #FAF3E8;
+        }
+        .btn-stamp:hover { box-shadow: 0 4px 12px rgba(255,89,0,0.25); }
+        .btn-outline {
+            background: transparent; color: #1A1A1A;
+            border: 1.5px solid #1A1A1A;
+        }
+        .btn-outline:hover { background: #1A1A1A; color: #FAF3E8; }
+        .btn-ghost {
+            background: transparent; color: #1A1A1A;
+            padding: 0.5rem 1rem;
+        }
+        .btn-ghost:hover { background: rgba(26,26,26,0.05); }
+        .btn-sm { padding: 0.5rem 1.25rem; font-size: 0.8rem; }
+
+        /* Tag/badge */
+        .tag {
+            display: inline-flex; align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.7rem; font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .tag-default { background: rgba(26,26,26,0.08); color: #1A1A1A; }
+        .tag-stamp { background: rgba(255,89,0,0.12); color: #FF5900; }
+        .tag-funded { background: rgba(42,95,65,0.12); color: #2A5F41; }
+        .tag-paper { background: #FAF3E8; color: #6B5B4A; border: 1px solid rgba(107,91,74,0.2); }
 
         /* Progress bar */
-        .campaign-progress {
-            height: 8px;
-            background: #E8D5B7;
-            overflow: hidden;
-        }
-        .campaign-progress-fill {
-            height: 100%;
-            background: #2A5F41;
-            transition: width 0.6s ease;
-        }
-        .campaign-progress-fill.hot {
-            background: #FF5900;
-        }
+        .progress { height: 6px; background: #E8D5B7; border-radius: 999px; overflow: hidden; }
+        .progress-fill { height: 100%; border-radius: 999px; background: #2A5F41; transition: width 0.6s ease; }
+        .progress-fill.hot { background: #FF5900; }
 
-        /* Postal stamp */
-        .postal-stamp {
-            width: 100px; height: 100px;
-            border: 3px solid #1A1A1A;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            flex-direction: column;
-            opacity: 0.3;
-            outline: 2px solid #1A1A1A;
-            outline-offset: 4px;
-            font-family: 'Space Mono', monospace;
-            font-weight: 700;
-            font-size: 0.55rem;
-            text-transform: uppercase;
-            color: #1A1A1A;
-            letter-spacing: 0.1em;
-            text-align: center;
-            line-height: 1.3;
-        }
-
-        /* Checklist items */
-        .checklist-item { border-left: 4px solid #1A1A1A; }
-
-        /* Topic cards hover */
-        .topic-card { transition: transform 0.15s ease; }
-        .topic-card:hover { transform: translateY(-2px); }
-
-        /* Carousel */
-        .carousel-track {
-            display: flex; gap: 1rem;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-            padding-bottom: 1rem;
-            scrollbar-width: none;
-        }
-        .carousel-track::-webkit-scrollbar { display: none; }
-        .carousel-card {
-            flex: 0 0 300px;
-            scroll-snap-align: start;
-            text-decoration: none;
-            color: inherit;
-            transition: transform 0.15s ease;
-        }
-        .carousel-card:hover { transform: translateY(-3px); }
-        @media (max-width: 640px) { .carousel-card { flex: 0 0 260px; } }
-
-        .carousel-nav-btn {
-            width: 40px; height: 40px;
-            border: 2px solid #1A1A1A;
-            background: #FAF3E8;
-            font-family: 'Space Mono', monospace;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            transition: all 0.15s;
-        }
-        .carousel-nav-btn:hover { background: #1A1A1A; color: #FAF3E8; }
-
-        /* Upvote button */
-        .upvote-btn {
-            border: 2px solid #1A1A1A;
-            background: transparent;
-            width: 48px;
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            gap: 2px;
-            padding: 6px 0;
-            font-family: 'Space Mono', monospace;
-            font-weight: 700;
-            font-size: 0.7rem;
-            cursor: pointer;
-            transition: all 0.15s;
-        }
-        .upvote-btn:hover, .upvote-btn.voted {
-            background: #1A1A1A;
-            color: #FAF3E8;
-        }
-
-        /* Mobile bottom bar */
-        .mobile-bar {
-            position: fixed; bottom: 0; left: 0; right: 0;
-            background: #1A1A1A;
-            z-index: 50;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
-        }
-        .mobile-bar a {
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            padding: 12px 0;
-            color: #FAF3E8;
-            text-decoration: none;
-            font-family: 'Space Mono', monospace;
-            font-size: 0.65rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            transition: color 0.15s;
-        }
-        .mobile-bar a:hover, .mobile-bar a:active { color: #FF5900; }
-        .mobile-bar a i { font-size: 1.3rem; margin-bottom: 4px; }
-
-        @media (max-width: 767px) {
-            body { padding-bottom: 80px; }
-        }
-
-        .copyleft { display: inline-block; transform: rotate(180deg); }
+        /* Ticker */
+        @keyframes ticker-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .ticker-track { animation: ticker-scroll 35s linear infinite; }
+        .ticker-track:hover { animation-play-state: paused; }
 
         /* Nav link */
         .nav-link {
+            text-decoration: none; color: #1A1A1A;
+            font-weight: 500; font-size: 0.875rem;
+            padding: 0.25rem 0;
+            border-bottom: 1.5px solid transparent;
+            transition: border-color 0.15s, color 0.15s;
+        }
+        .nav-link:hover { border-bottom-color: #1A1A1A; }
+        .nav-link.active { border-bottom-color: #FF5900; color: #FF5900; }
+
+        /* Floating mobile nav */
+        .mobile-nav {
+            position: fixed; bottom: 16px; left: 16px; right: 16px;
+            background: rgba(26,26,26,0.92);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border-radius: 999px;
+            z-index: 50;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+            padding: 4px;
+        }
+        .mobile-nav a {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 8px 0;
+            color: rgba(250,243,232,0.6);
             text-decoration: none;
-            color: #1A1A1A;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            font-size: 0.8rem;
-            padding: 0.4rem 0;
-            border-bottom: 2px solid transparent;
-            transition: border-color 0.15s;
+            font-family: 'DM Sans', system-ui, sans-serif;
+            font-size: 0.6rem; font-weight: 600;
+            letter-spacing: 0.03em; text-transform: uppercase;
+            transition: color 0.15s;
+            border-radius: 999px;
         }
-        .nav-link:hover, .nav-link.active {
-            border-bottom-color: #1A1A1A;
-        }
+        .mobile-nav a:hover, .mobile-nav a:active { color: #FF5900; }
+        .mobile-nav a i, .mobile-nav a .ph-bold { font-size: 1.2rem; margin-bottom: 2px; }
 
-        /* Spec tag */
-        .spec-tag {
-            display: inline-block;
-            padding: 0.2rem 0.6rem;
-            border: 1px solid #6B5B4A;
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: #6B5B4A;
-        }
+        @media (max-width: 767px) { body { padding-bottom: 88px; } }
 
-        /* Contributor stack */
-        .contributor-stack {
-            display: flex;
-        }
-        .contributor-stack > * {
-            margin-left: -8px;
-            border: 2px solid #FAF3E8;
-        }
-        .contributor-stack > *:first-child {
-            margin-left: 0;
-        }
+        .copyleft { display: inline-block; transform: rotate(180deg); }
 
-        /* Activity dot */
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-        .pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
-
-        /* Ticker */
-        @keyframes ticker-scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-        .ticker-track {
-            animation: ticker-scroll 30s linear infinite;
-        }
-        .ticker-track:hover {
-            animation-play-state: paused;
-        }
+        /* Pulse animation */
+        @keyframes pulse-soft { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        .pulse-soft { animation: pulse-soft 2s ease-in-out infinite; }
     </style>
 </head>
 
-<body class="font-mono text-ink min-h-screen">
+<body class="font-sans text-ink min-h-screen antialiased">
 
-    <!-- SVG Filters -->
     <svg width="0" height="0" style="position:absolute">
         <filter id="torn-edge-filter">
             <feTurbulence type="turbulence" baseFrequency="0.04" numOctaves="5" result="turbulence"/>
             <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="6" xChannelSelector="R" yChannelSelector="G"/>
         </filter>
-        <filter id="torn-edge-filter-2">
-            <feTurbulence type="turbulence" baseFrequency="0.035" numOctaves="4" seed="2" result="turbulence"/>
-            <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="7" xChannelSelector="R" yChannelSelector="G"/>
-        </filter>
-        <filter id="torn-edge-filter-3">
-            <feTurbulence type="turbulence" baseFrequency="0.045" numOctaves="5" seed="5" result="turbulence"/>
-            <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="5" xChannelSelector="R" yChannelSelector="G"/>
-        </filter>
     </svg>
 
     <div id="app">
 
-        <!-- Top Nav Bar -->
-        <nav class="sticky top-0 z-40" style="background: rgba(212,184,150,0.95); backdrop-filter: blur(8px);">
-            <div class="max-w-6xl mx-auto px-4">
-                <div class="flex items-center justify-between h-14">
-                    <div class="flex items-center gap-6">
-                        <a href="/" class="flex items-center gap-2 text-ink no-underline">
-                            <img src="hardware-devroom/images/absurd-logo-for-any-background.png" alt="Absurd Industries" class="h-8">
-                            <span class="font-bold text-sm uppercase tracking-wider hidden sm:inline">Absurd Industries</span>
-                        </a>
-                        <div class="hidden md:flex items-center gap-5">
-                            <a href="#campaigns" class="nav-link" :class="{ active: activeSection === 'campaigns' }">Campaigns</a>
-                            <a href="#makers" class="nav-link" :class="{ active: activeSection === 'makers' }">Makers</a>
-                            <a href="#requests" class="nav-link" :class="{ active: activeSection === 'requests' }">Requests</a>
-                            <a href="#inventory" class="nav-link" :class="{ active: activeSection === 'inventory' }">Inventory</a>
-                            <a href="#community" class="nav-link" :class="{ active: activeSection === 'community' }">Community</a>
-                        </div>
+        <!-- Nav -->
+        <nav class="sticky top-0 z-40 backdrop-blur-md" style="background: rgba(212,184,150,0.9);">
+            <div class="max-w-6xl mx-auto px-5 sm:px-6">
+                <div class="flex items-center justify-between h-16">
+                    <a href="/" class="flex items-center gap-3 no-underline">
+                        <img src="hardware-devroom/images/absurd-logo-for-any-background.png" alt="Absurd Industries" class="h-8">
+                        <span class="font-serif font-semibold text-lg tracking-tight hidden sm:inline">Absurd Industries</span>
+                    </a>
+                    <div class="hidden md:flex items-center gap-6">
+                        <a href="campaigns/" class="nav-link">Campaigns</a>
+                        <a href="makers/" class="nav-link">Makers</a>
+                        <a href="requests/" class="nav-link">Requests</a>
+                        <a href="inventory/" class="nav-link">Inventory</a>
                     </div>
                     <div class="flex items-center gap-3">
-                        <a href="https://discord.gg/DUSUtguG2H" target="_blank" class="label-btn label-btn-small hidden sm:inline-flex">
-                            <i class="fa-brands fa-discord mr-1"></i> Discord
+                        <a href="https://discord.gg/DUSUtguG2H" target="_blank" class="btn btn-ghost btn-sm hidden sm:inline-flex">
+                            <i class="fa-brands fa-discord mr-2"></i>Discord
                         </a>
-                        <button class="label-btn label-btn-stamp label-btn-small" @click="showJoinModal = true">
-                            Join the Guild
-                        </button>
+                        <button class="btn btn-stamp btn-sm" @click="showJoinModal = true">Join the Guild</button>
                     </div>
                 </div>
             </div>
         </nav>
 
-        <!-- Ticker Bar -->
-        <div class="bg-ink text-paper overflow-hidden py-2">
-            <div class="flex whitespace-nowrap ticker-track" style="width: max-content;">
-                <span class="mx-6 text-xs font-bold tracking-widest uppercase" v-for="n in 2" :key="n">
-                    <span class="text-stamp mx-6">HACK IT</span>
-                    <span class="mx-2">&bull;</span>
-                    <span class="mx-6">MOD IT</span>
-                    <span class="mx-2">&bull;</span>
-                    <span class="text-stamp mx-6">REPAIR IT</span>
-                    <span class="mx-2">&bull;</span>
-                    <span class="mx-6">BUILD IT</span>
-                    <span class="mx-2">&bull;</span>
-                    <span class="mx-6">OPEN SOURCE FILES</span>
-                    <span class="mx-2">&bull;</span>
-                    <span class="text-stamp mx-6">ZERO GATEKEEPING</span>
-                    <span class="mx-2">&bull;</span>
-                    <span class="mx-6">COMMUNITY SUPPORT</span>
-                    <span class="mx-2">&bull;</span>
-                    <span class="text-stamp mx-6">WARRANTY INTACT WHEN YOU OPEN IT</span>
-                    <span class="mx-2">&bull;</span>
+        <!-- Ticker -->
+        <div class="bg-ink text-paper overflow-hidden py-2.5">
+            <div class="flex whitespace-nowrap ticker-track" style="width:max-content;">
+                <span v-for="n in 2" :key="n" class="text-xs font-semibold tracking-widest uppercase">
+                    <span class="text-stamp mx-5">Hack it</span>
+                    <span class="mx-2 opacity-30">/</span>
+                    <span class="mx-5">Mod it</span>
+                    <span class="mx-2 opacity-30">/</span>
+                    <span class="text-stamp mx-5">Repair it</span>
+                    <span class="mx-2 opacity-30">/</span>
+                    <span class="mx-5">Build it</span>
+                    <span class="mx-2 opacity-30">/</span>
+                    <span class="mx-5 opacity-50">Open Source Files</span>
+                    <span class="mx-2 opacity-30">/</span>
+                    <span class="text-stamp mx-5">Zero Gatekeeping</span>
+                    <span class="mx-2 opacity-30">/</span>
+                    <span class="mx-5 opacity-50">Warranty Intact When You Open It</span>
+                    <span class="mx-2 opacity-30">/</span>
                 </span>
             </div>
         </div>
 
-        <!-- Hero Section -->
-        <section class="py-12 md:py-20">
-            <div class="max-w-6xl mx-auto px-4">
+        <!-- Hero -->
+        <section class="py-14 md:py-20">
+            <div class="max-w-5xl mx-auto px-5 sm:px-6">
                 <div class="torn-card">
                     <div class="torn-bg"></div>
-                    <div class="torn-content p-6 md:p-14">
-                        <div class="flex flex-col md:flex-row gap-8 md:gap-12 items-start">
-                            <div class="flex-1">
-                                <div class="stamp-label stamp-label-stamp mb-6">
-                                    <i class="ph-bold ph-wrench mr-1"></i> Anti-Planned Obsolescence
-                                </div>
+                    <div class="torn-content px-6 py-10 md:px-14 md:py-16">
+                        <div class="tag tag-stamp mb-5">Anti-Planned Obsolescence</div>
 
-                                <h1 class="text-5xl md:text-7xl font-bold uppercase mb-4 leading-[0.95]">
-                                    Democracy<br>for<br>Dreamers
-                                </h1>
+                        <h1 class="font-serif text-5xl sm:text-6xl md:text-7xl font-black leading-[0.95] tracking-tight mb-5">
+                            Democracy<br>for Dreamers
+                        </h1>
 
-                                <div class="w-48 md:w-72 h-1 bg-ink mb-6"></div>
-
-                                <p class="text-base md:text-lg text-ink-light mt-4 mb-8 max-w-xl">
-                                    Back indie open-source hardware campaigns. Discover makers. Request what the world needs.
-                                    Manage your lab. We don't just think outside the box &mdash; we redesign the whole damned box.
-                                </p>
-
-                                <div class="flex flex-col sm:flex-row gap-4 items-start">
-                                    <a href="#campaigns" class="label-btn label-btn-primary">
-                                        Explore Campaigns
-                                    </a>
-                                    <a href="#requests" class="label-btn">
-                                        Make a Request
-                                    </a>
-                                </div>
-
-                                <div class="flex items-center gap-6 mt-10 text-sm text-stencil">
-                                    <div class="flex items-center gap-2">
-                                        <i class="ph-bold ph-users-three"></i>
-                                        <span><strong class="text-ink">2,400+</strong> makers</span>
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <i class="ph-bold ph-rocket-launch"></i>
-                                        <span><strong class="text-ink">86</strong> campaigns</span>
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <i class="ph-bold ph-hand-heart"></i>
-                                        <span><strong class="text-ink">12k+</strong> backers</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="hidden md:flex flex-col items-center gap-6 w-72 lg:w-80 pt-4">
-                                <div class="torn-card w-full">
-                                    <div class="torn-bg-kraft"></div>
-                                    <div class="torn-content p-5 text-center">
-                                        <div class="text-5xl mb-3">
-                                            <i class="ph-bold ph-factory"></i>
-                                        </div>
-                                        <div class="text-xs text-stencil uppercase tracking-widest mb-2">Featured Campaign</div>
-                                        <h3 class="font-bold text-base uppercase">Open Source Water Purifier</h3>
-                                        <p class="text-xs text-ink-light mt-2 mb-4">Community-designed, field-repairable water purification for off-grid communities.</p>
-                                        <div class="campaign-progress mb-2">
-                                            <div class="campaign-progress-fill" style="width: 73%"></div>
-                                        </div>
-                                        <div class="flex justify-between text-xs text-stencil">
-                                            <span><strong class="text-ink">73%</strong> funded</span>
-                                            <span>18 days left</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="postal-stamp">
-                                    <span>Bengaluru</span>
-                                    <span class="text-xs mt-1">Est. 2023</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="torn-divider"></div>
-
-        <!-- Live Campaigns Section -->
-        <section id="campaigns" class="py-12 md:py-16">
-            <div class="max-w-6xl mx-auto px-4">
-                <div class="flex items-center justify-between mb-2">
-                    <div class="stamp-label">Live Campaigns</div>
-                    <div class="flex items-center gap-2">
-                        <div class="w-2 h-2 bg-funded rounded-full pulse-dot"></div>
-                        <span class="text-xs font-bold text-funded uppercase tracking-wider">{{ campaigns.filter(c => c.status === 'live').length }} Active</span>
-                    </div>
-                </div>
-                <p class="text-sm text-ink-light mb-8">
-                    Back open-source, repairable indie hardware. Every project ships with full source files.
-                </p>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 torn-grid">
-                    <div v-for="campaign in campaigns" :key="campaign.id" class="torn-card topic-card cursor-pointer">
-                        <div class="torn-bg"></div>
-                        <div class="torn-content">
-                            <div class="h-48 bg-kraft-light flex items-center justify-center overflow-hidden">
-                                <i :class="'ph-bold ph-' + campaign.icon + ' text-6xl text-stencil'"></i>
-                            </div>
-                            <div class="p-5">
-                                <div class="flex items-center gap-2 mb-3">
-                                    <span v-if="campaign.status === 'live'" class="stamp-label stamp-label-funded" style="font-size:0.6rem; padding:0.15rem 0.5rem;">
-                                        <i class="ph-bold ph-broadcast mr-1"></i>Live
-                                    </span>
-                                    <span v-else-if="campaign.status === 'funded'" class="stamp-label stamp-label-funded" style="font-size:0.6rem; padding:0.15rem 0.5rem;">
-                                        Funded
-                                    </span>
-                                    <span v-else class="stamp-label" style="font-size:0.6rem; padding:0.15rem 0.5rem;">
-                                        Coming Soon
-                                    </span>
-                                    <span class="text-xs text-stencil">{{ campaign.category }}</span>
-                                </div>
-
-                                <h3 class="font-bold text-base uppercase tracking-wide mb-2">{{ campaign.name }}</h3>
-                                <p class="text-xs text-ink-light leading-relaxed mb-4">{{ campaign.description }}</p>
-
-                                <div class="flex items-center gap-2 mb-3">
-                                    <div class="w-6 h-6 rounded-full bg-kraft border border-ink overflow-hidden flex items-center justify-center">
-                                        <i class="ph-bold ph-user text-xs"></i>
-                                    </div>
-                                    <span class="text-xs font-bold">{{ campaign.maker }}</span>
-                                    <span class="text-xs text-stencil">&bull; {{ campaign.location }}</span>
-                                </div>
-
-                                <div class="campaign-progress mb-2">
-                                    <div class="campaign-progress-fill" :class="{ hot: campaign.percent >= 90 }" :style="{ width: campaign.percent + '%' }"></div>
-                                </div>
-                                <div class="flex justify-between text-xs text-stencil">
-                                    <span><strong class="text-ink">{{ campaign.percent }}%</strong> of {{ campaign.goal }}</span>
-                                    <span>{{ campaign.backers }} backers</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="text-center mt-8">
-                    <a href="#" class="label-btn">View All Campaigns</a>
-                </div>
-            </div>
-        </section>
-
-        <div class="torn-divider"></div>
-
-        <!-- Maker Profiles Section -->
-        <section id="makers" class="py-12 md:py-16">
-            <div class="max-w-6xl mx-auto px-4">
-                <div class="stamp-label mb-2">Featured Makers</div>
-                <p class="text-sm text-ink-light mb-8">
-                    Hardware rebels with workshops, not just followers. Every profile is a portal into their lab.
-                </p>
-
-                <div class="relative">
-                    <div class="carousel-track" id="makers-carousel">
-                        <div v-for="maker in makers" :key="maker.id" class="carousel-card torn-card">
-                            <div class="torn-bg"></div>
-                            <div class="torn-content p-5">
-                                <div class="flex items-start gap-4 mb-4">
-                                    <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-ink flex-shrink-0 bg-kraft flex items-center justify-center">
-                                        <i class="ph-bold ph-user text-2xl text-stencil"></i>
-                                    </div>
-                                    <div class="flex-1 min-w-0">
-                                        <h4 class="font-bold text-sm uppercase tracking-wide truncate">{{ maker.name }}</h4>
-                                        <p class="text-xs text-stencil">{{ maker.title }}</p>
-                                        <p class="text-xs text-ink-light mt-1">{{ maker.location }}</p>
-                                    </div>
-                                </div>
-
-                                <p class="text-xs text-ink-light leading-relaxed mb-4">{{ maker.bio }}</p>
-
-                                <div class="flex gap-2 mb-4 flex-wrap">
-                                    <span v-for="skill in maker.skills" :key="skill" class="spec-tag">{{ skill }}</span>
-                                </div>
-
-                                <div class="flex justify-between items-center border-t border-dashed border-kraft-dark pt-3">
-                                    <div class="flex gap-4 text-xs text-stencil">
-                                        <span><strong class="text-ink">{{ maker.projects }}</strong> projects</span>
-                                        <span><strong class="text-ink">{{ maker.backers }}</strong> backers</span>
-                                    </div>
-                                    <a href="profile/" class="text-xs font-bold text-stamp hover:underline uppercase">View &rarr;</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-center gap-3 mt-4">
-                        <button class="carousel-nav-btn" onclick="document.getElementById('makers-carousel').scrollBy({left:-320,behavior:'smooth'})" aria-label="Previous">
-                            <i class="ph-bold ph-caret-left"></i>
-                        </button>
-                        <button class="carousel-nav-btn" onclick="document.getElementById('makers-carousel').scrollBy({left:320,behavior:'smooth'})" aria-label="Next">
-                            <i class="ph-bold ph-caret-right"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="text-center mt-8">
-                    <a href="#" class="label-btn label-btn-primary">
-                        Create Your Maker Profile
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <div class="torn-divider"></div>
-
-        <!-- Public Requests Section -->
-        <section id="requests" class="py-12 md:py-16">
-            <div class="max-w-6xl mx-auto px-4">
-                <div class="torn-card" style="padding-top:16px; position:relative;">
-                    <div class="tape-piece"></div>
-                    <div class="torn-bg-kraft"></div>
-                    <div class="torn-content p-6 md:p-10">
-                        <div class="flex items-center justify-between mb-2">
-                            <div class="stamp-label">Public Requests</div>
-                            <span class="text-xs font-bold text-stencil uppercase tracking-wider">{{ requests.length }} open requests</span>
-                        </div>
-                        <p class="text-sm text-ink-light mb-8">
-                            The world needs things that don't exist yet. Describe what you need, refine specs together, and let makers bring it to life.
-                            Anyone can submit, comment, and contribute.
+                        <p class="text-base sm:text-lg text-ink-faint max-w-lg mb-8 leading-relaxed">
+                            Back indie open-source hardware. Discover makers. Request what the world needs.
+                            We don't just think outside the box &mdash; we redesign the whole damned box.
                         </p>
 
-                        <div class="space-y-4">
-                            <div v-for="request in requests" :key="request.id" class="torn-card topic-card">
-                                <div class="torn-bg"></div>
-                                <div class="torn-content p-4 md:p-5">
-                                    <div class="flex gap-4">
-                                        <div class="flex flex-col items-center flex-shrink-0">
-                                            <button class="upvote-btn" :class="{ voted: request.voted }" @click="request.voted = !request.voted; request.voted ? request.votes++ : request.votes--">
-                                                <i class="ph-bold ph-arrow-fat-up text-sm"></i>
-                                                <span>{{ request.votes }}</span>
-                                            </button>
-                                        </div>
-                                        <div class="flex-1 min-w-0">
-                                            <div class="flex items-center gap-2 mb-2 flex-wrap">
-                                                <span :class="[
-                                                    'stamp-label',
-                                                    request.priority === 'high' ? 'stamp-label-stamp' : '',
-                                                    request.priority === 'funded' ? 'stamp-label-funded' : ''
-                                                ]" style="font-size:0.6rem; padding:0.15rem 0.5rem;">
-                                                    {{ request.priority === 'high' ? 'High Demand' : request.priority === 'funded' ? 'Bounty Active' : 'Open' }}
-                                                </span>
-                                                <span class="text-xs text-stencil">{{ request.category }}</span>
-                                            </div>
-
-                                            <h4 class="font-bold text-sm md:text-base uppercase tracking-wide mb-2">{{ request.title }}</h4>
-                                            <p class="text-xs text-ink-light leading-relaxed mb-3">{{ request.description }}</p>
-
-                                            <div class="flex gap-2 mb-3 flex-wrap">
-                                                <span v-for="spec in request.specs" :key="spec" class="spec-tag">{{ spec }}</span>
-                                            </div>
-
-                                            <div class="flex items-center justify-between">
-                                                <div class="flex items-center gap-3">
-                                                    <div class="contributor-stack">
-                                                        <div v-for="n in Math.min(request.contributors, 4)" :key="n" class="w-6 h-6 rounded-full bg-kraft-dark flex items-center justify-center">
-                                                            <i class="ph-bold ph-user text-[8px] text-paper"></i>
-                                                        </div>
-                                                        <div v-if="request.contributors > 4" class="w-6 h-6 rounded-full bg-ink flex items-center justify-center text-paper" style="font-size:7px; font-weight:700;">
-                                                            +{{ request.contributors - 4 }}
-                                                        </div>
-                                                    </div>
-                                                    <span class="text-xs text-stencil">{{ request.contributors }} contributors</span>
-                                                </div>
-                                                <div class="flex items-center gap-3 text-xs text-stencil">
-                                                    <span><i class="ph-bold ph-chat-dots mr-1"></i>{{ request.comments }}</span>
-                                                    <span v-if="request.bounty" class="font-bold text-funded">
-                                                        <i class="ph-bold ph-coin mr-1"></i>{{ request.bounty }}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="flex flex-wrap gap-3 mb-10">
+                            <a href="campaigns/" class="btn btn-primary">Explore Campaigns</a>
+                            <a href="requests/" class="btn btn-outline">Make a Request</a>
                         </div>
 
-                        <div class="flex flex-col sm:flex-row gap-4 items-center justify-center mt-8">
-                            <button class="label-btn label-btn-stamp" @click="showRequestModal = true">
-                                <i class="ph-bold ph-plus mr-2"></i>Submit a Request
-                            </button>
-                            <a href="#" class="label-btn">Browse All Requests</a>
+                        <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-ink-faint">
+                            <span><strong class="text-ink font-semibold">2,400+</strong> makers</span>
+                            <span><strong class="text-ink font-semibold">86</strong> campaigns</span>
+                            <span><strong class="text-ink font-semibold">12k+</strong> backers</span>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <div class="torn-divider"></div>
+        <!-- Portal Grid -->
+        <section class="pb-14 md:pb-20">
+            <div class="max-w-5xl mx-auto px-5 sm:px-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
-        <!-- Inventory Tool Section -->
-        <section id="inventory" class="py-12 md:py-16">
-            <div class="max-w-5xl mx-auto px-4">
-                <div class="torn-card">
-                    <div class="torn-bg-dark"></div>
-                    <div class="torn-content p-6 md:p-10 text-paper">
-                        <div class="flex flex-col md:flex-row gap-8 items-center">
-                            <div class="flex-1">
-                                <div class="stamp-label mb-6" style="border-color:#FAF3E8; color:#FAF3E8;">
-                                    <i class="ph-bold ph-package mr-1"></i> Maker Tool
-                                </div>
-                                <h2 class="text-3xl md:text-5xl font-bold uppercase mb-4">Your Lab,<br>Organized</h2>
-                                <div class="w-48 h-1 bg-stamp mb-6"></div>
-                                <p class="text-sm md:text-base text-kraft-light leading-relaxed mb-6">
-                                    Track every resistor, every dev board, every spool of filament. Card views, table views,
-                                    search by specs, panic mode for when you can't find that one component.
-                                    Built by makers who know the chaos of a real workshop.
-                                </p>
-                                <ul class="space-y-3 mb-8">
-                                    <li class="flex items-start gap-3 text-sm text-kraft-light">
-                                        <i class="ph-bold ph-check-circle text-stamp mt-0.5"></i>
-                                        <span>Track components, tools, materials & prototypes</span>
-                                    </li>
-                                    <li class="flex items-start gap-3 text-sm text-kraft-light">
-                                        <i class="ph-bold ph-check-circle text-stamp mt-0.5"></i>
-                                        <span>Card & table views with search and filters</span>
-                                    </li>
-                                    <li class="flex items-start gap-3 text-sm text-kraft-light">
-                                        <i class="ph-bold ph-check-circle text-stamp mt-0.5"></i>
-                                        <span>Pin favorites, track stock levels, generate BOMs</span>
-                                    </li>
-                                    <li class="flex items-start gap-3 text-sm text-kraft-light">
-                                        <i class="ph-bold ph-check-circle text-stamp mt-0.5"></i>
-                                        <span>Dark mode & mobile-friendly. Because 3 AM lab sessions.</span>
-                                    </li>
-                                </ul>
-                                <a href="inventory/" class="label-btn label-btn-stamp">
-                                    Open Inventory Tool
-                                </a>
-                            </div>
-
-                            <div class="hidden md:block w-72 lg:w-80">
-                                <div class="torn-card">
-                                    <div class="torn-bg"></div>
-                                    <div class="torn-content p-4 text-ink">
-                                        <div class="flex items-center justify-between mb-3">
-                                            <span class="text-xs font-bold uppercase tracking-wider">Quick View</span>
-                                            <span class="text-xs text-stencil">47 items</span>
-                                        </div>
-                                        <div class="space-y-2">
-                                            <div v-for="item in inventoryPreview" :key="item.name" class="flex items-center justify-between py-2 border-b border-dashed border-kraft">
-                                                <div class="flex items-center gap-2">
-                                                    <i :class="'ph-bold ph-' + item.icon + ' text-sm text-stencil'"></i>
-                                                    <span class="text-xs font-bold">{{ item.name }}</span>
-                                                </div>
-                                                <div class="flex items-center gap-2">
-                                                    <span class="text-xs text-stencil">x{{ item.qty }}</span>
-                                                    <span :class="[
-                                                        'w-2 h-2 rounded-full',
-                                                        item.status === 'ok' ? 'bg-funded' : item.status === 'low' ? 'bg-stamp' : 'bg-urgent'
-                                                    ]"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="torn-divider"></div>
-
-        <!-- Community / What We Believe Section -->
-        <section id="community" class="py-12 md:py-16">
-            <div class="max-w-5xl mx-auto px-4">
-                <div class="stamp-label mb-2">The Manifesto</div>
-                <p class="text-sm text-ink-light mb-8">Why we exist. What we believe. No fine print.</p>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 torn-grid mb-10">
-                    <div class="torn-card">
-                        <div class="torn-bg"></div>
-                        <div class="torn-content p-5">
-                            <div class="checklist-item pl-4 flex items-start gap-3">
-                                <i class="ph-bold ph-lock-key-open text-xl mt-0.5 text-stamp"></i>
-                                <div>
-                                    <h4 class="font-bold text-sm uppercase mb-1">Open it? Warranty intact.</h4>
-                                    <p class="text-xs text-ink-light">Every product ships with full schematics, BOM, firmware source, and CAD files. Your purchase, your right.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="torn-card">
-                        <div class="torn-bg"></div>
-                        <div class="torn-content p-5">
-                            <div class="checklist-item pl-4 flex items-start gap-3">
-                                <i class="ph-bold ph-hammer text-xl mt-0.5 text-stamp"></i>
-                                <div>
-                                    <h4 class="font-bold text-sm uppercase mb-1">Break it while learning? We're proud.</h4>
-                                    <p class="text-xs text-ink-light">Community support, repair guides, and spare parts. We designed it to be understood, not just used.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="torn-card">
-                        <div class="torn-bg"></div>
-                        <div class="torn-content p-5">
-                            <div class="checklist-item pl-4 flex items-start gap-3">
-                                <i class="ph-bold ph-git-fork text-xl mt-0.5 text-stamp"></i>
-                                <div>
-                                    <h4 class="font-bold text-sm uppercase mb-1">Improve our design? Please do.</h4>
-                                    <p class="text-xs text-ink-light">Fork it, mod it, make it better. Contributions go back to the community. That's the whole point.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="torn-card">
-                        <div class="torn-bg"></div>
-                        <div class="torn-content p-5">
-                            <div class="checklist-item pl-4 flex items-start gap-3">
-                                <i class="ph-bold ph-handshake text-xl mt-0.5 text-stamp"></i>
-                                <div>
-                                    <h4 class="font-bold text-sm uppercase mb-1">Access to the actual maker? Obviously.</h4>
-                                    <p class="text-xs text-ink-light">No faceless corporation. Talk directly to the person who designed and built your hardware.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- What we do -->
-                <div class="torn-card" style="position:relative; padding-top:16px;">
-                    <div class="tape-piece"></div>
-                    <div class="torn-bg"></div>
-                    <div class="torn-content p-6 md:p-10">
-                        <div class="stamp-label mb-6">What We Do</div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                            <div>
-                                <i class="ph-bold ph-lightbulb-filament text-2xl text-stamp mb-2 block"></i>
-                                <h4 class="font-bold text-sm uppercase mb-1">Consulting</h4>
-                                <p class="text-xs text-ink-light">For ideas that make VCs nervous.</p>
-                            </div>
-                            <div>
-                                <i class="ph-bold ph-sketch-logo text-2xl text-stamp mb-2 block"></i>
-                                <h4 class="font-bold text-sm uppercase mb-1">Prototyping</h4>
-                                <p class="text-xs text-ink-light">From napkin sketch to working chaos.</p>
-                            </div>
-                            <div>
-                                <i class="ph-bold ph-chalkboard-teacher text-2xl text-stamp mb-2 block"></i>
-                                <h4 class="font-bold text-sm uppercase mb-1">Workshops</h4>
-                                <p class="text-xs text-ink-light">Learn to make and break things properly.</p>
-                            </div>
-                            <div>
-                                <i class="ph-bold ph-pen-nib text-2xl text-stamp mb-2 block"></i>
-                                <h4 class="font-bold text-sm uppercase mb-1">Product Design</h4>
-                                <p class="text-xs text-ink-light">That make people fall in love with it.</p>
-                            </div>
-                            <div>
-                                <i class="ph-bold ph-cpu text-2xl text-stamp mb-2 block"></i>
-                                <h4 class="font-bold text-sm uppercase mb-1">Firmware Design</h4>
-                                <p class="text-xs text-ink-light">For the invisible magic stuff.</p>
-                            </div>
-                            <div>
-                                <i class="ph-bold ph-users-three text-2xl text-stamp mb-2 block"></i>
-                                <h4 class="font-bold text-sm uppercase mb-1">Community</h4>
-                                <p class="text-xs text-ink-light">Building India's open hardware guild.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="torn-divider"></div>
-
-        <!-- Wanted Poster / CTA -->
-        <section class="py-12 md:py-20">
-            <div class="max-w-3xl mx-auto px-4">
-                <div class="torn-card">
-                    <div class="torn-bg"></div>
-                    <div class="torn-content text-center">
-                        <div class="bg-ink text-paper py-4 px-6">
-                            <h2 class="text-2xl md:text-4xl font-bold uppercase">Wanted Dead or Alive</h2>
-                            <p class="text-xs text-kraft-light mt-1 tracking-widest uppercase">(Preferably alive and caffeinated)</p>
-                        </div>
-                        <div class="p-6 md:p-10">
-                            <div class="flex justify-center mb-6">
-                                <div class="w-24 h-24 rounded-full border-2 border-dashed border-ink flex items-center justify-center">
-                                    <span class="text-4xl font-bold text-ink">?</span>
-                                </div>
-                            </div>
-
-                            <div class="flex justify-center gap-3 mb-6">
-                                <span class="stamp-label" style="font-size:0.7rem;">Makers</span>
-                                <span class="stamp-label" style="font-size:0.7rem;">Tinkerers</span>
-                                <span class="stamp-label" style="font-size:0.7rem;">Hardware Rebels</span>
-                            </div>
-
-                            <div class="w-full h-px bg-ink opacity-20 mb-6"></div>
-
-                            <h3 class="font-bold text-lg uppercase tracking-wider mb-4">Crimes</h3>
-                            <ul class="text-sm text-ink-light space-y-2 mb-8 max-w-md mx-auto text-left">
-                                <li class="flex items-start gap-2">
-                                    <span class="text-ink font-bold">&bull;</span>
-                                    Building things that shouldn't work (but do)
-                                </li>
-                                <li class="flex items-start gap-2">
-                                    <span class="text-ink font-bold">&bull;</span>
-                                    Having more ideas than sleep
-                                </li>
-                                <li class="flex items-start gap-2">
-                                    <span class="text-ink font-bold">&bull;</span>
-                                    Believing documentation is optional
-                                </li>
-                                <li class="flex items-start gap-2">
-                                    <span class="text-ink font-bold">&bull;</span>
-                                    Making LEDs blink for no reason
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="bg-ink text-paper py-5 px-6">
-                            <p class="text-sm md:text-base font-bold uppercase tracking-wider mb-4">
-                                Reward: Your own profile on Absurd's maker platform
-                            </p>
-                            <button class="label-btn label-btn-stamp" @click="showJoinModal = true">
-                                Surrender Yourself
-                            </button>
-                            <p class="text-xs text-kraft-dark mt-3 tracking-wide">We don't judge your cable management</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="torn-divider"></div>
-
-        <!-- From the Community (Projects) -->
-        <section class="py-12 md:py-16">
-            <div class="max-w-6xl mx-auto px-4">
-                <div class="stamp-label mb-2">From the Community</div>
-                <p class="text-sm text-ink-light mb-8">Projects from our makers and the broader open hardware ecosystem.</p>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 torn-grid">
-                    <a v-for="project in communityProjects" :key="project.name" :href="project.url" target="_blank" class="torn-card topic-card" style="text-decoration:none; color:inherit;">
-                        <div class="torn-bg"></div>
-                        <div class="torn-content">
-                            <div class="p-4 flex items-center justify-center" style="min-height:160px;">
-                                <i :class="'ph-bold ph-' + project.icon + ' text-6xl text-stencil'"></i>
-                            </div>
-                            <div class="px-5 pb-5">
-                                <h4 class="font-bold text-sm uppercase tracking-wide mb-1">{{ project.name }}</h4>
-                                <p class="text-xs text-ink-light">{{ project.description }}</p>
-                            </div>
-                        </div>
+                    <a href="campaigns/" class="paper-card p-6 sm:p-8 no-underline text-ink group">
+                        <i class="ph-bold ph-rocket-launch text-4xl sm:text-5xl text-stamp mb-4 block transition-transform group-hover:scale-110"></i>
+                        <h3 class="font-serif font-bold text-xl sm:text-2xl mb-2">Campaigns</h3>
+                        <p class="text-sm text-ink-faint leading-relaxed">Back open-source, repairable indie hardware. Every project ships with full source files.</p>
+                        <span class="inline-flex items-center text-sm font-semibold text-stamp mt-4">
+                            Browse campaigns <i class="ph-bold ph-arrow-right ml-2"></i>
+                        </span>
                     </a>
+
+                    <a href="makers/" class="paper-card p-6 sm:p-8 no-underline text-ink group">
+                        <i class="ph-bold ph-users-three text-4xl sm:text-5xl text-stamp mb-4 block transition-transform group-hover:scale-110"></i>
+                        <h3 class="font-serif font-bold text-xl sm:text-2xl mb-2">Makers</h3>
+                        <p class="text-sm text-ink-faint leading-relaxed">Hardware rebels with workshops, not just followers. Every profile is a portal into their lab.</p>
+                        <span class="inline-flex items-center text-sm font-semibold text-stamp mt-4">
+                            Discover makers <i class="ph-bold ph-arrow-right ml-2"></i>
+                        </span>
+                    </a>
+
+                    <a href="requests/" class="paper-card p-6 sm:p-8 no-underline text-ink group">
+                        <i class="ph-bold ph-megaphone text-4xl sm:text-5xl text-stamp mb-4 block transition-transform group-hover:scale-110"></i>
+                        <h3 class="font-serif font-bold text-xl sm:text-2xl mb-2">Requests</h3>
+                        <p class="text-sm text-ink-faint leading-relaxed">The world needs things that don't exist yet. Describe it, refine specs together, let makers build it.</p>
+                        <span class="inline-flex items-center text-sm font-semibold text-stamp mt-4">
+                            See requests <i class="ph-bold ph-arrow-right ml-2"></i>
+                        </span>
+                    </a>
+
+                    <a href="inventory/" class="paper-card paper-card-dark p-6 sm:p-8 no-underline group">
+                        <i class="ph-bold ph-package text-4xl sm:text-5xl text-stamp mb-4 block transition-transform group-hover:scale-110"></i>
+                        <h3 class="font-serif font-bold text-xl sm:text-2xl mb-2 text-paper">Inventory</h3>
+                        <p class="text-sm text-kraft leading-relaxed">Track every resistor, every dev board, every spool. Built for the chaos of a real workshop.</p>
+                        <span class="inline-flex items-center text-sm font-semibold text-stamp mt-4">
+                            Open inventory <i class="ph-bold ph-arrow-right ml-2"></i>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Campaigns -->
+        <section class="pb-14 md:pb-20">
+            <div class="max-w-5xl mx-auto px-5 sm:px-6">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-3">
+                        <h2 class="font-serif font-bold text-2xl sm:text-3xl tracking-tight">What's Live</h2>
+                        <div class="w-2 h-2 bg-funded rounded-full pulse-soft"></div>
+                    </div>
+                    <a href="campaigns/" class="btn btn-ghost btn-sm">View all <i class="ph-bold ph-arrow-right ml-1"></i></a>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div v-for="c in featuredCampaigns" :key="c.id" class="paper-card overflow-hidden">
+                        <div class="h-40 sm:h-44 bg-kraft-light flex items-center justify-center">
+                            <i :class="'ph-bold ph-' + c.icon + ' text-5xl sm:text-6xl text-stencil opacity-60'"></i>
+                        </div>
+                        <div class="p-5 sm:p-6">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="tag tag-funded">Live</span>
+                                <span class="text-xs text-ink-faint">{{ c.category }}</span>
+                            </div>
+                            <h3 class="font-serif font-bold text-lg leading-snug mb-2">{{ c.name }}</h3>
+                            <p class="text-sm text-ink-faint leading-relaxed mb-4 line-clamp-2">{{ c.description }}</p>
+
+                            <div class="flex items-center gap-2 mb-4 text-xs text-ink-faint">
+                                <div class="w-5 h-5 rounded-full bg-kraft flex items-center justify-center flex-shrink-0">
+                                    <i class="ph-bold ph-user text-[8px]"></i>
+                                </div>
+                                <span class="font-semibold text-ink">{{ c.maker }}</span>
+                                <span>&middot; {{ c.location }}</span>
+                            </div>
+
+                            <div class="progress mb-2">
+                                <div class="progress-fill" :class="{ hot: c.percent >= 90 }" :style="{ width: c.percent + '%' }"></div>
+                            </div>
+                            <div class="flex justify-between text-xs text-ink-faint">
+                                <span><strong class="text-ink font-semibold">{{ c.percent }}%</strong> of {{ c.goal }}</span>
+                                <span>{{ c.backers }} backers</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA — Wanted Poster -->
+        <section class="pb-14 md:pb-20">
+            <div class="max-w-3xl mx-auto px-5 sm:px-6">
+                <div class="paper-card paper-card-flat overflow-hidden text-center">
+                    <div class="bg-ink text-paper px-6 py-5">
+                        <h2 class="font-serif font-black text-2xl sm:text-3xl tracking-tight">Wanted Dead or Alive</h2>
+                        <p class="text-xs text-kraft mt-1 tracking-wide">(Preferably alive and caffeinated)</p>
+                    </div>
+                    <div class="px-6 py-8 sm:px-10 sm:py-10">
+                        <div class="w-20 h-20 rounded-full border-2 border-dashed border-ink mx-auto mb-5 flex items-center justify-center">
+                            <span class="font-serif text-3xl font-black">?</span>
+                        </div>
+                        <div class="flex justify-center gap-2 mb-5 flex-wrap">
+                            <span class="tag tag-default">Makers</span>
+                            <span class="tag tag-default">Tinkerers</span>
+                            <span class="tag tag-default">Hardware Rebels</span>
+                        </div>
+                        <p class="text-sm text-ink-faint mb-6 max-w-sm mx-auto leading-relaxed">
+                            Building things that shouldn't work (but do). Having more ideas than sleep.
+                            Making LEDs blink for absolutely no reason.
+                        </p>
+                        <button class="btn btn-stamp" @click="showJoinModal = true">Surrender Yourself</button>
+                    </div>
+                    <div class="bg-ink text-paper px-6 py-4">
+                        <p class="text-xs text-kraft tracking-wide">We don't judge your cable management</p>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Footer -->
-        <footer class="py-12 mt-8" style="background: rgba(184,149,106,0.6);">
-            <div class="max-w-5xl mx-auto px-4">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <footer class="py-10" style="background: rgba(184,149,106,0.5);">
+            <div class="max-w-5xl mx-auto px-5 sm:px-6">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
                     <div>
-                        <h3 class="font-bold text-sm uppercase tracking-widest mb-4 text-ink">Platform</h3>
-                        <ul class="space-y-3 text-sm">
-                            <li><a href="#campaigns" class="text-ink hover:underline flex items-center font-bold">
-                                <i class="ph-bold ph-rocket-launch mr-2 text-xs"></i>Campaigns
-                            </a></li>
-                            <li><a href="#makers" class="text-ink hover:underline flex items-center font-bold">
-                                <i class="ph-bold ph-users-three mr-2 text-xs"></i>Makers
-                            </a></li>
-                            <li><a href="#requests" class="text-ink hover:underline flex items-center font-bold">
-                                <i class="ph-bold ph-megaphone mr-2 text-xs"></i>Requests
-                            </a></li>
-                            <li><a href="inventory/" class="text-ink hover:underline flex items-center font-bold">
-                                <i class="ph-bold ph-package mr-2 text-xs"></i>Inventory
-                            </a></li>
+                        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Platform</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="campaigns/" class="text-ink hover:underline font-medium">Campaigns</a></li>
+                            <li><a href="makers/" class="text-ink hover:underline font-medium">Makers</a></li>
+                            <li><a href="requests/" class="text-ink hover:underline font-medium">Requests</a></li>
+                            <li><a href="inventory/" class="text-ink hover:underline font-medium">Inventory</a></li>
                         </ul>
                     </div>
                     <div>
-                        <h3 class="font-bold text-sm uppercase tracking-widest mb-4 text-ink">Community</h3>
-                        <ul class="space-y-3 text-sm">
-                            <li><a href="https://discord.gg/DUSUtguG2H" target="_blank" class="text-ink hover:underline flex items-center font-bold">
-                                <i class="fa-brands fa-discord mr-2 text-xs"></i>Discord
-                            </a></li>
-                            <li><a href="https://www.instagram.com/absurd.industries" target="_blank" class="text-ink hover:underline flex items-center font-bold">
-                                <i class="fa-brands fa-instagram mr-2 text-xs"></i>Instagram
-                            </a></li>
-                            <li><a href="https://www.youtube.com/@absurd.industries" target="_blank" class="text-ink hover:underline flex items-center font-bold">
-                                <i class="fa-brands fa-youtube mr-2 text-xs"></i>YouTube
-                            </a></li>
-                            <li><a href="https://www.linkedin.com/company/absurd-industries" target="_blank" class="text-ink hover:underline flex items-center font-bold">
-                                <i class="fa-brands fa-linkedin mr-2 text-xs"></i>LinkedIn
-                            </a></li>
+                        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Community</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="https://discord.gg/DUSUtguG2H" target="_blank" class="text-ink hover:underline font-medium">Discord</a></li>
+                            <li><a href="https://www.instagram.com/absurd.industries" target="_blank" class="text-ink hover:underline font-medium">Instagram</a></li>
+                            <li><a href="https://www.youtube.com/@absurd.industries" target="_blank" class="text-ink hover:underline font-medium">YouTube</a></li>
+                            <li><a href="https://www.linkedin.com/company/absurd-industries" target="_blank" class="text-ink hover:underline font-medium">LinkedIn</a></li>
                         </ul>
                     </div>
                     <div>
-                        <h3 class="font-bold text-sm uppercase tracking-widest mb-4 text-ink">Resources</h3>
-                        <ul class="space-y-3 text-sm">
-                            <li><a href="hardware-devroom/" class="text-ink hover:underline flex items-center font-bold">
-                                <i class="ph-bold ph-microchip mr-2 text-xs"></i>Open Hardware Devroom
-                            </a></li>
-                            <li><a href="courses/" class="text-ink hover:underline flex items-center font-bold">
-                                <i class="ph-bold ph-graduation-cap mr-2 text-xs"></i>Courses
-                            </a></li>
-                            <li><a href="contact.htm" class="text-ink hover:underline flex items-center font-bold">
-                                <i class="ph-bold ph-envelope mr-2 text-xs"></i>Contact
-                            </a></li>
-                            <li><a href="policies.htm" class="text-ink hover:underline flex items-center font-bold">
-                                <i class="ph-bold ph-file-text mr-2 text-xs"></i>Policies
-                            </a></li>
+                        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Resources</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="hardware-devroom/" class="text-ink hover:underline font-medium">Hardware Devroom</a></li>
+                            <li><a href="courses/" class="text-ink hover:underline font-medium">Courses</a></li>
+                            <li><a href="contact.htm" class="text-ink hover:underline font-medium">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Legal</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="privacy-policy.htm" class="text-ink hover:underline font-medium">Privacy</a></li>
+                            <li><a href="terms-and-conditions.htm" class="text-ink hover:underline font-medium">Terms</a></li>
+                            <li><a href="policies.htm" class="text-ink hover:underline font-medium">Policies</a></li>
                         </ul>
                     </div>
                 </div>
-
-                <div class="border-t border-ink border-opacity-20 pt-6 flex flex-col md:flex-row justify-between items-center gap-2">
+                <div class="border-t border-ink/10 pt-5 flex flex-col sm:flex-row justify-between items-center gap-2">
                     <div class="flex items-center gap-2">
-                        <img src="hardware-devroom/images/absurd-logo-for-any-background.png" alt="Absurd Industries" class="h-6">
-                        <p class="text-xs text-ink font-bold">Absurd Industries</p>
+                        <img src="hardware-devroom/images/absurd-logo-for-any-background.png" alt="" class="h-5">
+                        <span class="text-xs font-semibold">Absurd Industries</span>
                     </div>
-                    <p class="text-xs text-stencil">
-                        <span class="copyleft">&copy;</span> Copyleft 2023&ndash;2026. We don't just think outside the box; we redesign the whole damned box.
+                    <p class="text-xs text-ink-faint">
+                        <span class="copyleft">&copy;</span> Copyleft 2023&ndash;2026. Made with curiosity in Bengaluru.
                     </p>
                 </div>
             </div>
         </footer>
 
-        <!-- Mobile Bottom Bar -->
-        <nav class="mobile-bar md:hidden">
+        <!-- Mobile Nav -->
+        <nav class="mobile-nav md:hidden">
             <div class="grid grid-cols-5">
-                <a href="#campaigns"><i class="ph-bold ph-rocket-launch"></i><span>Campaigns</span></a>
-                <a href="#makers"><i class="ph-bold ph-users-three"></i><span>Makers</span></a>
-                <a href="#requests"><i class="ph-bold ph-megaphone"></i><span>Requests</span></a>
+                <a href="campaigns/"><i class="ph-bold ph-rocket-launch"></i><span>Campaigns</span></a>
+                <a href="makers/"><i class="ph-bold ph-users-three"></i><span>Makers</span></a>
+                <a href="requests/"><i class="ph-bold ph-megaphone"></i><span>Requests</span></a>
                 <a href="inventory/"><i class="ph-bold ph-package"></i><span>Inventory</span></a>
                 <a href="https://discord.gg/DUSUtguG2H" target="_blank"><i class="fa-brands fa-discord"></i><span>Discord</span></a>
             </div>
         </nav>
 
         <!-- Join Modal -->
-        <div v-if="showJoinModal" class="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4" @click="showJoinModal = false">
-            <div class="torn-card max-w-md w-full" @click.stop>
-                <div class="torn-bg"></div>
-                <div class="torn-content p-6 md:p-8">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="stamp-label">Join the Guild</div>
-                        <button @click="showJoinModal = false" class="text-ink-light hover:text-ink"><i class="ph-bold ph-x text-lg"></i></button>
-                    </div>
-                    <p class="text-sm text-ink-light mb-6">Get your maker profile, back campaigns, submit requests, and manage your lab inventory.</p>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="text-xs font-bold uppercase tracking-wide block mb-2">Your Name</label>
-                            <input type="text" placeholder="What do they call you?" class="w-full p-3 border-2 border-ink bg-paper font-mono text-sm focus:outline-none focus:border-stamp">
-                        </div>
-                        <div>
-                            <label class="text-xs font-bold uppercase tracking-wide block mb-2">Email</label>
-                            <input type="email" placeholder="your@workshop.dev" class="w-full p-3 border-2 border-ink bg-paper font-mono text-sm focus:outline-none focus:border-stamp">
-                        </div>
-                        <div>
-                            <label class="text-xs font-bold uppercase tracking-wide block mb-2">What Do You Make?</label>
-                            <input type="text" placeholder="PCBs, robots, chaos..." class="w-full p-3 border-2 border-ink bg-paper font-mono text-sm focus:outline-none focus:border-stamp">
-                        </div>
-                    </div>
-                    <button class="label-btn label-btn-primary w-full text-center justify-center mt-6">
-                        Create My Profile
-                    </button>
-                    <p class="text-xs text-stencil text-center mt-3">Already have an account? <a href="#" class="font-bold text-ink underline">Log in</a></p>
+        <div v-if="showJoinModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4" @click="showJoinModal = false">
+            <div class="paper-card max-w-md w-full p-6 sm:p-8" @click.stop>
+                <div class="flex items-center justify-between mb-5">
+                    <h3 class="font-serif font-bold text-xl">Join the Guild</h3>
+                    <button @click="showJoinModal = false" class="text-ink-faint hover:text-ink"><i class="ph-bold ph-x text-lg"></i></button>
                 </div>
+                <p class="text-sm text-ink-faint mb-6">Get your maker profile, back campaigns, submit requests, and manage your inventory.</p>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs font-semibold uppercase tracking-wide block mb-1.5">Name</label>
+                        <input type="text" placeholder="What do they call you?" class="w-full p-3 rounded-xl border-1.5 border-ink/20 bg-paper text-sm focus:outline-none focus:border-stamp focus:ring-1 focus:ring-stamp/30">
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold uppercase tracking-wide block mb-1.5">Email</label>
+                        <input type="email" placeholder="your@workshop.dev" class="w-full p-3 rounded-xl border-1.5 border-ink/20 bg-paper text-sm focus:outline-none focus:border-stamp focus:ring-1 focus:ring-stamp/30">
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold uppercase tracking-wide block mb-1.5">What do you make?</label>
+                        <input type="text" placeholder="PCBs, robots, chaos..." class="w-full p-3 rounded-xl border-1.5 border-ink/20 bg-paper text-sm focus:outline-none focus:border-stamp focus:ring-1 focus:ring-stamp/30">
+                    </div>
+                </div>
+                <button class="btn btn-stamp w-full mt-6">Create My Profile</button>
+                <p class="text-xs text-ink-faint text-center mt-3">Already here? <a href="#" class="font-semibold text-ink underline">Log in</a></p>
             </div>
         </div>
-
-        <!-- Request Modal -->
-        <div v-if="showRequestModal" class="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4" @click="showRequestModal = false">
-            <div class="torn-card max-w-lg w-full" @click.stop>
-                <div class="torn-bg"></div>
-                <div class="torn-content p-6 md:p-8">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="stamp-label stamp-label-stamp">New Request</div>
-                        <button @click="showRequestModal = false" class="text-ink-light hover:text-ink"><i class="ph-bold ph-x text-lg"></i></button>
-                    </div>
-                    <p class="text-sm text-ink-light mb-6">Describe what you need. The community will refine specs and makers can pick it up.</p>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="text-xs font-bold uppercase tracking-wide block mb-2">What do you need?</label>
-                            <input type="text" placeholder="e.g. Open source desktop CNC machine" class="w-full p-3 border-2 border-ink bg-paper font-mono text-sm focus:outline-none focus:border-stamp">
-                        </div>
-                        <div>
-                            <label class="text-xs font-bold uppercase tracking-wide block mb-2">Category</label>
-                            <select class="w-full p-3 border-2 border-ink bg-paper font-mono text-sm focus:outline-none focus:border-stamp">
-                                <option>Electronics</option>
-                                <option>Robotics</option>
-                                <option>3D Printing</option>
-                                <option>IoT / Home Automation</option>
-                                <option>Tools & Equipment</option>
-                                <option>Sustainability</option>
-                                <option>Education</option>
-                                <option>Other</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="text-xs font-bold uppercase tracking-wide block mb-2">Description & Specs</label>
-                            <textarea placeholder="Describe the problem it solves, key specs, constraints, budget range..." rows="4" class="w-full p-3 border-2 border-ink bg-paper font-mono text-sm focus:outline-none focus:border-stamp resize-none"></textarea>
-                        </div>
-                    </div>
-                    <button class="label-btn label-btn-stamp w-full text-center justify-center mt-6">
-                        <i class="ph-bold ph-paper-plane-tilt mr-2"></i>Submit Request
-                    </button>
-                </div>
-            </div>
-        </div>
-
     </div>
 
     <script>
         const { createApp } = Vue;
-
         createApp({
             data() {
                 return {
-                    activeSection: 'campaigns',
                     showJoinModal: false,
-                    showRequestModal: false,
-
-                    campaigns: [
+                    featuredCampaigns: [
                         {
                             id: 1, name: 'Open Source Water Purifier', icon: 'drop',
-                            description: 'Community-designed, field-repairable water purification system for off-grid communities. Full BOM, 3D-printable parts, open firmware.',
-                            maker: 'Priya Sharma', location: 'Bangalore',
-                            category: 'Sustainability', status: 'live',
+                            description: 'Community-designed, field-repairable water purification for off-grid communities. Full BOM and open firmware.',
+                            maker: 'Priya Sharma', location: 'Bangalore', category: 'Sustainability',
                             percent: 73, goal: '₹2,50,000', backers: 184,
                         },
                         {
                             id: 2, name: 'Desktop CNC Mill', icon: 'gear-six',
-                            description: 'A compact, open-source CNC milling machine for PCB prototyping and light metalwork. Grbl-compatible, fully documented.',
-                            maker: 'Vikram Rao', location: 'Hyderabad',
-                            category: 'Tools', status: 'live',
+                            description: 'Compact, open-source CNC milling machine for PCB prototyping and light metalwork. Grbl-compatible.',
+                            maker: 'Vikram Rao', location: 'Hyderabad', category: 'Tools',
                             percent: 91, goal: '₹5,00,000', backers: 312,
                         },
                         {
-                            id: 3, name: 'ESP32 Learning Kit', icon: 'cpu',
-                            description: 'A beginner-friendly, modular electronics learning kit built around ESP32. Comes with lessons, challenges, and community support.',
-                            maker: 'Neha Kulkarni', location: 'Pune',
-                            category: 'Education', status: 'live',
-                            percent: 45, goal: '₹1,00,000', backers: 89,
-                        },
-                        {
-                            id: 4, name: 'LoRa Mesh Network Node', icon: 'broadcast',
-                            description: 'Solar-powered, weatherproof LoRa nodes for building community mesh networks. No internet required. Open PCB design in KiCad.',
-                            maker: 'Arjun Nair', location: 'Kochi',
-                            category: 'IoT', status: 'live',
+                            id: 3, name: 'LoRa Mesh Network Node', icon: 'broadcast',
+                            description: 'Solar-powered LoRa nodes for community mesh networks. No internet required. Open KiCad design.',
+                            maker: 'Arjun Nair', location: 'Kochi', category: 'IoT',
                             percent: 58, goal: '₹3,50,000', backers: 156,
                         },
-                        {
-                            id: 5, name: 'Modular Synth Module', icon: 'waveform',
-                            description: 'Eurorack-compatible open-source analog oscillator module. Through-hole design for easy assembly. Full schematics in KiCad.',
-                            maker: 'Zara Ahmed', location: 'Mumbai',
-                            category: 'Audio', status: 'funded',
-                            percent: 100, goal: '₹1,75,000', backers: 243,
-                        },
-                        {
-                            id: 6, name: 'Soil Sensor Array', icon: 'plant',
-                            description: 'Open-source soil moisture, pH, and nutrient sensor network for small farms. Runs on solar, reports via LoRa.',
-                            maker: 'Raj Patel', location: 'Ahmedabad',
-                            category: 'Agriculture', status: 'coming',
-                            percent: 0, goal: '₹4,00,000', backers: 0,
-                        },
-                    ],
-
-                    makers: [
-                        {
-                            id: 1, name: 'Balu Babu', title: 'Hardware Engineer & Maker',
-                            location: 'Bangalore, India',
-                            bio: 'Building open-source macropads and dev boards. CoryDora creator. Obsessed with KiCad and local manufacturing.',
-                            skills: ['KiCad', 'ESP32', 'QMK', 'PCB Design'],
-                            projects: 8, backers: 340,
-                        },
-                        {
-                            id: 2, name: 'Amit Kumar', title: 'Product Designer & Firmware Dev',
-                            location: 'Bangalore, India',
-                            bio: 'From napkin sketch to working product. Lampy, Explorer, and a dozen other absurd things. Probably soldering right now.',
-                            skills: ['Firmware', 'Product Design', 'ESP32', 'OpenSCAD'],
-                            projects: 12, backers: 520,
-                        },
-                        {
-                            id: 3, name: 'Priya Sharma', title: 'Sustainability Engineer',
-                            location: 'Bangalore, India',
-                            bio: 'Designing field-repairable tech for communities that need it most. Currently obsessed with open-source water purification.',
-                            skills: ['CAD', '3D Printing', 'Arduino', 'Solar'],
-                            projects: 5, backers: 184,
-                        },
-                        {
-                            id: 4, name: 'Vikram Rao', title: 'CNC & Robotics Maker',
-                            location: 'Hyderabad, India',
-                            bio: 'Building desktop CNC machines and teaching others to do the same. Grbl contributor. Workshop chaos enthusiast.',
-                            skills: ['CNC', 'Grbl', 'Stepper Motors', 'FreeCAD'],
-                            projects: 6, backers: 312,
-                        },
-                        {
-                            id: 5, name: 'Neha Kulkarni', title: 'Educator & Kit Designer',
-                            location: 'Pune, India',
-                            bio: 'Making hardware education accessible. Building modular learning kits that don\'t suck. Former teacher, forever maker.',
-                            skills: ['ESP32', 'CircuitPython', 'Education', 'PCB'],
-                            projects: 4, backers: 89,
-                        },
-                        {
-                            id: 6, name: 'Zara Ahmed', title: 'Audio Hardware Designer',
-                            location: 'Mumbai, India',
-                            bio: 'Eurorack modules, synthesizers, and audio circuits. All open source, all through-hole for DIY builders.',
-                            skills: ['Analog', 'Eurorack', 'KiCad', 'Audio'],
-                            projects: 7, backers: 243,
-                        },
-                    ],
-
-                    requests: [
-                        {
-                            id: 1, title: 'Open Source Desktop CNC Machine',
-                            description: 'A sub-$500 desktop CNC for PCB milling, wood engraving, and light aluminum work. Must be buildable with commonly available parts.',
-                            category: 'Tools & Equipment',
-                            priority: 'high',
-                            specs: ['Grbl', '<$500', 'PCB Milling', 'Open CAD'],
-                            votes: 247, voted: false,
-                            contributors: 18, comments: 64,
-                            bounty: null,
-                        },
-                        {
-                            id: 2, title: 'Community Water Purifier',
-                            description: 'Solar-powered, open-source water purification unit for rural communities. Must be field-repairable with local materials.',
-                            category: 'Sustainability',
-                            priority: 'funded',
-                            specs: ['Solar', 'Field-Repair', 'BOM < ₹5K', 'Open Hardware'],
-                            votes: 189, voted: false,
-                            contributors: 23, comments: 91,
-                            bounty: '₹25,000',
-                        },
-                        {
-                            id: 3, title: 'RISC-V Development Board for Beginners',
-                            description: 'An affordable, well-documented RISC-V board designed for students. Arduino-level simplicity with real RISC-V silicon.',
-                            category: 'Education',
-                            priority: 'open',
-                            specs: ['RISC-V', 'USB-C', 'Arduino IDE', 'Under ₹2K'],
-                            votes: 134, voted: false,
-                            contributors: 11, comments: 38,
-                            bounty: null,
-                        },
-                        {
-                            id: 4, title: 'Open Source Pick & Place Machine',
-                            description: 'Affordable DIY pick-and-place for small-batch SMD assembly. Community needs this to stop hand-placing 0402s.',
-                            category: 'Manufacturing',
-                            priority: 'high',
-                            specs: ['OpenPnP', 'Camera Vision', '<$1000', 'Modular'],
-                            votes: 203, voted: false,
-                            contributors: 15, comments: 52,
-                            bounty: null,
-                        },
-                    ],
-
-                    inventoryPreview: [
-                        { name: 'ESP32-S3 DevKit', icon: 'cpu', qty: 12, status: 'ok' },
-                        { name: 'WS2812B Strip (5m)', icon: 'lightbulb', qty: 3, status: 'low' },
-                        { name: 'Raspberry Pi 4B', icon: 'desktop-tower', qty: 2, status: 'low' },
-                        { name: '0.96" OLED Display', icon: 'monitor', qty: 8, status: 'ok' },
-                        { name: 'Soldering Tips', icon: 'fire', qty: 0, status: 'out' },
-                        { name: 'M3 Standoffs', icon: 'nut', qty: 150, status: 'ok' },
-                    ],
-
-                    communityProjects: [
-                        { name: 'CoryDora', icon: 'keyboard', description: 'Open-source macropad designed and shipped from India using KiCad, QMK, and FreeCAD.', url: 'https://github.com/balub/CoryDora' },
-                        { name: 'Makerville Badge', icon: 'identification-badge', description: 'Community devboard badge built with ESP32-C3, KiCad, Zephyr, and WebBluetooth.', url: 'https://github.com/makerville/makerville-badge' },
-                        { name: 'JigIta', icon: 'cube', description: 'Generate 3D-printable soldering jigs from any PCB design in minutes.', url: 'https://github.com/shreekumar3d/jigita' },
-                        { name: 'Lampy', icon: 'lamp', description: 'Ambient desktop light with an ESP32 heart and WS2812B LEDs.', url: '#' },
-                        { name: 'Explorer', icon: 'robot', description: 'Open-source robot with omni-wheels and expressive LED eyes.', url: '#' },
-                        { name: 'Minirack', icon: 'hard-drives', description: 'DIY 10-inch homelab server rack built from aluminium extrusions.', url: 'https://github.com/jace/minirack' },
                     ],
                 };
-            },
-            mounted() {
-                const sections = ['campaigns', 'makers', 'requests', 'inventory', 'community'];
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            this.activeSection = entry.target.id;
-                        }
-                    });
-                }, { rootMargin: '-40% 0px -40% 0px' });
-
-                sections.forEach(id => {
-                    const el = document.getElementById(id);
-                    if (el) observer.observe(el);
-                });
             },
         }).mount('#app');
     </script>
