@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Requests | Absurd Industries - What the World Needs Built</title>
+    <meta name="description" content="Request open-source hardware products that don't exist yet. Describe what you need, refine specs together, and let makers bring it to life.">
+
+    <meta property="og:title" content="Requests | Absurd Industries">
+    <meta property="og:description" content="The world needs things that don't exist yet. Request open-source hardware and let makers bring it to life.">
+    <meta property="og:image" content="https://absurd.industries/hardware-devroom/screen.png">
+    <meta property="og:url" content="https://absurd.industries/requests/">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16x16.png">
+    <link rel="shortcut icon" href="../assets/favicon/favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap" rel="stylesheet">
+
+    <script src="https://kit.fontawesome.com/e0c6d65845.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kraft: { DEFAULT: '#D4B896', light: '#E8D5B7', dark: '#B8956A' },
+                        ink: { DEFAULT: '#1A1A1A', light: '#3D3D3D', faint: '#6B5B4A' },
+                        stamp: { DEFAULT: '#FF5900', dark: '#CC4700' },
+                        tape: '#F5E6C8',
+                        paper: '#FAF3E8',
+                        stencil: '#6B5B4A',
+                        funded: '#2A5F41',
+                    },
+                    fontFamily: {
+                        serif: ['"Fraunces"', 'Georgia', 'serif'],
+                        sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        'card': '1.25rem',
+                    },
+                },
+            },
+        };
+    </script>
+
+    <style>
+        body {
+            background-color: #D4B896;
+            background-image: url('../hardware-devroom/images/kraft-paper.jpg');
+            background-repeat: repeat;
+            background-size: auto;
+        }
+
+        /* Paper card */
+        .paper-card {
+            background: #FAF3E8;
+            border-radius: 1.25rem;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05), 0 4px 16px rgba(0,0,0,0.04);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .paper-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.06);
+        }
+        .paper-card-flat { box-shadow: none; }
+        .paper-card-flat:hover { transform: none; box-shadow: none; }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 0.75rem 1.75rem;
+            font-family: 'DM Sans', system-ui, sans-serif;
+            font-weight: 600; font-size: 0.875rem;
+            letter-spacing: 0.02em;
+            border-radius: 999px;
+            text-decoration: none;
+            transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+            cursor: pointer;
+            border: none;
+        }
+        .btn:hover { transform: translateY(-1px); }
+        .btn-primary {
+            background: #1A1A1A; color: #FAF3E8;
+        }
+        .btn-primary:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .btn-stamp {
+            background: #FF5900; color: #FAF3E8;
+        }
+        .btn-stamp:hover { box-shadow: 0 4px 12px rgba(255,89,0,0.25); }
+        .btn-outline {
+            background: transparent; color: #1A1A1A;
+            border: 1.5px solid #1A1A1A;
+        }
+        .btn-outline:hover { background: #1A1A1A; color: #FAF3E8; }
+        .btn-ghost {
+            background: transparent; color: #1A1A1A;
+            padding: 0.5rem 1rem;
+        }
+        .btn-ghost:hover { background: rgba(26,26,26,0.05); }
+        .btn-sm { padding: 0.5rem 1.25rem; font-size: 0.8rem; }
+
+        /* Tags */
+        .tag {
+            display: inline-flex; align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.7rem; font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .tag-default { background: rgba(26,26,26,0.08); color: #1A1A1A; }
+        .tag-stamp { background: rgba(255,89,0,0.12); color: #FF5900; }
+        .tag-funded { background: rgba(42,95,65,0.12); color: #2A5F41; }
+        .tag-paper { background: #FAF3E8; color: #6B5B4A; border: 1px solid rgba(107,91,74,0.2); }
+
+        /* Nav link */
+        .nav-link {
+            text-decoration: none; color: #1A1A1A;
+            font-weight: 500; font-size: 0.875rem;
+            padding: 0.25rem 0;
+            border-bottom: 1.5px solid transparent;
+            transition: border-color 0.15s, color 0.15s;
+        }
+        .nav-link:hover { border-bottom-color: #1A1A1A; }
+        .nav-link.active { border-bottom-color: #FF5900; color: #FF5900; }
+
+        /* Mobile nav */
+        .mobile-nav {
+            position: fixed; bottom: 16px; left: 16px; right: 16px;
+            background: rgba(26,26,26,0.92);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border-radius: 999px;
+            z-index: 50;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+            padding: 4px;
+        }
+        .mobile-nav a {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 8px 0;
+            color: rgba(250,243,232,0.6);
+            text-decoration: none;
+            font-family: 'DM Sans', system-ui, sans-serif;
+            font-size: 0.6rem; font-weight: 600;
+            letter-spacing: 0.03em; text-transform: uppercase;
+            transition: color 0.15s;
+            border-radius: 999px;
+        }
+        .mobile-nav a:hover, .mobile-nav a:active { color: #FF5900; }
+        .mobile-nav a.active { color: #FF5900; }
+        .mobile-nav a i, .mobile-nav a .ph-bold { font-size: 1.2rem; margin-bottom: 2px; }
+
+        @media (max-width: 767px) { body { padding-bottom: 88px; } }
+
+        .copyleft { display: inline-block; transform: rotate(180deg); }
+
+        /* Upvote button */
+        .upvote-btn {
+            width: 48px; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 2px;
+            padding: 8px 0; border-radius: 0.75rem;
+            border: 1.5px solid #1A1A1A; background: transparent;
+            font-size: 0.75rem; font-weight: 700; cursor: pointer;
+            transition: all 0.15s;
+        }
+        .upvote-btn:hover, .upvote-btn.voted { background: #1A1A1A; color: #FAF3E8; }
+
+        /* Contributor stack */
+        .contributor-stack { display: flex; }
+        .contributor-stack > * { margin-left: -6px; border: 2px solid #FAF3E8; }
+        .contributor-stack > *:first-child { margin-left: 0; }
+
+        /* Spec tag */
+        .spec-tag {
+            display: inline-flex; align-items: center;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            font-size: 0.65rem; font-weight: 600;
+            background: rgba(26,26,26,0.06);
+            color: #6B5B4A;
+        }
+
+        /* Sort select */
+        .sort-select {
+            appearance: none;
+            background: #FAF3E8 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%231A1A1A' d='M6 8L1 3h10z'/%3E%3C/svg%3E") no-repeat right 12px center;
+            padding: 0.5rem 2.25rem 0.5rem 1rem;
+            border-radius: 999px;
+            border: 1.5px solid rgba(26,26,26,0.15);
+            font-family: 'DM Sans', system-ui, sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #1A1A1A;
+            cursor: pointer;
+            transition: border-color 0.15s;
+        }
+        .sort-select:focus { outline: none; border-color: #FF5900; }
+
+        /* Category filter pills */
+        .filter-pill {
+            display: inline-flex; align-items: center;
+            padding: 0.4rem 1rem;
+            border-radius: 999px;
+            font-size: 0.75rem; font-weight: 600;
+            border: 1.5px solid rgba(26,26,26,0.15);
+            background: transparent;
+            color: #1A1A1A;
+            cursor: pointer;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .filter-pill:hover { border-color: #1A1A1A; }
+        .filter-pill.active { background: #1A1A1A; color: #FAF3E8; border-color: #1A1A1A; }
+
+        /* Modal input */
+        .modal-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            border: 1.5px solid rgba(26,26,26,0.15);
+            background: #FAF3E8;
+            font-family: 'DM Sans', system-ui, sans-serif;
+            font-size: 0.875rem;
+            color: #1A1A1A;
+            transition: border-color 0.15s;
+        }
+        .modal-input:focus { outline: none; border-color: #FF5900; box-shadow: 0 0 0 3px rgba(255,89,0,0.1); }
+        .modal-input::placeholder { color: #B8956A; }
+
+        textarea.modal-input { resize: vertical; min-height: 100px; }
+    </style>
+</head>
+
+<body class="font-sans text-ink min-h-screen antialiased">
+
+    <div id="app">
+
+        <!-- Nav -->
+        <nav class="sticky top-0 z-40 backdrop-blur-md" style="background: rgba(212,184,150,0.9);">
+            <div class="max-w-6xl mx-auto px-5 sm:px-6">
+                <div class="flex items-center justify-between h-16">
+                    <a href="../" class="flex items-center gap-3 no-underline">
+                        <img src="../hardware-devroom/images/absurd-logo-for-any-background.png" alt="Absurd Industries" class="h-8">
+                        <span class="font-serif font-semibold text-lg tracking-tight hidden sm:inline">Absurd Industries</span>
+                    </a>
+                    <div class="hidden md:flex items-center gap-6">
+                        <a href="../campaigns/" class="nav-link">Campaigns</a>
+                        <a href="../makers/" class="nav-link">Makers</a>
+                        <a href="./" class="nav-link active">Requests</a>
+                        <a href="../inventory/" class="nav-link">Inventory</a>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <a href="https://discord.gg/DUSUtguG2H" target="_blank" class="btn btn-ghost btn-sm hidden sm:inline-flex">
+                            <i class="fa-brands fa-discord mr-2"></i>Discord
+                        </a>
+                        <button class="btn btn-stamp btn-sm" @click="showSubmitModal = true">Submit a Request</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Header -->
+        <section class="py-10 md:py-14">
+            <div class="max-w-4xl mx-auto px-5 sm:px-6">
+                <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl font-black leading-[0.95] tracking-tight mb-4">Requests</h1>
+                <p class="text-base sm:text-lg text-ink-faint max-w-xl mb-8 leading-relaxed">
+                    The world needs things that don't exist yet. Describe what you need, refine specs together, and let makers bring it to life.
+                </p>
+
+                <div class="flex flex-wrap items-center gap-3">
+                    <button class="btn btn-stamp" @click="showSubmitModal = true">
+                        <i class="ph-bold ph-plus mr-2"></i>Submit a Request
+                    </button>
+                    <select class="sort-select" v-model="sortBy">
+                        <option value="votes">Most Votes</option>
+                        <option value="newest">Newest</option>
+                        <option value="active">Most Active</option>
+                    </select>
+                </div>
+
+                <!-- Category filters -->
+                <div class="flex flex-wrap gap-2 mt-6">
+                    <button
+                        v-for="cat in categories" :key="cat"
+                        class="filter-pill"
+                        :class="{ active: activeCategory === cat }"
+                        @click="activeCategory = activeCategory === cat ? 'All' : cat"
+                    >{{ cat }}</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Request List -->
+        <section class="pb-14 md:pb-20">
+            <div class="max-w-4xl mx-auto px-5 sm:px-6">
+                <div class="space-y-4">
+                    <div v-for="req in filteredRequests" :key="req.id" class="paper-card p-5 sm:p-6">
+                        <div class="flex gap-4">
+                            <!-- Upvote -->
+                            <div class="flex-shrink-0">
+                                <button
+                                    class="upvote-btn"
+                                    :class="{ voted: req.voted }"
+                                    @click="toggleVote(req)"
+                                >
+                                    <i class="ph-bold ph-arrow-fat-up text-base"></i>
+                                    <span>{{ req.votes }}</span>
+                                </button>
+                            </div>
+
+                            <!-- Content -->
+                            <div class="flex-1 min-w-0">
+                                <!-- Priority + Category -->
+                                <div class="flex flex-wrap items-center gap-2 mb-2">
+                                    <span class="tag" :class="priorityClass(req.priority)">{{ req.priority }}</span>
+                                    <span class="text-xs text-ink-faint">{{ req.category }}</span>
+                                </div>
+
+                                <!-- Title -->
+                                <h3 class="font-serif font-bold text-lg sm:text-xl leading-snug mb-2">{{ req.title }}</h3>
+
+                                <!-- Description -->
+                                <p class="text-sm text-ink-faint leading-relaxed mb-3 line-clamp-2">{{ req.description }}</p>
+
+                                <!-- Spec Tags -->
+                                <div class="flex flex-wrap gap-1.5 mb-4">
+                                    <span v-for="spec in req.specs" :key="spec" class="spec-tag">{{ spec }}</span>
+                                </div>
+
+                                <!-- Meta row -->
+                                <div class="flex flex-wrap items-center gap-4 text-xs text-ink-faint">
+                                    <!-- Contributors -->
+                                    <div class="flex items-center gap-2">
+                                        <div class="contributor-stack">
+                                            <div v-for="(color, i) in req.avatarColors" :key="i"
+                                                class="w-6 h-6 rounded-full flex items-center justify-center text-[8px] font-bold text-paper"
+                                                :style="{ background: color }">
+                                                {{ req.avatarInitials[i] }}
+                                            </div>
+                                        </div>
+                                        <span class="font-semibold text-ink">{{ req.contributors }}</span> contributors
+                                    </div>
+
+                                    <!-- Comments -->
+                                    <div class="flex items-center gap-1.5">
+                                        <i class="ph-bold ph-chat-circle text-sm"></i>
+                                        <span>{{ req.comments }} comments</span>
+                                    </div>
+
+                                    <!-- Bounty -->
+                                    <div v-if="req.bounty" class="flex items-center gap-1.5 text-funded font-semibold">
+                                        <i class="ph-bold ph-coin text-sm"></i>
+                                        <span>{{ req.bounty }} bounty</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Empty state -->
+                    <div v-if="filteredRequests.length === 0" class="paper-card p-10 text-center">
+                        <i class="ph-bold ph-magnifying-glass text-5xl text-stencil opacity-40 mb-4 block"></i>
+                        <h3 class="font-serif font-bold text-xl mb-2">No requests found</h3>
+                        <p class="text-sm text-ink-faint">Try a different category or be the first to submit one.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="py-10" style="background: rgba(184,149,106,0.5);">
+            <div class="max-w-5xl mx-auto px-5 sm:px-6">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+                    <div>
+                        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Platform</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="../campaigns/" class="text-ink hover:underline font-medium">Campaigns</a></li>
+                            <li><a href="../makers/" class="text-ink hover:underline font-medium">Makers</a></li>
+                            <li><a href="./" class="text-ink hover:underline font-medium">Requests</a></li>
+                            <li><a href="../inventory/" class="text-ink hover:underline font-medium">Inventory</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Community</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="https://discord.gg/DUSUtguG2H" target="_blank" class="text-ink hover:underline font-medium">Discord</a></li>
+                            <li><a href="https://www.instagram.com/absurd.industries" target="_blank" class="text-ink hover:underline font-medium">Instagram</a></li>
+                            <li><a href="https://www.youtube.com/@absurd.industries" target="_blank" class="text-ink hover:underline font-medium">YouTube</a></li>
+                            <li><a href="https://www.linkedin.com/company/absurd-industries" target="_blank" class="text-ink hover:underline font-medium">LinkedIn</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Resources</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="../hardware-devroom/" class="text-ink hover:underline font-medium">Hardware Devroom</a></li>
+                            <li><a href="../courses/" class="text-ink hover:underline font-medium">Courses</a></li>
+                            <li><a href="../contact.htm" class="text-ink hover:underline font-medium">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Legal</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="../privacy-policy.htm" class="text-ink hover:underline font-medium">Privacy</a></li>
+                            <li><a href="../terms-and-conditions.htm" class="text-ink hover:underline font-medium">Terms</a></li>
+                            <li><a href="../policies.htm" class="text-ink hover:underline font-medium">Policies</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="border-t border-ink/10 pt-5 flex flex-col sm:flex-row justify-between items-center gap-2">
+                    <div class="flex items-center gap-2">
+                        <img src="../hardware-devroom/images/absurd-logo-for-any-background.png" alt="" class="h-5">
+                        <span class="text-xs font-semibold">Absurd Industries</span>
+                    </div>
+                    <p class="text-xs text-ink-faint">
+                        <span class="copyleft">&copy;</span> Copyleft 2023&ndash;2026. Made with curiosity in Bengaluru.
+                    </p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Mobile Nav -->
+        <nav class="mobile-nav md:hidden">
+            <div class="grid grid-cols-5">
+                <a href="../campaigns/"><i class="ph-bold ph-rocket-launch"></i><span>Campaigns</span></a>
+                <a href="../makers/"><i class="ph-bold ph-users-three"></i><span>Makers</span></a>
+                <a href="./" class="active"><i class="ph-bold ph-megaphone"></i><span>Requests</span></a>
+                <a href="../inventory/"><i class="ph-bold ph-package"></i><span>Inventory</span></a>
+                <a href="https://discord.gg/DUSUtguG2H" target="_blank"><i class="fa-brands fa-discord"></i><span>Discord</span></a>
+            </div>
+        </nav>
+
+        <!-- Submit Request Modal -->
+        <div v-if="showSubmitModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4" @click="showSubmitModal = false">
+            <div class="paper-card max-w-md w-full p-6 sm:p-8" @click.stop>
+                <div class="flex items-center justify-between mb-5">
+                    <h3 class="font-serif font-bold text-xl">Submit a Request</h3>
+                    <button @click="showSubmitModal = false" class="text-ink-faint hover:text-ink transition-colors">
+                        <i class="ph-bold ph-x text-lg"></i>
+                    </button>
+                </div>
+                <p class="text-sm text-ink-faint mb-6">Describe the open-source hardware product you want to see built. The community will help refine the specs.</p>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs font-semibold uppercase tracking-wide block mb-1.5">Title</label>
+                        <input type="text" placeholder="e.g. Open Source Oscilloscope" class="modal-input" v-model="newRequest.title">
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold uppercase tracking-wide block mb-1.5">Category</label>
+                        <select class="modal-input" v-model="newRequest.category">
+                            <option value="" disabled>Select a category</option>
+                            <option v-for="cat in categories.slice(1)" :key="cat" :value="cat">{{ cat }}</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold uppercase tracking-wide block mb-1.5">Description</label>
+                        <textarea placeholder="What should it do? Why does it matter? What specs matter most?" class="modal-input" v-model="newRequest.description"></textarea>
+                    </div>
+                </div>
+                <button class="btn btn-stamp w-full mt-6" @click="submitRequest">Submit Request</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            data() {
+                return {
+                    showSubmitModal: false,
+                    sortBy: 'votes',
+                    activeCategory: 'All',
+                    categories: [
+                        'All', 'CNC & Fabrication', 'Sustainability', 'Computing', 'Electronics', 'IoT', 'Sensors', 'Networking'
+                    ],
+                    newRequest: {
+                        title: '',
+                        category: '',
+                        description: '',
+                    },
+                    requests: [
+                        {
+                            id: 1,
+                            title: 'Open Source Desktop CNC Router',
+                            category: 'CNC & Fabrication',
+                            priority: 'High Demand',
+                            description: 'A compact, affordable desktop CNC router for PCB milling, engraving, and light woodwork. Must be fully open-source with Grbl-compatible firmware and KiCad/FreeCAD design files. Enclosure optional but preferred.',
+                            specs: ['Grbl', '<$500', 'USB-C', 'NEMA 17', 'Aluminium Frame'],
+                            votes: 342,
+                            voted: false,
+                            contributors: 28,
+                            comments: 64,
+                            bounty: '$1,200',
+                            avatarColors: ['#FF5900', '#2A5F41', '#6B5B4A'],
+                            avatarInitials: ['VR', 'PS', 'AK'],
+                            date: '2026-05-20',
+                        },
+                        {
+                            id: 2,
+                            title: 'Community Water Purifier with Open Firmware',
+                            category: 'Sustainability',
+                            priority: 'Bounty Active',
+                            description: 'Field-repairable water purification system for off-grid communities. Needs open firmware for sensor monitoring, modular filter design, and solar power option. Full BOM and assembly guide required.',
+                            specs: ['Solar', 'ESP32', 'Modular Filters', '<$200', 'IP65'],
+                            votes: 287,
+                            voted: false,
+                            contributors: 19,
+                            comments: 43,
+                            bounty: '$2,500',
+                            avatarColors: ['#2A5F41', '#B8956A', '#FF5900'],
+                            avatarInitials: ['PS', 'RN', 'MJ'],
+                            date: '2026-04-12',
+                        },
+                        {
+                            id: 3,
+                            title: 'Affordable RISC-V Development Board',
+                            category: 'Computing',
+                            priority: 'High Demand',
+                            description: 'A sub-$25 RISC-V dev board with onboard debugger, USB-C, GPIO headers, and support for Linux. Should target students and hobbyists with excellent documentation and community tutorials.',
+                            specs: ['RISC-V', '<$25', 'USB-C', 'Linux', '40-pin GPIO'],
+                            votes: 256,
+                            voted: false,
+                            contributors: 34,
+                            comments: 71,
+                            bounty: null,
+                            avatarColors: ['#1A1A1A', '#FF5900', '#2A5F41', '#6B5B4A'],
+                            avatarInitials: ['AN', 'SK', 'DT', 'RV'],
+                            date: '2026-06-01',
+                        },
+                        {
+                            id: 4,
+                            title: 'Open Source Pick & Place Machine',
+                            category: 'Electronics',
+                            priority: 'Open',
+                            description: 'A desktop pick-and-place machine for small-batch SMD assembly. Should handle 0402 components and up, use open-source vision for alignment, and integrate with KiCad placement files.',
+                            specs: ['OpenPnP', '0402+', 'KiCad', 'Camera Vision', 'Stepper Motors'],
+                            votes: 198,
+                            voted: false,
+                            contributors: 15,
+                            comments: 38,
+                            bounty: '$800',
+                            avatarColors: ['#B8956A', '#1A1A1A', '#FF5900'],
+                            avatarInitials: ['KM', 'PG', 'ST'],
+                            date: '2026-03-28',
+                        },
+                        {
+                            id: 5,
+                            title: 'Wireless Soil Sensor Array',
+                            category: 'Sensors',
+                            priority: 'Open',
+                            description: 'Network of low-power wireless soil sensors for community gardens and small farms. Needs to measure moisture, pH, temperature, and NPK levels. LoRa backhaul to a central gateway with open dashboard.',
+                            specs: ['LoRa', 'Solar', 'Soil pH', 'NPK', '<$30/node'],
+                            votes: 174,
+                            voted: false,
+                            contributors: 12,
+                            comments: 29,
+                            bounty: null,
+                            avatarColors: ['#2A5F41', '#6B5B4A'],
+                            avatarInitials: ['AG', 'RP'],
+                            date: '2026-05-15',
+                        },
+                        {
+                            id: 6,
+                            title: 'Open LoRa Mesh Gateway',
+                            category: 'Networking',
+                            priority: 'Bounty Active',
+                            description: 'Solar-powered LoRa mesh gateway for community networks. No internet required for local mesh. Should support Meshtastic protocol, have weatherproof enclosure, and include open KiCad PCB design.',
+                            specs: ['LoRa', 'Meshtastic', 'Solar', 'IP67', 'KiCad'],
+                            votes: 231,
+                            voted: false,
+                            contributors: 22,
+                            comments: 51,
+                            bounty: '$1,800',
+                            avatarColors: ['#FF5900', '#1A1A1A', '#2A5F41'],
+                            avatarInitials: ['AN', 'BK', 'RS'],
+                            date: '2026-04-25',
+                        },
+                        {
+                            id: 7,
+                            title: 'Desktop Reflow Oven with Open Controller',
+                            category: 'Electronics',
+                            priority: 'High Demand',
+                            description: 'Converted toaster oven with open-source PID controller, thermocouple feedback, and customizable reflow profiles via USB. Should include PCB design, firmware, and 3D-printed enclosure files.',
+                            specs: ['PID', 'USB-C', 'Thermocouple', 'Lead-Free', '<$150'],
+                            votes: 209,
+                            voted: false,
+                            contributors: 17,
+                            comments: 44,
+                            bounty: null,
+                            avatarColors: ['#6B5B4A', '#FF5900', '#B8956A'],
+                            avatarInitials: ['JD', 'MR', 'NK'],
+                            date: '2026-06-08',
+                        },
+                        {
+                            id: 8,
+                            title: 'Open E-Ink Display Module',
+                            category: 'Electronics',
+                            priority: 'Open',
+                            description: 'A hackable e-ink display module with open driver board, ESP32 controller, and partial refresh support. Ideal for low-power dashboards, shelf labels, and ambient displays. Needs open PCB and enclosure.',
+                            specs: ['E-Ink', 'ESP32', 'Partial Refresh', 'SPI', '<$40'],
+                            votes: 163,
+                            voted: false,
+                            contributors: 9,
+                            comments: 22,
+                            bounty: null,
+                            avatarColors: ['#1A1A1A', '#2A5F41'],
+                            avatarInitials: ['VK', 'LS'],
+                            date: '2026-05-30',
+                        },
+                    ],
+                };
+            },
+            computed: {
+                filteredRequests() {
+                    let items = [...this.requests];
+
+                    // Category filter
+                    if (this.activeCategory !== 'All') {
+                        items = items.filter(r => r.category === this.activeCategory);
+                    }
+
+                    // Sort
+                    if (this.sortBy === 'votes') {
+                        items.sort((a, b) => b.votes - a.votes);
+                    } else if (this.sortBy === 'newest') {
+                        items.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    } else if (this.sortBy === 'active') {
+                        items.sort((a, b) => b.comments - a.comments);
+                    }
+
+                    return items;
+                },
+            },
+            methods: {
+                toggleVote(req) {
+                    if (req.voted) {
+                        req.votes--;
+                        req.voted = false;
+                    } else {
+                        req.votes++;
+                        req.voted = true;
+                    }
+                },
+                priorityClass(priority) {
+                    if (priority === 'High Demand') return 'tag-stamp';
+                    if (priority === 'Bounty Active') return 'tag-funded';
+                    return 'tag-default';
+                },
+                submitRequest() {
+                    if (!this.newRequest.title || !this.newRequest.category || !this.newRequest.description) return;
+                    this.requests.unshift({
+                        id: Date.now(),
+                        title: this.newRequest.title,
+                        category: this.newRequest.category,
+                        priority: 'Open',
+                        description: this.newRequest.description,
+                        specs: [],
+                        votes: 1,
+                        voted: true,
+                        contributors: 1,
+                        comments: 0,
+                        bounty: null,
+                        avatarColors: ['#FF5900'],
+                        avatarInitials: ['You'],
+                        date: new Date().toISOString().slice(0, 10),
+                    });
+                    this.newRequest = { title: '', category: '', description: '' };
+                    this.showSubmitModal = false;
+                },
+            },
+        }).mount('#app');
+    </script>
+</body>
+</html>
