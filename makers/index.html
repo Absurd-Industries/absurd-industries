@@ -385,10 +385,11 @@
 
                 <!-- ID Card Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 card-grid">
-                    <div
+                    <a
                         v-for="maker in filteredMakers"
                         :key="maker.id"
-                        class="card card-hover id-card"
+                        href="detail.html"
+                        class="card card-hover id-card no-underline text-ink block group"
                     >
                         <div class="card-bg"></div>
                         <div class="card-content flex flex-col">
@@ -424,7 +425,7 @@
 
                             <!-- Name + Title + Location -->
                             <div class="px-5 pt-3">
-                                <h3 class="font-serif font-bold text-xl leading-tight">{{ maker.name }}</h3>
+                                <h3 class="font-serif font-bold text-xl leading-tight group-hover:text-stamp transition-colors">{{ maker.name }}</h3>
                                 <p class="text-sm text-ink-light mt-0.5">{{ maker.title }}</p>
                                 <p class="text-xs text-ink-faint mt-1.5 flex items-center gap-1">
                                     <i class="ph-bold ph-map-pin text-xs text-stamp"></i>
@@ -470,13 +471,13 @@
                                 </div>
 
                                 <!-- View Profile -->
-                                <a href="#" class="text-stamp font-semibold text-sm hover:underline flex items-center gap-1 flex-shrink-0">
+                                <span class="text-stamp font-semibold text-sm flex items-center gap-1 flex-shrink-0 group-hover:underline">
                                     Profile
                                     <i class="ph-bold ph-arrow-right text-xs"></i>
-                                </a>
+                                </span>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </section>

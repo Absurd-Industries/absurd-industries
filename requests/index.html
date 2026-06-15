@@ -398,6 +398,13 @@
                                     <span v-for="spec in req.specs.slice(0, 5)" :key="spec" class="spec-tag">{{ spec }}</span>
                                 </div>
 
+                                <!-- Claimed by maker -->
+                                <div v-if="req.claimedBy" class="flex items-center gap-1.5 mt-2 text-xs font-semibold" style="color: #2A5F41;">
+                                    <i class="ph-bold ph-check-circle"></i>
+                                    <span>Claimed by <a href="../makers/detail.html" class="underline" style="color: #2A5F41;">{{ req.claimedBy }}</a></span>
+                                    <a v-if="req.campaignLink" href="../campaigns/detail.html" class="tag tag-funded ml-1 no-underline">View Campaign</a>
+                                </div>
+
                                 <!-- Meta row — Reddit-style actions -->
                                 <div class="flex flex-wrap items-center gap-1 mt-2.5">
                                     <a :href="'detail.html?id=' + req.id" class="meta-action">
@@ -605,6 +612,8 @@
                             avatarInitials: ['VR', 'PS', 'AK'],
                             timeAgo: '3w ago',
                             date: '2026-05-20',
+                            claimedBy: 'Vikram Rao',
+                            campaignLink: true,
                         },
                         {
                             id: 2,
@@ -622,6 +631,8 @@
                             avatarInitials: ['PS', 'RN', 'MJ'],
                             timeAgo: '2mo ago',
                             date: '2026-04-12',
+                            claimedBy: 'Priya Sharma',
+                            campaignLink: true,
                         },
                         {
                             id: 3,
@@ -639,6 +650,8 @@
                             avatarInitials: ['AN', 'SK', 'DT', 'RV'],
                             timeAgo: '2w ago',
                             date: '2026-06-01',
+                            claimedBy: null,
+                            campaignLink: false,
                         },
                         {
                             id: 4,
@@ -656,6 +669,8 @@
                             avatarInitials: ['KM', 'PG', 'ST'],
                             timeAgo: '2mo ago',
                             date: '2026-03-28',
+                            claimedBy: null,
+                            campaignLink: false,
                         },
                         {
                             id: 5,
@@ -673,6 +688,8 @@
                             avatarInitials: ['AG', 'RP'],
                             timeAgo: '1mo ago',
                             date: '2026-05-15',
+                            claimedBy: null,
+                            campaignLink: false,
                         },
                         {
                             id: 6,
@@ -690,6 +707,8 @@
                             avatarInitials: ['AN', 'BK', 'RS'],
                             timeAgo: '7w ago',
                             date: '2026-04-25',
+                            claimedBy: null,
+                            campaignLink: false,
                         },
                         {
                             id: 7,
@@ -707,6 +726,8 @@
                             avatarInitials: ['JD', 'MR', 'NK'],
                             timeAgo: '1w ago',
                             date: '2026-06-08',
+                            claimedBy: null,
+                            campaignLink: false,
                         },
                         {
                             id: 8,
@@ -724,6 +745,8 @@
                             avatarInitials: ['VK', 'LS'],
                             timeAgo: '2w ago',
                             date: '2026-05-30',
+                            claimedBy: null,
+                            campaignLink: false,
                         },
                     ],
                 };

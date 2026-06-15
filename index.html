@@ -6,8 +6,8 @@
     <title>Absurd Industries - Open Source Hardware for Makers, Tinkerers & Hardware Rebels</title>
     <meta name="description" content="The anti-planned obsolescence platform. Back indie hardware campaigns, discover makers, request what you need, and manage your lab.">
 
-    <meta property="og:title" content="Absurd Industries - Democracy for Dreamers">
-    <meta property="og:description" content="Back indie open-source hardware. Discover makers. Request what the world needs.">
+    <meta property="og:title" content="Absurd Industries - Open Hardware, Built Together">
+    <meta property="og:description" content="Back indie campaigns. Request what doesn't exist yet. Every design ships with full source files.">
     <meta property="og:image" content="https://absurd.industries/hardware-devroom/screen.png">
     <meta property="og:url" content="https://absurd.industries">
     <meta name="twitter:card" content="summary_large_image">
@@ -251,12 +251,11 @@
                         <div class="tag tag-stamp mb-5">Anti-Planned Obsolescence</div>
 
                         <h1 class="font-serif text-4xl sm:text-5xl md:text-7xl font-black leading-[0.95] tracking-tight mb-5">
-                            Democracy<br>for Dreamers
+                            Open Hardware,<br>Built Together
                         </h1>
 
                         <p class="text-base sm:text-lg text-ink-faint max-w-lg mb-8 leading-relaxed">
-                            Back indie open-source hardware. Discover makers. Request what the world needs.
-                            We redesign the whole damned box.
+                            Back indie campaigns. Request what doesn't exist yet. Every design ships with full source files, open firmware, and a community behind it.
                         </p>
 
                         <div class="flex flex-wrap gap-3 mb-10">
@@ -342,19 +341,25 @@
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 card-grid">
-                    <div v-for="c in featuredCampaigns" :key="c.id" class="card card-hover overflow-hidden">
+                    <a v-for="c in featuredCampaigns" :key="c.id" :href="c.detailUrl" class="card card-hover overflow-hidden no-underline text-ink group">
                         <div class="card-bg"></div>
                         <div class="card-content">
                             <div class="h-36 sm:h-40 bg-kraft-light flex items-center justify-center" style="border-radius: 0.875rem 0.875rem 0 0;">
-                                <i :class="'ph-bold ph-' + c.icon + ' text-5xl sm:text-6xl text-stencil opacity-50'"></i>
+                                <i :class="'ph-bold ph-' + c.icon + ' text-5xl sm:text-6xl text-stencil opacity-50 transition-transform group-hover:scale-110'"></i>
                             </div>
                             <div class="p-5">
-                                <div class="flex items-center gap-2 mb-2">
-                                    <span class="tag tag-funded">Live</span>
-                                    <span class="text-xs text-ink-faint">{{ c.category }}</span>
+                                <div class="flex flex-wrap items-center gap-2 mb-2">
+                                    <span class="tag tag-stamp">Live</span>
+                                    <span class="tag tag-default">{{ c.category }}</span>
+                                    <span class="tag tag-default"><i class="ph-bold ph-scales mr-1"></i>{{ c.license }}</span>
                                 </div>
-                                <h3 class="font-serif font-bold text-base sm:text-lg leading-snug mb-1.5">{{ c.name }}</h3>
+                                <h3 class="font-serif font-bold text-base sm:text-lg leading-snug mb-1.5 group-hover:text-stamp transition-colors">{{ c.name }}</h3>
                                 <p class="text-sm text-ink-faint leading-relaxed mb-3 line-clamp-2">{{ c.description }}</p>
+
+                                <div v-if="c.fromRequest" class="flex items-center gap-1.5 mb-3 text-xs text-funded">
+                                    <i class="ph-bold ph-arrow-bend-up-left"></i>
+                                    <span>Born from community request</span>
+                                </div>
 
                                 <div class="flex items-center gap-2 mb-3 text-xs text-ink-faint">
                                     <div class="w-5 h-5 rounded-full bg-kraft flex items-center justify-center flex-shrink-0">
@@ -368,12 +373,12 @@
                                     <div class="progress-fill" :class="{ hot: c.percent >= 90 }" :style="{ width: c.percent + '%' }"></div>
                                 </div>
                                 <div class="flex justify-between text-xs text-ink-faint">
-                                    <span><strong class="text-ink font-semibold">{{ c.percent }}%</strong> of {{ c.goal }}</span>
+                                    <span><strong class="text-ink font-semibold">{{ c.percent }}%</strong> of {{ c.goal }} <span class="text-ink-faint">({{ c.goalUsd }})</span></span>
                                     <span>{{ c.backers }} backers</span>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </section>
@@ -525,19 +530,22 @@
                             id: 1, name: 'Open Source Water Purifier', icon: 'drop',
                             description: 'Community-designed, field-repairable water purification for off-grid communities. Full BOM and open firmware.',
                             maker: 'Priya Sharma', location: 'Bangalore', category: 'Sustainability',
-                            percent: 73, goal: '₹2,50,000', backers: 184,
+                            percent: 73, goal: '₹2,50,000', goalUsd: '~$3,000', backers: 184,
+                            license: 'CERN-OHL-S', fromRequest: true, detailUrl: 'campaigns/detail.html',
                         },
                         {
                             id: 2, name: 'Desktop CNC Mill', icon: 'gear-six',
                             description: 'Compact, open-source CNC milling machine for PCB prototyping and light metalwork. Grbl-compatible.',
                             maker: 'Vikram Rao', location: 'Hyderabad', category: 'Tools',
-                            percent: 91, goal: '₹5,00,000', backers: 312,
+                            percent: 91, goal: '₹5,00,000', goalUsd: '~$6,000', backers: 312,
+                            license: 'CERN-OHL-S', fromRequest: true, detailUrl: 'campaigns/detail.html',
                         },
                         {
                             id: 3, name: 'LoRa Mesh Network Node', icon: 'broadcast',
                             description: 'Solar-powered LoRa nodes for community mesh networks. No internet required. Open KiCad design.',
                             maker: 'Arjun Nair', location: 'Kochi', category: 'IoT',
-                            percent: 58, goal: '₹3,50,000', backers: 156,
+                            percent: 58, goal: '₹3,50,000', goalUsd: '~$4,200', backers: 156,
+                            license: 'MIT', fromRequest: false, detailUrl: 'campaigns/detail.html',
                         },
                     ],
                 };
