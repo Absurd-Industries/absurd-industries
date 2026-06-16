@@ -265,20 +265,25 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
   activeTab="makers"
 >
   <!-- ══════════════════════════════════════ -->
-  <!-- PROFILE BANNER (edge-to-edge cover)   -->
+  <!-- PROFILE BANNER                        -->
   <!-- ══════════════════════════════════════ -->
-  <section class="profile-banner-section" data-configurable="banner">
-    <div class="profile-banner-overlay"></div>
-    <div class="relative z-10 max-w-5xl mx-auto px-5 sm:px-6 py-10 sm:py-14">
-      <div class="flex flex-col sm:flex-row sm:items-end gap-5">
+  <section class="pt-8 pb-0 sm:pt-12">
+    <div class="max-w-5xl mx-auto px-5 sm:px-6">
+      <div
+        class="profile-banner"
+        style={`--banner-bg: ${bannerColor}; --banner-accent: ${bannerAccent};`}
+        data-configurable="banner"
+      >
+        <div class="relative z-10 px-6 py-8 sm:px-10 sm:py-10">
+          <div class="flex flex-col sm:flex-row sm:items-end gap-5">
 
-        <!-- Avatar -->
-        <div class="relative flex-shrink-0 -mb-12 sm:-mb-14">
-          <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-xl bg-paper border-4 border-ink/20 flex items-center justify-center shadow-lg">
-            <span class="font-serif font-bold text-4xl sm:text-5xl text-ink-faint/40 select-none">{initial}</span>
-          </div>
-          <div class="status-online"></div>
-        </div>
+            <!-- Hexagon Avatar -->
+            <div class="relative flex-shrink-0 -mb-12 sm:-mb-14">
+              <div class="hex-avatar">
+                <span class="font-serif font-bold text-4xl sm:text-5xl text-ink-faint/40 select-none">{initial}</span>
+              </div>
+              <div class="status-online"></div>
+            </div>
 
         <!-- Name + rank -->
         <div class="flex-1 min-w-0 pb-1">
@@ -318,6 +323,7 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
         </div>
       </div>
     </div>
+  </div>
   </section>
 
   <!-- ══════════════════════════════════════ -->
@@ -731,18 +737,47 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
   /* STEAM-STYLE PROFILE — page-scoped styles                        */
   /* ================================================================ */
 
-  /* Profile banner — edge-to-edge with transparent black overlay */
-  .profile-banner-section {
+  /* Profile banner — customizable via CSS custom properties */
+  .profile-banner {
+    --banner-bg: #1A1A1A;
+    --banner-accent: #FF5900;
+    --banner-pattern: repeating-linear-gradient(
+      135deg,
+      transparent,
+      transparent 20px,
+      rgba(255, 89, 0, 0.04) 20px,
+      rgba(255, 89, 0, 0.04) 22px
+    );
     position: relative;
+    background: var(--banner-bg);
+    border-radius: 0.875rem;
     overflow: hidden;
-    margin-top: 0;
+    filter: url(#papercut);
   }
-  .profile-banner-overlay {
+  .profile-banner::before {
+    content: '';
     position: absolute;
     inset: 0;
-    background: rgba(26, 26, 26, 0.75);
+    background: var(--banner-pattern);
     pointer-events: none;
-    z-index: 1;
+  }
+
+  /* Hexagon avatar */
+  .hex-avatar {
+    width: 96px;
+    height: 96px;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    background: #FAF3E8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+  @media (min-width: 640px) {
+    .hex-avatar {
+      width: 112px;
+      height: 112px;
+    }
   }
 
   /* Online status dot */

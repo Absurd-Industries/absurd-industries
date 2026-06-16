@@ -21,7 +21,7 @@ function closeMegaMenu() {
 </script>
 
 <template>
-  <nav class="bottom-bar" style="position: relative">
+  <nav class="bottom-bar">
     <div class="grid grid-cols-5">
       <a
         v-for="tab in bottomBarTabs"
@@ -39,17 +39,19 @@ function closeMegaMenu() {
     </div>
 
     <Transition name="slide">
-      <div v-if="megaMenuOpen" class="mega-menu" @click="closeMegaMenu">
-        <a
-          v-for="item in megaMenuItems"
-          :key="item.href"
-          :href="item.href"
-          :target="item.isExternal ? '_blank' : undefined"
-          :rel="item.isExternal ? 'noopener' : undefined"
-        >
-          <i :class="item.icon"></i>
-          {{ item.label }}
-        </a>
+      <div v-if="megaMenuOpen" class="mega-menu-wrapper" @click="closeMegaMenu">
+        <div class="mega-menu">
+          <a
+            v-for="item in megaMenuItems"
+            :key="item.href"
+            :href="item.href"
+            :target="item.isExternal ? '_blank' : undefined"
+            :rel="item.isExternal ? 'noopener' : undefined"
+          >
+            <i :class="item.icon"></i>
+            {{ item.label }}
+          </a>
+        </div>
       </div>
     </Transition>
   </nav>
