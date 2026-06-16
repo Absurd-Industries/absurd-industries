@@ -376,9 +376,9 @@
   }
 
   .mega-menu {
-    background: #FAF3E8;
+    background: #1A1A1A;
     border-radius: 0.875rem 0.875rem 0 0;
-    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.25);
     padding: 1.25rem 1.5rem;
   }
 
@@ -386,20 +386,23 @@
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    color: #1A1A1A;
+    color: rgba(250, 243, 232, 0.55);
     text-decoration: none;
-    font-size: 0.875rem;
-    font-weight: 500;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
     padding: 0.6rem 0;
-    border-bottom: 1px solid rgba(26, 26, 26, 0.06);
+    border-bottom: 1px solid rgba(250, 243, 232, 0.08);
     flex-direction: row;
+    font-family: 'DM Sans', system-ui, sans-serif;
   }
   .mega-menu a:last-child {
     border-bottom: none;
   }
   .mega-menu a i {
     font-size: 1.1rem;
-    color: #6B5B4A;
+    color: rgba(250, 243, 232, 0.4);
   }
   .mega-menu a:hover {
     color: #FF5900;

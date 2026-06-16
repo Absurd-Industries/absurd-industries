@@ -161,6 +161,19 @@ function statusTagClass(status: string): string {
         <div class="card-content">
           <!-- Image / icon area -->
           <div
+            v-if="campaign.image"
+            class="m-4 mb-0 rounded-xl overflow-hidden"
+            style="height: 170px"
+          >
+            <img
+              :src="campaign.image"
+              :alt="campaign.title"
+              class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+              loading="lazy"
+            />
+          </div>
+          <div
+            v-else
             class="bg-kraft-light rounded-xl flex items-center justify-center m-4 mb-0"
             style="min-height: 170px"
           >

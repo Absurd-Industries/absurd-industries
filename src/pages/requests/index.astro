@@ -2,8 +2,7 @@
 /**
  * Requests listing page.
  * Displays a searchable, filterable, sortable feed of community requests.
- * The feed is edge-to-edge (no card wrappers) — items sit directly on kraft.
- * Filtering and sorting are handled client-side by the RequestsListing Vue island.
+ * Top section (header) sits on the kraft background, feed items sit on white paper.
  */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
@@ -23,20 +22,22 @@ for (const m of makers) {
   description="Request open-source projects that don't exist yet. Describe what you need, refine specs together, and let makers bring it to life."
   activeTab="requests"
 >
-  <div class="requests-page-bg">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 pt-10 pb-8 md:pb-12">
-      <!-- Page header -->
-      <div class="mb-6">
-        <h1 class="font-serif text-3xl sm:text-4xl font-black tracking-tight mb-2">
-          Requests
-        </h1>
-        <p class="text-sm text-ink-faint max-w-lg leading-relaxed">
-          The world needs things that don't exist yet. Describe what you need,
-          refine specs together, and let makers bring it to life.
-        </p>
-      </div>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 pt-10 pb-4">
+    <!-- Page header (on kraft background) -->
+    <div class="mb-6">
+      <h1 class="font-serif text-3xl sm:text-4xl font-black tracking-tight mb-2">
+        Requests
+      </h1>
+      <p class="text-sm text-ink-faint max-w-lg leading-relaxed">
+        The world needs things that don't exist yet. Describe what you need,
+        refine specs together, and let makers bring it to life.
+      </p>
+    </div>
+  </div>
 
-      <!-- Interactive listing island -->
+  <!-- White paper section for the feed -->
+  <div class="requests-feed-bg">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-12">
       <RequestsListing
         requests={requests}
         makerNames={makerNames}
@@ -46,12 +47,12 @@ for (const m of makers) {
   </div>
 
   <style>
-    .requests-page-bg {
+    .requests-feed-bg {
       background-color: #FAF3E8;
       background-image: url('/images/paper-texture.png');
       background-repeat: repeat;
       background-size: 128px 128px;
-      min-height: 100vh;
+      min-height: 60vh;
     }
   </style>
 </BaseLayout>

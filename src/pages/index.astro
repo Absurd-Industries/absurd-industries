@@ -31,25 +31,9 @@ const featuredCampaigns = campaigns.filter((c) => c.status === "live").slice(0, 
             request what doesn't exist, and build with a community that ships.
           </p>
 
-          <div class="flex flex-wrap gap-3 mb-10">
+          <div class="flex flex-wrap gap-3">
             <a href="/campaigns" class="btn btn-primary">Explore Campaigns</a>
             <a href="/requests" class="btn btn-outline">Make a Request</a>
-          </div>
-
-          <!-- Stats -->
-          <div class="flex flex-wrap gap-8">
-            <div>
-              <span class="font-serif text-2xl sm:text-3xl font-bold block">24</span>
-              <span class="text-xs text-ink-faint uppercase tracking-wider">Active Campaigns</span>
-            </div>
-            <div>
-              <span class="font-serif text-2xl sm:text-3xl font-bold block">312</span>
-              <span class="text-xs text-ink-faint uppercase tracking-wider">Makers</span>
-            </div>
-            <div>
-              <span class="font-serif text-2xl sm:text-3xl font-bold block">₹18.4L</span>
-              <span class="text-xs text-ink-faint uppercase tracking-wider">Funded</span>
-            </div>
           </div>
         </div>
       </Card>
@@ -91,41 +75,77 @@ const featuredCampaigns = campaigns.filter((c) => c.status === "live").slice(0, 
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 card-grid">
         {featuredCampaigns.map((campaign) => (
-          <a href={`/campaigns/${campaign.slug}`} class="card card-hover block no-underline text-ink">
+          <a href={`/campaigns/${campaign.slug}`} class="card card-hover block no-underline text-ink group">
             <div class="card-bg"></div>
-            <div class="card-content p-5">
-              <div class="flex items-center gap-3 mb-4">
-                <div
-                  class="w-10 h-10 rounded-full flex items-center justify-center"
-                  style={`background: ${campaign.avatarColor}20;`}
-                >
-                  <i class={campaign.icon} style={`color: ${campaign.avatarColor}; font-size: 1.1rem;`}></i>
+            <div class="card-content">
+              {campaign.image && (
+                <div class="m-3 mb-0 rounded-lg overflow-hidden" style="height: 140px;">
+                  <img
+                    src={campaign.image}
+                    alt={campaign.title}
+                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    loading="lazy"
+                  />
                 </div>
-                <div class="flex-1 min-w-0">
-                  <h3 class="font-serif font-bold text-base truncate">{campaign.title}</h3>
-                  <p class="text-xs text-ink-faint">{campaign.makerName} &middot; {campaign.location}</p>
+              )}
+              <div class="p-5 pt-3">
+                <div class="flex items-center gap-3 mb-3">
+                  <div
+                    class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                    style={`background: ${campaign.avatarColor}20;`}
+                  >
+                    <i class={campaign.icon} style={`color: ${campaign.avatarColor}; font-size: 0.9rem;`}></i>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <h3 class="font-serif font-bold text-base truncate group-hover:text-stamp transition-colors">{campaign.title}</h3>
+                    <p class="text-xs text-ink-faint">{campaign.makerName} &middot; {campaign.location}</p>
+                  </div>
                 </div>
-              </div>
 
-              <p class="text-sm text-ink-faint mb-4 line-clamp-2">{campaign.tagline}</p>
+                <p class="text-sm text-ink-faint mb-4 line-clamp-2">{campaign.tagline}</p>
 
-              <ProgressBar percent={campaign.percent} hot={campaign.percent >= 100} />
+                <ProgressBar percent={campaign.percent} hot={campaign.percent >= 100} />
 
-              <div class="flex items-center justify-between mt-3 text-xs">
-                <span class="font-semibold text-funded">{campaign.percent}% funded</span>
-                <span class="text-ink-faint">{campaign.backers} backers</span>
-              </div>
+                <div class="flex items-center justify-between mt-3 text-xs">
+                  <span class="font-semibold text-funded">{campaign.percent}% funded</span>
+                  <span class="text-ink-faint">{campaign.backers} backers</span>
+                </div>
 
-              <div class="flex items-center gap-2 mt-3">
-                <Tag variant="muted">{campaign.license}</Tag>
-                {campaign.bornFromRequest && (
-                  <Tag variant="stamp">Born from request</Tag>
-                )}
+                <div class="flex items-center gap-2 mt-3">
+                  <Tag variant="muted">{campaign.license}</Tag>
+                  {campaign.bornFromRequest && (
+                    <Tag variant="stamp">Born from request</Tag>
+                  )}
+                </div>
               </div>
             </div>
           </a>
         ))}
       </div>
+    </div>
+  </section>
+
+  <!-- Discord CTA -->
+  <section class="pb-10">
+    <div class="max-w-5xl mx-auto px-5 sm:px-6">
+      <a
+        href="https://discord.gg/DUSUtguG2H"
+        target="_blank"
+        rel="noopener"
+        class="block no-underline"
+      >
+        <div class="card card-hover">
+          <div class="card-bg" style="background: #1A1A1A;"></div>
+          <div class="card-content px-6 py-5 md:px-8 md:py-6 flex items-center gap-4">
+            <i class="fa-brands fa-discord text-3xl" style="color: #5865F2;"></i>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-serif font-bold text-base text-paper mb-0.5">Join our Discord</h3>
+              <p class="text-xs text-paper/50">Chat with makers, get build help, share projects, and stay in the loop.</p>
+            </div>
+            <i class="ph-bold ph-arrow-right text-paper/40 text-lg flex-shrink-0"></i>
+          </div>
+        </div>
+      </a>
     </div>
   </section>
 

@@ -45,14 +45,25 @@ const isHot = campaign.percent >= 90 && campaign.status === "live";
   <div class="card-bg"></div>
   <div class="card-content">
     <!-- Image / icon area -->
-    <div
-      class="bg-kraft-light rounded-xl flex items-center justify-center m-4 mb-0"
-      style="min-height: 170px;"
-    >
-      <i
-        class:list={[campaign.icon, "text-5xl text-kraft-dark transition-transform duration-300 group-hover:scale-110 group-hover:text-stamp"]}
-      ></i>
-    </div>
+    {campaign.image ? (
+      <div class="m-4 mb-0 rounded-xl overflow-hidden" style="height: 170px;">
+        <img
+          src={campaign.image}
+          alt={campaign.title}
+          class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          loading="lazy"
+        />
+      </div>
+    ) : (
+      <div
+        class="bg-kraft-light rounded-xl flex items-center justify-center m-4 mb-0"
+        style="min-height: 170px;"
+      >
+        <i
+          class:list={[campaign.icon, "text-5xl text-kraft-dark transition-transform duration-300 group-hover:scale-110 group-hover:text-stamp"]}
+        ></i>
+      </div>
+    )}
 
     <!-- Content -->
     <div class="p-5 pt-4">

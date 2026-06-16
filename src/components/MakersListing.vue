@@ -44,7 +44,6 @@ const filteredMakers = computed(() => {
   return result;
 });
 
-/** Deterministic barcode heights from slug hash */
 function generateBarcode(slug: string): number[] {
   const bars: number[] = [];
   const count = 30;
@@ -59,7 +58,6 @@ function generateBarcode(slug: string): number[] {
   return bars;
 }
 
-/** Deterministic member ID from slug */
 function generateMemberId(slug: string): string {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   let hash = 0;
@@ -133,18 +131,37 @@ function getInitial(name: string): string {
         <div class="card-bg"></div>
         <div class="card-content flex flex-col">
 
-          <!-- Punch hole (top right) -->
-          <div class="punch-hole"></div>
-
-          <!-- Black jagged top bar -->
+          <!-- Black jagged top bar with avatar + name -->
           <div class="id-card-header">
-            <span class="text-white/40 text-[0.6rem] font-semibold uppercase tracking-widest">{{ maker.specialty }}</span>
+            <div class="flex items-center gap-3 flex-1 min-w-0">
+              <!-- Octagon avatar -->
+              <div class="octagon-avatar-wrap">
+                <img
+                  v-if="maker.avatar"
+                  :src="maker.avatar"
+                  :alt="maker.name"
+                  class="octagon-avatar"
+                />
+                <div
+                  v-else
+                  class="octagon-avatar-fallback"
+                  :style="{ background: maker.avatarColor }"
+                >
+                  <span>{{ getInitial(maker.name) }}</span>
+                </div>
+              </div>
+              <div class="min-w-0">
+                <h3 class="text-white font-serif font-bold text-lg leading-tight truncate group-hover:text-stamp transition-colors">{{ maker.name }}</h3>
+                <span class="text-white/40 text-[0.6rem] font-semibold uppercase tracking-widest">{{ maker.specialty }}</span>
+              </div>
+            </div>
+            <!-- Punch hole -->
+            <div class="punch-hole"></div>
           </div>
 
-          <!-- Name + Title + Location -->
+          <!-- Title + Location -->
           <div class="px-5 pt-4">
-            <h3 class="font-serif font-bold text-2xl leading-tight group-hover:text-stamp transition-colors">{{ maker.name }}</h3>
-            <p class="text-sm text-ink-light mt-0.5">{{ maker.title }}</p>
+            <p class="text-sm text-ink-light">{{ maker.title }}</p>
             <p class="text-xs text-ink-faint mt-1.5 flex items-center gap-1">
               <i class="ph-bold ph-map-pin text-xs text-stamp"></i>
               {{ maker.location }}
@@ -178,7 +195,6 @@ function getInitial(name: string): string {
           <!-- Perforation + bottom section -->
           <div class="mt-4 mx-4 perforation"></div>
           <div class="px-5 pt-3 pb-4 flex items-end justify-between">
-            <!-- Barcode + member ID -->
             <div>
               <div class="barcode">
                 <span
@@ -192,7 +208,6 @@ function getInitial(name: string): string {
               </div>
             </div>
 
-            <!-- View Profile -->
             <span class="text-stamp font-semibold text-sm flex items-center gap-1 flex-shrink-0 group-hover:underline">
               Profile
               <i class="ph-bold ph-arrow-right text-xs"></i>
@@ -209,7 +224,6 @@ function getInitial(name: string): string {
   position: relative;
 }
 
-/* Black jagged-edged top bar */
 .id-card-header {
   background: #1A1A1A;
   padding: 0.85rem 1.25rem;
@@ -217,21 +231,44 @@ function getInitial(name: string): string {
   filter: url(#papercut);
   display: flex;
   align-items: center;
+  gap: 0.75rem;
+  position: relative;
 }
 
-/* Punch hole — top right corner */
+.octagon-avatar-wrap {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+}
+
+.octagon-avatar {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+}
+
+.octagon-avatar-fallback {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+  color: #FAF3E8;
+  font-weight: 700;
+  font-family: 'Fraunces', serif;
+  font-size: 1.1rem;
+}
+
 .punch-hole {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  border: 2px solid rgba(26, 26, 26, 0.12);
-  position: absolute;
-  top: 0.75rem;
-  right: 1rem;
-  z-index: 2;
+  border: 2px solid rgba(250, 243, 232, 0.15);
+  flex-shrink: 0;
 }
 
-/* Barcode decoration */
 .barcode {
   display: flex;
   align-items: flex-end;
@@ -251,7 +288,6 @@ function getInitial(name: string): string {
   width: 1px;
 }
 
-/* Perforation line */
 .perforation {
   border-top: 2px dashed rgba(26, 26, 26, 0.1);
 }

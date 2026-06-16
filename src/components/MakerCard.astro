@@ -1,8 +1,8 @@
 ---
 /**
  * Maker ID card component.
- * Styled as a physical ID badge — black jagged-edged top bar,
- * punch hole, barcode, perforation, and stats.
+ * Styled as a physical ID badge — black jagged-edged top bar with octagon avatar,
+ * name in the bar, punch hole, barcode, perforation, and stats.
  *
  * Usage:
  *   <MakerCard maker={maker} />
@@ -50,10 +50,11 @@ function generateMemberId(slug: string): string {
 const barcode = generateBarcode(maker.slug);
 const memberId = generateMemberId(maker.slug);
 
-/** Index derived from slug for a stable ID number */
 const idNum = Math.abs(
   Array.from(maker.slug).reduce((a, c) => ((a << 5) - a + c.charCodeAt(0)) | 0, 0)
 ) % 10000;
+
+const initial = maker.name.charAt(0).toUpperCase();
 ---
 
 <a
@@ -63,18 +64,31 @@ const idNum = Math.abs(
   <div class="card-bg"></div>
   <div class="card-content flex flex-col">
 
-    <!-- Punch hole (top right) -->
-    <div class="punch-hole"></div>
-
-    <!-- Black jagged top bar -->
+    <!-- Black jagged top bar with avatar + name -->
     <div class="id-card-header">
-      <span class="text-white/40 text-[0.6rem] font-semibold uppercase tracking-widest">{maker.specialty}</span>
+      <div class="flex items-center gap-3 flex-1 min-w-0">
+        <!-- Octagon avatar -->
+        <div class="octagon-avatar-wrap">
+          {maker.avatar ? (
+            <img src={maker.avatar} alt={maker.name} class="octagon-avatar" />
+          ) : (
+            <div class="octagon-avatar-fallback" style={`background: ${maker.avatarColor};`}>
+              <span>{initial}</span>
+            </div>
+          )}
+        </div>
+        <div class="min-w-0">
+          <h3 class="text-white font-serif font-bold text-lg leading-tight truncate group-hover:text-stamp transition-colors">{maker.name}</h3>
+          <span class="text-white/40 text-[0.6rem] font-semibold uppercase tracking-widest">{maker.specialty}</span>
+        </div>
+      </div>
+      <!-- Punch hole -->
+      <div class="punch-hole"></div>
     </div>
 
-    <!-- Name + Title + Location -->
+    <!-- Title + Location -->
     <div class="px-5 pt-4">
-      <h3 class="font-serif font-bold text-2xl leading-tight group-hover:text-stamp transition-colors">{maker.name}</h3>
-      <p class="text-sm text-ink-light mt-0.5">{maker.title}</p>
+      <p class="text-sm text-ink-light">{maker.title}</p>
       <p class="text-xs text-ink-faint mt-1.5 flex items-center gap-1">
         <i class="ph-bold ph-map-pin text-xs text-stamp"></i>
         {maker.location}
@@ -104,7 +118,6 @@ const idNum = Math.abs(
     <!-- Perforation + bottom section -->
     <div class="mt-4 mx-4 perforation"></div>
     <div class="px-5 pt-3 pb-4 flex items-end justify-between">
-      <!-- Barcode + member ID -->
       <div>
         <div class="barcode">
           {barcode.map((h) => (
@@ -115,8 +128,6 @@ const idNum = Math.abs(
           AI-{String(idNum).padStart(4, "0")}-{memberId}
         </div>
       </div>
-
-      <!-- View Profile -->
       <span class="text-stamp font-semibold text-sm flex items-center gap-1 flex-shrink-0 group-hover:underline">
         Profile
         <i class="ph-bold ph-arrow-right text-xs"></i>
@@ -130,7 +141,6 @@ const idNum = Math.abs(
     position: relative;
   }
 
-  /* Black jagged-edged top bar */
   .id-card-header {
     background: #1A1A1A;
     padding: 0.85rem 1.25rem;
@@ -138,21 +148,44 @@ const idNum = Math.abs(
     filter: url(#papercut);
     display: flex;
     align-items: center;
+    gap: 0.75rem;
+    position: relative;
   }
 
-  /* Punch hole — top right corner */
+  .octagon-avatar-wrap {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+  }
+
+  .octagon-avatar {
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+  }
+
+  .octagon-avatar-fallback {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+    color: #FAF3E8;
+    font-weight: 700;
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+  }
+
   .punch-hole {
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    border: 2px solid rgba(26, 26, 26, 0.12);
-    position: absolute;
-    top: 0.75rem;
-    right: 1rem;
-    z-index: 2;
+    border: 2px solid rgba(250, 243, 232, 0.15);
+    flex-shrink: 0;
   }
 
-  /* Barcode decoration */
   .barcode {
     display: flex;
     align-items: flex-end;
@@ -172,7 +205,6 @@ const idNum = Math.abs(
     width: 1px;
   }
 
-  /* Perforation line */
   .perforation {
     border-top: 2px dashed rgba(26, 26, 26, 0.1);
   }

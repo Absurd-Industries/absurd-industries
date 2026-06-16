@@ -8,7 +8,11 @@ export const bottomBarTabs: NavItem[] = [
 ];
 
 export const megaMenuItems: NavItem[] = [
-  { label: "Inventory", href: "/inventory", icon: "ph-bold ph-package" },
+  {
+    label: "Home",
+    href: "/",
+    icon: "ph-bold ph-house",
+  },
   {
     label: "Discord",
     href: "https://discord.gg/DUSUtguG2H",

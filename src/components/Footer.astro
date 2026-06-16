@@ -11,46 +11,71 @@
       <div>
         <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Platform</h4>
         <ul class="space-y-2 text-sm list-none p-0 m-0">
-          <li><a href="/campaigns" class="text-ink hover:underline font-medium no-underline">Campaigns</a></li>
-          <li><a href="/makers" class="text-ink hover:underline font-medium no-underline">Makers</a></li>
-          <li><a href="/requests" class="text-ink hover:underline font-medium no-underline">Requests</a></li>
-          <li><a href="/events" class="text-ink hover:underline font-medium no-underline">Events</a></li>
-          <li><a href="/inventory" class="text-ink hover:underline font-medium no-underline">Inventory</a></li>
+          <li><a href="/campaigns" class="footer-link"><i class="ph-bold ph-rocket-launch"></i> Campaigns</a></li>
+          <li><a href="/makers" class="footer-link"><i class="ph-bold ph-users-three"></i> Makers</a></li>
+          <li><a href="/requests" class="footer-link"><i class="ph-bold ph-megaphone"></i> Requests</a></li>
+          <li><a href="/events" class="footer-link"><i class="ph-bold ph-calendar-dots"></i> Events</a></li>
         </ul>
       </div>
       <div>
         <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Community</h4>
         <ul class="space-y-2 text-sm list-none p-0 m-0">
-          <li><a href="https://discord.gg/DUSUtguG2H" target="_blank" rel="noopener" class="text-ink hover:underline font-medium no-underline">Discord</a></li>
-          <li><a href="https://www.instagram.com/absurd.industries" target="_blank" rel="noopener" class="text-ink hover:underline font-medium no-underline">Instagram</a></li>
-          <li><a href="https://www.youtube.com/@absurd.industries" target="_blank" rel="noopener" class="text-ink hover:underline font-medium no-underline">YouTube</a></li>
-          <li><a href="https://www.linkedin.com/company/absurd-industries" target="_blank" rel="noopener" class="text-ink hover:underline font-medium no-underline">LinkedIn</a></li>
+          <li><a href="https://discord.gg/DUSUtguG2H" target="_blank" rel="noopener" class="footer-link"><i class="fa-brands fa-discord"></i> Discord</a></li>
+          <li><a href="https://www.instagram.com/absurd.industries" target="_blank" rel="noopener" class="footer-link"><i class="fa-brands fa-instagram"></i> Instagram</a></li>
+          <li><a href="https://www.youtube.com/@absurd.industries" target="_blank" rel="noopener" class="footer-link"><i class="fa-brands fa-youtube"></i> YouTube</a></li>
+          <li><a href="https://www.linkedin.com/company/absurd-industries" target="_blank" rel="noopener" class="footer-link"><i class="fa-brands fa-linkedin"></i> LinkedIn</a></li>
         </ul>
       </div>
       <div>
         <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Resources</h4>
         <ul class="space-y-2 text-sm list-none p-0 m-0">
-          <li><a href="/hardware-devroom" class="text-ink hover:underline font-medium no-underline">Hardware Devroom</a></li>
-          <li><a href="/contact" class="text-ink hover:underline font-medium no-underline">Contact</a></li>
+          <li><a href="/hardware-devroom" class="footer-link"><i class="ph-bold ph-microchip"></i> Hardware Devroom</a></li>
+          <li><a href="/contact" class="footer-link"><i class="ph-bold ph-envelope"></i> Contact</a></li>
         </ul>
       </div>
       <div>
         <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Legal</h4>
         <ul class="space-y-2 text-sm list-none p-0 m-0">
-          <li><a href="/privacy-policy" class="text-ink hover:underline font-medium no-underline">Privacy</a></li>
-          <li><a href="/terms-and-conditions" class="text-ink hover:underline font-medium no-underline">Terms</a></li>
-          <li><a href="/policies" class="text-ink hover:underline font-medium no-underline">Policies</a></li>
+          <li><a href="/privacy-policy" class="footer-link"><i class="ph-bold ph-shield-check"></i> Privacy</a></li>
+          <li><a href="/terms-and-conditions" class="footer-link"><i class="ph-bold ph-file-text"></i> Terms</a></li>
+          <li><a href="/policies" class="footer-link"><i class="ph-bold ph-scroll"></i> Policies</a></li>
         </ul>
       </div>
     </div>
     <div class="border-t border-ink/10 pt-5 flex flex-col sm:flex-row justify-between items-center gap-2">
-      <div class="flex items-center gap-2">
-        <img src="/images/absurd-logo.png" alt="" class="h-5" width="80" height="20" />
+      <a href="/" class="flex items-center gap-2 no-underline text-ink hover:text-stamp transition-colors">
+        <img src="/images/absurd-logo.png" alt="Absurd Industries" class="h-6 w-auto" />
         <span class="text-xs font-semibold">Absurd Industries</span>
-      </div>
+      </a>
       <p class="text-xs text-ink-faint">
         <span class="copyleft">&copy;</span> Copyleft 2023&ndash;2026. Made with curiosity in Bengaluru.
       </p>
     </div>
   </div>
 </footer>
+
+<style>
+  .footer-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #1A1A1A;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.15s;
+  }
+  .footer-link:hover {
+    color: #FF5900;
+    text-decoration: underline;
+  }
+  .footer-link i {
+    font-size: 0.85rem;
+    width: 1rem;
+    text-align: center;
+    flex-shrink: 0;
+    opacity: 0.6;
+  }
+  .footer-link:hover i {
+    opacity: 1;
+  }
+</style>

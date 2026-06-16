@@ -280,7 +280,11 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
             <!-- Hexagon Avatar -->
             <div class="relative flex-shrink-0 -mb-12 sm:-mb-14">
               <div class="hex-avatar">
-                <span class="font-serif font-bold text-4xl sm:text-5xl text-ink-faint/40 select-none">{initial}</span>
+                {maker.avatar ? (
+                  <img src={maker.avatar} alt={maker.name} class="hex-avatar-img" />
+                ) : (
+                  <span class="font-serif font-bold text-4xl sm:text-5xl text-ink-faint/40 select-none">{initial}</span>
+                )}
               </div>
               <div class="status-online"></div>
             </div>
@@ -772,6 +776,12 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+  }
+  .hex-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   @media (min-width: 640px) {
     .hex-avatar {

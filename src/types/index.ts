@@ -90,6 +90,9 @@ export interface Maker {
   /** Hex colour for the avatar circle. */
   avatarColor: string;
 
+  /** Path or URL to the maker's profile image. */
+  avatar?: string;
+
   /** List of skill/tag labels, e.g. ["PCB Design", "Rust", "KiCad"]. */
   skills: string[];
 

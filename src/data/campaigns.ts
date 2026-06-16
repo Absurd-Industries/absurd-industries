@@ -84,6 +84,7 @@ export const campaigns: Campaign[] = [
     backers: 421,
     license: "GPL-3.0",
     bornFromRequest: "open-source-desktop-cnc-machine",
+    image: "/images/campaigns/workdesk-ii.jpg",
   },
   {
     slug: "breathbox-air-quality-monitor",
@@ -145,6 +146,7 @@ export const campaigns: Campaign[] = [
     backers: 57,
     daysLeft: 31,
     license: "MIT",
+    image: "/images/campaigns/circuit-python.jpg",
   },
   {
     slug: "picoprobe-usb-logic-analyzer",
@@ -165,6 +167,7 @@ export const campaigns: Campaign[] = [
     backers: 0,
     license: "CERN-OHL-S",
     bornFromRequest: "open-e-ink-display-module",
+    image: "/images/campaigns/ws2812b.jpg",
   },
   {
     slug: "growframe-vertical-garden-controller",
@@ -185,6 +188,7 @@ export const campaigns: Campaign[] = [
     backers: 145,
     daysLeft: 14,
     license: "GPL-3.0",
+    image: "/images/campaigns/drone-hatchling-box.jpg",
   },
   {
     slug: "supersaber-open-lightsaber-kit",
