@@ -142,14 +142,26 @@ const initial = maker.name.charAt(0).toUpperCase();
   }
 
   .id-card-header {
-    background: #1A1A1A;
     padding: 0.85rem 1.25rem;
     border-radius: 0.875rem 0.875rem 0 0;
-    filter: url(#papercut);
     display: flex;
     align-items: center;
     gap: 0.75rem;
     position: relative;
+    overflow: hidden;
+  }
+  .id-card-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #1A1A1A;
+    border-radius: 0.875rem 0.875rem 0 0;
+    filter: url(#papercut);
+    z-index: 0;
+  }
+  .id-card-header > * {
+    position: relative;
+    z-index: 1;
   }
 
   .octagon-avatar-wrap {

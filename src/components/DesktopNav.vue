@@ -45,6 +45,7 @@ function toggle() {
 }
 
 function isActive(href: string): boolean {
+  if (href === "/") return !props.activeTab;
   const slug = href.replace(/\//g, "");
   return props.activeTab === slug;
 }

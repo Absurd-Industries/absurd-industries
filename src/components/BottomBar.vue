@@ -27,7 +27,7 @@ function closeMegaMenu() {
         v-for="tab in bottomBarTabs"
         :key="tab.href"
         :href="tab.href"
-        :class="{ 'active-tab': activeTab === tab.href.replace('/', '') }"
+        :class="{ 'active-tab': tab.href === '/' ? !activeTab : activeTab === tab.href.replace('/', '') }"
       >
         <i :class="tab.icon"></i>
         <span>{{ tab.label }}</span>
@@ -39,14 +39,15 @@ function closeMegaMenu() {
     </div>
 
     <Transition name="slide">
-      <div v-if="megaMenuOpen" class="mega-menu-wrapper" @click="closeMegaMenu">
-        <div class="mega-menu">
+      <div v-if="megaMenuOpen" class="mega-menu-wrapper">
+        <div class="mega-menu" @click.stop>
           <a
             v-for="item in megaMenuItems"
             :key="item.href"
             :href="item.href"
             :target="item.isExternal ? '_blank' : undefined"
             :rel="item.isExternal ? 'noopener' : undefined"
+            @click="closeMegaMenu"
           >
             <i :class="item.icon"></i>
             {{ item.label }}

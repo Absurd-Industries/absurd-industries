@@ -1,18 +1,14 @@
 import type { NavItem } from "../types";
 
 export const bottomBarTabs: NavItem[] = [
+  { label: "Home", href: "/", icon: "ph-bold ph-house" },
+  { label: "Events", href: "/events", icon: "ph-bold ph-calendar-dots" },
   { label: "Campaigns", href: "/campaigns", icon: "ph-bold ph-rocket-launch" },
   { label: "Makers", href: "/makers", icon: "ph-bold ph-users-three" },
-  { label: "Requests", href: "/requests", icon: "ph-bold ph-megaphone" },
-  { label: "Events", href: "/events", icon: "ph-bold ph-calendar-dots" },
 ];
 
 export const megaMenuItems: NavItem[] = [
-  {
-    label: "Home",
-    href: "/",
-    icon: "ph-bold ph-house",
-  },
+  { label: "Requests", href: "/requests", icon: "ph-bold ph-megaphone" },
   {
     label: "Discord",
     href: "https://discord.gg/DUSUtguG2H",
@@ -22,7 +18,7 @@ export const megaMenuItems: NavItem[] = [
   {
     label: "Hardware Devroom",
     href: "/hardware-devroom",
-    icon: "ph-bold ph-microchip",
+    icon: "ph-bold ph-monitor",
   },
   { label: "Contact", href: "/contact", icon: "ph-bold ph-envelope" },
 ];
