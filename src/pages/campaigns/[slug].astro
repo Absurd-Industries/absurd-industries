@@ -210,9 +210,12 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
   <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-8 pb-6 md:pt-12 md:pb-10">
 
     <!-- Breadcrumb -->
-    <nav class="text-sm mb-6 flex items-center gap-2">
-      <a href="/campaigns" class="text-ink-faint font-medium hover:text-stamp transition-colors" style="text-decoration:none;">Campaigns</a>
-      <i class="ph-bold ph-caret-right text-xs text-stencil"></i>
+    <nav class="text-sm mb-6 flex items-center gap-2 breadcrumb">
+      <a href="/campaigns" class="text-ink-faint font-medium hover:text-stamp transition-colors" style="text-decoration:none;">
+        <i class="ph-bold ph-rocket-launch" style="font-size:0.75rem;"></i>
+        Campaigns
+      </a>
+      <span class="text-ink-faint/40">/</span>
       <span class="text-ink font-medium">{campaign.title}</span>
     </nav>
 

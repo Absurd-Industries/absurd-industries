@@ -369,11 +369,12 @@ function isToday(dateStr: string): boolean {
   align-items: center;
   gap: 0.5rem;
   padding: 1rem 1.25rem 0.75rem;
-  font-family: "Fraunces", Georgia, serif;
-  font-size: 1.35rem;
-  font-weight: 800;
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
   color: #1A1A1A;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
   border-bottom: 2px solid #1A1A1A;
 }
 
@@ -390,11 +391,13 @@ function isToday(dateStr: string): boolean {
   background: rgba(26, 26, 26, 0.12);
 }
 .month-separator-label {
-  font-family: "Fraunces", Georgia, serif;
-  font-size: 1rem;
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 0.85rem;
   font-weight: 700;
   color: #1A1A1A;
   white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 /* --- Date row: one row per date with events --- */
@@ -424,21 +427,22 @@ function isToday(dateStr: string): boolean {
   padding-top: 1.15rem;
 }
 .date-day-number {
-  font-family: "Fraunces", Georgia, serif;
-  font-size: 1.75rem;
-  font-weight: 900;
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
   line-height: 1;
   color: #1A1A1A;
+  letter-spacing: -0.02em;
 }
 .date-row-today .date-day-number {
   color: #FF5900;
 }
 .date-weekday {
   font-family: "DM Sans", system-ui, sans-serif;
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   color: #6B5B4A;
   margin-top: 0.15rem;
 }
@@ -448,11 +452,11 @@ function isToday(dateStr: string): boolean {
 .date-month-badge {
   font-family: "DM Sans", system-ui, sans-serif;
   font-size: 0.6rem;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   color: #FF5900;
-  margin-top: 0.2rem;
+  margin-top: 0.15rem;
   opacity: 0.8;
 }
 
@@ -631,7 +635,7 @@ function isToday(dateStr: string): boolean {
     padding: 0.75rem 1rem 0;
   }
   .date-day-number {
-    font-size: 1.35rem;
+    font-size: 1.15rem;
   }
   .date-weekday {
     margin-top: 0;

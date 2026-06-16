@@ -265,17 +265,36 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
   activeTab="makers"
 >
   <!-- ══════════════════════════════════════ -->
+  <!-- BREADCRUMB                             -->
+  <!-- ══════════════════════════════════════ -->
+  <section class="pt-6 pb-0 sm:pt-8">
+    <div class="max-w-5xl mx-auto px-5 sm:px-6">
+      <nav class="text-sm flex items-center gap-2 breadcrumb mb-4">
+        <a href="/makers" class="text-ink-faint hover:text-stamp transition-colors">
+          <i class="ph-bold ph-users-three" style="font-size:0.75rem;"></i>
+          Makers
+        </a>
+        <span class="text-ink-faint/40">/</span>
+        <span class="text-ink font-medium">{maker.name}</span>
+      </nav>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
   <!-- PROFILE BANNER                        -->
   <!-- ══════════════════════════════════════ -->
-  <section class="pt-8 pb-0 sm:pt-12">
+  <section class="pt-0 pb-0">
     <div class="max-w-5xl mx-auto px-5 sm:px-6">
       <div
         class="profile-banner"
         style={`--banner-bg: ${bannerColor}; --banner-accent: ${bannerAccent};`}
         data-configurable="banner"
       >
+        <!-- Punch hole (card stock ring) -->
+        <div class="punch-hole"></div>
+
         <div class="relative z-10 px-6 py-8 sm:px-10 sm:py-10">
-          <div class="flex flex-col sm:flex-row sm:items-end gap-5">
+          <div class="banner-layout">
 
             <!-- Hexagon Avatar -->
             <div class="relative flex-shrink-0 -mb-12 sm:-mb-14">
@@ -289,45 +308,46 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
               <div class="status-online"></div>
             </div>
 
-        <!-- Name + rank -->
-        <div class="flex-1 min-w-0 pb-1">
-          <div class="flex flex-wrap items-center gap-3">
-            <h1 class="font-serif font-bold text-2xl sm:text-3xl text-paper tracking-tight leading-tight">{maker.name}</h1>
-            <div class="level-badge" title={`Level ${level}`}>{level}</div>
-            <span class="tag" style="background:rgba(42,95,65,0.25); color:#7FE0A0; font-size:0.6rem;">
-              <i class="ph-bold ph-seal-check mr-1" style="font-size:0.55rem;"></i>
-              Verified Maker
-            </span>
-          </div>
-          <p class="text-kraft text-sm mt-1">{maker.title}</p>
-          <div class="flex flex-wrap items-center gap-3 mt-2 text-xs text-kraft-light">
-            <span class="flex items-center gap-1">
-              <span class="w-2 h-2 rounded-full bg-funded inline-block"></span>
-              Online now
-            </span>
-            <span class="opacity-50">|</span>
-            <span>Last active 2 hours ago</span>
-          </div>
-        </div>
+            <!-- Name + rank -->
+            <div class="banner-name-section">
+              <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                <h1 class="font-serif font-bold text-xl sm:text-2xl md:text-3xl text-paper tracking-tight leading-tight">{maker.name}</h1>
+                <div class="level-badge" title={`Level ${level}`}>{level}</div>
+                <span class="tag" style="background:rgba(42,95,65,0.25); color:#7FE0A0; font-size:0.6rem;">
+                  <i class="ph-bold ph-seal-check mr-1" style="font-size:0.55rem;"></i>
+                  Verified
+                </span>
+              </div>
+              <p class="text-kraft text-sm mt-1 truncate">{maker.title}</p>
+              <div class="flex flex-wrap items-center gap-3 mt-2 text-xs text-kraft-light">
+                <span class="flex items-center gap-1">
+                  <span class="w-2 h-2 rounded-full bg-funded inline-block"></span>
+                  Online now
+                </span>
+                <span class="opacity-50 hidden sm:inline">|</span>
+                <span class="hidden sm:inline">Last active 2 hours ago</span>
+              </div>
+            </div>
 
-        <!-- Action buttons -->
-        <div class="flex flex-wrap items-center gap-2 flex-shrink-0 sm:pb-1">
-          <a href="https://discord.gg/DUSUtguG2H" target="_blank" rel="noopener"
-            class="btn btn-sm" style="border-color: rgba(250,243,232,0.3); color: #FAF3E8; background: transparent; border: 1.5px solid rgba(250,243,232,0.3);"
-          >
-            <i class="ph-bold ph-plus mr-1.5" style="font-size:0.75rem;"></i>
-            Follow
-          </a>
-          <a href="https://discord.gg/DUSUtguG2H" target="_blank" rel="noopener"
-            class="btn btn-sm" style="background:rgba(250,243,232,0.12); color:#FAF3E8; border:1.5px solid rgba(250,243,232,0.2);"
-          >
-            <i class="ph-bold ph-envelope-simple mr-1.5" style="font-size:0.75rem;"></i>
-            Message
-          </a>
+            <!-- Action buttons -->
+            <div class="banner-actions">
+              <a href="https://discord.gg/DUSUtguG2H" target="_blank" rel="noopener"
+                class="btn btn-sm" style="border-color: rgba(250,243,232,0.3); color: #FAF3E8; background: transparent; border: 1.5px solid rgba(250,243,232,0.3);"
+              >
+                <i class="ph-bold ph-plus mr-1.5" style="font-size:0.75rem;"></i>
+                Follow
+              </a>
+              <a href="https://discord.gg/DUSUtguG2H" target="_blank" rel="noopener"
+                class="btn btn-sm" style="background:rgba(250,243,232,0.12); color:#FAF3E8; border:1.5px solid rgba(250,243,232,0.2);"
+              >
+                <i class="ph-bold ph-envelope-simple mr-1.5" style="font-size:0.75rem;"></i>
+                Message
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
   </section>
 
   <!-- ══════════════════════════════════════ -->
@@ -741,7 +761,13 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
   /* STEAM-STYLE PROFILE — page-scoped styles                        */
   /* ================================================================ */
 
-  /* Profile banner — customizable via CSS custom properties */
+  /* Breadcrumb */
+  .breadcrumb a {
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  /* Profile banner — filter on pseudo-element to avoid blurring content */
   .profile-banner {
     --banner-bg: #1A1A1A;
     --banner-accent: #FF5900;
@@ -753,17 +779,74 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
       rgba(255, 89, 0, 0.04) 22px
     );
     position: relative;
-    background: var(--banner-bg);
     border-radius: 0.875rem;
     overflow: hidden;
-    filter: url(#papercut);
   }
   .profile-banner::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: var(--banner-pattern);
+    background: var(--banner-bg);
+    background-image: var(--banner-pattern);
+    filter: url(#papercut);
+    z-index: 0;
     pointer-events: none;
+  }
+
+  /* Punch hole — card stock ring that cuts through the banner */
+  .punch-hole {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--banner-bg);
+    box-shadow:
+      inset 0 1px 3px rgba(0,0,0,0.4),
+      inset 0 -1px 2px rgba(255,255,255,0.05),
+      0 0 0 3px rgba(255,255,255,0.08);
+    z-index: 20;
+  }
+  .punch-hole::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border-radius: 50%;
+    background: #D4B896;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.15);
+  }
+
+  /* Banner layout — prevents smushing on narrow screens */
+  .banner-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  @media (min-width: 640px) {
+    .banner-layout {
+      flex-direction: row;
+      align-items: flex-end;
+      gap: 1.25rem;
+    }
+  }
+  .banner-name-section {
+    flex: 1;
+    min-width: 0;
+    padding-bottom: 2px;
+  }
+  .banner-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+  @media (min-width: 640px) {
+    .banner-actions {
+      padding-bottom: 2px;
+    }
   }
 
   /* Hexagon avatar */

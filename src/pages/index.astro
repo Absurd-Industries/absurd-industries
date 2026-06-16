@@ -1,178 +1,170 @@
 ---
 /**
  * Homepage — the main landing page for Absurd Industries.
- * Shows hero, portal grid, featured campaigns, and Friends of Absurd.
+ * Crisp manifesto-style pitch, how-it-works flow, explore grid,
+ * community CTA, and auto-scrolling Friends of Absurd.
  */
 
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Card from "../components/Card.astro";
 import Tag from "../components/Tag.astro";
-import ProgressBar from "../components/ProgressBar.astro";
-import { campaigns } from "../data/campaigns";
 import { friends } from "../data/friends";
+import { makers } from "../data/makers";
+import { events } from "../data/events";
 
-const featuredCampaigns = campaigns.filter((c) => c.status === "live").slice(0, 3);
+const makerCount = makers.length;
+const upcomingEvents = events.filter(e => new Date(e.date) >= new Date()).length;
 ---
 
 <BaseLayout title="Open Source STEAM for Makers, Tinkerers & Rebels">
-  <!-- Hero -->
-  <section class="pt-8 pb-14 md:pt-12 md:pb-20">
+  <!-- Hero — manifesto pitch -->
+  <section class="pt-10 pb-12 md:pt-16 md:pb-20">
+    <div class="max-w-4xl mx-auto px-5 sm:px-6">
+      <p class="text-sm font-semibold uppercase tracking-widest text-stamp mb-4">Bengaluru, India</p>
+
+      <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl font-black leading-[0.95] tracking-tight mb-6">
+        We build things<br class="hidden sm:block" /> that don't exist yet.
+      </h1>
+
+      <p class="text-base sm:text-lg text-ink max-w-xl mb-8 leading-relaxed">
+        Absurd Industries is an open-source STEAM community. We fund hardware campaigns,
+        connect makers, and turn wild ideas into real, repairable, documented things anyone can build.
+      </p>
+
+      <div class="flex flex-wrap gap-3">
+        <a href="/campaigns" class="btn btn-primary">
+          <i class="ph-bold ph-rocket-launch mr-1.5" style="font-size:0.85rem;"></i>
+          Explore Campaigns
+        </a>
+        <a href="/requests" class="btn btn-outline">
+          <i class="ph-bold ph-megaphone mr-1.5" style="font-size:0.85rem;"></i>
+          Request Something
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works — 3-step horizontal flow -->
+  <section class="pb-14 md:pb-20">
     <div class="max-w-5xl mx-auto px-5 sm:px-6">
-      <Card variant="hero">
-        <div class="px-6 py-10 md:px-14 md:py-16">
-          <Tag variant="stamp" class="mb-5">Open Source STEAM</Tag>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+        {[
+          {
+            step: "01",
+            icon: "ph-bold ph-megaphone",
+            title: "Request",
+            desc: "Describe a product that should exist. The community refines the spec.",
+            href: "/requests",
+          },
+          {
+            step: "02",
+            icon: "ph-bold ph-rocket-launch",
+            title: "Fund",
+            desc: "Back the campaign with real money. Makers build it with full source files.",
+            href: "/campaigns",
+          },
+          {
+            step: "03",
+            icon: "ph-bold ph-package",
+            title: "Build",
+            desc: "Get the finished product — or build it yourself. Every design is open.",
+            href: "/makers",
+          },
+        ].map((item) => (
+          <a href={item.href} class="card card-hover block no-underline text-ink group">
+            <div class="card-bg"></div>
+            <div class="card-content p-6">
+              <div class="flex items-center gap-3 mb-3">
+                <span class="text-xs font-bold text-stamp font-mono">{item.step}</span>
+                <i class={item.icon} style="font-size: 1.25rem; color: #1A1A1A; opacity: 0.6;"></i>
+              </div>
+              <h3 class="font-serif font-bold text-lg mb-1.5 group-hover:text-stamp transition-colors">{item.title}</h3>
+              <p class="text-sm text-ink leading-relaxed">{item.desc}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
 
-          <h1 class="font-serif text-4xl sm:text-5xl md:text-7xl font-black leading-[0.95] tracking-tight mb-5">
-            Open Source,<br />Built Together
-          </h1>
+  <!-- Explore the platform — quick links grid -->
+  <section class="pb-14">
+    <div class="max-w-5xl mx-auto px-5 sm:px-6">
+      <h2 class="font-serif text-2xl sm:text-3xl font-bold mb-6">Explore</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 card-grid">
+        {[
+          { title: "Campaigns", desc: "Back open-source hardware", icon: "ph-bold ph-rocket-launch", href: "/campaigns", color: "#FF5900" },
+          { title: "Makers", desc: `${makerCount} builders and counting`, icon: "ph-bold ph-users-three", href: "/makers", color: "#2A5F41" },
+          { title: "Requests", desc: "Ask for what you need", icon: "ph-bold ph-megaphone", href: "/requests", color: "#6B5B4A" },
+          { title: "Events", desc: `${upcomingEvents} upcoming in Bengaluru`, icon: "ph-bold ph-calendar-dots", href: "/events", color: "#CC4700" },
+        ].map((item) => (
+          <a href={item.href} class="card card-hover block no-underline text-ink">
+            <div class="card-bg"></div>
+            <div class="card-content p-5">
+              <i class={item.icon} style={`color: ${item.color}; font-size: 1.5rem;`}></i>
+              <h3 class="font-serif font-bold text-base mt-3 mb-1">{item.title}</h3>
+              <p class="text-xs text-ink">{item.desc}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
 
-          <p class="text-base sm:text-lg text-ink-faint max-w-lg mb-8 leading-relaxed">
-            Science, technology, engineering, art, and math — all open source. Back indie campaigns,
-            request what doesn't exist, and build with a community that ships.
-          </p>
-
-          <div class="flex flex-wrap gap-3">
-            <a href="/campaigns" class="btn btn-primary">Explore Campaigns</a>
-            <a href="/requests" class="btn btn-outline">Make a Request</a>
+  <!-- Community CTA -->
+  <section class="pb-12">
+    <div class="max-w-5xl mx-auto px-5 sm:px-6">
+      <Card variant="dark">
+        <div class="px-6 py-10 sm:px-10 sm:py-12">
+          <div class="flex flex-col sm:flex-row sm:items-center gap-6">
+            <div class="flex-1 min-w-0">
+              <h2 class="font-serif font-bold text-2xl sm:text-3xl text-paper tracking-tight mb-2">Join the workshop</h2>
+              <p class="text-sm text-kraft max-w-md leading-relaxed">
+                Chat with makers, get build help, share your projects,
+                and stay in the loop on new campaigns and events.
+              </p>
+            </div>
+            <a
+              href="https://discord.gg/DUSUtguG2H"
+              target="_blank"
+              rel="noopener"
+              class="btn btn-stamp flex-shrink-0"
+            >
+              <i class="fa-brands fa-discord mr-2" style="font-size:1rem;"></i>
+              Join Discord
+            </a>
           </div>
         </div>
       </Card>
     </div>
   </section>
 
-  <!-- Portal Grid -->
+  <!-- Friends of Absurd — auto-scrolling marquee -->
   <section class="pb-14">
     <div class="max-w-5xl mx-auto px-5 sm:px-6">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 card-grid">
-        {[
-          { title: "Campaigns", desc: "Back open source projects", icon: "ph-bold ph-rocket-launch", href: "/campaigns", color: "#FF5900" },
-          { title: "Makers", desc: "Discover the builders", icon: "ph-bold ph-users-three", href: "/makers", color: "#2A5F41" },
-          { title: "Requests", desc: "Ask for what you need", icon: "ph-bold ph-megaphone", href: "/requests", color: "#6B5B4A" },
-          { title: "Events", desc: "Bengaluru maker meetups", icon: "ph-bold ph-calendar-dots", href: "/events", color: "#CC4700" },
-        ].map((item) => (
-          <a href={item.href} class="card card-hover block no-underline text-ink">
-            <div class="card-bg"></div>
-            <div class="card-content p-5">
-              <i class={item.icon} style={`color: ${item.color}; font-size: 1.75rem;`}></i>
-              <h3 class="font-serif font-bold text-lg mt-3 mb-1">{item.title}</h3>
-              <p class="text-xs text-ink-faint">{item.desc}</p>
-            </div>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Featured Campaigns -->
-  <section class="pb-14">
-    <div class="max-w-5xl mx-auto px-5 sm:px-6">
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="font-serif text-2xl sm:text-3xl font-bold">Featured Campaigns</h2>
-        <a href="/campaigns" class="btn btn-ghost btn-sm">
-          View all <i class="ph-bold ph-arrow-right ml-1"></i>
-        </a>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 card-grid">
-        {featuredCampaigns.map((campaign) => (
-          <a href={`/campaigns/${campaign.slug}`} class="card card-hover block no-underline text-ink group">
-            <div class="card-bg"></div>
-            <div class="card-content">
-              {campaign.image && (
-                <div class="m-3 mb-0 rounded-lg overflow-hidden" style="height: 140px;">
-                  <img
-                    src={campaign.image}
-                    alt={campaign.title}
-                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    loading="lazy"
-                  />
-                </div>
-              )}
-              <div class="p-5 pt-3">
-                <div class="flex items-center gap-3 mb-3">
-                  <div
-                    class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                    style={`background: ${campaign.avatarColor}20;`}
-                  >
-                    <i class={campaign.icon} style={`color: ${campaign.avatarColor}; font-size: 0.9rem;`}></i>
-                  </div>
-                  <div class="flex-1 min-w-0">
-                    <h3 class="font-serif font-bold text-base truncate group-hover:text-stamp transition-colors">{campaign.title}</h3>
-                    <p class="text-xs text-ink-faint">{campaign.makerName} &middot; {campaign.location}</p>
-                  </div>
-                </div>
-
-                <p class="text-sm text-ink-faint mb-4 line-clamp-2">{campaign.tagline}</p>
-
-                <ProgressBar percent={campaign.percent} hot={campaign.percent >= 100} />
-
-                <div class="flex items-center justify-between mt-3 text-xs">
-                  <span class="font-semibold text-funded">{campaign.percent}% funded</span>
-                  <span class="text-ink-faint">{campaign.backers} backers</span>
-                </div>
-
-                <div class="flex items-center gap-2 mt-3">
-                  <Tag variant="muted">{campaign.license}</Tag>
-                  {campaign.bornFromRequest && (
-                    <Tag variant="stamp">Born from request</Tag>
-                  )}
-                </div>
-              </div>
-            </div>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Discord CTA -->
-  <section class="pb-10">
-    <div class="max-w-5xl mx-auto px-5 sm:px-6">
-      <a
-        href="https://discord.gg/DUSUtguG2H"
-        target="_blank"
-        rel="noopener"
-        class="block no-underline"
-      >
-        <div class="card card-hover">
-          <div class="card-bg" style="background: #1A1A1A;"></div>
-          <div class="card-content px-6 py-5 md:px-8 md:py-6 flex items-center gap-4">
-            <i class="fa-brands fa-discord text-3xl" style="color: #5865F2;"></i>
-            <div class="flex-1 min-w-0">
-              <h3 class="font-serif font-bold text-base text-paper mb-0.5">Join our Discord</h3>
-              <p class="text-xs text-paper/50">Chat with makers, get build help, share projects, and stay in the loop.</p>
-            </div>
-            <i class="ph-bold ph-arrow-right text-paper/40 text-lg flex-shrink-0"></i>
-          </div>
-        </div>
-      </a>
-    </div>
-  </section>
-
-  <!-- Friends of Absurd -->
-  <section class="pb-14">
-    <div class="max-w-5xl mx-auto px-5 sm:px-6">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="font-serif text-2xl font-bold">Friends of Absurd</h2>
-      </div>
-      <p class="text-sm text-ink max-w-md leading-relaxed mb-6">
-        The makers, communities, and companies building the open source STEAM ecosystem with us.
+      <h2 class="font-serif text-xl font-bold mb-1">Friends of Absurd</h2>
+      <p class="text-sm text-ink max-w-md leading-relaxed mb-5">
+        Communities and companies building the open-source STEAM ecosystem with us.
       </p>
-      <div class="friends-scroller scrollbar-hide">
-        {friends.map((friend) => (
+    </div>
+    <div class="friends-marquee-wrapper">
+      <div class="friends-marquee" aria-label="Partner logos">
+        {/* Duplicate the list for seamless looping */}
+        {[...friends, ...friends].map((friend, i) => (
           <a
             href={friend.url}
             target="_blank"
             rel="noopener"
-            class="friend-logo flex-shrink-0"
+            class="friend-item"
             title={friend.name}
           >
             <img
               src={`/images/partners/${friend.logo}`}
               alt={friend.name}
-              class="h-8 sm:h-10 object-contain opacity-70 hover:opacity-100 transition-opacity"
+              class="h-8 sm:h-10 object-contain"
+              loading="lazy"
             />
-            <span class="text-xs font-semibold">{friend.name}</span>
+            <span class="text-xs font-semibold text-ink">{friend.name}</span>
           </a>
         ))}
       </div>
@@ -181,11 +173,37 @@ const featuredCampaigns = campaigns.filter((c) => c.status === "live").slice(0, 
 </BaseLayout>
 
 <style>
-  .friends-scroller {
+  /* Auto-scrolling marquee for Friends of Absurd */
+  .friends-marquee-wrapper {
+    overflow: hidden;
+    width: 100%;
+    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+  }
+  .friends-marquee {
     display: flex;
-    gap: 2.5rem;
-    overflow-x: auto;
-    padding-bottom: 0.5rem;
-    -webkit-overflow-scrolling: touch;
+    gap: 3rem;
+    width: max-content;
+    animation: marquee-scroll 25s linear infinite;
+  }
+  .friends-marquee:hover {
+    animation-play-state: paused;
+  }
+  .friend-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    text-decoration: none;
+    flex-shrink: 0;
+    opacity: 0.65;
+    transition: opacity 0.2s;
+  }
+  .friend-item:hover {
+    opacity: 1;
+  }
+  @keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
   }
 </style>
