@@ -1,0 +1,244 @@
+---
+/**
+ * Maker ID card component.
+ * Styled as a physical ID badge — coloured header strip, avatar initial,
+ * lanyard hole, barcode, perforation, and guild stamp.
+ *
+ * Usage:
+ *   <MakerCard maker={maker} />
+ */
+
+import type { Maker } from "../types";
+import Card from "./Card.astro";
+import Tag from "./Tag.astro";
+
+interface Props {
+  maker: Maker;
+}
+
+const { maker } = Astro.props;
+
+/** Deterministic barcode heights from slug hash */
+function generateBarcode(slug: string): number[] {
+  const bars: number[] = [];
+  const count = 30;
+  let hash = 0;
+  for (const ch of slug) {
+    hash = ((hash << 5) - hash + ch.charCodeAt(0)) | 0;
+  }
+  for (let i = 0; i < count; i++) {
+    hash = ((hash * 1103515245 + 12345) >>> 0) & 0x7fffffff;
+    bars.push(8 + (hash % 16));
+  }
+  return bars;
+}
+
+/** Deterministic member ID from slug */
+function generateMemberId(slug: string): string {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let hash = 0;
+  for (const ch of slug) {
+    hash = ((hash << 5) - hash + ch.charCodeAt(0)) | 0;
+  }
+  let id = "";
+  for (let i = 0; i < 6; i++) {
+    hash = ((hash * 1103515245 + 12345) >>> 0) & 0x7fffffff;
+    id += chars[hash % chars.length];
+  }
+  return id;
+}
+
+const barcode = generateBarcode(maker.slug);
+const memberId = generateMemberId(maker.slug);
+const initial = maker.name.charAt(0).toUpperCase();
+
+/** Index derived from slug for a stable ID number */
+const idNum = Math.abs(
+  Array.from(maker.slug).reduce((a, c) => ((a << 5) - a + c.charCodeAt(0)) | 0, 0)
+) % 10000;
+---
+
+<a
+  href={`/makers/${maker.slug}`}
+  class="card card-hover id-card no-underline text-ink block group"
+>
+  <div class="card-bg"></div>
+  <div class="card-content flex flex-col">
+
+    <!-- Lanyard hole -->
+    <div class="pt-3 pb-0">
+      <div class="lanyard-hole"></div>
+    </div>
+
+    <!-- Colored header strip -->
+    <div
+      class="id-card-header"
+      style={`background: ${maker.avatarColor}; color: ${maker.avatarColor};`}
+    >
+      <div class="flex items-start justify-between">
+        <div>
+          <span class="text-white/70 text-[0.6rem] font-bold uppercase tracking-widest">Absurd Industries</span>
+          <div class="text-white/90 text-xs font-semibold mt-0.5 tracking-wide uppercase">{maker.specialty}</div>
+        </div>
+        <div class="guild-stamp" style="border-color: rgba(255,255,255,0.6); color: rgba(255,255,255,0.8);">
+          <i class="ph-bold ph-seal-check text-[0.6rem]"></i>
+          Guild Member
+        </div>
+      </div>
+    </div>
+
+    <!-- Avatar overlapping the header -->
+    <div class="px-5">
+      <div class="id-avatar">
+        <span class="font-serif font-bold text-2xl text-ink-faint/60 select-none">{initial}</span>
+      </div>
+    </div>
+
+    <!-- Name + Title + Location -->
+    <div class="px-5 pt-3">
+      <h3 class="font-serif font-bold text-xl leading-tight group-hover:text-stamp transition-colors">{maker.name}</h3>
+      <p class="text-sm text-ink-light mt-0.5">{maker.title}</p>
+      <p class="text-xs text-ink-faint mt-1.5 flex items-center gap-1">
+        <i class="ph-bold ph-map-pin text-xs text-stamp"></i>
+        {maker.location}
+      </p>
+    </div>
+
+    <!-- Skills -->
+    <div class="px-5 pt-3 flex flex-wrap gap-1.5">
+      {maker.skills.map((skill) => (
+        <Tag class="text-[0.6rem]">{skill}</Tag>
+      ))}
+    </div>
+
+    <!-- Stats row -->
+    <div class="px-5 pt-4 flex items-center gap-5">
+      <div class="text-center">
+        <div class="text-lg font-bold font-serif leading-none">{maker.projects}</div>
+        <div class="text-[0.6rem] text-ink-faint uppercase tracking-wide mt-0.5">Projects</div>
+      </div>
+      <div class="w-px h-8 bg-ink/10"></div>
+      <div class="text-center">
+        <div class="text-lg font-bold font-serif leading-none">{maker.backers}</div>
+        <div class="text-[0.6rem] text-ink-faint uppercase tracking-wide mt-0.5">Backers</div>
+      </div>
+    </div>
+
+    <!-- Perforation + bottom section -->
+    <div class="mt-4 mx-4 perforation"></div>
+    <div class="px-5 pt-3 pb-4 flex items-end justify-between">
+      <!-- Barcode + member ID -->
+      <div>
+        <div class="barcode">
+          {barcode.map((h) => (
+            <span style={`height: ${h}px`}></span>
+          ))}
+        </div>
+        <div class="text-[0.55rem] text-ink-faint/40 font-mono mt-1 tracking-widest">
+          AI-{String(idNum).padStart(4, "0")}-{memberId}
+        </div>
+      </div>
+
+      <!-- View Profile -->
+      <span class="text-stamp font-semibold text-sm flex items-center gap-1 flex-shrink-0 group-hover:underline">
+        Profile
+        <i class="ph-bold ph-arrow-right text-xs"></i>
+      </span>
+    </div>
+  </div>
+</a>
+
+<style>
+  /* ---- ID Card styles ---- */
+  .id-card {
+    aspect-ratio: auto;
+  }
+
+  /* Header strip with specialty pattern */
+  .id-card-header {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.875rem 0.875rem 0 0;
+    padding: 1.25rem 1.5rem 2.5rem;
+  }
+  .id-card-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.07;
+    background-image:
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 8px,
+        currentColor 8px,
+        currentColor 9px
+      );
+  }
+
+  /* Circular avatar punch-hole */
+  .id-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid #FAF3E8;
+    background: #E8D5B7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-top: -40px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Guild stamp */
+  .guild-stamp {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.2rem 0.6rem;
+    border: 1.5px solid #FF5900;
+    border-radius: 0.35rem;
+    color: #FF5900;
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transform: rotate(-3deg);
+    opacity: 0.85;
+  }
+
+  /* Barcode decoration */
+  .barcode {
+    display: flex;
+    align-items: flex-end;
+    gap: 1px;
+    height: 24px;
+    opacity: 0.2;
+  }
+  .barcode span {
+    display: block;
+    background: #1A1A1A;
+    width: 2px;
+  }
+  .barcode span:nth-child(3n) {
+    width: 3px;
+  }
+  .barcode span:nth-child(5n) {
+    width: 1px;
+  }
+
+  /* Perforation line */
+  .perforation {
+    border-top: 2px dashed rgba(26, 26, 26, 0.1);
+  }
+
+  /* Lanyard hole decoration */
+  .lanyard-hole {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid rgba(26, 26, 26, 0.12);
+    margin: 0 auto;
+  }
+</style>

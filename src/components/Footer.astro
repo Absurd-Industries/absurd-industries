@@ -1,0 +1,56 @@
+---
+/**
+ * Site-wide footer with platform links, community links, resources, and legal.
+ * Static component — no JS shipped.
+ */
+---
+
+<footer class="py-10" style="background: rgba(184,149,106,0.45);">
+  <div class="max-w-5xl mx-auto px-5 sm:px-6">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+      <div>
+        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Platform</h4>
+        <ul class="space-y-2 text-sm list-none p-0 m-0">
+          <li><a href="/campaigns" class="text-ink hover:underline font-medium no-underline">Campaigns</a></li>
+          <li><a href="/makers" class="text-ink hover:underline font-medium no-underline">Makers</a></li>
+          <li><a href="/requests" class="text-ink hover:underline font-medium no-underline">Requests</a></li>
+          <li><a href="/events" class="text-ink hover:underline font-medium no-underline">Events</a></li>
+          <li><a href="/inventory" class="text-ink hover:underline font-medium no-underline">Inventory</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Community</h4>
+        <ul class="space-y-2 text-sm list-none p-0 m-0">
+          <li><a href="https://discord.gg/DUSUtguG2H" target="_blank" rel="noopener" class="text-ink hover:underline font-medium no-underline">Discord</a></li>
+          <li><a href="https://www.instagram.com/absurd.industries" target="_blank" rel="noopener" class="text-ink hover:underline font-medium no-underline">Instagram</a></li>
+          <li><a href="https://www.youtube.com/@absurd.industries" target="_blank" rel="noopener" class="text-ink hover:underline font-medium no-underline">YouTube</a></li>
+          <li><a href="https://www.linkedin.com/company/absurd-industries" target="_blank" rel="noopener" class="text-ink hover:underline font-medium no-underline">LinkedIn</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Resources</h4>
+        <ul class="space-y-2 text-sm list-none p-0 m-0">
+          <li><a href="/hardware-devroom" class="text-ink hover:underline font-medium no-underline">Hardware Devroom</a></li>
+          <li><a href="/contact" class="text-ink hover:underline font-medium no-underline">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Legal</h4>
+        <ul class="space-y-2 text-sm list-none p-0 m-0">
+          <li><a href="/privacy-policy" class="text-ink hover:underline font-medium no-underline">Privacy</a></li>
+          <li><a href="/terms-and-conditions" class="text-ink hover:underline font-medium no-underline">Terms</a></li>
+          <li><a href="/policies" class="text-ink hover:underline font-medium no-underline">Policies</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-ink/10 pt-5 flex flex-col sm:flex-row justify-between items-center gap-2">
+      <div class="flex items-center gap-2">
+        <img src="/images/absurd-logo.png" alt="" class="h-5" width="80" height="20" />
+        <span class="text-xs font-semibold">Absurd Industries</span>
+      </div>
+      <p class="text-xs text-ink-faint">
+        <span class="copyleft">&copy;</span> Copyleft 2023&ndash;2026. Made with curiosity in Bengaluru.
+      </p>
+    </div>
+  </div>
+</footer>

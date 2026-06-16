@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Makers | Absurd Industries</title>
+    <meta name="description" content="Meet the hardware rebels building open-source tools, gadgets, and machines. Absurd Industries maker profiles.">
+
+    <meta property="og:title" content="Makers | Absurd Industries">
+    <meta property="og:description" content="Hardware rebels with workshops, not just followers.">
+    <meta property="og:image" content="https://absurd.industries/hardware-devroom/screen.png">
+    <meta property="og:url" content="https://absurd.industries/makers/">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16x16.png">
+    <link rel="shortcut icon" href="../assets/favicon/favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap" rel="stylesheet">
+
+    <script src="https://kit.fontawesome.com/e0c6d65845.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kraft: { DEFAULT: '#D4B896', light: '#E8D5B7', dark: '#B8956A' },
+                        ink: { DEFAULT: '#1A1A1A', light: '#3D3D3D', faint: '#6B5B4A' },
+                        stamp: { DEFAULT: '#FF5900', dark: '#CC4700' },
+                        paper: '#FAF3E8',
+                        stencil: '#6B5B4A',
+                        funded: '#2A5F41',
+                    },
+                    fontFamily: {
+                        serif: ['"Fraunces"', 'Georgia', 'serif'],
+                        sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
+                    },
+                },
+            },
+        };
+    </script>
+
+    <style>
+        body {
+            background-color: #D4B896;
+            background-image: url('../hardware-devroom/images/kraft-paper.jpg');
+            background-repeat: repeat;
+            background-size: auto;
+        }
+
+        /* ---- Paper-cut cards ---- */
+        .card { position: relative; }
+        .card-bg {
+            position: absolute; inset: 0;
+            background: #FAF3E8;
+            border-radius: 0.875rem;
+            filter: url(#papercut);
+            z-index: 0;
+        }
+        .card-bg-dark {
+            position: absolute; inset: 0;
+            background: #1A1A1A;
+            border-radius: 0.875rem;
+            filter: url(#papercut);
+            z-index: 0;
+        }
+        .card-content { position: relative; z-index: 1; }
+
+        /* Alternate filter seeds so adjacent cards look unique */
+        .card-grid > .card:nth-child(3n+2) > .card-bg,
+        .card-grid > .card:nth-child(3n+2) > .card-bg-dark { filter: url(#papercut-2); }
+        .card-grid > .card:nth-child(3n+3) > .card-bg,
+        .card-grid > .card:nth-child(3n+3) > .card-bg-dark { filter: url(#papercut-3); }
+
+        .card-hover { transition: transform 0.2s ease; }
+        .card-hover:hover { transform: translateY(-3px); }
+
+        /* ---- Buttons — gentle round ---- */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 0.7rem 1.6rem;
+            font-family: 'DM Sans', system-ui, sans-serif;
+            font-weight: 600; font-size: 0.875rem;
+            letter-spacing: 0.01em;
+            border-radius: 0.625rem;
+            text-decoration: none;
+            transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+            cursor: pointer; border: none;
+        }
+        .btn:hover { transform: translateY(-1px); }
+        .btn-primary { background: #1A1A1A; color: #FAF3E8; }
+        .btn-primary:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .btn-stamp { background: #FF5900; color: #FAF3E8; }
+        .btn-stamp:hover { box-shadow: 0 4px 12px rgba(255,89,0,0.25); }
+        .btn-outline { background: transparent; color: #1A1A1A; border: 1.5px solid #1A1A1A; }
+        .btn-outline:hover { background: #1A1A1A; color: #FAF3E8; }
+        .btn-ghost { background: transparent; color: #1A1A1A; padding: 0.5rem 1rem; }
+        .btn-ghost:hover { background: rgba(26,26,26,0.06); border-radius: 0.625rem; }
+        .btn-sm { padding: 0.5rem 1.15rem; font-size: 0.8rem; }
+
+        /* ---- Tags ---- */
+        .tag {
+            display: inline-flex; align-items: center;
+            padding: 0.2rem 0.65rem; border-radius: 999px;
+            font-size: 0.68rem; font-weight: 600;
+            letter-spacing: 0.04em; text-transform: uppercase;
+        }
+        .tag-default { background: rgba(26,26,26,0.08); color: #1A1A1A; }
+        .tag-stamp { background: rgba(255,89,0,0.12); color: #FF5900; }
+        .tag-funded { background: rgba(42,95,65,0.12); color: #2A5F41; }
+
+        /* ---- Fixed wonky logo ---- */
+        .wonky-logo {
+            position: fixed; top: 1rem; left: 50%; transform: translateX(-50%) rotate(-2deg);
+            z-index: 40; transition: transform 0.2s ease;
+        }
+        .wonky-logo:hover { transform: translateX(-50%) rotate(0deg) scale(1.05); }
+
+        /* ---- Bottom bar (mobile) ---- */
+        .bottom-bar {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: #1A1A1A;
+            z-index: 50;
+            box-shadow: 0 -2px 12px rgba(0,0,0,0.15);
+        }
+        .bottom-bar a, .bottom-bar button {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 10px 0;
+            color: rgba(250,243,232,0.55);
+            text-decoration: none; background: none; border: none;
+            font-family: 'DM Sans', system-ui, sans-serif;
+            font-size: 0.6rem; font-weight: 600;
+            letter-spacing: 0.03em; text-transform: uppercase;
+            transition: color 0.15s; cursor: pointer;
+        }
+        .bottom-bar a:hover, .bottom-bar a:active,
+        .bottom-bar button:hover { color: #FF5900; }
+        .bottom-bar a.active { color: #FF5900; }
+        .bottom-bar i, .bottom-bar .ph-bold { font-size: 1.25rem; margin-bottom: 3px; }
+
+        /* Mega menu */
+        .mega-menu {
+            position: absolute; bottom: 100%; right: 0; left: 0;
+            background: #FAF3E8;
+            border-radius: 0.875rem 0.875rem 0 0;
+            box-shadow: 0 -4px 24px rgba(0,0,0,0.12);
+            padding: 1.25rem 1.5rem;
+        }
+        .mega-menu a {
+            display: flex; align-items: center; gap: 0.75rem;
+            color: #1A1A1A; text-decoration: none;
+            font-size: 0.875rem; font-weight: 500;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid rgba(26,26,26,0.06);
+            flex-direction: row;
+        }
+        .mega-menu a:last-child { border-bottom: none; }
+        .mega-menu a i { font-size: 1.1rem; color: #6B5B4A; }
+        .mega-menu a:hover { color: #FF5900; }
+        .mega-menu a:hover i { color: #FF5900; }
+
+        body { padding-bottom: 72px; }
+
+        .copyleft { display: inline-block; transform: rotate(180deg); }
+
+        /* ---- Filter pills ---- */
+        .filter-pill {
+            display: inline-flex; align-items: center;
+            padding: 0.4rem 1rem;
+            border-radius: 999px;
+            font-size: 0.8rem; font-weight: 600;
+            letter-spacing: 0.02em;
+            cursor: pointer;
+            transition: background 0.15s ease, color 0.15s ease;
+            border: 1.5px solid transparent;
+            background: rgba(26,26,26,0.06);
+            color: #6B5B4A;
+        }
+        .filter-pill:hover {
+            background: rgba(26,26,26,0.1);
+            color: #1A1A1A;
+        }
+        .filter-pill.active {
+            background: #1A1A1A;
+            color: #FAF3E8;
+            border-color: #1A1A1A;
+        }
+
+        /* ---- ID Card styles ---- */
+        .id-card {
+            aspect-ratio: auto;
+        }
+
+        /* Header strip with specialty pattern */
+        .id-card-header {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.875rem 0.875rem 0 0;
+            padding: 1.25rem 1.5rem 2.5rem;
+        }
+        .id-card-header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            opacity: 0.07;
+            background-image:
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 8px,
+                    currentColor 8px,
+                    currentColor 9px
+                );
+        }
+
+        /* Circular avatar punch-hole */
+        .id-avatar {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            border: 3px solid #FAF3E8;
+            background: #E8D5B7;
+            display: flex; align-items: center; justify-content: center;
+            position: relative;
+            margin-top: -40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Guild stamp */
+        .guild-stamp {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.2rem 0.6rem;
+            border: 1.5px solid #FF5900;
+            border-radius: 0.35rem;
+            color: #FF5900;
+            font-size: 0.55rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            transform: rotate(-3deg);
+            opacity: 0.85;
+        }
+
+        /* Barcode decoration at bottom */
+        .barcode {
+            display: flex;
+            align-items: flex-end;
+            gap: 1px;
+            height: 24px;
+            opacity: 0.2;
+        }
+        .barcode span {
+            display: block;
+            background: #1A1A1A;
+            width: 2px;
+        }
+        .barcode span:nth-child(3n) { width: 3px; }
+        .barcode span:nth-child(5n) { width: 1px; }
+
+        /* Perforation line */
+        .perforation {
+            border-top: 2px dashed rgba(26,26,26,0.1);
+        }
+
+        /* Lanyard hole decoration */
+        .lanyard-hole {
+            width: 16px; height: 16px;
+            border-radius: 50%;
+            border: 2px solid rgba(26,26,26,0.12);
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body class="font-sans text-ink min-h-screen antialiased">
+
+    <!-- SVG Filters -->
+    <svg width="0" height="0" style="position:absolute">
+        <filter id="papercut">
+            <feTurbulence type="turbulence" baseFrequency="0.04" numOctaves="4" result="n"/>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <filter id="papercut-2">
+            <feTurbulence type="turbulence" baseFrequency="0.035" numOctaves="4" seed="3" result="n"/>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <filter id="papercut-3">
+            <feTurbulence type="turbulence" baseFrequency="0.045" numOctaves="4" seed="7" result="n"/>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="3.5" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+    </svg>
+
+    <div id="app">
+
+        <!-- Fixed wonky logo -->
+        <a href="../" class="wonky-logo">
+            <img src="../hardware-devroom/images/absurd-logo-for-any-background.png" alt="Absurd Industries" class="h-9 sm:h-10 drop-shadow-sm">
+        </a>
+
+        <!-- Header -->
+        <section class="pt-20 pb-8 sm:pt-24 sm:pb-10">
+            <div class="max-w-5xl mx-auto px-5 sm:px-6">
+                <div class="max-w-2xl">
+                    <h1 class="font-serif font-bold text-4xl sm:text-5xl tracking-tight mb-3">Makers</h1>
+                    <p class="text-ink-faint text-base sm:text-lg leading-relaxed">Hardware rebels with workshops, not just followers.</p>
+                </div>
+
+                <!-- Search -->
+                <div class="mt-8 max-w-xl">
+                    <div class="relative">
+                        <i class="ph-bold ph-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-ink-faint text-lg"></i>
+                        <input
+                            v-model="searchQuery"
+                            type="text"
+                            placeholder="Search makers by name, bio, or skills..."
+                            class="w-full pl-12 pr-4 py-3 rounded-lg bg-paper text-sm border border-ink/10 focus:outline-none focus:border-stamp focus:ring-1 focus:ring-stamp/30 placeholder:text-ink-faint/60"
+                        >
+                    </div>
+                </div>
+
+                <!-- Specialty Filters -->
+                <div class="mt-5 flex flex-wrap gap-2">
+                    <button
+                        v-for="filter in filters"
+                        :key="filter"
+                        class="filter-pill"
+                        :class="{ active: activeFilter === filter }"
+                        @click="activeFilter = filter"
+                    >
+                        {{ filter }}
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Maker ID Card Grid -->
+        <section class="pb-12 sm:pb-16">
+            <div class="max-w-5xl mx-auto px-5 sm:px-6">
+
+                <!-- Results count -->
+                <p class="text-sm text-ink-faint mb-6" v-if="filteredMakers.length !== makers.length">
+                    Showing {{ filteredMakers.length }} of {{ makers.length }} makers
+                </p>
+
+                <!-- No results -->
+                <div v-if="filteredMakers.length === 0" class="card">
+                    <div class="card-bg"></div>
+                    <div class="card-content p-8 sm:p-12 text-center">
+                        <i class="ph-bold ph-magnifying-glass text-4xl text-ink-faint/40 mb-4 block"></i>
+                        <h3 class="font-serif font-bold text-lg mb-2">No makers found</h3>
+                        <p class="text-sm text-ink-faint">Try adjusting your search or filter to find what you're looking for.</p>
+                    </div>
+                </div>
+
+                <!-- ID Card Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 card-grid">
+                    <a
+                        v-for="maker in filteredMakers"
+                        :key="maker.id"
+                        href="detail.html"
+                        class="card card-hover id-card no-underline text-ink block group"
+                    >
+                        <div class="card-bg"></div>
+                        <div class="card-content flex flex-col">
+
+                            <!-- Lanyard hole -->
+                            <div class="pt-3 pb-0">
+                                <div class="lanyard-hole"></div>
+                            </div>
+
+                            <!-- Colored header strip -->
+                            <div
+                                class="id-card-header"
+                                :style="{ background: maker.headerColor, color: maker.headerColor }"
+                            >
+                                <div class="flex items-start justify-between">
+                                    <div>
+                                        <span class="text-white/70 text-[0.6rem] font-bold uppercase tracking-widest">Absurd Industries</span>
+                                        <div class="text-white/90 text-xs font-semibold mt-0.5 tracking-wide uppercase">{{ maker.specialty }}</div>
+                                    </div>
+                                    <div class="guild-stamp" style="border-color: rgba(255,255,255,0.6); color: rgba(255,255,255,0.8);">
+                                        <i class="ph-bold ph-seal-check text-[0.6rem]"></i>
+                                        Guild Member
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Avatar overlapping the header -->
+                            <div class="px-5">
+                                <div class="id-avatar">
+                                    <i class="ph-bold ph-user text-3xl text-ink-faint/50"></i>
+                                </div>
+                            </div>
+
+                            <!-- Name + Title + Location -->
+                            <div class="px-5 pt-3">
+                                <h3 class="font-serif font-bold text-xl leading-tight group-hover:text-stamp transition-colors">{{ maker.name }}</h3>
+                                <p class="text-sm text-ink-light mt-0.5">{{ maker.title }}</p>
+                                <p class="text-xs text-ink-faint mt-1.5 flex items-center gap-1">
+                                    <i class="ph-bold ph-map-pin text-xs text-stamp"></i>
+                                    {{ maker.location }}
+                                </p>
+                            </div>
+
+                            <!-- Skills -->
+                            <div class="px-5 pt-3 flex flex-wrap gap-1.5">
+                                <span
+                                    v-for="skill in maker.skills"
+                                    :key="skill"
+                                    class="tag tag-default text-[0.6rem]"
+                                >
+                                    {{ skill }}
+                                </span>
+                            </div>
+
+                            <!-- Stats row -->
+                            <div class="px-5 pt-4 flex items-center gap-5">
+                                <div class="text-center">
+                                    <div class="text-lg font-bold font-serif leading-none">{{ maker.projects }}</div>
+                                    <div class="text-[0.6rem] text-ink-faint uppercase tracking-wide mt-0.5">Projects</div>
+                                </div>
+                                <div class="w-px h-8 bg-ink/10"></div>
+                                <div class="text-center">
+                                    <div class="text-lg font-bold font-serif leading-none">{{ maker.backers }}</div>
+                                    <div class="text-[0.6rem] text-ink-faint uppercase tracking-wide mt-0.5">Backers</div>
+                                </div>
+                            </div>
+
+                            <!-- Perforation + bottom section -->
+                            <div class="mt-4 mx-4 perforation"></div>
+                            <div class="px-5 pt-3 pb-4 flex items-end justify-between">
+                                <!-- Barcode + member ID -->
+                                <div>
+                                    <div class="barcode">
+                                        <span v-for="h in maker.barcode" :key="h" :style="{ height: h + 'px' }"></span>
+                                    </div>
+                                    <div class="text-[0.55rem] text-ink-faint/40 font-mono mt-1 tracking-widest">
+                                        AI-{{ String(maker.id).padStart(4, '0') }}-{{ maker.memberId }}
+                                    </div>
+                                </div>
+
+                                <!-- View Profile -->
+                                <span class="text-stamp font-semibold text-sm flex items-center gap-1 flex-shrink-0 group-hover:underline">
+                                    Profile
+                                    <i class="ph-bold ph-arrow-right text-xs"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="pb-14 sm:pb-20">
+            <div class="max-w-4xl mx-auto px-5 sm:px-6">
+                <div class="card">
+                    <div class="card-bg-dark"></div>
+                    <div class="card-content px-6 py-10 sm:px-10 sm:py-12 text-center text-paper">
+                        <i class="ph-bold ph-soldering-iron text-4xl text-stamp mb-4 block"></i>
+                        <h2 class="font-serif font-bold text-2xl sm:text-3xl tracking-tight mb-3">Become a Maker</h2>
+                        <p class="text-sm sm:text-base text-kraft max-w-md mx-auto mb-6 leading-relaxed">
+                            Got a workshop and an unreasonable urge to build things? Create your maker profile, share your skills, and join a community that ships real hardware.
+                        </p>
+                        <button class="btn btn-stamp" @click="showJoinModal = true">Create Your Profile</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="py-10" style="background: rgba(184,149,106,0.45);">
+            <div class="max-w-5xl mx-auto px-5 sm:px-6">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+                    <div>
+                        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Platform</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="../campaigns/" class="text-ink hover:underline font-medium">Campaigns</a></li>
+                            <li><a href="./" class="text-ink hover:underline font-medium">Makers</a></li>
+                            <li><a href="../requests/" class="text-ink hover:underline font-medium">Requests</a></li>
+                            <li><a href="../events/" class="text-ink hover:underline font-medium">Events</a></li>
+                            <li><a href="../inventory/" class="text-ink hover:underline font-medium">Inventory</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Community</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="https://discord.gg/DUSUtguG2H" target="_blank" class="text-ink hover:underline font-medium">Discord</a></li>
+                            <li><a href="https://www.instagram.com/absurd.industries" target="_blank" class="text-ink hover:underline font-medium">Instagram</a></li>
+                            <li><a href="https://www.youtube.com/@absurd.industries" target="_blank" class="text-ink hover:underline font-medium">YouTube</a></li>
+                            <li><a href="https://www.linkedin.com/company/absurd-industries" target="_blank" class="text-ink hover:underline font-medium">LinkedIn</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Resources</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="../hardware-devroom/" class="text-ink hover:underline font-medium">Hardware Devroom</a></li>
+                            <li><a href="../contact.htm" class="text-ink hover:underline font-medium">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Legal</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="../privacy-policy.htm" class="text-ink hover:underline font-medium">Privacy</a></li>
+                            <li><a href="../terms-and-conditions.htm" class="text-ink hover:underline font-medium">Terms</a></li>
+                            <li><a href="../policies.htm" class="text-ink hover:underline font-medium">Policies</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="border-t border-ink/10 pt-5 flex flex-col sm:flex-row justify-between items-center gap-2">
+                    <div class="flex items-center gap-2">
+                        <img src="../hardware-devroom/images/absurd-logo-for-any-background.png" alt="" class="h-5">
+                        <span class="text-xs font-semibold">Absurd Industries</span>
+                    </div>
+                    <p class="text-xs text-ink-faint">
+                        <span class="copyleft">&copy;</span> Copyleft 2023&ndash;2026. Made with curiosity in Bengaluru.
+                    </p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Bottom Bar (mobile) with Mega Menu -->
+        <nav class="bottom-bar" style="position:relative;">
+            <div class="grid grid-cols-5">
+                <a href="../campaigns/"><i class="ph-bold ph-rocket-launch"></i><span>Campaigns</span></a>
+                <a href="./" class="active"><i class="ph-bold ph-users-three"></i><span>Makers</span></a>
+                <a href="../requests/"><i class="ph-bold ph-megaphone"></i><span>Requests</span></a>
+                <a href="../events/"><i class="ph-bold ph-calendar-dots"></i><span>Events</span></a>
+                <button @click="megaMenuOpen = !megaMenuOpen">
+                    <i :class="megaMenuOpen ? 'ph-bold ph-x' : 'ph-bold ph-dots-three'"></i>
+                    <span>More</span>
+                </button>
+            </div>
+
+            <transition name="slide">
+                <div v-if="megaMenuOpen" class="mega-menu" @click="megaMenuOpen = false">
+                    <a href="../inventory/">
+                        <i class="ph-bold ph-package"></i> Inventory
+                    </a>
+                    <a href="https://discord.gg/DUSUtguG2H" target="_blank">
+                        <i class="fa-brands fa-discord"></i> Discord
+                    </a>
+                    <a href="../hardware-devroom/">
+                        <i class="ph-bold ph-microchip"></i> Hardware Devroom
+                    </a>
+                    <a href="../contact.htm">
+                        <i class="ph-bold ph-envelope"></i> Contact
+                    </a>
+                </div>
+            </transition>
+        </nav>
+
+        <!-- Join Modal -->
+        <div v-if="showJoinModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-[60] p-4" @click="showJoinModal = false">
+            <div class="card max-w-md w-full" @click.stop>
+                <div class="card-bg"></div>
+                <div class="card-content p-6 sm:p-8">
+                    <div class="flex items-center justify-between mb-5">
+                        <h3 class="font-serif font-bold text-xl">Join the Guild</h3>
+                        <button @click="showJoinModal = false" class="text-ink-faint hover:text-ink"><i class="ph-bold ph-x text-lg"></i></button>
+                    </div>
+                    <p class="text-sm text-ink-faint mb-6">Get your maker profile, back campaigns, submit requests, and manage your inventory.</p>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-xs font-semibold uppercase tracking-wide block mb-1.5">Name</label>
+                            <input type="text" placeholder="What do they call you?" class="w-full p-3 rounded-lg border border-ink/15 bg-paper text-sm focus:outline-none focus:border-stamp focus:ring-1 focus:ring-stamp/30">
+                        </div>
+                        <div>
+                            <label class="text-xs font-semibold uppercase tracking-wide block mb-1.5">Email</label>
+                            <input type="email" placeholder="your@workshop.dev" class="w-full p-3 rounded-lg border border-ink/15 bg-paper text-sm focus:outline-none focus:border-stamp focus:ring-1 focus:ring-stamp/30">
+                        </div>
+                        <div>
+                            <label class="text-xs font-semibold uppercase tracking-wide block mb-1.5">What do you make?</label>
+                            <input type="text" placeholder="PCBs, robots, chaos..." class="w-full p-3 rounded-lg border border-ink/15 bg-paper text-sm focus:outline-none focus:border-stamp focus:ring-1 focus:ring-stamp/30">
+                        </div>
+                    </div>
+                    <button class="btn btn-stamp w-full mt-6">Create My Profile</button>
+                    <p class="text-xs text-ink-faint text-center mt-3">Already here? <a href="#" class="font-semibold text-ink underline">Log in</a></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+
+        function generateBarcode() {
+            const bars = [];
+            const count = 28 + Math.floor(Math.random() * 8);
+            for (let i = 0; i < count; i++) {
+                bars.push(8 + Math.floor(Math.random() * 16));
+            }
+            return bars;
+        }
+
+        function generateMemberId() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let id = '';
+            for (let i = 0; i < 6; i++) {
+                id += chars[Math.floor(Math.random() * chars.length)];
+            }
+            return id;
+        }
+
+        createApp({
+            data() {
+                return {
+                    showJoinModal: false,
+                    megaMenuOpen: false,
+                    searchQuery: '',
+                    activeFilter: 'All',
+                    filters: ['All', 'Electronics', 'Firmware', 'Product Design', 'Education', 'Robotics', 'Audio'],
+                    makers: [
+                        {
+                            id: 1,
+                            name: 'Priya Sharma',
+                            title: 'Embedded Systems Engineer',
+                            location: 'Bengaluru, India',
+                            skills: ['KiCad', 'STM32', 'Solar', 'Water Systems'],
+                            projects: 7,
+                            backers: 184,
+                            specialty: 'Electronics',
+                            headerColor: '#1A1A1A',
+                            barcode: generateBarcode(),
+                            memberId: generateMemberId(),
+                        },
+                        {
+                            id: 2,
+                            name: 'Tomasz Wilk',
+                            title: 'Firmware Hacker',
+                            location: 'Warsaw, Poland',
+                            skills: ['ESP32', 'Rust', 'JTAG', 'Reverse Engineering'],
+                            projects: 12,
+                            backers: 311,
+                            specialty: 'Firmware',
+                            headerColor: '#3D3D3D',
+                            barcode: generateBarcode(),
+                            memberId: generateMemberId(),
+                        },
+                        {
+                            id: 3,
+                            name: 'Amara Osei',
+                            title: 'Product Designer & Maker',
+                            location: 'Accra, Ghana',
+                            skills: ['Fusion 360', 'DfM', '3D Printing', 'Injection Molding'],
+                            projects: 5,
+                            backers: 97,
+                            specialty: 'Product Design',
+                            headerColor: '#6B5B4A',
+                            barcode: generateBarcode(),
+                            memberId: generateMemberId(),
+                        },
+                        {
+                            id: 4,
+                            name: 'Ravi Menon',
+                            title: 'Robotics Tinkerer',
+                            location: 'Kochi, India',
+                            skills: ['ROS2', 'Arduino', 'Mechanical Design', 'AgriTech'],
+                            projects: 4,
+                            backers: 63,
+                            specialty: 'Robotics',
+                            headerColor: '#2A5F41',
+                            barcode: generateBarcode(),
+                            memberId: generateMemberId(),
+                        },
+                        {
+                            id: 5,
+                            name: 'Lena Richter',
+                            title: 'Audio Hardware Engineer',
+                            location: 'Berlin, Germany',
+                            skills: ['Analog Design', 'Eurorack', 'PCB Layout', 'DSP'],
+                            projects: 9,
+                            backers: 256,
+                            specialty: 'Audio',
+                            headerColor: '#FF5900',
+                            barcode: generateBarcode(),
+                            memberId: generateMemberId(),
+                        },
+                        {
+                            id: 6,
+                            name: 'Kenji Tanaka',
+                            title: 'STEM Educator & Maker',
+                            location: 'Osaka, Japan',
+                            skills: ['Curriculum Design', 'Arduino', 'Laser Cutting', 'Pedagogy'],
+                            projects: 6,
+                            backers: 412,
+                            specialty: 'Education',
+                            headerColor: '#1A1A1A',
+                            barcode: generateBarcode(),
+                            memberId: generateMemberId(),
+                        },
+                        {
+                            id: 7,
+                            name: 'Sofia Alvarez',
+                            title: 'PCB Artist & RF Engineer',
+                            location: 'Mexico City, Mexico',
+                            skills: ['RF Design', 'LoRa', 'KiCad', 'Mesh Networking'],
+                            projects: 8,
+                            backers: 145,
+                            specialty: 'Electronics',
+                            headerColor: '#B8956A',
+                            barcode: generateBarcode(),
+                            memberId: generateMemberId(),
+                        },
+                        {
+                            id: 8,
+                            name: 'Aditya Kulkarni',
+                            title: 'Open Hardware Advocate',
+                            location: 'Pune, India',
+                            skills: ['Documentation', 'Repair', 'Community Building', 'Testing'],
+                            projects: 3,
+                            backers: 89,
+                            specialty: 'Education',
+                            headerColor: '#3D3D3D',
+                            barcode: generateBarcode(),
+                            memberId: generateMemberId(),
+                        },
+                        {
+                            id: 9,
+                            name: 'Elise Dupont',
+                            title: 'Firmware & FPGA Developer',
+                            location: 'Lyon, France',
+                            skills: ['FPGA', 'Verilog', 'RISC-V', 'Embedded Linux'],
+                            projects: 11,
+                            backers: 278,
+                            specialty: 'Firmware',
+                            headerColor: '#6B5B4A',
+                            barcode: generateBarcode(),
+                            memberId: generateMemberId(),
+                        },
+                        {
+                            id: 10,
+                            name: 'Marcus Chen',
+                            title: 'Industrial Designer',
+                            location: 'Melbourne, Australia',
+                            skills: ['SolidWorks', 'CNC', 'Sheet Metal', 'Enclosure Design'],
+                            projects: 6,
+                            backers: 132,
+                            specialty: 'Product Design',
+                            headerColor: '#2A5F41',
+                            barcode: generateBarcode(),
+                            memberId: generateMemberId(),
+                        },
+                    ],
+                };
+            },
+            computed: {
+                filteredMakers() {
+                    let result = this.makers;
+
+                    if (this.activeFilter !== 'All') {
+                        result = result.filter(m => m.specialty === this.activeFilter);
+                    }
+
+                    if (this.searchQuery.trim()) {
+                        const q = this.searchQuery.toLowerCase().trim();
+                        result = result.filter(m =>
+                            m.name.toLowerCase().includes(q) ||
+                            m.title.toLowerCase().includes(q) ||
+                            m.skills.some(s => s.toLowerCase().includes(q))
+                        );
+                    }
+
+                    return result;
+                },
+            },
+        }).mount('#app');
+    </script>
+
+</body>
+</html>

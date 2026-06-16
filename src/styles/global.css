@@ -1,0 +1,539 @@
+/* =======================================================================
+   Absurd Industries — Global Stylesheet
+   Extracted from reference HTML files for the Astro migration.
+   Uses Tailwind @layer directives for base, components, and utilities.
+   ======================================================================= */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* -----------------------------------------------------------------------
+   1. BODY / BASE
+   Kraft paper background, smooth scrolling, selection colours.
+   ----------------------------------------------------------------------- */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #D4B896;
+    background-image: url('/images/kraft-paper.jpg');
+    background-repeat: repeat;
+    background-size: auto;
+    padding-bottom: 72px;              /* room for the fixed bottom bar */
+  }
+
+  html.dark body {
+    background-color: #1A1A1A;
+    background-image: none;
+  }
+
+  ::selection {
+    background-color: #FF5900;
+    color: #FAF3E8;
+  }
+}
+
+
+/* -----------------------------------------------------------------------
+   2. PAPER-CUT CARDS
+   .card, .card-bg, .card-bg-dark, .card-content, .card-hover, .hero-bg
+   Alternating SVG-filter seeds via .card-grid nth-child.
+   ----------------------------------------------------------------------- */
+
+@layer components {
+  .card {
+    position: relative;
+  }
+
+  .card-bg {
+    position: absolute;
+    inset: 0;
+    background: #FAF3E8;
+    border-radius: 0.875rem;
+    filter: url(#papercut);
+    z-index: 0;
+  }
+
+  .card-bg-dark {
+    position: absolute;
+    inset: 0;
+    background: #1A1A1A;
+    border-radius: 0.875rem;
+    filter: url(#papercut);
+    z-index: 0;
+  }
+
+  .card-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Alternate filter seeds so adjacent cards look unique */
+  .card-grid > .card:nth-child(3n+2) > .card-bg,
+  .card-grid > .card:nth-child(3n+2) > .card-bg-dark {
+    filter: url(#papercut-2);
+  }
+  .card-grid > .card:nth-child(3n+3) > .card-bg,
+  .card-grid > .card:nth-child(3n+3) > .card-bg-dark {
+    filter: url(#papercut-3);
+  }
+
+  .card-hover {
+    transition: transform 0.2s ease;
+  }
+  .card-hover:hover {
+    transform: translateY(-3px);
+  }
+
+  /* Hero gets a stronger torn edge */
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: #FAF3E8;
+    border-radius: 0.875rem;
+    filter: url(#torn);
+    z-index: 0;
+  }
+
+  /* Dark mode card overrides */
+  html.dark .card-bg {
+    background: #2A2A2A;
+  }
+}
+
+
+/* -----------------------------------------------------------------------
+   3. BUTTONS
+   .btn, .btn-primary, .btn-stamp, .btn-outline, .btn-ghost, .btn-sm
+   ----------------------------------------------------------------------- */
+
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.7rem 1.6rem;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    letter-spacing: 0.01em;
+    border-radius: 0.625rem;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    cursor: pointer;
+    border: none;
+  }
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+
+  .btn-primary {
+    background: #1A1A1A;
+    color: #FAF3E8;
+  }
+  .btn-primary:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .btn-stamp {
+    background: #FF5900;
+    color: #FAF3E8;
+  }
+  .btn-stamp:hover {
+    box-shadow: 0 4px 12px rgba(255, 89, 0, 0.25);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: #1A1A1A;
+    border: 1.5px solid #1A1A1A;
+  }
+  .btn-outline:hover {
+    background: #1A1A1A;
+    color: #FAF3E8;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: #1A1A1A;
+    padding: 0.5rem 1rem;
+  }
+  .btn-ghost:hover {
+    background: rgba(26, 26, 26, 0.06);
+    border-radius: 0.625rem;
+  }
+
+  .btn-sm {
+    padding: 0.5rem 1.15rem;
+    font-size: 0.8rem;
+  }
+
+  /* Dark mode button overrides */
+  html.dark .btn-primary {
+    background: #FAF3E8;
+    color: #1A1A1A;
+  }
+  html.dark .btn-outline {
+    color: #FAF3E8;
+    border-color: #FAF3E8;
+  }
+  html.dark .btn-outline:hover {
+    background: #FAF3E8;
+    color: #1A1A1A;
+  }
+  html.dark .btn-ghost {
+    color: #FAF3E8;
+  }
+  html.dark .btn-ghost:hover {
+    background: rgba(250, 243, 232, 0.08);
+  }
+}
+
+
+/* -----------------------------------------------------------------------
+   4. TAGS
+   .tag, .tag-default, .tag-stamp, .tag-funded, .tag-muted, .tag-danger
+   ----------------------------------------------------------------------- */
+
+@layer components {
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .tag-default {
+    background: rgba(26, 26, 26, 0.08);
+    color: #1A1A1A;
+  }
+  .tag-stamp {
+    background: rgba(255, 89, 0, 0.12);
+    color: #FF5900;
+  }
+  .tag-funded {
+    background: rgba(42, 95, 65, 0.12);
+    color: #2A5F41;
+  }
+  .tag-muted {
+    background: rgba(107, 91, 74, 0.1);
+    color: #6B5B4A;
+  }
+  .tag-danger {
+    background: rgba(220, 38, 38, 0.12);
+    color: #DC2626;
+  }
+
+  /* Dark mode tag overrides */
+  html.dark .tag-default {
+    background: rgba(250, 243, 232, 0.1);
+    color: #FAF3E8;
+  }
+  html.dark .tag-funded {
+    background: rgba(42, 95, 65, 0.2);
+    color: #4ADE80;
+  }
+  html.dark .tag-danger {
+    background: rgba(220, 38, 38, 0.2);
+    color: #FCA5A5;
+  }
+  html.dark .tag-muted {
+    background: rgba(250, 243, 232, 0.06);
+    color: #9CA3AF;
+  }
+}
+
+
+/* -----------------------------------------------------------------------
+   5. PROGRESS
+   .progress, .progress-fill, .progress-fill.hot
+   ----------------------------------------------------------------------- */
+
+@layer components {
+  .progress {
+    height: 5px;
+    background: #E8D5B7;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: #2A5F41;
+    transition: width 0.6s ease;
+  }
+
+  .progress-fill.hot {
+    background: #FF5900;
+  }
+}
+
+
+/* -----------------------------------------------------------------------
+   6. WONKY LOGO
+   Fixed positioning with playful rotation.
+   ----------------------------------------------------------------------- */
+
+@layer components {
+  .wonky-logo {
+    position: fixed;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%) rotate(-2deg);
+    z-index: 40;
+    transition: transform 0.2s ease;
+  }
+  .wonky-logo:hover {
+    transform: translateX(-50%) rotate(0deg) scale(1.05);
+  }
+}
+
+
+/* -----------------------------------------------------------------------
+   7. BOTTOM BAR
+   Fixed bottom navigation bar with links/buttons styling.
+   ----------------------------------------------------------------------- */
+
+@layer components {
+  .bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #1A1A1A;
+    z-index: 50;
+    box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .bottom-bar a,
+  .bottom-bar button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+    color: rgba(250, 243, 232, 0.55);
+    text-decoration: none;
+    background: none;
+    border: none;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    transition: color 0.15s;
+    cursor: pointer;
+  }
+
+  .bottom-bar a:hover,
+  .bottom-bar a:active,
+  .bottom-bar button:hover {
+    color: #FF5900;
+  }
+
+  .bottom-bar a.active-tab {
+    color: #FF5900;
+  }
+
+  .bottom-bar i,
+  .bottom-bar .ph-bold {
+    font-size: 1.25rem;
+    margin-bottom: 3px;
+  }
+}
+
+
+/* -----------------------------------------------------------------------
+   8. MEGA MENU
+   Slide-up panel from the bottom bar, Vue transition classes.
+   ----------------------------------------------------------------------- */
+
+@layer components {
+  .mega-menu {
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    left: 0;
+    background: #FAF3E8;
+    border-radius: 0.875rem 0.875rem 0 0;
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.12);
+    padding: 1.25rem 1.5rem;
+  }
+
+  .mega-menu a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #1A1A1A;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.06);
+    flex-direction: row;
+  }
+  .mega-menu a:last-child {
+    border-bottom: none;
+  }
+  .mega-menu a i {
+    font-size: 1.1rem;
+    color: #6B5B4A;
+  }
+  .mega-menu a:hover {
+    color: #FF5900;
+  }
+  .mega-menu a:hover i {
+    color: #FF5900;
+  }
+
+  /* Vue slide transition for the mega menu */
+  .slide-enter-active,
+  .slide-leave-active {
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+  .slide-enter-from,
+  .slide-leave-to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+
+/* -----------------------------------------------------------------------
+   9. FRIENDS GRID
+   Partner/friend logo links with hover lift.
+   ----------------------------------------------------------------------- */
+
+@layer components {
+  .friend-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: #6B5B4A;
+    transition: transform 0.15s ease, color 0.15s ease;
+  }
+  .friend-logo:hover {
+    transform: translateY(-2px);
+    color: #1A1A1A;
+  }
+}
+
+
+/* -----------------------------------------------------------------------
+   10. UTILITIES
+   .copyleft, .pulse-soft, .line-clamp-2, .no-select, .scrollbar-hide,
+   custom scrollbar styling, theme-toggle icon.
+   ----------------------------------------------------------------------- */
+
+@layer utilities {
+  .copyleft {
+    display: inline-block;
+    transform: rotate(180deg);
+  }
+
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .pulse-soft {
+    animation: pulse-soft 2s ease-in-out infinite;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Custom scrollbar (outside @layer so it applies globally) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #E8D5B7;
+}
+::-webkit-scrollbar-thumb {
+  background: #B8956A;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #FF5900;
+}
+html.dark ::-webkit-scrollbar-track {
+  background: #2A2A2A;
+}
+html.dark ::-webkit-scrollbar-thumb {
+  background: #3D3D3D;
+}
+
+
+/* -----------------------------------------------------------------------
+   11. ACCESSIBILITY
+   Focus-visible outlines and reduced-motion preferences.
+   ----------------------------------------------------------------------- */
+
+*:focus-visible {
+  outline: 2px solid #FF5900;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+
+/* -----------------------------------------------------------------------
+   12. PRINT
+   Hide navigation and interactive elements when printing.
+   ----------------------------------------------------------------------- */
+
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+  nav,
+  .bottom-bar,
+  button {
+    display: none;
+  }
+  .card-bg {
+    display: none;
+  }
+}

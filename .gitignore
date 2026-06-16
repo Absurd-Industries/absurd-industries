@@ -1,22 +1,31 @@
+# Astro build output
+dist/
+.astro/
+
+# Dependencies
+node_modules/
+
+# Cloudflare
+.wrangler/
+
+# Environment
+.env
+.env.*
+!.env.example
+
 # macOS
 .DS_Store
 .AppleDouble
 .LSOverride
-
-# Thumbnails
 ._*
-
-# Files that might appear on external disk
 .Spotlight-V100
 .Trashes
-
-# Directories potentially created on remote AFP share
 .AppleDB
 .AppleDesktop
 Network Trash Folder
 Temporary Items
 .apdisk
-pcb
 
-# Others
+# Project-specific
+pcb
 /hardware-devroom/engine

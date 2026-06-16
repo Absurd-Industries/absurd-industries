@@ -1,0 +1,39 @@
+---
+/**
+ * Paper-cut card wrapper. Provides the organic hand-cut edge effect
+ * via SVG feTurbulence displacement filters.
+ *
+ * Usage:
+ *   <Card>
+ *     <p>Your content here</p>
+ *   </Card>
+ *
+ *   <Card variant="hero" hover>
+ *     <p>Hero with torn edge and hover lift</p>
+ *   </Card>
+ */
+
+interface Props {
+  /** "default" uses papercut filter, "hero" uses stronger torn filter, "dark" uses dark bg */
+  variant?: "default" | "hero" | "dark";
+  /** Enable hover lift effect */
+  hover?: boolean;
+  /** Additional CSS classes on the outer wrapper */
+  class?: string;
+}
+
+const { variant = "default", hover = false, class: className = "" } = Astro.props;
+
+const bgClass = {
+  default: "card-bg",
+  hero: "hero-bg",
+  dark: "card-bg-dark",
+}[variant];
+---
+
+<div class:list={["card", { "card-hover": hover }, className]}>
+  <div class={bgClass}></div>
+  <div class="card-content">
+    <slot />
+  </div>
+</div>

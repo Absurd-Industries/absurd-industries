@@ -1,0 +1,66 @@
+---
+/**
+ * Makers listing page.
+ * Displays all platform makers as ID badge cards with search and
+ * specialty filtering, plus a CTA to create a maker profile.
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Card from "../../components/Card.astro";
+import MakerCard from "../../components/MakerCard.astro";
+import MakersListing from "../../components/MakersListing.vue";
+import { makers } from "../../data/makers";
+---
+
+<BaseLayout
+  title="Makers"
+  description="Meet the hardware rebels building open-source tools, gadgets, and machines. Absurd Industries maker profiles."
+  activeTab="makers"
+>
+  <!-- Header -->
+  <section class="pt-20 pb-8 sm:pt-24 sm:pb-10">
+    <div class="max-w-5xl mx-auto px-5 sm:px-6">
+      <div class="max-w-2xl">
+        <h1 class="font-serif font-bold text-4xl sm:text-5xl tracking-tight mb-3">Makers</h1>
+        <p class="text-ink-faint text-base sm:text-lg leading-relaxed">
+          Hardware rebels with workshops, not just followers.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Listing — Vue island handles search/filter + renders ID cards -->
+  <section class="pb-12 sm:pb-16">
+    <div class="max-w-5xl mx-auto px-5 sm:px-6">
+      <MakersListing makers={makers} client:load />
+
+      <!-- Static fallback grid (visible only without JS) -->
+      <noscript>
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 card-grid mt-6">
+          {makers.map((maker) => (
+            <MakerCard maker={maker} />
+          ))}
+        </div>
+      </noscript>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="pb-14 sm:pb-20">
+    <div class="max-w-4xl mx-auto px-5 sm:px-6">
+      <Card variant="dark">
+        <div class="px-6 py-10 sm:px-10 sm:py-12 text-center text-paper">
+          <i class="ph-bold ph-soldering-iron text-4xl text-stamp mb-4 block"></i>
+          <h2 class="font-serif font-bold text-2xl sm:text-3xl tracking-tight mb-3">Become a Maker</h2>
+          <p class="text-sm sm:text-base text-kraft max-w-md mx-auto mb-6 leading-relaxed">
+            Got a workshop and an unreasonable urge to build things? Create your maker profile,
+            share your skills, and join a community that ships real hardware.
+          </p>
+          <a href="https://discord.gg/DUSUtguG2H" target="_blank" rel="noopener" class="btn btn-stamp">
+            Join the Guild
+          </a>
+        </div>
+      </Card>
+    </div>
+  </section>
+</BaseLayout>

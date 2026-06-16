@@ -1,0 +1,45 @@
+---
+/**
+ * Requests listing page.
+ * Displays a searchable, filterable, sortable feed of community requests.
+ * The feed is edge-to-edge (no card wrappers) — items sit directly on kraft.
+ * Filtering and sorting are handled client-side by the RequestsListing Vue island.
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import RequestsListing from "../../components/RequestsListing.vue";
+import { requests } from "../../data/requests";
+import { makers } from "../../data/makers";
+
+// Build a slug -> display name map for claimed-by lookups
+const makerNames: Record<string, string> = {};
+for (const m of makers) {
+  makerNames[m.slug] = m.name;
+}
+---
+
+<BaseLayout
+  title="Requests"
+  description="Request open-source projects that don't exist yet. Describe what you need, refine specs together, and let makers bring it to life."
+  activeTab="requests"
+>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 pt-20 pb-8 md:pb-12">
+    <!-- Page header -->
+    <div class="mb-6">
+      <h1 class="font-serif text-3xl sm:text-4xl font-black tracking-tight mb-2">
+        Requests
+      </h1>
+      <p class="text-sm text-ink-faint max-w-lg leading-relaxed">
+        The world needs things that don't exist yet. Describe what you need,
+        refine specs together, and let makers bring it to life.
+      </p>
+    </div>
+
+    <!-- Interactive listing island -->
+    <RequestsListing
+      requests={requests}
+      makerNames={makerNames}
+      client:load
+    />
+  </div>
+</BaseLayout>

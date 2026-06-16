@@ -1,0 +1,917 @@
+---
+/**
+ * Campaign detail page — dynamic route via getStaticPaths().
+ *
+ * For the "open-source-water-purifier" campaign (the primary example from
+ * the reference design), this page renders the full detail layout:
+ * hero, funding sidebar, BOM table, source files, manufacturing timeline,
+ * updates feed, and threaded comments.
+ *
+ * Other campaigns get a simpler layout with basic campaign info.
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Card from "../../components/Card.astro";
+import Tag from "../../components/Tag.astro";
+import ProgressBar from "../../components/ProgressBar.astro";
+import { campaigns } from "../../data/campaigns";
+import type { Campaign } from "../../types";
+
+export function getStaticPaths() {
+  return campaigns.map((campaign) => ({
+    params: { slug: campaign.slug },
+    props: { campaign },
+  }));
+}
+
+interface Props {
+  campaign: Campaign;
+}
+
+const { campaign } = Astro.props;
+
+// ---------------------------------------------------------------------------
+// Mock detail data for the featured campaign
+// (In production this would come from a CMS / D1 database.)
+// ---------------------------------------------------------------------------
+
+const isWaterPurifier = campaign.slug === "open-source-water-purifier";
+
+// For campaigns that have the full detail treatment, we define rich data.
+// Since our actual data file doesn't have a water purifier campaign,
+// let's check for soilpulse (which has bornFromRequest) or lampy as the
+// showcase. We'll use the first live campaign with bornFromRequest,
+// or fall back to the first campaign.
+const isShowcase = campaign.slug === "soilpulse-open-moisture-sensor";
+
+const bom = [
+  { name: "Ceramic filter element", qty: "1", source: "Potters for Peace / local kiln", cost: "₹295" },
+  { name: "UV-C LED array (4x 275nm)", qty: "1", source: "LCSC / Mouser", cost: "₹520" },
+  { name: "Bamboo composite housing", qty: "1", source: "Local workshop", cost: "₹235" },
+  { name: "Solar charge controller (MPPT)", qty: "1", source: "AliExpress / local", cost: "₹285" },
+  { name: "12V 6Ah LiFePO4 battery pack", qty: "1", source: "EVE Energy / local", cost: "₹460" },
+  { name: "10W solar panel", qty: "1", source: "Global sourcing", cost: "₹270" },
+  { name: "Flow rate sensor (YF-S201)", qty: "1", source: "LCSC / AliExpress", cost: "₹92" },
+  { name: "TDS sensor module", qty: "1", source: "AliExpress / local", cost: "₹75" },
+  { name: "PCB + through-hole components", qty: "1", source: "JLCPCB / hand-solder", cost: "₹100" },
+  { name: "Silicone tubing + fittings", qty: "1 set", source: "Local hardware store", cost: "₹59" },
+];
+
+const sourceFiles = [
+  { name: "PCB Schematics", format: "KiCad", icon: "ph-bold ph-circuit-board" },
+  { name: "3D Models", format: "STEP", icon: "ph-bold ph-cube" },
+  { name: "Firmware", format: "C", icon: "ph-bold ph-code" },
+  { name: "Assembly Guide", format: "PDF", icon: "ph-bold ph-file-pdf" },
+  { name: "BOM Spreadsheet", format: "CSV / ODS", icon: "ph-bold ph-table" },
+];
+
+const manufacturingSteps = [
+  { label: "Design Complete", note: "All CAD, schematics, and firmware finalized", status: "done" },
+  { label: "Prototyping", note: "3 prototype iterations completed", status: "done" },
+  { label: "Testing", note: "Field testing in 3 villages in Karnataka", status: "current" },
+  { label: "Production Setup", note: "Tooling and supply chain preparation", status: "pending" },
+  { label: "Shipping", note: "Fulfillment to backers worldwide", status: "pending" },
+];
+
+const updates = [
+  {
+    date: "June 2, 2026",
+    title: "Prototype v3 passed field testing!",
+    text: "After 5 months of continuous operation in three test sites, Prototype v3 has exceeded all performance targets. Lab results confirm 99.97% bacteria removal and 99.9% virus inactivation. The bamboo housing showed zero degradation despite monsoon conditions. We are now finalizing the production BOM.",
+  },
+  {
+    date: "April 18, 2026",
+    title: "UV-C LED driver redesigned for reliability",
+    text: "We discovered thermal issues with the original LED driver during extended operation in direct sunlight. The redesigned board uses a more conservative derating curve and adds a thermistor-based cutoff. Updated KiCad files have been pushed to the repository.",
+  },
+  {
+    date: "February 5, 2026",
+    title: "Prototype v2 deployed for field testing",
+    text: "Three units deployed across rural sites near Mysore. Each unit is processing 100-140 liters per day for households of 5-8 people. Community health workers are logging daily output and collecting water samples for monthly lab analysis. Early feedback on usability has been very positive.",
+  },
+];
+
+const rewardTiers = [
+  {
+    name: "Early Bird",
+    price: "₹1,500",
+    perks: [
+      "1 fully assembled unit",
+      "Complete schematics and source files",
+      "Name in project credits",
+    ],
+    claimed: 42,
+    total: 50,
+  },
+  {
+    name: "Maker Bundle",
+    price: "₹3,500",
+    perks: [
+      "1 complete kit (unassembled) with all parts",
+      "3 extra filter elements",
+      "Your name etched on the PCB silkscreen",
+      "Printed assembly guide",
+    ],
+    claimed: 89,
+    total: 150,
+  },
+  {
+    name: "Workshop Pack",
+    price: "₹12,000",
+    perks: [
+      "5 complete units (assembled)",
+      "Workshop hosting guide and slides",
+      "Priority email support from the maker",
+      "Logo placement on project page",
+    ],
+    claimed: 12,
+    total: 30,
+  },
+];
+
+const comments = [
+  {
+    id: 1,
+    author: "Rahul Deshmukh",
+    initials: "RD",
+    color: "#2A5F41",
+    badge: "Backer",
+    badgeVariant: "funded" as const,
+    time: "3 days ago",
+    content: "Backed the Maker Bundle tier. I run a small NGO in rural Maharashtra and we have been looking for exactly this kind of solution. The fact that the filters can be manufactured locally is a game changer for us. How difficult is the production process?",
+    replies: [
+      {
+        id: 101,
+        author: campaign.makerName,
+        initials: campaign.makerName.split(" ").map((w: string) => w[0]).join(""),
+        color: "#FF5900",
+        badge: "Creator",
+        badgeVariant: "stamp" as const,
+        time: "2 days ago",
+        content: "Great question! The filter production follows the Potters for Peace protocol, specifically designed to be teachable to local potters. A potter with basic experience can learn the process in about 2 days. We have a detailed training guide in the repository.",
+      },
+    ],
+  },
+  {
+    id: 2,
+    author: "Dr. Meena Iyer",
+    initials: "MI",
+    color: "#6B5B4A",
+    badge: null,
+    badgeVariant: "default" as const,
+    time: "5 days ago",
+    content: "As a public health researcher, I want to highlight how important the dual-barrier approach is in this design. Ceramic filters alone handle bacteria well, but they are unreliable against viruses. The UV-C stage is the right call. Have you considered adding a chlorine dosing option as a tertiary backup?",
+    replies: [
+      {
+        id: 201,
+        author: campaign.makerName,
+        initials: campaign.makerName.split(" ").map((w: string) => w[0]).join(""),
+        color: "#FF5900",
+        badge: "Creator",
+        badgeVariant: "stamp" as const,
+        time: "4 days ago",
+        content: "Thanks for the expert perspective! We considered chlorine dosing but decided against it for v1 because it adds supply chain complexity. For high-turbidity events, we recommend a pre-settlement step using alum. The modular design means a chlorine stage could be added later.",
+      },
+    ],
+  },
+  {
+    id: 3,
+    author: "Kenji Tanaka",
+    initials: "KT",
+    color: "#1A1A1A",
+    badge: "Backer",
+    badgeVariant: "funded" as const,
+    time: "1 week ago",
+    content: "Shipping to Japan -- is that feasible with the battery included? LiFePO4 batteries have strict air freight regulations. I want to order the Workshop Pack but need to know about customs and shipping logistics.",
+    replies: [],
+  },
+  {
+    id: 4,
+    author: "Marcus Weber",
+    initials: "MW",
+    color: "#CC4700",
+    badge: null,
+    badgeVariant: "default" as const,
+    time: "2 weeks ago",
+    content: "Love the CERN-OHL-S licensing choice. I teach an appropriate technology course at TU Berlin and would like to use this project as a case study. The combination of open hardware, local manufacturability, and rigorous field testing makes it ideal.",
+    replies: [],
+  },
+];
+
+const statusLabel = campaign.status === "live" ? "Live" : campaign.status === "funded" ? "Funded" : "Coming Soon";
+const statusVariant = campaign.status === "live" ? "stamp" : campaign.status === "funded" ? "funded" : "default";
+---
+
+<BaseLayout
+  title={campaign.title}
+  description={campaign.tagline}
+  activeTab="campaigns"
+>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-20 pb-6 md:pt-24 md:pb-10">
+
+    <!-- Breadcrumb -->
+    <nav class="text-sm mb-6 flex items-center gap-2">
+      <a href="/campaigns" class="text-ink-faint font-medium hover:text-stamp transition-colors" style="text-decoration:none;">Campaigns</a>
+      <i class="ph-bold ph-caret-right text-xs text-stencil"></i>
+      <span class="text-ink font-medium">{campaign.title}</span>
+    </nav>
+
+    <div class="flex flex-col lg:flex-row gap-6">
+
+      <!-- ===== Main Column ===== -->
+      <div class="flex-1 min-w-0">
+
+        <!-- Hero image area -->
+        <Card class="mb-5">
+          <div class="h-48 sm:h-64 bg-kraft-light flex items-center justify-center" style="border-radius: 0.875rem;">
+            <i class:list={[campaign.icon, "text-7xl sm:text-8xl text-stencil opacity-40"]}></i>
+          </div>
+        </Card>
+
+        <!-- Title section -->
+        <Card class="mb-5">
+          <div class="p-5 sm:p-7">
+            <h1 class="font-serif text-2xl sm:text-3xl md:text-4xl font-black tracking-tight leading-tight mb-3">
+              {campaign.title}
+            </h1>
+
+            <div class="flex flex-wrap items-center gap-2 mb-4">
+              <Tag variant={statusVariant}>{statusLabel}</Tag>
+              <Tag>{campaign.category}</Tag>
+              <Tag>
+                <i class="ph-bold ph-scales mr-1" style="font-size: 0.65rem;"></i>
+                {campaign.license}
+              </Tag>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3 text-sm text-ink-faint">
+              <span>
+                by <a href={`/makers/${campaign.makerSlug}`} class="font-semibold text-ink hover:text-stamp transition-colors" style="text-decoration:none;">{campaign.makerName}</a>
+              </span>
+              <span class="flex items-center gap-1">
+                <i class="ph-bold ph-map-pin text-xs"></i>
+                {campaign.location}
+              </span>
+            </div>
+          </div>
+        </Card>
+
+        <!-- Born from request callout -->
+        {campaign.bornFromRequest && (
+          <Card class="mb-5">
+            <div class="p-5 sm:p-7" style="border-left: 3px solid #FF5900;">
+              <div class="flex items-start gap-3">
+                <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background: rgba(255,89,0,0.08);">
+                  <i class="ph-bold ph-megaphone text-stamp"></i>
+                </div>
+                <div>
+                  <p class="text-sm leading-relaxed">
+                    This campaign was born from a community
+                    <a href={`/requests/${campaign.bornFromRequest}`} class="font-semibold text-stamp hover:underline" style="text-decoration:none;">
+                      request
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </Card>
+        )}
+
+        <!-- Description -->
+        <Card class="mb-5">
+          <div class="p-5 sm:p-7">
+            <h2 class="font-serif font-bold text-lg mb-4">About This Project</h2>
+            <div class="text-sm leading-relaxed text-ink-light space-y-4">
+              <p>{campaign.tagline}</p>
+              {isShowcase && (
+                <>
+                  <p>
+                    LoRa-connected soil sensors designed for small farms across India and Southeast Asia. Each node is
+                    solar-powered and rated for 3 years of continuous operation without battery replacement. The sensor
+                    array communicates via LoRaWAN to a central gateway that pushes data to any MQTT-compatible dashboard.
+                  </p>
+                  <p>
+                    All hardware designs are released under CERN-OHL-S. The KiCad schematics, STEP models for the
+                    weatherproof enclosure, and the firmware source (written in Rust for the nRF52840) are all available
+                    in the project repository. We want farmers and agricultural researchers to be able to build, modify,
+                    and manufacture these sensors without any licensing restrictions.
+                  </p>
+                </>
+              )}
+            </div>
+          </div>
+        </Card>
+
+        <!-- BOM Table (showcase only) -->
+        {isShowcase && (
+          <Card class="mb-5">
+            <div class="p-5 sm:p-7">
+              <div class="flex items-center justify-between mb-4">
+                <h2 class="font-serif font-bold text-lg">Bill of Materials</h2>
+                <Tag>
+                  <i class="ph-bold ph-table mr-1" style="font-size: 0.65rem;"></i>
+                  {bom.length} components
+                </Tag>
+              </div>
+
+              <div class="overflow-x-auto -mx-2">
+                <table class="bom-table">
+                  <thead>
+                    <tr>
+                      <th>Component</th>
+                      <th>Qty</th>
+                      <th class="hidden sm:table-cell">Source</th>
+                      <th class="text-right">Est. Cost</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {bom.map((item) => (
+                      <tr>
+                        <td class="font-medium">{item.name}</td>
+                        <td>{item.qty}</td>
+                        <td class="hidden sm:table-cell text-ink-faint">{item.source}</td>
+                        <td class="text-right">{item.cost}</td>
+                      </tr>
+                    ))}
+                    <tr class="total-row">
+                      <td colspan="2" class="hidden sm:table-cell"></td>
+                      <td class="sm:hidden"></td>
+                      <td class="hidden sm:table-cell text-right font-semibold">Total</td>
+                      <td class="sm:hidden text-right font-semibold">Total</td>
+                      <td class="text-right font-semibold">~&#8377;2,400</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </Card>
+        )}
+
+        <!-- Open Source Files (showcase only) -->
+        {isShowcase && (
+          <Card class="mb-5">
+            <div class="p-5 sm:p-7">
+              <div class="flex items-center justify-between mb-4">
+                <h2 class="font-serif font-bold text-lg">Open Source Files</h2>
+                <Tag variant="funded">
+                  <i class="ph-bold ph-scales mr-1" style="font-size: 0.65rem;"></i>
+                  {campaign.license}
+                </Tag>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {sourceFiles.map((file) => (
+                  <div class="file-card">
+                    <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background: rgba(26,26,26,0.05);">
+                      <i class:list={[file.icon, "file-card-icon text-stencil text-lg transition-colors"]}></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <div class="text-sm font-semibold leading-snug">{file.name}</div>
+                      <div class="text-xs text-ink-faint">{file.format}</div>
+                    </div>
+                    <i class="ph-bold ph-download-simple text-stencil file-card-icon transition-colors"></i>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Card>
+        )}
+
+        <!-- Manufacturing Status (showcase only) -->
+        {isShowcase && (
+          <Card class="mb-5">
+            <div class="p-5 sm:p-7">
+              <h2 class="font-serif font-bold text-lg mb-5">Manufacturing Status</h2>
+
+              {manufacturingSteps.map((step, idx) => (
+                <>
+                  <div class="flex items-center gap-3">
+                    <div
+                      class:list={[
+                        "step-dot",
+                        step.status === "done" && "bg-funded text-paper",
+                        step.status === "current" && "bg-stamp text-paper",
+                        step.status === "pending" && "bg-kraft-light text-stencil",
+                      ]}
+                    >
+                      {step.status === "done" && <i class="ph-bold ph-check"></i>}
+                      {step.status === "current" && <i class="ph-bold ph-circle-notch"></i>}
+                      {step.status === "pending" && <i class="ph-bold ph-circle-dashed"></i>}
+                    </div>
+                    <div class="flex-1">
+                      <div class:list={["text-sm font-semibold", step.status === "pending" && "text-ink-faint"]}>
+                        {step.label}
+                      </div>
+                      <div class="text-xs text-ink-faint">{step.note}</div>
+                    </div>
+                    {step.status === "current" && <Tag variant="stamp">In Progress</Tag>}
+                    {step.status === "done" && <Tag variant="funded">Complete</Tag>}
+                  </div>
+                  {idx < manufacturingSteps.length - 1 && (
+                    <div
+                      class:list={[
+                        "step-line",
+                        step.status === "done" && "bg-funded",
+                        step.status === "current" && "bg-stamp",
+                        step.status === "pending" && "bg-kraft-light",
+                      ]}
+                    ></div>
+                  )}
+                </>
+              ))}
+            </div>
+          </Card>
+        )}
+
+        <!-- Updates Feed (showcase only) -->
+        {isShowcase && (
+          <Card class="mb-5">
+            <div class="p-5 sm:p-7">
+              <h2 class="font-serif font-bold text-lg mb-5">Updates</h2>
+
+              {updates.map((update, idx) => (
+                <div class="flex gap-3">
+                  <div class="flex flex-col items-center flex-shrink-0">
+                    <div class:list={["w-3 h-3 rounded-full mt-1", idx === 0 ? "bg-stamp" : "bg-kraft-dark"]}></div>
+                    {idx < updates.length - 1 && (
+                      <div class:list={["w-0.5 flex-1 mt-1", idx === 0 ? "bg-stamp/30" : "bg-kraft-dark/20"]}></div>
+                    )}
+                  </div>
+                  <div class="pb-6">
+                    <div class="text-xs text-ink-faint mb-1">{update.date}</div>
+                    <h4 class="text-sm font-semibold mb-1">{update.title}</h4>
+                    <p class="text-sm text-ink-faint leading-relaxed">{update.text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+        )}
+
+        <!-- Discussion (showcase only) -->
+        {isShowcase && (
+          <Card class="mb-5">
+            <div class="p-5 sm:p-7">
+              <h2 class="font-serif font-bold text-lg mb-2">
+                Discussion
+                <span class="text-sm font-sans font-normal text-ink-faint ml-1">({comments.length} comments)</span>
+              </h2>
+
+              <!-- Comment composer placeholder -->
+              <div class="mb-6 mt-4">
+                <div class="flex gap-3">
+                  <div class="w-8 h-8 rounded-full bg-kraft-dark flex items-center justify-center text-xs font-bold text-paper flex-shrink-0 mt-0.5">
+                    <i class="ph-bold ph-user text-xs"></i>
+                  </div>
+                  <div class="flex-1">
+                    <textarea
+                      class="comment-textarea"
+                      placeholder="Ask a question, share feedback, or discuss this project..."
+                      rows="3"
+                    ></textarea>
+                    <div class="flex items-center justify-end mt-2">
+                      <button class="btn btn-stamp btn-sm">Post Comment</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Comments list -->
+              <div>
+                {comments.map((comment) => (
+                  <div class="comment">
+                    <div class="flex gap-3">
+                      <div
+                        class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-paper flex-shrink-0"
+                        style={`background: ${comment.color}`}
+                      >
+                        {comment.initials}
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <div class="flex flex-wrap items-center gap-2 mb-1">
+                          <span class="text-sm font-semibold">{comment.author}</span>
+                          {comment.badge && (
+                            <Tag variant={comment.badgeVariant} class="text-[0.6rem] py-0">{comment.badge}</Tag>
+                          )}
+                          <span class="text-xs text-ink-faint">{comment.time}</span>
+                        </div>
+                        <p class="text-sm leading-relaxed text-ink-light">{comment.content}</p>
+                        <div class="flex items-center gap-2 mt-2">
+                          <span class="comment-vote">
+                            <i class="ph-bold ph-heart"></i>
+                          </span>
+                          <span class="comment-action">
+                            <i class="ph-bold ph-chat-circle"></i>
+                            Reply
+                          </span>
+                        </div>
+
+                        <!-- Nested replies -->
+                        {comment.replies && comment.replies.length > 0 && (
+                          <div class="mt-3">
+                            {comment.replies.map((reply) => (
+                              <div class="comment-reply comment">
+                                <div class="flex gap-3">
+                                  <div
+                                    class="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold text-paper flex-shrink-0"
+                                    style={`background: ${reply.color}`}
+                                  >
+                                    {reply.initials}
+                                  </div>
+                                  <div class="flex-1 min-w-0">
+                                    <div class="flex flex-wrap items-center gap-2 mb-1">
+                                      <span class="text-sm font-semibold">{reply.author}</span>
+                                      {reply.badge && (
+                                        <Tag variant={reply.badgeVariant} class="text-[0.6rem] py-0">{reply.badge}</Tag>
+                                      )}
+                                      <span class="text-xs text-ink-faint">{reply.time}</span>
+                                    </div>
+                                    <p class="text-sm leading-relaxed text-ink-light">{reply.content}</p>
+                                    <div class="flex items-center gap-2 mt-1.5">
+                                      <span class="comment-vote">
+                                        <i class="ph-bold ph-heart"></i>
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Card>
+        )}
+
+        <!-- Simple description for non-showcase campaigns -->
+        {!isShowcase && (
+          <>
+            <Card class="mb-5">
+              <div class="p-5 sm:p-7">
+                <h2 class="font-serif font-bold text-lg mb-4">About This Project</h2>
+                <p class="text-sm leading-relaxed text-ink-light">{campaign.tagline}</p>
+              </div>
+            </Card>
+
+            <Card class="mb-5">
+              <div class="p-5 sm:p-7">
+                <h2 class="font-serif font-bold text-lg mb-4">Open Source Files</h2>
+                <Tag variant="funded">
+                  <i class="ph-bold ph-scales mr-1" style="font-size: 0.65rem;"></i>
+                  {campaign.license}
+                </Tag>
+                <p class="text-sm text-ink-faint mt-3 leading-relaxed">
+                  All source files for this project will be released under the {campaign.license} license.
+                  CAD files, schematics, firmware, and documentation will be available for download once the campaign is funded.
+                </p>
+              </div>
+            </Card>
+          </>
+        )}
+      </div>
+
+      <!-- ===== Sidebar ===== -->
+      <div class="w-full lg:w-80 flex-shrink-0">
+
+        <!-- Funding Progress -->
+        <Card class="mb-5">
+          <div class="p-5">
+            <div class:list={["font-serif text-4xl font-black leading-none mb-2", campaign.percent >= 100 ? "text-funded" : "text-ink"]}>
+              {campaign.percent}%
+            </div>
+            <div class:list={["text-sm font-semibold mb-3", campaign.percent >= 100 ? "text-funded" : "text-ink-faint"]}>
+              {campaign.percent >= 100 ? "Funded" : "Funded"}
+            </div>
+
+            <div class="mb-3" style="height: 7px;">
+              <ProgressBar percent={campaign.percent} hot={campaign.percent >= 90 && campaign.status === "live"} />
+            </div>
+
+            <div class="space-y-2 mb-4">
+              <div class="text-sm">
+                <strong class="text-ink font-semibold">{campaign.raisedFormatted}</strong>
+                <span class="text-ink-faint"> raised of {campaign.goalFormatted}</span>
+              </div>
+              <div class="flex items-center gap-4 text-sm">
+                {campaign.daysLeft != null && (
+                  <span class="flex items-center gap-1.5">
+                    <i class="ph-bold ph-clock text-stencil"></i>
+                    <strong class="text-ink font-semibold">{campaign.daysLeft}</strong>
+                    <span class="text-ink-faint">days left</span>
+                  </span>
+                )}
+                <span class="flex items-center gap-1.5">
+                  <i class="ph-bold ph-users text-stencil"></i>
+                  <strong class="text-ink font-semibold">{campaign.backers}</strong>
+                  <span class="text-ink-faint">backers</span>
+                </span>
+              </div>
+            </div>
+
+            {campaign.status === "live" && (
+              <button class="btn btn-stamp w-full">
+                <i class="ph-bold ph-heart mr-2"></i>Back This Project
+              </button>
+            )}
+            {campaign.status === "funded" && (
+              <button class="btn w-full" style="background: #2A5F41; color: #FAF3E8;">
+                <i class="ph-bold ph-check-circle mr-2"></i>Fully Funded
+              </button>
+            )}
+            {campaign.status === "coming" && (
+              <button class="btn btn-outline w-full">
+                <i class="ph-bold ph-bell mr-2"></i>Notify Me
+              </button>
+            )}
+          </div>
+        </Card>
+
+        <!-- Reward Tiers (showcase only) -->
+        {isShowcase && rewardTiers.map((tier, idx) => (
+          <Card class="mb-5">
+            <div class="p-5">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="font-serif font-bold text-base">{tier.name}</h3>
+                <Tag variant="stamp">{tier.price}</Tag>
+              </div>
+
+              <ul class="space-y-1.5 mb-4">
+                {tier.perks.map((perk) => (
+                  <li class="flex items-start gap-2 text-sm text-ink-light">
+                    <i class="ph-bold ph-check-circle text-funded mt-0.5 flex-shrink-0" style="font-size: 0.85rem;"></i>
+                    <span>{perk}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div class="tier-progress mb-1.5">
+                <div
+                  class="tier-progress-fill"
+                  style={`width: ${(tier.claimed / tier.total) * 100}%`}
+                ></div>
+              </div>
+              <div class="text-xs text-ink-faint">
+                <strong class="text-ink">{tier.claimed} of {tier.total}</strong> claimed
+              </div>
+
+              <button class="btn btn-outline btn-sm w-full mt-3">Select This Tier</button>
+            </div>
+          </Card>
+        ))}
+
+        <!-- Shipping Info -->
+        <Card class="mb-5">
+          <div class="p-5">
+            <h3 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Shipping Info</h3>
+            <div class="space-y-2 text-sm text-ink-light">
+              <div class="flex items-start gap-2">
+                <i class="ph-bold ph-map-pin text-stencil mt-0.5 flex-shrink-0"></i>
+                <span>Ships from <strong class="text-ink">{campaign.location}</strong></span>
+              </div>
+              <div class="flex items-start gap-2">
+                <i class="ph-bold ph-calendar-blank text-stencil mt-0.5 flex-shrink-0"></i>
+                <span>Estimated delivery: <strong class="text-ink">September 2026</strong></span>
+              </div>
+              <div class="flex items-start gap-2">
+                <i class="ph-bold ph-globe text-stencil mt-0.5 flex-shrink-0"></i>
+                <span>Ships worldwide</span>
+              </div>
+            </div>
+          </div>
+        </Card>
+
+        <!-- Maker Profile Card -->
+        <Card class="mb-5">
+          <div class="p-5">
+            <div class="flex items-center gap-3 mb-3">
+              <div
+                class="w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold text-paper flex-shrink-0"
+                style={`background: ${campaign.avatarColor}`}
+              >
+                {campaign.makerName.split(" ").map((w) => w[0]).join("")}
+              </div>
+              <div>
+                <div class="font-semibold text-sm">{campaign.makerName}</div>
+                <div class="text-xs text-ink-faint">{campaign.location}</div>
+              </div>
+            </div>
+
+            <a href={`/makers/${campaign.makerSlug}`} class="btn btn-outline btn-sm w-full" style="text-decoration:none;">View Profile</a>
+          </div>
+        </Card>
+
+        <!-- Share -->
+        <Card class="mb-5">
+          <div class="p-5">
+            <h3 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Share</h3>
+            <div class="flex items-center gap-2">
+              <button class="share-btn" title="Copy link">
+                <i class="ph-bold ph-link"></i>
+              </button>
+              <a
+                href={`https://twitter.com/intent/tweet?url=https://absurd.industries/campaigns/${campaign.slug}&text=Check%20out%20${encodeURIComponent(campaign.title)}%20on%20Absurd%20Industries`}
+                target="_blank"
+                class="share-btn"
+                title="Share on X"
+                style="text-decoration:none;"
+              >
+                <i class="fa-brands fa-x-twitter"></i>
+              </a>
+              <a
+                href={`https://www.linkedin.com/sharing/share-offsite/?url=https://absurd.industries/campaigns/${campaign.slug}`}
+                target="_blank"
+                class="share-btn"
+                title="Share on LinkedIn"
+                style="text-decoration:none;"
+              >
+                <i class="fa-brands fa-linkedin-in"></i>
+              </a>
+            </div>
+          </div>
+        </Card>
+
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  /* BOM table */
+  .bom-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+  }
+  .bom-table th {
+    text-align: left;
+    padding: 0.6rem 0.75rem;
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #6B5B4A;
+    border-bottom: 1.5px solid rgba(26, 26, 26, 0.1);
+  }
+  .bom-table td {
+    padding: 0.55rem 0.75rem;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.06);
+    color: #1A1A1A;
+  }
+  .bom-table tr:last-child td {
+    border-bottom: none;
+  }
+  .bom-table .total-row td {
+    border-top: 1.5px solid rgba(26, 26, 26, 0.1);
+    font-weight: 700;
+    padding-top: 0.75rem;
+  }
+
+  /* Timeline stepper */
+  .step-line {
+    width: 2px;
+    min-height: 28px;
+    margin-left: 13px;
+  }
+  .step-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 0.75rem;
+  }
+
+  /* File card */
+  .file-card {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.625rem;
+    border: 1.5px solid rgba(26, 26, 26, 0.08);
+    background: rgba(250, 243, 232, 0.4);
+    transition: all 0.15s;
+    cursor: pointer;
+  }
+  .file-card:hover {
+    border-color: #FF5900;
+    background: rgba(255, 89, 0, 0.04);
+  }
+  .file-card:hover .file-card-icon {
+    color: #FF5900;
+  }
+
+  /* Comment styles */
+  .comment {
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.06);
+  }
+  .comment:last-child {
+    border-bottom: none;
+  }
+  .comment-reply {
+    margin-left: 2.5rem;
+    padding-left: 1rem;
+    border-left: 2px solid rgba(26, 26, 26, 0.08);
+  }
+  .comment-vote {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #6B5B4A;
+    cursor: pointer;
+    padding: 0.15rem 0.4rem;
+    border-radius: 0.375rem;
+    transition: all 0.12s;
+  }
+  .comment-vote:hover {
+    background: rgba(26, 26, 26, 0.06);
+    color: #1A1A1A;
+  }
+  .comment-vote i {
+    font-size: 0.8rem;
+  }
+  .comment-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #6B5B4A;
+    cursor: pointer;
+    padding: 0.15rem 0.4rem;
+    border-radius: 0.375rem;
+    transition: all 0.12s;
+  }
+  .comment-action:hover {
+    background: rgba(26, 26, 26, 0.06);
+    color: #1A1A1A;
+  }
+
+  /* Comment textarea */
+  .comment-textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 0.625rem;
+    border: 1.5px solid rgba(26, 26, 26, 0.12);
+    background: rgba(250, 243, 232, 0.5);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.875rem;
+    color: #1A1A1A;
+    resize: vertical;
+    min-height: 80px;
+    transition: border-color 0.15s;
+  }
+  .comment-textarea:focus {
+    outline: none;
+    border-color: #FF5900;
+    background: #FAF3E8;
+    box-shadow: 0 0 0 3px rgba(255, 89, 0, 0.08);
+  }
+  .comment-textarea::placeholder {
+    color: #B8956A;
+  }
+
+  /* Reward tier progress */
+  .tier-progress {
+    height: 3px;
+    background: #E8D5B7;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .tier-progress-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: #FF5900;
+    transition: width 0.6s ease;
+  }
+
+  /* Share button */
+  .share-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 0.625rem;
+    border: 1.5px solid rgba(26, 26, 26, 0.12);
+    background: transparent;
+    color: #6B5B4A;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 1rem;
+  }
+  .share-btn:hover {
+    border-color: #FF5900;
+    color: #FF5900;
+    background: rgba(255, 89, 0, 0.04);
+  }
+</style>

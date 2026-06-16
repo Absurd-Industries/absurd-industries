@@ -1,0 +1,93 @@
+---
+/**
+ * Base layout for all platform pages.
+ * Includes: head (fonts, icons, meta), SVG filters, wonky logo, footer, bottom bar.
+ * Every page wraps its content in this layout and only needs to provide the unique body.
+ */
+
+import WonkyLogo from "../components/WonkyLogo.astro";
+import SvgFilters from "../components/SvgFilters.astro";
+import Footer from "../components/Footer.astro";
+import BottomBar from "../components/BottomBar.vue";
+import DebugPanel from "../components/DebugPanel.vue";
+import "../styles/global.css";
+
+const isDev = import.meta.env.DEV;
+
+interface Props {
+  /** Page title — appended with "| Absurd Industries" */
+  title: string;
+  /** Meta description for SEO */
+  description?: string;
+  /** OG image URL */
+  ogImage?: string;
+  /** Which bottom bar tab is active: "campaigns", "makers", "requests", "events" */
+  activeTab?: string;
+  /** Enable dark mode (class="dark" on html) — used by inventory */
+  darkMode?: boolean;
+}
+
+const {
+  title,
+  description = "The open-source STEAM platform. Back indie campaigns, discover makers, request what you need, and build together.",
+  ogImage = "/images/absurd-logo.png",
+  activeTab,
+  darkMode = false,
+} = Astro.props;
+
+const fullTitle = `${title} | Absurd Industries`;
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en" class:list={[{ dark: darkMode }]}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
+    <link rel="shortcut icon" href="/favicon/favicon.ico" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Icons -->
+    <script src="https://kit.fontawesome.com/e0c6d65845.js" crossorigin="anonymous"></script>
+    <script is:inline src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  </head>
+
+  <body class="font-sans text-ink min-h-screen antialiased">
+    <SvgFilters />
+    <WonkyLogo />
+
+    <slot />
+
+    <Footer />
+    <BottomBar activeTab={activeTab} client:load />
+    {isDev && (
+      <DebugPanel
+        route={Astro.url.pathname}
+        renderMode="static"
+        pageTitle={title}
+        client:idle
+      />
+    )}
+  </body>
+</html>
