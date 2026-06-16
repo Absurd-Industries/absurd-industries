@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Absurd Industries - Open Source Hardware for Makers, Tinkerers & Hardware Rebels</title>
-    <meta name="description" content="The anti-planned obsolescence platform. Back indie hardware campaigns, discover makers, request what you need, and manage your lab.">
+    <title>Absurd Industries - Open Source STEAM for Makers, Tinkerers & Rebels</title>
+    <meta name="description" content="The open-source STEAM platform. Back indie campaigns, discover makers, request what you need, and manage your lab.">
 
-    <meta property="og:title" content="Absurd Industries - Open Hardware, Built Together">
-    <meta property="og:description" content="Back indie campaigns. Request what doesn't exist yet. Every design ships with full source files.">
+    <meta property="og:title" content="Absurd Industries - Open Source, Built Together">
+    <meta property="og:description" content="Back indie campaigns. Request what doesn't exist yet. Science, tech, engineering, art, and math — all open source.">
     <meta property="og:image" content="https://absurd.industries/hardware-devroom/screen.png">
     <meta property="og:url" content="https://absurd.industries">
     <meta name="twitter:card" content="summary_large_image">
@@ -131,17 +131,14 @@
         .progress-fill { height: 100%; border-radius: 999px; background: #2A5F41; transition: width 0.6s ease; }
         .progress-fill.hot { background: #FF5900; }
 
-        /* ---- Nav link ---- */
-        .nav-link {
-            text-decoration: none; color: #1A1A1A;
-            font-weight: 500; font-size: 0.875rem;
-            padding: 0.25rem 0;
-            border-bottom: 1.5px solid transparent;
-            transition: border-color 0.15s, color 0.15s;
+        /* ---- Fixed wonky logo ---- */
+        .wonky-logo {
+            position: fixed; top: 1rem; left: 50%; transform: translateX(-50%) rotate(-2deg);
+            z-index: 40; transition: transform 0.2s ease;
         }
-        .nav-link:hover { border-bottom-color: #1A1A1A; }
+        .wonky-logo:hover { transform: translateX(-50%) rotate(0deg) scale(1.05); }
 
-        /* ---- Bottom bar (mobile) ---- */
+        /* ---- Bottom bar ---- */
         .bottom-bar {
             position: fixed; bottom: 0; left: 0; right: 0;
             background: #1A1A1A;
@@ -183,7 +180,15 @@
         .mega-menu a:hover { color: #FF5900; }
         .mega-menu a:hover i { color: #FF5900; }
 
-        @media (max-width: 767px) { body { padding-bottom: 72px; } }
+        body { padding-bottom: 72px; }
+
+        /* ---- Friend logos ---- */
+        .friend-logo {
+            display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+            text-decoration: none; color: #6B5B4A;
+            transition: transform 0.15s ease, color 0.15s ease;
+        }
+        .friend-logo:hover { transform: translateY(-2px); color: #1A1A1A; }
 
         .copyleft { display: inline-block; transform: rotate(180deg); }
 
@@ -218,44 +223,25 @@
 
     <div id="app">
 
-        <!-- Nav — static, no glass -->
-        <nav style="background: rgba(184,149,106,0.45);">
-            <div class="max-w-5xl mx-auto px-5 sm:px-6">
-                <div class="flex items-center justify-between h-16">
-                    <a href="/" class="flex items-center gap-3 no-underline">
-                        <img src="hardware-devroom/images/absurd-logo-for-any-background.png" alt="Absurd Industries" class="h-8">
-                        <span class="font-serif font-semibold text-lg tracking-tight hidden sm:inline">Absurd Industries</span>
-                    </a>
-                    <div class="hidden md:flex items-center gap-6">
-                        <a href="campaigns/" class="nav-link">Campaigns</a>
-                        <a href="makers/" class="nav-link">Makers</a>
-                        <a href="requests/" class="nav-link">Requests</a>
-                        <a href="inventory/" class="nav-link">Inventory</a>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <a href="https://discord.gg/DUSUtguG2H" target="_blank" class="btn btn-ghost btn-sm hidden sm:inline-flex">
-                            <i class="fa-brands fa-discord mr-2"></i>Discord
-                        </a>
-                        <button class="btn btn-stamp btn-sm" @click="showJoinModal = true">Join the Guild</button>
-                    </div>
-                </div>
-            </div>
-        </nav>
+        <!-- Fixed wonky logo -->
+        <a href="/" class="wonky-logo">
+            <img src="hardware-devroom/images/absurd-logo-for-any-background.png" alt="Absurd Industries" class="h-9 sm:h-10 drop-shadow-sm">
+        </a>
 
         <!-- Hero -->
-        <section class="py-14 md:py-20">
+        <section class="pt-20 pb-14 md:pt-24 md:pb-20">
             <div class="max-w-5xl mx-auto px-5 sm:px-6">
                 <div class="card">
                     <div class="hero-bg"></div>
                     <div class="card-content px-6 py-10 md:px-14 md:py-16">
-                        <div class="tag tag-stamp mb-5">Anti-Planned Obsolescence</div>
+                        <div class="tag tag-stamp mb-5">Open Source STEAM</div>
 
                         <h1 class="font-serif text-4xl sm:text-5xl md:text-7xl font-black leading-[0.95] tracking-tight mb-5">
-                            Open Hardware,<br>Built Together
+                            Open Source,<br>Built Together
                         </h1>
 
                         <p class="text-base sm:text-lg text-ink-faint max-w-lg mb-8 leading-relaxed">
-                            Back indie campaigns. Request what doesn't exist yet. Every design ships with full source files, open firmware, and a community behind it.
+                            Science, technology, engineering, art, and math — all open source. Back indie campaigns, request what doesn't exist, and build with a community that ships.
                         </p>
 
                         <div class="flex flex-wrap gap-3 mb-10">
@@ -310,6 +296,18 @@
                             <p class="text-sm text-ink-faint leading-relaxed">The world needs things that don't exist yet. Describe it, refine specs together, let makers build it.</p>
                             <span class="inline-flex items-center text-sm font-semibold text-stamp mt-4">
                                 See requests <i class="ph-bold ph-arrow-right ml-2"></i>
+                            </span>
+                        </div>
+                    </a>
+
+                    <a href="events/" class="card card-hover no-underline text-ink group">
+                        <div class="card-bg"></div>
+                        <div class="card-content p-6 sm:p-8">
+                            <i class="ph-bold ph-calendar-dots text-4xl sm:text-5xl text-stamp mb-4 block transition-transform group-hover:scale-110"></i>
+                            <h3 class="font-serif font-bold text-xl sm:text-2xl mb-2">Events</h3>
+                            <p class="text-sm text-ink-faint leading-relaxed">Meetups, workshops, hackathons, and talks. Find what's happening in your city.</p>
+                            <span class="inline-flex items-center text-sm font-semibold text-stamp mt-4">
+                                See events <i class="ph-bold ph-arrow-right ml-2"></i>
                             </span>
                         </div>
                     </a>
@@ -373,11 +371,47 @@
                                     <div class="progress-fill" :class="{ hot: c.percent >= 90 }" :style="{ width: c.percent + '%' }"></div>
                                 </div>
                                 <div class="flex justify-between text-xs text-ink-faint">
-                                    <span><strong class="text-ink font-semibold">{{ c.percent }}%</strong> of {{ c.goal }} <span class="text-ink-faint">({{ c.goalUsd }})</span></span>
+                                    <span><strong class="text-ink font-semibold">{{ c.percent }}%</strong> of {{ c.goal }}</span>
                                     <span>{{ c.backers }} backers</span>
                                 </div>
                             </div>
                         </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Friends of Absurd -->
+        <section class="pb-14 md:pb-20">
+            <div class="max-w-5xl mx-auto px-5 sm:px-6 text-center">
+                <h2 class="font-serif font-bold text-2xl sm:text-3xl tracking-tight mb-3">Friends of Absurd</h2>
+                <p class="text-sm text-ink-faint mb-8 max-w-lg mx-auto leading-relaxed">
+                    Communities, studios, and orgs across India's open-source ecosystem.
+                </p>
+                <div class="grid grid-cols-3 sm:grid-cols-6 gap-6 items-center">
+                    <a href="https://pcbcupid.com" target="_blank" class="friend-logo">
+                        <img src="hardware-devroom/images/pcb-cupid-for-dark-background.png" alt="PCB Cupid" class="h-12 md:h-16 object-contain">
+                        <span class="font-bold text-xs uppercase tracking-wide">PCB Cupid</span>
+                    </a>
+                    <a href="https://ampere.works" target="_blank" class="friend-logo">
+                        <img src="hardware-devroom/images/ampere-works-for-dark-background.png" alt="ampere.works" class="h-12 md:h-16 object-contain">
+                        <span class="font-bold text-xs uppercase tracking-wide">ampere.works</span>
+                    </a>
+                    <a href="https://uservader.com" target="_blank" class="friend-logo">
+                        <img src="hardware-devroom/images/vader-logo-for-any-background.png" alt="Vader" class="h-12 md:h-16 object-contain">
+                        <span class="font-bold text-xs uppercase tracking-wide">Vader</span>
+                    </a>
+                    <a href="https://makerville.io" target="_blank" class="friend-logo">
+                        <img src="hardware-devroom/images/makerville.svg" alt="Makerville" class="h-12 md:h-16 object-contain">
+                        <span class="font-bold text-xs uppercase tracking-wide">Makerville</span>
+                    </a>
+                    <a href="https://fossunited.org" target="_blank" class="friend-logo">
+                        <img src="hardware-devroom/images/foss-united.svg" alt="FOSS United" class="h-10 md:h-14 object-contain">
+                        <span class="font-bold text-xs uppercase tracking-wide">FOSS United</span>
+                    </a>
+                    <a href="https://discord.gg/DUSUtguG2H" target="_blank" class="friend-logo">
+                        <i class="fa-brands fa-discord text-4xl md:text-5xl text-ink-faint"></i>
+                        <span class="font-bold text-xs uppercase tracking-wide">Our Discord</span>
                     </a>
                 </div>
             </div>
@@ -390,9 +424,9 @@
                     <div class="card-bg-dark"></div>
                     <div class="card-content px-6 py-10 sm:px-10 sm:py-12 text-center text-paper">
                         <i class="ph-bold ph-hand-waving text-4xl text-stamp mb-4 block"></i>
-                        <h2 class="font-serif font-bold text-2xl sm:text-3xl tracking-tight mb-3">Join 2,400+ hardware rebels</h2>
+                        <h2 class="font-serif font-bold text-2xl sm:text-3xl tracking-tight mb-3">Join 2,400+ makers &amp; creators</h2>
                         <p class="text-sm sm:text-base text-kraft max-w-md mx-auto mb-6 leading-relaxed">
-                            Create your maker profile. Back campaigns. Submit requests. Manage your lab inventory.
+                            Create your profile. Back campaigns. Submit requests. Share open designs.
                             We don't judge your cable management.
                         </p>
                         <button class="btn btn-stamp" @click="showJoinModal = true">Get Started</button>
@@ -411,6 +445,7 @@
                             <li><a href="campaigns/" class="text-ink hover:underline font-medium">Campaigns</a></li>
                             <li><a href="makers/" class="text-ink hover:underline font-medium">Makers</a></li>
                             <li><a href="requests/" class="text-ink hover:underline font-medium">Requests</a></li>
+                            <li><a href="events/" class="text-ink hover:underline font-medium">Events</a></li>
                             <li><a href="inventory/" class="text-ink hover:underline font-medium">Inventory</a></li>
                         </ul>
                     </div>
@@ -427,7 +462,6 @@
                         <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Resources</h4>
                         <ul class="space-y-2 text-sm">
                             <li><a href="hardware-devroom/" class="text-ink hover:underline font-medium">Hardware Devroom</a></li>
-                            <li><a href="courses/" class="text-ink hover:underline font-medium">Courses</a></li>
                             <li><a href="contact.htm" class="text-ink hover:underline font-medium">Contact</a></li>
                         </ul>
                     </div>
@@ -452,13 +486,13 @@
             </div>
         </footer>
 
-        <!-- Bottom Bar (mobile) with Mega Menu -->
-        <nav class="bottom-bar md:hidden" style="position:relative;">
+        <!-- Bottom Bar — always visible -->
+        <nav class="bottom-bar" style="position:relative;">
             <div class="grid grid-cols-5">
                 <a href="campaigns/"><i class="ph-bold ph-rocket-launch"></i><span>Campaigns</span></a>
                 <a href="makers/"><i class="ph-bold ph-users-three"></i><span>Makers</span></a>
                 <a href="requests/"><i class="ph-bold ph-megaphone"></i><span>Requests</span></a>
-                <a href="inventory/"><i class="ph-bold ph-package"></i><span>Inventory</span></a>
+                <a href="events/"><i class="ph-bold ph-calendar-dots"></i><span>Events</span></a>
                 <button @click="megaMenuOpen = !megaMenuOpen">
                     <i :class="megaMenuOpen ? 'ph-bold ph-x' : 'ph-bold ph-dots-three'"></i>
                     <span>More</span>
@@ -467,21 +501,17 @@
 
             <transition name="slide">
                 <div v-if="megaMenuOpen" class="mega-menu" @click="megaMenuOpen = false">
+                    <a href="inventory/">
+                        <i class="ph-bold ph-package"></i> Inventory
+                    </a>
                     <a href="https://discord.gg/DUSUtguG2H" target="_blank">
                         <i class="fa-brands fa-discord"></i> Discord
                     </a>
                     <a href="hardware-devroom/">
                         <i class="ph-bold ph-microchip"></i> Hardware Devroom
                     </a>
-                    <a href="courses/">
-                        <i class="ph-bold ph-graduation-cap"></i> Courses
-                    </a>
                     <a href="contact.htm">
                         <i class="ph-bold ph-envelope"></i> Contact
-                    </a>
-                    <a href="#" @click.prevent="megaMenuOpen = false; showJoinModal = true">
-                        <i class="ph-bold ph-user-plus" style="color:#FF5900;"></i>
-                        <span style="color:#FF5900; font-weight:600;">Join the Guild</span>
                     </a>
                 </div>
             </transition>
@@ -530,21 +560,21 @@
                             id: 1, name: 'Open Source Water Purifier', icon: 'drop',
                             description: 'Community-designed, field-repairable water purification for off-grid communities. Full BOM and open firmware.',
                             maker: 'Priya Sharma', location: 'Bangalore', category: 'Sustainability',
-                            percent: 73, goal: '₹2,50,000', goalUsd: '~$3,000', backers: 184,
+                            percent: 73, goal: '₹2,50,000', backers: 184,
                             license: 'CERN-OHL-S', fromRequest: true, detailUrl: 'campaigns/detail.html',
                         },
                         {
                             id: 2, name: 'Desktop CNC Mill', icon: 'gear-six',
                             description: 'Compact, open-source CNC milling machine for PCB prototyping and light metalwork. Grbl-compatible.',
                             maker: 'Vikram Rao', location: 'Hyderabad', category: 'Tools',
-                            percent: 91, goal: '₹5,00,000', goalUsd: '~$6,000', backers: 312,
+                            percent: 91, goal: '₹5,00,000', backers: 312,
                             license: 'CERN-OHL-S', fromRequest: true, detailUrl: 'campaigns/detail.html',
                         },
                         {
                             id: 3, name: 'LoRa Mesh Network Node', icon: 'broadcast',
                             description: 'Solar-powered LoRa nodes for community mesh networks. No internet required. Open KiCad design.',
                             maker: 'Arjun Nair', location: 'Kochi', category: 'IoT',
-                            percent: 58, goal: '₹3,50,000', goalUsd: '~$4,200', backers: 156,
+                            percent: 58, goal: '₹3,50,000', backers: 156,
                             license: 'MIT', fromRequest: false, detailUrl: 'campaigns/detail.html',
                         },
                     ],
