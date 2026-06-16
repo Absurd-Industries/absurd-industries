@@ -42,6 +42,7 @@ export const campaigns: Campaign[] = [
     daysLeft: 5,
     license: "CERN-OHL-S",
     bornFromRequest: "wireless-soil-sensor-array",
+    image: "/images/campaigns/workdesk.jpg",
   },
   {
     slug: "tinytracker-gps-wildlife",
@@ -62,6 +63,7 @@ export const campaigns: Campaign[] = [
     backers: 112,
     daysLeft: 18,
     license: "MIT",
+    image: "/images/campaigns/drone-on-cutting-mat.jpg",
   },
   {
     slug: "hexwrench-parametric-multitool",
@@ -102,6 +104,7 @@ export const campaigns: Campaign[] = [
     backers: 89,
     daysLeft: 24,
     license: "CERN-OHL-S",
+    image: "/images/campaigns/drone-still.jpg",
   },
   {
     slug: "logicbuddy-learn-digital-circuits",
@@ -121,6 +124,7 @@ export const campaigns: Campaign[] = [
     raisedFormatted: "₹12,50,000",
     backers: 573,
     license: "CERN-OHL-P",
+    image: "/images/campaigns/future-of-making.jpg",
   },
   {
     slug: "crateamp-portable-speaker",
@@ -200,5 +204,6 @@ export const campaigns: Campaign[] = [
     raisedFormatted: "₹0",
     backers: 0,
     license: "CERN-OHL-P",
+    image: "/images/campaigns/supersaber-socials.jpg",
   },
 ];

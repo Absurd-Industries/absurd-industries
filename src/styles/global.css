@@ -24,7 +24,13 @@
     background-image: url('/images/kraft-paper.jpg');
     background-repeat: repeat;
     background-size: auto;
-    padding-bottom: 72px;              /* room for the fixed bottom bar */
+    padding-bottom: 72px;              /* room for the fixed bottom bar (phone) */
+  }
+
+  @media (min-width: 1024px) {
+    body {
+      padding-bottom: 0;              /* desktop uses floating DesktopNav instead */
+    }
   }
 
   html.dark body {
@@ -280,21 +286,16 @@
 
 
 /* -----------------------------------------------------------------------
-   6. WONKY LOGO
-   Fixed positioning with playful rotation.
+   6. PAPER TEXTURE (white surfaces)
+   Subtle noise overlay for card backgrounds.
    ----------------------------------------------------------------------- */
 
 @layer components {
-  .wonky-logo {
-    position: fixed;
-    top: 1rem;
-    left: 50%;
-    transform: translateX(-50%) rotate(-2deg);
-    z-index: 40;
-    transition: transform 0.2s ease;
-  }
-  .wonky-logo:hover {
-    transform: translateX(-50%) rotate(0deg) scale(1.05);
+  .card-bg,
+  .hero-bg {
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    background-color: #FAF3E8;
   }
 }
 
@@ -313,6 +314,13 @@
     background: #1A1A1A;
     z-index: 50;
     box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Bottom bar is phone-only — desktop uses DesktopNav */
+  @media (min-width: 1024px) {
+    .bottom-bar {
+      display: none;
+    }
   }
 
   .bottom-bar a,

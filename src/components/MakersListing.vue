@@ -133,38 +133,17 @@ function getInitial(name: string): string {
         <div class="card-bg"></div>
         <div class="card-content flex flex-col">
 
-          <!-- Lanyard hole -->
-          <div class="pt-3 pb-0">
-            <div class="lanyard-hole"></div>
-          </div>
+          <!-- Punch hole (top right) -->
+          <div class="punch-hole"></div>
 
-          <!-- Colored header strip -->
-          <div
-            class="id-card-header"
-            :style="{ background: maker.avatarColor, color: maker.avatarColor }"
-          >
-            <div class="flex items-start justify-between">
-              <div>
-                <span class="text-white/70 text-[0.6rem] font-bold uppercase tracking-widest">Absurd Industries</span>
-                <div class="text-white/90 text-xs font-semibold mt-0.5 tracking-wide uppercase">{{ maker.specialty }}</div>
-              </div>
-              <div class="guild-stamp" style="border-color: rgba(255,255,255,0.6); color: rgba(255,255,255,0.8);">
-                <i class="ph-bold ph-seal-check text-[0.6rem]"></i>
-                Guild Member
-              </div>
-            </div>
-          </div>
-
-          <!-- Avatar overlapping the header -->
-          <div class="px-5">
-            <div class="id-avatar">
-              <span class="font-serif font-bold text-2xl text-ink-faint/60 select-none">{{ getInitial(maker.name) }}</span>
-            </div>
+          <!-- Black jagged top bar -->
+          <div class="id-card-header">
+            <span class="text-white/40 text-[0.6rem] font-semibold uppercase tracking-widest">{{ maker.specialty }}</span>
           </div>
 
           <!-- Name + Title + Location -->
-          <div class="px-5 pt-3">
-            <h3 class="font-serif font-bold text-xl leading-tight group-hover:text-stamp transition-colors">{{ maker.name }}</h3>
+          <div class="px-5 pt-4">
+            <h3 class="font-serif font-bold text-2xl leading-tight group-hover:text-stamp transition-colors">{{ maker.name }}</h3>
             <p class="text-sm text-ink-light mt-0.5">{{ maker.title }}</p>
             <p class="text-xs text-ink-faint mt-1.5 flex items-center gap-1">
               <i class="ph-bold ph-map-pin text-xs text-stamp"></i>
@@ -226,63 +205,30 @@ function getInitial(name: string): string {
 </template>
 
 <style scoped>
-/* ---- ID Card styles ---- */
 .id-card {
-  aspect-ratio: auto;
-}
-
-/* Header strip with specialty pattern */
-.id-card-header {
   position: relative;
-  overflow: hidden;
-  border-radius: 0.875rem 0.875rem 0 0;
-  padding: 1.25rem 1.5rem 2.5rem;
-}
-.id-card-header::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  opacity: 0.07;
-  background-image:
-    repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 8px,
-      currentColor 8px,
-      currentColor 9px
-    );
 }
 
-/* Circular avatar punch-hole */
-.id-avatar {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  border: 3px solid #FAF3E8;
-  background: #E8D5B7;
+/* Black jagged-edged top bar */
+.id-card-header {
+  background: #1A1A1A;
+  padding: 0.85rem 1.25rem;
+  border-radius: 0.875rem 0.875rem 0 0;
+  filter: url(#papercut);
   display: flex;
   align-items: center;
-  justify-content: center;
-  position: relative;
-  margin-top: -40px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Guild stamp */
-.guild-stamp {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.2rem 0.6rem;
-  border: 1.5px solid #FF5900;
-  border-radius: 0.35rem;
-  color: #FF5900;
-  font-size: 0.55rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  transform: rotate(-3deg);
-  opacity: 0.85;
+/* Punch hole — top right corner */
+.punch-hole {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(26, 26, 26, 0.12);
+  position: absolute;
+  top: 0.75rem;
+  right: 1rem;
+  z-index: 2;
 }
 
 /* Barcode decoration */
@@ -308,14 +254,5 @@ function getInitial(name: string): string {
 /* Perforation line */
 .perforation {
   border-top: 2px dashed rgba(26, 26, 26, 0.1);
-}
-
-/* Lanyard hole decoration */
-.lanyard-hole {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  border: 2px solid rgba(26, 26, 26, 0.12);
-  margin: 0 auto;
 }
 </style>

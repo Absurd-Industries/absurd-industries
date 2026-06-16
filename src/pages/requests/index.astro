@@ -23,23 +23,34 @@ for (const m of makers) {
   description="Request open-source projects that don't exist yet. Describe what you need, refine specs together, and let makers bring it to life."
   activeTab="requests"
 >
-  <div class="max-w-3xl mx-auto px-4 sm:px-6 pt-20 pb-8 md:pb-12">
-    <!-- Page header -->
-    <div class="mb-6">
-      <h1 class="font-serif text-3xl sm:text-4xl font-black tracking-tight mb-2">
-        Requests
-      </h1>
-      <p class="text-sm text-ink-faint max-w-lg leading-relaxed">
-        The world needs things that don't exist yet. Describe what you need,
-        refine specs together, and let makers bring it to life.
-      </p>
-    </div>
+  <div class="requests-page-bg">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 pt-10 pb-8 md:pb-12">
+      <!-- Page header -->
+      <div class="mb-6">
+        <h1 class="font-serif text-3xl sm:text-4xl font-black tracking-tight mb-2">
+          Requests
+        </h1>
+        <p class="text-sm text-ink-faint max-w-lg leading-relaxed">
+          The world needs things that don't exist yet. Describe what you need,
+          refine specs together, and let makers bring it to life.
+        </p>
+      </div>
 
-    <!-- Interactive listing island -->
-    <RequestsListing
-      requests={requests}
-      makerNames={makerNames}
-      client:load
-    />
+      <!-- Interactive listing island -->
+      <RequestsListing
+        requests={requests}
+        makerNames={makerNames}
+        client:load
+      />
+    </div>
   </div>
+
+  <style>
+    .requests-page-bg {
+      background-color: #FAF3E8;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      min-height: 100vh;
+    }
+  </style>
 </BaseLayout>
