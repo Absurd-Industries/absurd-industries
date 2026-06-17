@@ -20,5 +20,6 @@ export const megaMenuItems: NavItem[] = [
     href: "/hardware-devroom",
     icon: "ph-bold ph-monitor",
   },
+  { label: "FAQ", href: "/faq", icon: "ph-bold ph-question" },
   { label: "Contact", href: "/contact", icon: "ph-bold ph-envelope" },
 ];

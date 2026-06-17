@@ -2,7 +2,7 @@
 /**
  * FAQ page.
  * Accordion-style frequently asked questions using native <details>/<summary>.
- * Header sits on kraft background, FAQ items live inside a Card component.
+ * Each question has a topic icon, matching the homepage teaser style.
  */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
@@ -35,7 +35,8 @@ import Card from "../../components/Card.astro";
 
           <details>
             <summary>
-              What is Absurd Industries?
+              <i class="ph-duotone ph-question faq-q-icon"></i>
+              <span>What is Absurd Industries?</span>
               <i class="ph-bold ph-caret-down faq-icon"></i>
             </summary>
             <div class="faq-answer">
@@ -45,7 +46,8 @@ import Card from "../../components/Card.astro";
 
           <details>
             <summary>
-              How do campaigns work?
+              <i class="ph-duotone ph-rocket-launch faq-q-icon"></i>
+              <span>How do campaigns work?</span>
               <i class="ph-bold ph-caret-down faq-icon"></i>
             </summary>
             <div class="faq-answer">
@@ -55,7 +57,8 @@ import Card from "../../components/Card.astro";
 
           <details>
             <summary>
-              How do requests work?
+              <i class="ph-duotone ph-hand-palm faq-q-icon"></i>
+              <span>How do requests work?</span>
               <i class="ph-bold ph-caret-down faq-icon"></i>
             </summary>
             <div class="faq-answer">
@@ -65,7 +68,8 @@ import Card from "../../components/Card.astro";
 
           <details>
             <summary>
-              What open-source licenses do projects use?
+              <i class="ph-duotone ph-scales faq-q-icon"></i>
+              <span>What open-source licenses do projects use?</span>
               <i class="ph-bold ph-caret-down faq-icon"></i>
             </summary>
             <div class="faq-answer">
@@ -75,7 +79,8 @@ import Card from "../../components/Card.astro";
 
           <details>
             <summary>
-              How do I become a maker?
+              <i class="ph-duotone ph-users-three faq-q-icon"></i>
+              <span>How do I become a maker?</span>
               <i class="ph-bold ph-caret-down faq-icon"></i>
             </summary>
             <div class="faq-answer">
@@ -85,7 +90,8 @@ import Card from "../../components/Card.astro";
 
           <details>
             <summary>
-              How do I request something?
+              <i class="ph-duotone ph-megaphone faq-q-icon"></i>
+              <span>How do I request something?</span>
               <i class="ph-bold ph-caret-down faq-icon"></i>
             </summary>
             <div class="faq-answer">
@@ -95,7 +101,8 @@ import Card from "../../components/Card.astro";
 
           <details>
             <summary>
-              Is this only in Bengaluru?
+              <i class="ph-duotone ph-map-pin faq-q-icon"></i>
+              <span>Is this only in Bengaluru?</span>
               <i class="ph-bold ph-caret-down faq-icon"></i>
             </summary>
             <div class="faq-answer">
@@ -105,7 +112,8 @@ import Card from "../../components/Card.astro";
 
           <details>
             <summary>
-              How is this funded?
+              <i class="ph-duotone ph-coin faq-q-icon"></i>
+              <span>How is this funded?</span>
               <i class="ph-bold ph-caret-down faq-icon"></i>
             </summary>
             <div class="faq-answer">
@@ -119,9 +127,6 @@ import Card from "../../components/Card.astro";
   </section>
 
   <style>
-    .faq-list {
-      /* container for all details elements */
-    }
     details {
       border-bottom: 1px solid rgba(26, 26, 26, 0.08);
     }
@@ -137,14 +142,28 @@ import Card from "../../components/Card.astro";
       list-style: none;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 0.75rem;
-      padding: 1.25rem 0;
+      gap: 0.65rem;
+      padding: 1.25rem 1.5rem;
       transition: color 0.15s;
     }
     summary::-webkit-details-marker { display: none; }
     summary:hover { color: #FF5900; }
     details[open] summary { color: #FF5900; }
+    summary span {
+      flex: 1;
+    }
+    .faq-q-icon {
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      color: #6B5B4A;
+      transition: color 0.15s;
+    }
+    details[open] .faq-q-icon {
+      color: #FF5900;
+    }
+    summary:hover .faq-q-icon {
+      color: #FF5900;
+    }
     .faq-icon {
       transition: transform 0.2s ease;
       flex-shrink: 0;
@@ -159,7 +178,7 @@ import Card from "../../components/Card.astro";
       font-size: 0.9rem;
       color: #4A3D2F;
       line-height: 1.7;
-      padding-bottom: 1.25rem;
+      padding: 0 1.5rem 1.25rem 3.25rem;
     }
   </style>
 </BaseLayout>
