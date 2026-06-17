@@ -358,10 +358,6 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
                   <div class="flex items-center gap-3 mb-5">
                     <i class="ph-bold ph-wrench text-stamp text-xl"></i>
                     <h2 class="font-serif font-bold text-xl sm:text-2xl tracking-tight">Setup</h2>
-                    <button onclick="window.__comingSoon && window.__comingSoon('Ping for Visit', 'Let this maker know you\'d like to visit their workshop. Visit scheduling launches with the next update.')" class="btn btn-sm" style="background:rgba(250,243,232,0.12); color:#FAF3E8; border:1.5px solid rgba(250,243,232,0.2); font-size:0.7rem; padding:0.3rem 0.7rem;">
-                      <i class="ph-bold ph-bell-ringing mr-1" style="font-size:0.6rem;"></i>
-                      Ping
-                    </button>
                   </div>
 
                   <!-- Workspace photos -->
@@ -826,7 +822,7 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
     border-top: none;
     position: relative;
     overflow: hidden;
-    border-radius: 0;
+    border-radius: 0.875rem 0.875rem 0 0;
     margin: 0;
     padding: 1.5rem;
   }
@@ -885,7 +881,7 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
     border-radius: 0.5rem;
     font-size: 0.6rem;
     font-weight: 600;
-    color: rgba(250, 243, 232, 0.5);
+    color: rgba(250, 243, 232, 0.55);
     text-decoration: none;
     white-space: nowrap;
     transition: color 0.15s;
@@ -897,11 +893,11 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
     margin-bottom: 3px;
   }
   .profile-nav-pill:hover {
-    color: #FAF3E8;
+    color: #FF5900;
     background: transparent;
   }
   .profile-nav-pill.active {
-    color: #FAF3E8;
+    color: #FF5900;
     background: transparent;
   }
 

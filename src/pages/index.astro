@@ -40,12 +40,12 @@ const upcomingEvents = [...events]
       <p class="text-sm font-semibold uppercase tracking-widest text-stamp mb-4">Bengaluru, India</p>
 
       <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl font-black leading-[0.95] tracking-tight mb-6">
-        We build things<br class="hidden sm:block" /> that don't exist yet.
+        What if we just...<br class="hidden sm:block" /> built it?
       </h1>
 
       <p class="text-base sm:text-lg text-ink max-w-xl mb-8 leading-relaxed">
-        Absurd Industries is an open-source STEAM (Science, Technology, Engineering, Art & Math) community.
-        Find and fund products that solve real problems - or turn your own ideas into campaigns the community backs.
+        Absurd Industries is an open-source STEAM community for the endlessly curious.
+        Back hardware projects that solve real problems, request what the world is missing, or build it yourself.
         Every design ships with full source files.
       </p>
 
@@ -67,7 +67,7 @@ const upcomingEvents = [...events]
     <div class="max-w-5xl mx-auto px-5 sm:px-6 space-y-12">
 
       <!-- Campaigns -->
-      <div class="anim-fade-up">
+      <div>
         <div class="flex items-center justify-between mb-2">
           <h2 class="font-serif text-2xl sm:text-3xl font-bold">
             <i class="ph-duotone ph-rocket-launch text-ink mr-1" style="font-size:1.4rem;"></i>
@@ -109,7 +109,7 @@ const upcomingEvents = [...events]
       </div>
 
       <!-- Requests -->
-      <div class="anim-fade-up">
+      <div>
         <div class="flex items-center justify-between mb-2">
           <h2 class="font-serif text-2xl sm:text-3xl font-bold">
             <i class="ph-duotone ph-hand-palm text-ink mr-1" style="font-size:1.4rem;"></i>
@@ -142,7 +142,7 @@ const upcomingEvents = [...events]
       </div>
 
       <!-- Makers -->
-      <div class="anim-fade-up">
+      <div>
         <div class="flex items-center justify-between mb-2">
           <h2 class="font-serif text-2xl sm:text-3xl font-bold">
             <i class="ph-duotone ph-users-three text-ink mr-1" style="font-size:1.4rem;"></i>
@@ -160,15 +160,19 @@ const upcomingEvents = [...events]
             <a href={`/makers/${maker.slug}`} class="maker-mini-card group no-underline block" style={`--card-bg: ${maker.avatarColor}`}>
               <div class="maker-mini-inner">
                 <div class="maker-mini-punch"></div>
-                {maker.avatar ? (
-                  <img src={maker.avatar} alt={maker.name} class="maker-mini-avatar" loading="lazy" />
-                ) : (
-                  <div class="maker-mini-avatar-fb">
-                    <span>{maker.name.charAt(0)}</span>
+                <div class="maker-mini-row">
+                  {maker.avatar ? (
+                    <img src={maker.avatar} alt={maker.name} class="maker-mini-avatar" loading="lazy" />
+                  ) : (
+                    <div class="maker-mini-avatar-fb">
+                      <span>{maker.name.charAt(0)}</span>
+                    </div>
+                  )}
+                  <div class="maker-mini-info">
+                    <h3 class="maker-mini-name">{maker.name}</h3>
+                    <p class="maker-mini-specialty">{maker.specialty}</p>
                   </div>
-                )}
-                <h3 class="maker-mini-name">{maker.name}</h3>
-                <p class="maker-mini-bio">{maker.bio ?? maker.title}</p>
+                </div>
               </div>
             </a>
           ))}
@@ -176,7 +180,7 @@ const upcomingEvents = [...events]
       </div>
 
       <!-- Events -->
-      <div class="anim-fade-up">
+      <div>
         <div class="flex items-center justify-between mb-2">
           <h2 class="font-serif text-2xl sm:text-3xl font-bold">
             <i class="ph-duotone ph-calendar-dots text-ink mr-1" style="font-size:1.4rem;"></i>
@@ -244,10 +248,45 @@ const upcomingEvents = [...events]
     </div>
   </section>
 
-  <!-- Open Source Hardware ethos -->
-  <section class="osh-banner">
-    <img src="/images/open-source-hardware.png" alt="Open Source Hardware" class="osh-logo" />
-    <p class="osh-text">Open source is about collaborating, not competing.</p>
+  <!-- FAQ Teaser -->
+  <section class="pb-12">
+    <div class="max-w-5xl mx-auto px-5 sm:px-6">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold">
+          <i class="ph-duotone ph-question text-ink mr-1" style="font-size:1.4rem;"></i>
+          FAQ
+        </h2>
+        <a href="/faq" class="text-sm text-stamp font-bold no-underline hover:underline">
+          All questions <i class="ph-bold ph-arrow-right ml-0.5" style="font-size:0.65rem;"></i>
+        </a>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <a href="/faq" class="microcard group">
+          <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background: rgba(26,26,26,0.06);">
+            <i class="ph-duotone ph-question text-stencil"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-ink leading-snug group-hover:text-stamp transition-colors">What is Absurd Industries?</p>
+          </div>
+        </a>
+        <a href="/faq" class="microcard group">
+          <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background: rgba(26,26,26,0.06);">
+            <i class="ph-duotone ph-rocket-launch text-stencil"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-ink leading-snug group-hover:text-stamp transition-colors">How do campaigns work?</p>
+          </div>
+        </a>
+        <a href="/faq" class="microcard group">
+          <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background: rgba(26,26,26,0.06);">
+            <i class="ph-duotone ph-hand-palm text-stencil"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-ink leading-snug group-hover:text-stamp transition-colors">How do requests work?</p>
+          </div>
+        </a>
+      </div>
+    </div>
   </section>
 
   <!-- Friends of Absurd — auto-scrolling marquee -->
@@ -351,7 +390,7 @@ const upcomingEvents = [...events]
     position: relative;
     background: var(--card-bg, #1A1A1A);
     border-radius: 0.875rem;
-    padding: 0.75rem 0.85rem 0.6rem;
+    padding: 0.85rem 1rem;
     overflow: hidden;
   }
   .maker-mini-inner::before {
@@ -367,10 +406,20 @@ const upcomingEvents = [...events]
     position: relative;
     z-index: 1;
   }
+  .maker-mini-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .maker-mini-info {
+    flex: 1;
+    min-width: 0;
+  }
   .maker-mini-punch {
     position: absolute;
-    top: 10px;
+    top: 50%;
     right: 12px;
+    transform: translateY(-50%);
     width: 12px;
     height: 12px;
     border-radius: 50%;
@@ -387,15 +436,15 @@ const upcomingEvents = [...events]
     box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
   }
   .maker-mini-avatar {
-    width: 40px;
-    height: 40px;
+    width: 52px;
+    height: 52px;
     object-fit: cover;
     clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
-    margin-bottom: 0.4rem;
+    flex-shrink: 0;
   }
   .maker-mini-avatar-fb {
-    width: 40px;
-    height: 40px;
+    width: 52px;
+    height: 52px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -404,8 +453,8 @@ const upcomingEvents = [...events]
     color: #FAF3E8;
     font-weight: 700;
     font-family: 'Fraunces', serif;
-    font-size: 1rem;
-    margin-bottom: 0.4rem;
+    font-size: 1.2rem;
+    flex-shrink: 0;
   }
   .maker-mini-name {
     font-family: 'Fraunces', serif;
@@ -419,15 +468,10 @@ const upcomingEvents = [...events]
   .maker-mini-card:hover .maker-mini-name {
     color: #FF5900;
   }
-  .maker-mini-bio {
-    font-size: 0.7rem;
+  .maker-mini-specialty {
+    font-size: 0.65rem;
     color: rgba(250,243,232,0.55);
-    line-height: 1.5;
-    margin: 0.5rem 0 0;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    margin: 0.15rem 0 0;
   }
 
   /* Microcard — compact interactive item */
@@ -483,31 +527,5 @@ const upcomingEvents = [...events]
   }
 
 
-  /* Open Source Hardware banner */
-  .osh-banner {
-    background: #1A1A1A;
-    padding: 3rem 1.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-  .osh-logo {
-    height: 6rem;
-    width: auto;
-    margin-bottom: 1.25rem;
-    filter: brightness(0) invert(1);
-    opacity: 0.85;
-  }
-  .osh-text {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
-    font-size: 1.1rem;
-    color: #FAF3E8;
-    opacity: 0.7;
-    max-width: 24rem;
-    line-height: 1.5;
-  }
 
 </style>

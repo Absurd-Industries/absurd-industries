@@ -1,0 +1,165 @@
+---
+/**
+ * FAQ page.
+ * Accordion-style frequently asked questions using native <details>/<summary>.
+ * Header sits on kraft background, FAQ items live inside a Card component.
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Card from "../../components/Card.astro";
+---
+
+<BaseLayout
+  title="FAQ"
+  description="Frequently asked questions about Absurd Industries, campaigns, requests, open-source licensing, and the maker community."
+  activeTab=""
+>
+  <!-- Header on kraft background -->
+  <div class="max-w-3xl mx-auto px-5 sm:px-6 pt-6 pb-6">
+    <div class="mb-2">
+      <h1 class="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-ink mb-2">
+        <i class="ph-duotone ph-question text-ink mr-2" style="font-size:1.4rem;"></i>FAQ
+      </h1>
+      <p class="text-sm text-ink max-w-lg leading-relaxed" style="font-weight:450;">
+        Got questions? We have answers. If you don't find what you're looking for,
+        drop by our Discord and ask away.
+      </p>
+    </div>
+  </div>
+
+  <!-- FAQ accordion inside a Card -->
+  <section class="pb-16 sm:pb-20">
+    <div class="max-w-3xl mx-auto px-5 sm:px-6">
+      <Card>
+        <div class="faq-list">
+
+          <details>
+            <summary>
+              What is Absurd Industries?
+              <i class="ph-bold ph-caret-down faq-icon"></i>
+            </summary>
+            <div class="faq-answer">
+              An open-source STEAM (Science, Technology, Engineering, Art and Math) community based in Bengaluru, India. We bring together makers, tinkerers, engineers, artists, and the endlessly curious to build hardware and software in the open. Everything we make ships with full source files.
+            </div>
+          </details>
+
+          <details>
+            <summary>
+              How do campaigns work?
+              <i class="ph-bold ph-caret-down faq-icon"></i>
+            </summary>
+            <div class="faq-answer">
+              Makers launch crowdfunding campaigns for open-source hardware projects. Each campaign includes a bill of materials, schematics, firmware, and CAD files. You back a project you believe in, the maker builds it, and you get both the product and the knowledge to build it yourself.
+            </div>
+          </details>
+
+          <details>
+            <summary>
+              How do requests work?
+              <i class="ph-bold ph-caret-down faq-icon"></i>
+            </summary>
+            <div class="faq-answer">
+              Anyone can describe something that should exist but doesn't. The community upvotes, discusses, and refines the spec. When a maker picks up a request, it becomes a campaign. Your idea could become a real product backed by the community.
+            </div>
+          </details>
+
+          <details>
+            <summary>
+              What open-source licenses do projects use?
+              <i class="ph-bold ph-caret-down faq-icon"></i>
+            </summary>
+            <div class="faq-answer">
+              Hardware designs use the CERN Open Hardware Licence (CERN-OHL). Software components typically use MIT, GPL, or Apache 2.0. You are free to study, modify, manufacture, and redistribute any project on the platform.
+            </div>
+          </details>
+
+          <details>
+            <summary>
+              How do I become a maker?
+              <i class="ph-bold ph-caret-down faq-icon"></i>
+            </summary>
+            <div class="faq-answer">
+              Join the Discord community and introduce yourself. Start by contributing to existing projects or community requests. Share your skills, help refine specs, and when you are ready, launch your own campaign. No gatekeeping. Everyone starts somewhere.
+            </div>
+          </details>
+
+          <details>
+            <summary>
+              How do I request something?
+              <i class="ph-bold ph-caret-down faq-icon"></i>
+            </summary>
+            <div class="faq-answer">
+              Head to the Requests page and describe what the world is missing. Be specific about the problem you want solved. The community will upvote, add context, and help refine your idea into a buildable spec.
+            </div>
+          </details>
+
+          <details>
+            <summary>
+              Is this only in Bengaluru?
+              <i class="ph-bold ph-caret-down faq-icon"></i>
+            </summary>
+            <div class="faq-answer">
+              Our roots are in Bengaluru, and most of our in-person events happen here. But the platform is global. Makers and backers from anywhere in the world can launch campaigns, submit requests, and join the community online.
+            </div>
+          </details>
+
+          <details>
+            <summary>
+              How is this funded?
+              <i class="ph-bold ph-caret-down faq-icon"></i>
+            </summary>
+            <div class="faq-answer">
+              Absurd Industries takes a small platform fee on funded campaigns to cover infrastructure costs. We do not run ads or sell data. The goal is to sustain the platform while keeping everything open and accessible.
+            </div>
+          </details>
+
+        </div>
+      </Card>
+    </div>
+  </section>
+
+  <style>
+    .faq-list {
+      /* container for all details elements */
+    }
+    details {
+      border-bottom: 1px solid rgba(26, 26, 26, 0.08);
+    }
+    details:last-child {
+      border-bottom: none;
+    }
+    summary {
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #1A1A1A;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 1.25rem 0;
+      transition: color 0.15s;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary:hover { color: #FF5900; }
+    details[open] summary { color: #FF5900; }
+    .faq-icon {
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+      font-size: 0.85rem;
+      color: #6B5B4A;
+    }
+    details[open] .faq-icon {
+      transform: rotate(180deg);
+      color: #FF5900;
+    }
+    .faq-answer {
+      font-size: 0.9rem;
+      color: #4A3D2F;
+      line-height: 1.7;
+      padding-bottom: 1.25rem;
+    }
+  </style>
+</BaseLayout>

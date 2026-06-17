@@ -1,7 +1,8 @@
 ---
 /**
- * Debug page — demonstrates Astro View Transitions.
+ * Debug page -- demonstrates Astro View Transitions.
  * Shows each transition type with live examples and code snippets.
+ * Includes interactive play/replay buttons for on-page animation demos.
  */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
@@ -36,8 +37,14 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
             <p class="text-sm text-ink-light leading-relaxed mb-4">
               Cross-fades the old page out and the new page in. This is the default transition when no type is specified.
             </p>
-            <div class="demo-box" transition:name="fade-demo" transition:animate="fade">
-              <span class="text-sm font-semibold text-paper">Fade Demo Element</span>
+            <div class="demo-wrap" data-transition="fade">
+              <div class="demo-box demo-target">
+                <span class="text-sm font-semibold text-paper">Fade Demo Element</span>
+              </div>
+              <button class="demo-play-btn">
+                <i class="ph-bold ph-play mr-1" style="font-size:0.7rem;"></i>
+                Play
+              </button>
             </div>
             <pre class="code-block"><code>&lt;div transition:animate="fade"&gt;
   Content fades in/out
@@ -61,8 +68,14 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
             <p class="text-sm text-ink-light leading-relaxed mb-4">
               Old content slides out to the left while new content slides in from the right. On back navigation, the direction reverses.
             </p>
-            <div class="demo-box" transition:name="slide-demo" transition:animate="slide">
-              <span class="text-sm font-semibold text-paper">Slide Demo Element</span>
+            <div class="demo-wrap" data-transition="slide">
+              <div class="demo-box demo-target">
+                <span class="text-sm font-semibold text-paper">Slide Demo Element</span>
+              </div>
+              <button class="demo-play-btn">
+                <i class="ph-bold ph-play mr-1" style="font-size:0.7rem;"></i>
+                Play
+              </button>
             </div>
             <pre class="code-block"><code>&lt;div transition:animate="slide"&gt;
   Content slides left/right
@@ -86,8 +99,14 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
             <p class="text-sm text-ink-light leading-relaxed mb-4">
               Only animates the first time the element appears (initial page load or first navigation to the page). Subsequent visits skip the animation.
             </p>
-            <div class="demo-box" transition:name="initial-demo" transition:animate="initial">
-              <span class="text-sm font-semibold text-paper">Initial Demo Element</span>
+            <div class="demo-wrap" data-transition="initial">
+              <div class="demo-box demo-target">
+                <span class="text-sm font-semibold text-paper">Initial Demo Element</span>
+              </div>
+              <button class="demo-play-btn">
+                <i class="ph-bold ph-play mr-1" style="font-size:0.7rem;"></i>
+                Play
+              </button>
             </div>
             <pre class="code-block"><code>&lt;div transition:animate="initial"&gt;
   Animates only on first appearance
@@ -111,8 +130,14 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
             <p class="text-sm text-ink-light leading-relaxed mb-4">
               Disables all transition animation for this element. Useful for persistent UI like headers, navbars, or sidebars that should not animate between pages.
             </p>
-            <div class="demo-box demo-box--muted" transition:name="none-demo" transition:animate="none">
-              <span class="text-sm font-semibold text-ink-faint">No Animation</span>
+            <div class="demo-wrap" data-transition="none">
+              <div class="demo-box demo-box--muted">
+                <span class="text-sm font-semibold text-ink-faint">No Animation</span>
+              </div>
+              <button class="demo-play-btn demo-play-btn--disabled" disabled>
+                <i class="ph-bold ph-prohibit mr-1" style="font-size:0.7rem;"></i>
+                No Animation
+              </button>
             </div>
             <pre class="code-block"><code>&lt;div transition:animate="none"&gt;
   No transition animation
@@ -138,13 +163,13 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
             </div>
             <p class="text-sm text-ink-light leading-relaxed mb-4">
               When two elements on different pages share the same <code class="text-stamp font-mono text-xs bg-kraft-light px-1.5 py-0.5 rounded">transition:name</code>,
-              Astro morphs between them — interpolating size, position, and appearance. This is how list-to-detail hero animations work.
+              Astro morphs between them -- interpolating size, position, and appearance. This is how list-to-detail hero animations work.
             </p>
             <div class="grid grid-cols-2 gap-4 mb-4">
-              <div class="demo-box demo-box--sm" transition:name="morph-demo">
+              <div class="demo-box demo-box--sm">
                 <span class="text-xs font-semibold text-paper">Page A</span>
               </div>
-              <div class="demo-box demo-box--lg" transition:name="morph-demo-target">
+              <div class="demo-box demo-box--lg">
                 <span class="text-xs font-semibold text-paper">Page B</span>
               </div>
             </div>
@@ -253,4 +278,87 @@ import { ClientRouter } from 'astro:transitions';
   .code-block code {
     font-family: 'DM Mono', 'SF Mono', monospace;
   }
+
+  .demo-wrap {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+  .demo-play-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.4rem 0.9rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: rgba(255, 89, 0, 0.1);
+    color: #FF5900;
+    border: 1.5px solid rgba(255, 89, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'DM Sans', system-ui, sans-serif;
+  }
+  .demo-play-btn:hover {
+    background: #FF5900;
+    color: #FAF3E8;
+    border-color: #FF5900;
+  }
+  .demo-play-btn--disabled {
+    background: rgba(26, 26, 26, 0.04);
+    color: #6B5B4A;
+    border-color: rgba(26, 26, 26, 0.08);
+    cursor: not-allowed;
+  }
+  .demo-play-btn--disabled:hover {
+    background: rgba(26, 26, 26, 0.04);
+    color: #6B5B4A;
+    border-color: rgba(26, 26, 26, 0.08);
+  }
+
+  @keyframes demo-fade-out-in {
+    0% { opacity: 1; }
+    40% { opacity: 0; }
+    60% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  @keyframes demo-slide-out-in {
+    0% { transform: translateX(0); opacity: 1; }
+    35% { transform: translateX(-100%); opacity: 0; }
+    50% { transform: translateX(100%); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+  }
+  @keyframes demo-initial-in {
+    0% { opacity: 0; transform: scale(0.9); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  .demo-target.anim-fade { animation: demo-fade-out-in 1s ease forwards; }
+  .demo-target.anim-slide { animation: demo-slide-out-in 1s ease forwards; }
+  .demo-target.anim-initial { animation: demo-initial-in 0.6s ease forwards; }
 </style>
+
+<script is:inline data-astro-rerun>
+(function() {
+  document.querySelectorAll('.demo-play-btn:not([disabled])').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var wrap = btn.closest('.demo-wrap');
+      var type = wrap.dataset.transition;
+      var target = wrap.querySelector('.demo-target');
+      if (!target) return;
+
+      target.classList.remove('anim-fade', 'anim-slide', 'anim-initial');
+      void target.offsetWidth;
+      target.classList.add('anim-' + type);
+
+      btn.innerHTML = '<i class="ph-bold ph-circle-notch mr-1" style="font-size:0.7rem;"></i> Playing...';
+      btn.disabled = true;
+
+      var duration = type === 'initial' ? 600 : 1000;
+      setTimeout(function() {
+        target.classList.remove('anim-fade', 'anim-slide', 'anim-initial');
+        btn.innerHTML = '<i class="ph-bold ph-arrow-counter-clockwise mr-1" style="font-size:0.7rem;"></i> Replay';
+        btn.disabled = false;
+      }, duration);
+    });
+  });
+})();
+</script>

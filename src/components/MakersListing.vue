@@ -506,15 +506,6 @@ function getInitial(name: string): string {
 }
 
 .search-wrap {
-  position: sticky;
-  top: 0;
-  z-index: 30;
-  background: rgba(212, 184, 150, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   padding: 0.75rem 0;
-  margin: 0 -1.25rem;
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
 }
 </style>
