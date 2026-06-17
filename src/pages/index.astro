@@ -44,7 +44,7 @@ const upcomingEvents = [...events]
       </h1>
 
       <p class="text-base sm:text-lg text-ink max-w-xl mb-8 leading-relaxed anim-fade-up anim-d2">
-        Absurd Industries is an open-source <abbr class="steam-abbr" title="Science, Technology, Engineering, Art & Math">STEAM</abbr> community.
+        Absurd Industries is an open-source STEAM (Science, Technology, Engineering, Art & Math) community.
         Find and fund products that solve real problems — or turn your own ideas into campaigns the community backs.
         Every design ships with full source files.
       </p>
@@ -73,7 +73,7 @@ const upcomingEvents = [...events]
             <i class="ph-duotone ph-rocket-launch text-stamp mr-1" style="font-size:1.2rem;"></i>
             Campaigns
           </h2>
-          <a href="/campaigns" class="text-sm text-stamp font-semibold no-underline hover:underline">
+          <a href="/campaigns" class="text-sm text-stamp font-bold no-underline hover:underline">
             All campaigns <i class="ph-bold ph-arrow-right ml-0.5" style="font-size:0.65rem;"></i>
           </a>
         </div>
@@ -115,7 +115,7 @@ const upcomingEvents = [...events]
             <i class="ph-duotone ph-megaphone text-stamp mr-1" style="font-size:1.2rem;"></i>
             Requests
           </h2>
-          <a href="/requests" class="text-sm text-stamp font-semibold no-underline hover:underline">
+          <a href="/requests" class="text-sm text-stamp font-bold no-underline hover:underline">
             All requests <i class="ph-bold ph-arrow-right ml-0.5" style="font-size:0.65rem;"></i>
           </a>
         </div>
@@ -148,7 +148,7 @@ const upcomingEvents = [...events]
             <i class="ph-duotone ph-users-three text-stamp mr-1" style="font-size:1.2rem;"></i>
             Makers
           </h2>
-          <a href="/makers" class="text-sm text-stamp font-semibold no-underline hover:underline">
+          <a href="/makers" class="text-sm text-stamp font-bold no-underline hover:underline">
             All makers <i class="ph-bold ph-arrow-right ml-0.5" style="font-size:0.65rem;"></i>
           </a>
         </div>
@@ -185,12 +185,12 @@ const upcomingEvents = [...events]
             <i class="ph-duotone ph-calendar-dots text-stamp mr-1" style="font-size:1.2rem;"></i>
             Events
           </h2>
-          <a href="/events" class="text-sm text-stamp font-semibold no-underline hover:underline">
+          <a href="/events" class="text-sm text-stamp font-bold no-underline hover:underline">
             All events <i class="ph-bold ph-arrow-right ml-0.5" style="font-size:0.65rem;"></i>
           </a>
         </div>
         <p class="text-sm text-ink max-w-lg leading-relaxed mb-5">
-          Bengaluru-first <abbr class="steam-abbr" title="Science, Technology, Engineering, Art & Math">STEAM</abbr> meetups, workshops, hackathons, and talks for the endlessly curious.
+          Bengaluru-first STEAM meetups, workshops, hackathons, and talks for the endlessly curious.
         </p>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {upcomingEvents.map((ev) => (
@@ -252,7 +252,7 @@ const upcomingEvents = [...events]
     <div class="max-w-5xl mx-auto px-5 sm:px-6">
       <h2 class="font-serif text-xl font-bold mb-1 anim-fade-up">Friends of Absurd</h2>
       <p class="text-sm text-ink max-w-md leading-relaxed mb-5 anim-fade-up">
-        Communities and companies building the open-source <abbr class="steam-abbr" title="Science, Technology, Engineering, Art & Math">STEAM</abbr> ecosystem with us.
+        Communities and companies building the open-source STEAM ecosystem with us.
       </p>
     </div>
     <div class="friends-marquee-wrapper">
@@ -302,14 +302,6 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 <style>
-  /* STEAM abbreviation tooltip */
-  .steam-abbr {
-    border-bottom: 1px dotted currentColor;
-    cursor: help;
-    text-decoration: none;
-    font-style: normal;
-  }
-
   /* Campaign microcards strip */
   .campaign-strip {
     display: grid;
@@ -340,14 +332,14 @@ document.addEventListener('DOMContentLoaded', () => {
     padding: 0.75rem;
     border-radius: 0.625rem;
     border: 1px solid rgba(26, 26, 26, 0.06);
-    background: rgba(250, 243, 232, 0.4);
+    background: rgba(250, 243, 232, 0.75);
     transition: border-color 0.15s, background 0.15s;
     text-decoration: none;
     color: inherit;
   }
   .microcard:hover {
-    border-color: #FF5900;
-    background: rgba(255, 89, 0, 0.04);
+    border-color: #1A1A1A;
+    background: rgba(250, 243, 232, 0.95);
   }
 
   /* Auto-scrolling marquee for Friends of Absurd */

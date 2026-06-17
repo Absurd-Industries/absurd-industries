@@ -274,10 +274,23 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
     </div>
   </section>
 
+  <!-- Secondary section nav -->
+  <nav class="profile-nav">
+    <div class="max-w-5xl mx-auto px-5 sm:px-6">
+      <div class="profile-nav-inner">
+        <a href="#about" class="profile-nav-pill">About</a>
+        <a href="#setup" class="profile-nav-pill">Setup</a>
+        <a href="#projects" class="profile-nav-pill">Projects</a>
+        <a href="#wall" class="profile-nav-pill">Wall</a>
+        <a href="#badges" class="profile-nav-pill">Badges</a>
+      </div>
+    </div>
+  </nav>
+
   <!-- ══════════════════════════════════════ -->
   <!-- PROFILE BANNER                        -->
   <!-- ══════════════════════════════════════ -->
-  <section class="pt-0 pb-0">
+  <section class="pt-4 pb-0" id="about">
     <div class="max-w-5xl mx-auto px-5 sm:px-6">
       <div
         class="profile-banner"
@@ -339,6 +352,11 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
               </a>
             </div>
           </div>
+
+          <!-- Bio -->
+          <div class="mt-4 pt-4 border-t border-paper/15">
+            <p class="text-sm text-kraft leading-relaxed">{maker.bio ?? `${maker.name} is a ${maker.title} based in ${maker.location}.`}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -356,269 +374,254 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
         <!-- ══════════════════════════ -->
         <div class="flex-1 min-w-0 space-y-6">
 
-          <!-- ── SHOWCASE (Pinned) ── -->
-          <div data-configurable="showcase">
-            <div class="section-label">
-              <span class="text-xs font-semibold uppercase tracking-wider text-ink-faint flex items-center gap-1.5">
-                <i class="ph-bold ph-push-pin text-stamp" style="font-size:0.7rem;"></i>
-                Featured Showcase
-              </span>
-            </div>
-            <div class="showcase-border">
-              <div class="card" style="border-radius:0.8rem; overflow:hidden;">
-                <div class="card-bg" style="border-radius:0.8rem;"></div>
-                <div class="card-content">
-                  <div class="flex flex-col sm:flex-row">
-                    <!-- Showcase image area -->
-                    <a href={showcase.link} class="block sm:w-56 flex-shrink-0">
-                      <div class="h-40 sm:h-full bg-kraft-light flex items-center justify-center" style="border-radius:0.8rem 0 0 0; min-height:160px;">
-                        <i class={`ph-bold ph-${showcase.icon} text-6xl text-stencil opacity-40`}></i>
-                      </div>
-                    </a>
-                    <div class="p-5 sm:p-6 flex-1">
-                      <div class="flex flex-wrap items-center gap-2 mb-2">
-                        <Tag variant="funded">
-                          <span class="w-1.5 h-1.5 rounded-full bg-funded mr-1 pulse-soft inline-block"></span>
-                          Live
-                        </Tag>
-                        <Tag>{showcase.category}</Tag>
-                        <Tag><i class="ph-bold ph-scales mr-1"></i>{showcase.license}</Tag>
-                      </div>
-                      <a href={showcase.link} class="no-underline text-ink">
-                        <h3 class="font-serif font-bold text-lg sm:text-xl leading-snug mb-1.5 hover:text-stamp transition-colors">{showcase.name}</h3>
-                      </a>
-                      <p class="text-sm text-ink-faint leading-relaxed mb-4">{showcase.description}</p>
-
-                      <ProgressBar percent={showcase.percent} />
-                      <div class="flex justify-between text-xs text-ink-faint mt-1.5">
-                        <span><strong class="text-ink font-semibold">{showcase.percent}%</strong> of {showcase.goal}</span>
-                        <span>{showcase.backers} backers</span>
-                      </div>
-
-                      <a href={showcase.link} class="btn btn-stamp btn-sm mt-4">
-                        View Campaign <i class="ph-bold ph-arrow-right ml-1.5" style="font-size:0.7rem;"></i>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- ── ACTIVITY FEED ── -->
-          <Card>
-            <div class="p-6 sm:p-8">
-              <div class="flex items-center justify-between mb-5">
-                <h2 class="font-serif font-bold text-xl sm:text-2xl tracking-tight">Recent Activity</h2>
-              </div>
-
-              <div class="relative pl-8">
-                <div class="timeline-line"></div>
-                {activities.map((a) => (
-                  <div class="relative flex items-start gap-3 pb-5 last:pb-0">
-                    <div
-                      class:list={["timeline-dot absolute", { highlight: a.highlight }]}
-                      style="left: -27px; top: 4px;"
-                    ></div>
-                    <div class="flex-1">
-                      <div class="flex items-start gap-2">
-                        <i class={`ph-bold ph-${a.icon} text-sm mt-0.5`} style={`color: ${a.highlight ? "#FF5900" : "#6B5B4A"}`}></i>
-                        <div class="flex-1">
-                          <p class="text-sm text-ink leading-snug" set:html={a.text} />
-                          <span class="text-xs text-ink-faint mt-0.5 block">{a.time}</span>
-
-                          {/* Inline mini card for campaign activity */}
-                          {a.miniCard && (
-                            <div class="mt-2 p-3 rounded-lg bg-kraft-light/50 border border-ink/5">
-                              <div class="flex items-center gap-2 mb-1.5">
-                                <i class={`ph-bold ph-${a.miniCard.icon} text-sm text-stencil`}></i>
-                                <span class="text-xs font-semibold text-ink">{a.miniCard.name}</span>
-                              </div>
-                              <div class="progress mb-1" style="height:4px;">
-                                <div class="progress-fill" style={`width: ${a.miniCard.percent}%`}></div>
-                              </div>
-                              <div class="text-[0.6rem] text-ink-faint">
-                                <strong class="text-ink font-semibold">{a.miniCard.percent}%</strong> funded &middot; {a.miniCard.backers} backers
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Card>
-
-          <!-- ── PROJECTS GRID ── -->
-          <Card>
-            <div class="p-6 sm:p-8">
-              <div class="flex items-center justify-between mb-5">
-                <h2 class="font-serif font-bold text-xl sm:text-2xl tracking-tight">All Projects</h2>
-                <span class="text-xs text-ink-faint font-semibold">{projects.length} projects</span>
-              </div>
-
-              <div class="space-y-3">
-                {projects.map((project) => (
-                  <a
-                    href="/campaigns"
-                    class="flex items-center gap-4 p-3 rounded-lg hover:bg-kraft-light/40 transition-colors no-underline text-ink group"
-                  >
-                    {/* Project icon */}
-                    <div class="w-12 h-12 rounded-lg bg-kraft-light flex items-center justify-center flex-shrink-0">
-                      <i class={`ph-bold ph-${project.icon} text-xl text-stencil group-hover:text-stamp transition-colors`}></i>
-                    </div>
-
-                    {/* Project info */}
-                    <div class="flex-1 min-w-0">
-                      <div class="flex items-center gap-2 mb-0.5">
-                        <h3 class="text-sm font-semibold truncate group-hover:text-stamp transition-colors">{project.name}</h3>
-                        <Tag
-                          variant={project.status === "Live" ? "funded" : project.status === "Completed" ? "stamp" : "default"}
-                          class="text-[0.55rem] flex-shrink-0"
-                        >
-                          {project.status}
-                        </Tag>
-                      </div>
-                      <p class="text-xs text-ink-faint truncate">{project.description}</p>
-                    </div>
-
-                    {/* Progress or status */}
-                    <div class="w-24 flex-shrink-0 hidden sm:block">
-                      {project.percent !== null ? (
-                        <div>
-                          <ProgressBar percent={project.percent} hot={project.percent >= 100} />
-                          <div class="text-[0.6rem] text-ink-faint text-right mt-1">{project.percent}%</div>
-                        </div>
-                      ) : (
-                        <div class="text-xs text-ink-faint italic text-right">Upcoming</div>
-                      )}
-                    </div>
-
-                    <i class="ph-bold ph-caret-right text-xs text-ink-faint/40 flex-shrink-0"></i>
-                  </a>
-                ))}
-              </div>
-            </div>
-          </Card>
-
           <!-- ── WORKSHOP / SETUP ── -->
-          <Card variant="dark">
-            <div class="p-6 sm:p-8 text-paper">
-              <div class="flex items-center gap-2 mb-5">
-                <i class="ph-bold ph-wrench text-stamp text-xl"></i>
-                <h2 class="font-serif font-bold text-xl sm:text-2xl tracking-tight">Workshop / Setup</h2>
-              </div>
-
-              <div class="flex flex-col sm:flex-row gap-6">
-                <!-- Workshop info -->
-                <div class="flex-1">
-                  <h3 class="font-serif font-semibold text-base text-paper mb-2">{workshop.name}</h3>
-                  <div class="space-y-2 mb-4">
-                    <div class="flex items-center gap-2 text-sm text-kraft">
-                      <i class="ph-bold ph-map-pin text-xs text-stamp"></i>
-                      {workshop.location}
-                    </div>
-                    <div class="flex items-center gap-2 text-sm text-kraft">
-                      <i class="ph-bold ph-ruler text-xs text-kraft-dark"></i>
-                      {workshop.size}
-                    </div>
-                    <div class="flex items-center gap-2 text-sm text-kraft">
-                      <i class="ph-bold ph-clock text-xs text-kraft-dark"></i>
-                      {workshop.hours}
-                    </div>
-                  </div>
-
-                  <a href="/inventory" class="flex items-center gap-2 text-sm font-semibold text-stamp hover:underline no-underline">
-                    <i class="ph-bold ph-package text-sm"></i>
-                    View full lab inventory
-                    <i class="ph-bold ph-arrow-right text-xs"></i>
-                  </a>
+          <div id="setup">
+            <Card variant="dark">
+              <div class="p-6 sm:p-8 text-paper">
+                <div class="flex items-center gap-2 mb-5">
+                  <i class="ph-bold ph-wrench text-stamp text-xl"></i>
+                  <h2 class="font-serif font-bold text-xl sm:text-2xl tracking-tight">Workshop / Setup</h2>
                 </div>
 
-                <!-- Equipment grid -->
-                <div class="sm:w-56 flex-shrink-0">
-                  <div class="text-xs font-semibold uppercase tracking-wider text-kraft-dark mb-3">Equipment</div>
-                  <div class="grid grid-cols-2 gap-2">
-                    {workshop.equipment.map((e) => (
-                      <div class="flex items-center gap-2 p-2 rounded-lg" style="background:rgba(250,243,232,0.06);">
-                        <div class="equip-icon" style="width:28px; height:28px; font-size:0.85rem;">
-                          <i class={`ph-bold ph-${e.icon}`}></i>
+                <div class="flex flex-col sm:flex-row gap-6">
+                  <!-- Workshop info -->
+                  <div class="flex-1">
+                    <h3 class="font-serif font-semibold text-base text-paper mb-2">{workshop.name}</h3>
+                    <div class="space-y-2 mb-4">
+                      <div class="flex items-center gap-2 text-sm text-kraft">
+                        <i class="ph-bold ph-map-pin text-xs text-stamp"></i>
+                        {workshop.location}
+                      </div>
+                      <div class="flex items-center gap-2 text-sm text-kraft">
+                        <i class="ph-bold ph-ruler text-xs text-kraft-dark"></i>
+                        {workshop.size}
+                      </div>
+                      <div class="flex items-center gap-2 text-sm text-kraft">
+                        <i class="ph-bold ph-clock text-xs text-kraft-dark"></i>
+                        {workshop.hours}
+                      </div>
+                    </div>
+
+                    <a href="/inventory" class="flex items-center gap-2 text-sm font-semibold text-stamp hover:underline no-underline">
+                      <i class="ph-bold ph-package text-sm"></i>
+                      View full lab inventory
+                      <i class="ph-bold ph-arrow-right text-xs"></i>
+                    </a>
+                  </div>
+
+                  <!-- Equipment grid -->
+                  <div class="sm:w-56 flex-shrink-0">
+                    <div class="text-xs font-semibold uppercase tracking-wider text-kraft-dark mb-3">Equipment</div>
+                    <div class="grid grid-cols-2 gap-2">
+                      {workshop.equipment.map((e) => (
+                        <div class="flex items-center gap-2 p-2 rounded-lg" style="background:rgba(250,243,232,0.06);">
+                          <div class="equip-icon" style="width:28px; height:28px; font-size:0.85rem;">
+                            <i class={`ph-bold ph-${e.icon}`}></i>
+                          </div>
+                          <span class="text-[0.65rem] text-kraft leading-tight">{e.name}</span>
                         </div>
-                        <span class="text-[0.65rem] text-kraft leading-tight">{e.name}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Workspace photo placeholders -->
+                <div class="mt-5 pt-5 border-t border-paper/10">
+                  <div class="text-xs font-semibold uppercase tracking-wider text-kraft-dark mb-3">Workspace Photos</div>
+                  <div class="grid grid-cols-3 gap-2">
+                    {[1, 2, 3].map(() => (
+                      <div class="aspect-video rounded-lg flex items-center justify-center" style="background:rgba(250,243,232,0.08);">
+                        <i class="ph-bold ph-image text-xl text-paper/20"></i>
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
+            </Card>
+          </div>
 
-              <!-- Workspace photo placeholders -->
-              <div class="mt-5 pt-5 border-t border-paper/10">
-                <div class="text-xs font-semibold uppercase tracking-wider text-kraft-dark mb-3">Workspace Photos</div>
-                <div class="grid grid-cols-3 gap-2">
-                  {[1, 2, 3].map(() => (
-                    <div class="aspect-video rounded-lg flex items-center justify-center" style="background:rgba(250,243,232,0.08);">
-                      <i class="ph-bold ph-image text-xl text-paper/20"></i>
+          <!-- ── ALL PROJECTS ── -->
+          <div id="projects">
+            <Card>
+              <div class="p-6 sm:p-8">
+                <div class="flex items-center justify-between mb-5">
+                  <h2 class="font-serif font-bold text-xl sm:text-2xl tracking-tight">All Projects</h2>
+                  <span class="text-xs text-ink-faint font-semibold">{projects.length} projects</span>
+                </div>
+
+                <div class="space-y-3">
+                  {projects.map((project, idx) => (
+                    <a
+                      href="/campaigns"
+                      class:list={[
+                        "flex items-center gap-4 p-3 rounded-lg hover:bg-kraft-light/40 transition-colors no-underline text-ink group",
+                        idx === 0 && "bg-kraft-light/30 border border-stamp/15",
+                      ]}
+                    >
+                      {/* Project icon */}
+                      <div class="w-12 h-12 rounded-lg bg-kraft-light flex items-center justify-center flex-shrink-0">
+                        <i class={`ph-bold ph-${project.icon} text-xl text-stencil group-hover:text-stamp transition-colors`}></i>
+                      </div>
+
+                      {/* Project info */}
+                      <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-0.5">
+                          <h3 class="text-sm font-semibold truncate group-hover:text-stamp transition-colors">{project.name}</h3>
+                          {idx === 0 && (
+                            <span class="inline-flex items-center gap-1 text-[0.55rem] font-bold uppercase tracking-wide text-stamp"><i class="ph-bold ph-push-pin" style="font-size:0.5rem;"></i> Featured</span>
+                          )}
+                          <Tag
+                            variant={project.status === "Live" ? "funded" : project.status === "Completed" ? "stamp" : "default"}
+                            class="text-[0.55rem] flex-shrink-0"
+                          >
+                            {project.status}
+                          </Tag>
+                        </div>
+                        <p class="text-xs text-ink-faint truncate">{project.description}</p>
+                      </div>
+
+                      {/* Progress or status */}
+                      <div class="w-24 flex-shrink-0 hidden sm:block">
+                        {project.percent !== null ? (
+                          <div>
+                            <ProgressBar percent={project.percent} hot={project.percent >= 100} />
+                            <div class="text-[0.6rem] text-ink-faint text-right mt-1">{project.percent}%</div>
+                          </div>
+                        ) : (
+                          <div class="text-xs text-ink-faint italic text-right">Upcoming</div>
+                        )}
+                      </div>
+
+                      <i class="ph-bold ph-caret-right text-xs text-ink-faint/40 flex-shrink-0"></i>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          <!-- ── ACTIVITY & WALL ── -->
+          <div id="wall">
+            <Card>
+              <div class="p-6 sm:p-8">
+                <div class="flex items-center justify-between mb-5">
+                  <h2 class="font-serif font-bold text-xl sm:text-2xl tracking-tight">Activity & Wall</h2>
+                </div>
+
+                <!-- Recent Activity -->
+                <h3 class="font-serif font-semibold text-base mb-4">Recent Activity</h3>
+                <div class="relative pl-8">
+                  <div class="timeline-line"></div>
+                  {activities.map((a) => (
+                    <div class="relative flex items-start gap-3 pb-5 last:pb-0">
+                      <div
+                        class:list={["timeline-dot absolute", { highlight: a.highlight }]}
+                        style="left: -27px; top: 4px;"
+                      ></div>
+                      <div class="flex-1">
+                        <div class="flex items-start gap-2">
+                          <i class={`ph-bold ph-${a.icon} text-sm mt-0.5`} style={`color: ${a.highlight ? "#D94800" : "#4A3D2F"}`}></i>
+                          <div class="flex-1">
+                            <p class="text-sm text-ink leading-snug" set:html={a.text} />
+                            <span class="text-xs text-ink-faint mt-0.5 block">{a.time}</span>
+
+                            {/* Inline mini card for campaign activity */}
+                            {a.miniCard && (
+                              <div class="mt-2 p-3 rounded-lg bg-kraft-light/50 border border-ink/5">
+                                <div class="flex items-center gap-2 mb-1.5">
+                                  <i class={`ph-bold ph-${a.miniCard.icon} text-sm text-stencil`}></i>
+                                  <span class="text-xs font-semibold text-ink">{a.miniCard.name}</span>
+                                </div>
+                                <div class="progress mb-1" style="height:4px;">
+                                  <div class="progress-fill" style={`width: ${a.miniCard.percent}%`}></div>
+                                </div>
+                                <div class="text-[0.6rem] text-ink-faint">
+                                  <strong class="text-ink font-semibold">{a.miniCard.percent}%</strong> funded &middot; {a.miniCard.backers} backers
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <!-- Divider -->
+                <div class="border-t border-ink/5 pt-5 mt-6">
+                  <!-- Comments -->
+                  <h3 class="font-serif font-semibold text-base mb-4">Comments</h3>
+                  <span class="text-xs text-ink-faint font-semibold mb-4 block">{comments.length} comments</span>
+
+                  <!-- Existing comments -->
+                  <div class="mb-5">
+                    {comments.map((c) => (
+                      <div class="comment-entry">
+                        <div class="flex items-start gap-3">
+                          <div class="w-8 h-8 rounded-full bg-kraft-light flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <i class="ph-bold ph-user text-xs text-ink-faint"></i>
+                          </div>
+                          <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-1">
+                              <span class="text-sm font-semibold text-ink">{c.author}</span>
+                              <span class="text-[0.6rem] text-ink-faint">{c.time}</span>
+                            </div>
+                            <p class="text-sm text-ink-light leading-relaxed">{c.text}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <!-- Comment form placeholder -->
+                  <div class="border-t border-ink/5 pt-4">
+                    <div class="flex items-start gap-3">
+                      <div class="w-8 h-8 rounded-full bg-kraft flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <i class="ph-bold ph-user text-xs text-ink-faint"></i>
+                      </div>
+                      <div class="flex-1">
+                        <textarea
+                          rows="2"
+                          placeholder={`Leave a comment on ${firstName}'s wall...`}
+                          class="w-full p-3 rounded-lg border border-ink/10 bg-paper text-sm focus:outline-none focus:border-stamp focus:ring-1 focus:ring-stamp/30 resize-none"
+                          disabled
+                        ></textarea>
+                        <div class="flex justify-end mt-2">
+                          <span class="btn btn-primary btn-sm" style="opacity:0.4; cursor:not-allowed; transform:none;">
+                            <i class="ph-bold ph-paper-plane-tilt mr-1.5" style="font-size:0.7rem;"></i>
+                            Post Comment
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          <!-- ── BADGES ── -->
+          <div id="badges">
+            <Card>
+              <div class="p-6 sm:p-8" data-configurable="badges">
+                <div class="flex items-center justify-between mb-4">
+                  <h2 class="font-serif font-bold text-xl sm:text-2xl tracking-tight">Badges</h2>
+                  <span class="text-[0.6rem] text-ink-faint font-semibold uppercase tracking-wide">{badges.length} earned</span>
+                </div>
+
+                <div class="grid grid-cols-3 sm:grid-cols-6 gap-1">
+                  {badges.map((b) => (
+                    <div class="badge-item" title={b.description}>
+                      <div class="badge-icon" style={`background: ${b.bg}; color: ${b.color};`}>
+                        <i class={`ph-bold ph-${b.icon}`}></i>
+                      </div>
+                      <span class="text-[0.58rem] text-ink-faint text-center font-semibold leading-tight">{b.name}</span>
                     </div>
                   ))}
                 </div>
               </div>
-            </div>
-          </Card>
-
-          <!-- ── COMMENTS / WALL ── -->
-          <Card>
-            <div class="p-6 sm:p-8">
-              <div class="flex items-center justify-between mb-5">
-                <h2 class="font-serif font-bold text-xl sm:text-2xl tracking-tight">Profile Wall</h2>
-                <span class="text-xs text-ink-faint font-semibold">{comments.length} comments</span>
-              </div>
-
-              <!-- Existing comments -->
-              <div class="mb-5">
-                {comments.map((c) => (
-                  <div class="comment-entry">
-                    <div class="flex items-start gap-3">
-                      <div class="w-8 h-8 rounded-full bg-kraft-light flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <i class="ph-bold ph-user text-xs text-ink-faint"></i>
-                      </div>
-                      <div class="flex-1">
-                        <div class="flex items-center gap-2 mb-1">
-                          <span class="text-sm font-semibold text-ink">{c.author}</span>
-                          <span class="text-[0.6rem] text-ink-faint">{c.time}</span>
-                        </div>
-                        <p class="text-sm text-ink-light leading-relaxed">{c.text}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <!-- Comment form placeholder -->
-              <div class="border-t border-ink/5 pt-4">
-                <div class="flex items-start gap-3">
-                  <div class="w-8 h-8 rounded-full bg-kraft flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <i class="ph-bold ph-user text-xs text-ink-faint"></i>
-                  </div>
-                  <div class="flex-1">
-                    <textarea
-                      rows="2"
-                      placeholder={`Leave a comment on ${firstName}'s wall...`}
-                      class="w-full p-3 rounded-lg border border-ink/10 bg-paper text-sm focus:outline-none focus:border-stamp focus:ring-1 focus:ring-stamp/30 resize-none"
-                      disabled
-                    ></textarea>
-                    <div class="flex justify-end mt-2">
-                      <span class="btn btn-primary btn-sm" style="opacity:0.4; cursor:not-allowed; transform:none;">
-                        <i class="ph-bold ph-paper-plane-tilt mr-1.5" style="font-size:0.7rem;"></i>
-                        Post Comment
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Card>
+            </Card>
+          </div>
 
         </div>
 
@@ -690,27 +693,6 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
             </div>
           </Card>
 
-          <!-- ── BADGES / ACHIEVEMENTS ── -->
-          <Card>
-            <div class="p-5 sm:p-6" data-configurable="badges">
-              <div class="flex items-center justify-between mb-4">
-                <h3 class="font-serif font-bold text-base">Badges</h3>
-                <span class="text-[0.6rem] text-ink-faint font-semibold uppercase tracking-wide">{badges.length} earned</span>
-              </div>
-
-              <div class="grid grid-cols-3 gap-1">
-                {badges.map((b) => (
-                  <div class="badge-item" title={b.description}>
-                    <div class="badge-icon" style={`background: ${b.bg}; color: ${b.color};`}>
-                      <i class={`ph-bold ph-${b.icon}`}></i>
-                    </div>
-                    <span class="text-[0.58rem] text-ink-faint text-center font-semibold leading-tight">{b.name}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Card>
-
           <!-- ── SKILLS & TOOLS ── -->
           <Card>
             <div class="p-5 sm:p-6">
@@ -736,19 +718,33 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
             </div>
           </Card>
 
-          <!-- ── BIO ── -->
-          <Card>
-            <div class="p-5 sm:p-6">
-              <h3 class="font-serif font-bold text-base mb-3">About</h3>
-              <p class="text-sm text-ink-light leading-relaxed">{maker.bio ?? `${maker.name} is a ${maker.title} based in ${maker.location}.`}</p>
-            </div>
-          </Card>
-
         </div>
       </div>
     </div>
   </section>
 </BaseLayout>
+
+<script is:inline>
+document.addEventListener('DOMContentLoaded', () => {
+  const pills = document.querySelectorAll('.profile-nav-pill');
+  const sections = ['about', 'setup', 'projects', 'wall', 'badges'];
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        pills.forEach(p => p.classList.remove('active'));
+        const pill = document.querySelector(`.profile-nav-pill[href="#${entry.target.id}"]`);
+        if (pill) pill.classList.add('active');
+      }
+    });
+  }, { threshold: 0.2, rootMargin: '-60px 0px -60% 0px' });
+
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
+});
+</script>
 
 <style>
   /* ================================================================ */
@@ -995,5 +991,47 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
     flex: 1;
     height: 1px;
     background: rgba(26, 26, 26, 0.1);
+  }
+
+  /* Profile section nav */
+  .profile-nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #D4B896;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.08);
+    padding: 0.5rem 0;
+  }
+  .profile-nav-inner {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .profile-nav-inner::-webkit-scrollbar {
+    display: none;
+  }
+  .profile-nav-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #4A3D2F;
+    background: rgba(250, 243, 232, 0.5);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.15s, color 0.15s;
+    flex-shrink: 0;
+  }
+  .profile-nav-pill:hover {
+    background: #1A1A1A;
+    color: #FAF3E8;
+  }
+  .profile-nav-pill.active {
+    background: #1A1A1A;
+    color: #FAF3E8;
   }
 </style>

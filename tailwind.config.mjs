@@ -13,15 +13,15 @@ export default {
         ink: {
           DEFAULT: "#1A1A1A",
           light: "#3D3D3D",
-          faint: "#6B5B4A",
+          faint: "#4A3D2F",
         },
         stamp: {
-          DEFAULT: "#FF5900",
+          DEFAULT: "#D94800",
           dark: "#CC4700",
         },
         tape: "#F5E6C8",
         paper: "#FAF3E8",
-        stencil: "#6B5B4A",
+        stencil: "#4A3D2F",
         funded: "#2A5F41",
       },
       fontFamily: {
