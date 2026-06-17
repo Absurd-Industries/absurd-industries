@@ -95,12 +95,9 @@ const upcomingEvents = [...events]
                 </div>
                 <div class="p-4">
                   <h3 class="font-serif font-bold text-sm mb-1 group-hover:text-stamp transition-colors truncate">{campaign.title}</h3>
-                  <p class="text-xs text-stencil mb-3">{campaign.makerName} &middot; {campaign.location}</p>
+                  <p class="text-xs text-stencil mb-2">{campaign.makerName} &middot; {campaign.location}</p>
                   <ProgressBar percent={campaign.percent} hot={campaign.percent >= 100} />
-                  <div class="flex items-center justify-between mt-2 text-xs">
-                    <span class="font-semibold text-funded">{campaign.percent}%</span>
-                    <span class="text-stencil">{campaign.backers} backers</span>
-                  </div>
+                  <p class="text-[0.65rem] text-stencil mt-1.5">{campaign.percent >= 100 ? "Fully funded" : `${campaign.percent}% funded`}</p>
                 </div>
               </div>
             </a>
@@ -158,20 +155,24 @@ const upcomingEvents = [...events]
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {featuredMakers.map((maker) => (
             <a href={`/makers/${maker.slug}`} class="microcard group">
-              <div
-                class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold text-paper flex-shrink-0"
-                style={`background: ${maker.avatarColor}`}
-              >
-                {maker.name.split(" ").map((w: string) => w[0]).join("").slice(0, 2)}
-              </div>
+              {maker.avatar ? (
+                <img
+                  src={maker.avatar}
+                  alt={maker.name}
+                  class="w-11 h-11 rounded-lg object-cover flex-shrink-0"
+                  loading="lazy"
+                />
+              ) : (
+                <div
+                  class="w-11 h-11 rounded-lg flex items-center justify-center text-xs font-bold text-paper flex-shrink-0"
+                  style={`background: ${maker.avatarColor}`}
+                >
+                  {maker.name.split(" ").map((w: string) => w[0]).join("").slice(0, 2)}
+                </div>
+              )}
               <div class="flex-1 min-w-0">
                 <p class="text-sm font-semibold text-ink leading-snug group-hover:text-stamp transition-colors">{maker.name}</p>
-                <p class="text-xs text-stencil truncate">{maker.title}</p>
-                <div class="flex items-center gap-2 mt-0.5 text-xs text-stencil">
-                  <span>{maker.projects} projects</span>
-                  <span>&middot;</span>
-                  <span>{maker.backers} backers</span>
-                </div>
+                <p class="text-xs text-stencil line-clamp-2 leading-relaxed mt-0.5">{maker.bio ?? maker.title}</p>
               </div>
             </a>
           ))}
@@ -205,11 +206,11 @@ const upcomingEvents = [...events]
               </div>
               <div class="flex-1 min-w-0">
                 <p class="text-sm font-semibold text-ink leading-snug group-hover:text-stamp transition-colors line-clamp-1">{ev.title}</p>
-                <p class="text-xs text-stencil truncate">{ev.venue}</p>
+                <p class="text-xs text-stencil truncate">{ev.time}</p>
                 <div class="flex items-center gap-2 mt-0.5 text-xs text-stencil">
-                  <span class="capitalize">{ev.category}</span>
+                  <span>{ev.city}</span>
                   <span>&middot;</span>
-                  <span>{ev.attendees} attending</span>
+                  <span class="capitalize">{ev.category}</span>
                 </div>
               </div>
             </a>
@@ -316,6 +317,11 @@ document.addEventListener('DOMContentLoaded', () => {
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
       padding-bottom: 0.5rem;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .campaign-strip::-webkit-scrollbar {
+      display: none;
     }
     .campaign-card {
       min-width: 260px;

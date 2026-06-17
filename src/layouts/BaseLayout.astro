@@ -25,6 +25,8 @@ interface Props {
   activeTab?: string;
   /** Enable dark mode (class="dark" on html) — used by inventory */
   darkMode?: boolean;
+  /** Hide bottom/desktop nav — used on immersive pages like campaign detail */
+  hideNav?: boolean;
 }
 
 const {
@@ -33,6 +35,7 @@ const {
   ogImage = "/images/absurd-logo.png",
   activeTab,
   darkMode = false,
+  hideNav = false,
 } = Astro.props;
 
 const fullTitle = `${title} | Absurd Industries`;
@@ -79,9 +82,9 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 
     <slot />
 
-    <Footer />
-    <BottomBar activeTab={activeTab} client:load />
-    <DesktopNav activeTab={activeTab} client:load />
+    {!hideNav && <Footer />}
+    {!hideNav && <BottomBar activeTab={activeTab} client:load />}
+    {!hideNav && <DesktopNav activeTab={activeTab} client:load />}
     {isDev && (
       <DebugPanel
         route={Astro.url.pathname}
