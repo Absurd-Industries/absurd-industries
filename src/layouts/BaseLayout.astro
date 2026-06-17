@@ -5,6 +5,7 @@
  * Every page wraps its content in this layout and only needs to provide the unique body.
  */
 
+import { ClientRouter } from "astro:transitions";
 import SvgFilters from "../components/SvgFilters.astro";
 import Footer from "../components/Footer.astro";
 import BottomBar from "../components/BottomBar.vue";
@@ -75,6 +76,8 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
     <!-- Icons -->
     <script src="https://kit.fontawesome.com/e0c6d65845.js" crossorigin="anonymous"></script>
     <script is:inline src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+
+    <ClientRouter />
   </head>
 
   <body class="font-sans text-ink min-h-screen antialiased">

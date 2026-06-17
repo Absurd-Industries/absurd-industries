@@ -699,26 +699,26 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
   </section>
 </BaseLayout>
 
-<script is:inline>
-document.addEventListener('DOMContentLoaded', () => {
-  const pills = document.querySelectorAll('.profile-nav-pill');
-  const sections = ['about', 'setup', 'projects', 'wall', 'badges'];
+<script is:inline data-astro-rerun>
+(function() {
+  var pills = document.querySelectorAll('.profile-nav-pill');
+  var sections = ['about', 'setup', 'projects', 'wall', 'badges'];
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
       if (entry.isIntersecting) {
-        pills.forEach(p => p.classList.remove('active'));
-        const pill = document.querySelector(`.profile-nav-pill[href="#${entry.target.id}"]`);
+        pills.forEach(function(p) { p.classList.remove('active'); });
+        var pill = document.querySelector('.profile-nav-pill[href="#' + entry.target.id + '"]');
         if (pill) pill.classList.add('active');
       }
     });
   }, { threshold: 0.2, rootMargin: '-60px 0px -60% 0px' });
 
-  sections.forEach(id => {
-    const el = document.getElementById(id);
+  sections.forEach(function(id) {
+    var el = document.getElementById(id);
     if (el) observer.observe(el);
   });
-});
+})();
 </script>
 
 <style>

@@ -47,6 +47,39 @@
 
 
 /* -----------------------------------------------------------------------
+   1b. VIEW TRANSITIONS — "Card Lift & Place"
+   Old page lifts off the table (scale down + fade), new page is placed
+   down (scale up + fade in). Keeps the "shuffling cards on a workbench"
+   feel. Respects reduced-motion.
+   ----------------------------------------------------------------------- */
+
+@keyframes card-lift {
+  from { opacity: 1; transform: scale(1) translateY(0); }
+  to   { opacity: 0; transform: scale(0.97) translateY(6px); }
+}
+
+@keyframes card-place {
+  from { opacity: 0; transform: scale(0.97) translateY(-6px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+::view-transition-old(root) {
+  animation: card-lift 0.2s cubic-bezier(0.4, 0, 0.6, 1) both;
+}
+
+::view-transition-new(root) {
+  animation: card-place 0.25s cubic-bezier(0.2, 0, 0, 1) 0.08s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0s;
+  }
+}
+
+
+/* -----------------------------------------------------------------------
    2. PAPER-CUT CARDS
    .card, .card-bg, .card-bg-dark, .card-content, .card-hover, .hero-bg
    Alternating SVG-filter seeds via .card-grid nth-child.
