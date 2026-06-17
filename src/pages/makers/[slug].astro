@@ -427,16 +427,25 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
                   <a
                     href="/campaigns"
                     class:list={[
-                      "block p-4 rounded-lg hover:bg-kraft-light/40 transition-colors no-underline text-ink group",
-                      idx === 0 && "bg-kraft-light/30 border border-stamp/15",
+                      "project-card group",
+                      idx === 0 && "project-card--featured",
                     ]}
                   >
+                    {idx === 0 && (
+                      <div class="project-featured-label">
+                        <i class="ph-bold ph-star" style="font-size:0.55rem;"></i>
+                        Featured
+                      </div>
+                    )}
                     <div class="flex items-center gap-3 mb-2">
                       <div class="w-10 h-10 rounded-lg bg-kraft-light flex items-center justify-center flex-shrink-0">
                         <i class={`ph-bold ph-${project.icon} text-lg text-stencil group-hover:text-stamp transition-colors`}></i>
                       </div>
                       <div class="flex-1 min-w-0">
                         <h3 class="text-sm font-semibold truncate group-hover:text-stamp transition-colors">{project.name}</h3>
+                        <span class:list={["text-[0.6rem] font-semibold uppercase tracking-wider", project.status === "Live" ? "text-stamp" : project.status === "Completed" ? "text-funded" : "text-stencil"]}>
+                          {project.status}
+                        </span>
                       </div>
                       <i class="ph-bold ph-caret-right text-xs text-ink-faint/40 flex-shrink-0"></i>
                     </div>
@@ -495,7 +504,7 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
                   {comments.map((c) => (
                     <div class="comment-entry">
                       <div class="flex items-start gap-3">
-                        <div class="w-8 h-8 rounded-full bg-kraft-light flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div class="w-8 h-8 bg-kraft-light flex items-center justify-center flex-shrink-0 mt-0.5 oct-sm">
                           <i class="ph-bold ph-user text-xs text-ink-faint"></i>
                         </div>
                         <div class="flex-1">
@@ -513,7 +522,7 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
                 <!-- Comment form placeholder -->
                 <div class="border-t border-ink/5 pt-4">
                   <div class="flex items-start gap-3">
-                    <div class="w-8 h-8 rounded-full bg-kraft flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <div class="w-8 h-8 bg-kraft flex items-center justify-center flex-shrink-0 mt-0.5 oct-sm">
                       <i class="ph-bold ph-user text-xs text-ink-faint"></i>
                     </div>
                     <div class="flex-1">
@@ -927,5 +936,47 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
     width: 1rem;
     height: 1rem;
     flex-shrink: 0;
+  }
+
+  /* Project cards with clear clickable boundaries */
+  .project-card {
+    display: block;
+    padding: 1rem 1.25rem;
+    border-radius: 0.75rem;
+    border: 1.5px solid rgba(26, 26, 26, 0.1);
+    background: transparent;
+    transition: all 0.15s;
+    text-decoration: none;
+    color: #1A1A1A;
+    position: relative;
+  }
+  .project-card:hover {
+    border-color: rgba(26, 26, 26, 0.25);
+    background: rgba(250, 243, 232, 0.4);
+  }
+  .project-card--featured {
+    border-color: #D94800;
+    border-width: 2px;
+    background: rgba(217, 72, 0, 0.03);
+  }
+  .project-card--featured:hover {
+    border-color: #FF5900;
+    background: rgba(217, 72, 0, 0.06);
+  }
+  .project-featured-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.55rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #D94800;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Octagonal avatar helper */
+  .oct-sm {
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
   }
 </style>

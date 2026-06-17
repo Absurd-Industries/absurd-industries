@@ -488,14 +488,14 @@ function getInitial(name: string): string {
 .table-avatar {
   width: 36px;
   height: 36px;
-  border-radius: 50%;
+  clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
   object-fit: cover;
   flex-shrink: 0;
 }
 .table-avatar-fallback {
   width: 36px;
   height: 36px;
-  border-radius: 50%;
+  clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
   display: flex;
   align-items: center;
   justify-content: center;

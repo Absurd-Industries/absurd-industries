@@ -223,8 +223,8 @@ function statusTagClass(status: string): string {
             <!-- Maker info -->
             <div class="flex items-center gap-2 mb-4">
               <div
-                class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-paper"
-                :style="{ background: campaign.avatarColor }"
+                class="w-6 h-6 flex items-center justify-center text-xs font-bold text-paper"
+                :style="{ background: campaign.avatarColor, clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)' }"
               >
                 {{ campaign.makerName.charAt(0) }}
               </div>

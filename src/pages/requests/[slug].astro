@@ -461,7 +461,7 @@ const relatedRequests = requests
             <div class="mb-6">
               <div class="flex gap-3">
                 <div
-                  class="w-8 h-8 rounded-full bg-kraft-dark flex items-center justify-center text-xs font-bold text-paper flex-shrink-0 mt-0.5"
+                  class="w-8 h-8 flex items-center justify-center text-xs font-bold text-paper flex-shrink-0 mt-0.5 oct-sm" style="background: #6B5B4A;"
                 >
                   <i class="ph-bold ph-user text-xs"></i>
                 </div>
@@ -492,7 +492,7 @@ const relatedRequests = requests
                   <div class="comment-entry">
                     <div class="flex gap-3">
                       <div
-                        class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-paper flex-shrink-0"
+                        class="w-8 h-8 flex items-center justify-center text-xs font-bold text-paper flex-shrink-0 oct-sm"
                         style={`background: ${comment.color}`}
                       >
                         {comment.initials}
@@ -528,7 +528,7 @@ const relatedRequests = requests
                               <div class="comment-reply comment-entry">
                                 <div class="flex gap-3">
                                   <div
-                                    class="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold text-paper flex-shrink-0"
+                                    class="w-7 h-7 flex items-center justify-center text-[10px] font-bold text-paper flex-shrink-0 oct-sm"
                                     style={`background: ${reply.color}`}
                                   >
                                     {reply.initials}
@@ -703,7 +703,7 @@ const relatedRequests = requests
                 topContributors.map((c) => (
                   <div class="contributor-row">
                     <div
-                      class="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold text-paper flex-shrink-0"
+                      class="w-7 h-7 flex items-center justify-center text-[10px] font-bold text-paper flex-shrink-0 oct-sm"
                       style={`background: ${c.color}`}
                     >
                       {c.initials}
@@ -865,6 +865,10 @@ const relatedRequests = requests
     align-items: center;
     gap: 0.75rem;
     padding: 0.5rem 0;
+  }
+
+  .oct-sm {
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
   }
 </style>
 

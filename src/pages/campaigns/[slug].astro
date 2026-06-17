@@ -212,16 +212,6 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
 >
   <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-8 pb-24 md:pt-12 md:pb-28">
 
-    <div class="flex items-center justify-between mb-6">
-      <a href="/campaigns" class="back-btn inline-flex">
-        <i class="ph-bold ph-arrow-left"></i>
-        Campaigns
-      </a>
-      <button class="share-float-btn" title="Copy link">
-        <i class="ph-bold ph-share-network"></i>
-      </button>
-    </div>
-
     <div class="flex flex-col lg:flex-row gap-6">
 
       <!-- ===== Main Column ===== -->
@@ -229,19 +219,27 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
 
         <Card>
 
-            <!-- Hero media — full-bleed, no padding -->
+            <!-- Hero media — full-bleed with overlaid nav buttons -->
             <div class="campaign-section campaign-section--hero">
-              {campaign.gallery && campaign.gallery.length > 0 ? (
-                <GalleryViewer images={campaign.gallery} alt={campaign.title} client:visible />
-              ) : campaign.image ? (
-                <div class="h-48 sm:h-64 overflow-hidden" style="border-radius: 0.875rem 0.875rem 0 0;">
-                  <img src={campaign.image} alt={campaign.title} class="w-full h-full object-cover" />
-                </div>
-              ) : (
-                <div class="h-48 sm:h-64 bg-kraft-light flex items-center justify-center" style="border-radius: 0.875rem 0.875rem 0 0;">
-                  <i class:list={[campaign.icon, "text-7xl sm:text-8xl text-stencil opacity-40"]}></i>
-                </div>
-              )}
+              <div class="hero-media-wrap">
+                {campaign.gallery && campaign.gallery.length > 0 ? (
+                  <GalleryViewer images={campaign.gallery} alt={campaign.title} client:visible />
+                ) : campaign.image ? (
+                  <div class="h-48 sm:h-64 overflow-hidden" style="border-radius: 0.875rem 0.875rem 0 0;">
+                    <img src={campaign.image} alt={campaign.title} class="w-full h-full object-cover" />
+                  </div>
+                ) : (
+                  <div class="h-48 sm:h-64 bg-kraft-light flex items-center justify-center" style="border-radius: 0.875rem 0.875rem 0 0;">
+                    <i class:list={[campaign.icon, "text-7xl sm:text-8xl text-stencil opacity-40"]}></i>
+                  </div>
+                )}
+                <a href="/campaigns" class="hero-overlay-btn hero-overlay-btn--back" title="Back to campaigns">
+                  <i class="ph-bold ph-arrow-left"></i>
+                </a>
+                <button class="hero-overlay-btn hero-overlay-btn--share share-float-btn" title="Copy link">
+                  <i class="ph-bold ph-share-network"></i>
+                </button>
+              </div>
             </div>
 
             <!-- Title + tags + maker info -->
@@ -553,7 +551,7 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
                 <!-- Comment composer placeholder -->
                 <div class="mb-6 mt-4">
                   <div class="flex gap-3">
-                    <div class="w-8 h-8 rounded-full bg-kraft-dark flex items-center justify-center text-xs font-bold text-paper flex-shrink-0 mt-0.5">
+                    <div class="w-8 h-8 flex items-center justify-center text-xs font-bold text-paper flex-shrink-0 mt-0.5 oct-sm" style="background: #6B5B4A;">
                       <i class="ph-bold ph-user text-xs"></i>
                     </div>
                     <div class="flex-1">
@@ -578,7 +576,7 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
                     <div class="comment-entry">
                       <div class="flex gap-3">
                         <div
-                          class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-paper flex-shrink-0"
+                          class="w-8 h-8 flex items-center justify-center text-xs font-bold text-paper flex-shrink-0 oct-sm"
                           style={`background: ${comment.color}`}
                         >
                           {comment.initials}
@@ -609,7 +607,7 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
                                 <div class="comment-reply comment-entry">
                                   <div class="flex gap-3">
                                     <div
-                                      class="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold text-paper flex-shrink-0"
+                                      class="w-7 h-7 flex items-center justify-center text-[10px] font-bold text-paper flex-shrink-0 oct-sm"
                                       style={`background: ${reply.color}`}
                                     >
                                       {reply.initials}
@@ -733,7 +731,7 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
           <div class="p-5">
             <div class="flex items-center gap-3 mb-3">
               <div
-                class="w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold text-paper flex-shrink-0"
+                class="w-12 h-12 flex items-center justify-center text-sm font-bold text-paper flex-shrink-0 oct-sm"
                 style={`background: ${campaign.avatarColor}`}
               >
                 {campaign.makerName.split(" ").map((w) => w[0]).join("")}
@@ -756,14 +754,28 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
   <div class="float-pill" id="campaign-float">
     <!-- Expanded panel (tiers) -->
     <div class="float-pill-panel" id="float-tiers">
+      <div class="float-panel-header">
+        <i class="ph-bold ph-heart" style="font-size:0.9rem; color:#FF5900;"></i>
+        <span class="font-serif font-bold text-sm" style="color: #FAF3E8;">Choose a tier</span>
+      </div>
       {isShowcase && rewardTiers.map((tier) => (
         <button class="float-tier-option" data-tier-name={tier.name} data-tier-price={tier.price}>
-          <div class="flex items-center justify-between mb-1">
-            <span class="font-serif font-bold text-sm">{tier.name}</span>
-            <span class="text-xs font-bold" style="color: #FAF3E8;">{tier.price}</span>
+          <div class="float-tier-row">
+            <div class="float-tier-icon">
+              <i class="ph-bold ph-package"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between">
+                <span class="font-serif font-bold text-sm" style="color: #FAF3E8;">{tier.name}</span>
+                <span class="font-bold text-xs" style="color: #FF5900;">{tier.price}</span>
+              </div>
+              <p class="text-xs leading-snug mt-0.5" style="color: rgba(250,243,232,0.6);">{tier.perks[0]}</p>
+              <div class="float-tier-progress">
+                <div class="float-tier-progress-fill" style={`width: ${(tier.claimed / tier.total) * 100}%`}></div>
+              </div>
+              <div class="text-[0.6rem]" style="color: rgba(250,243,232,0.4);">{tier.claimed} of {tier.total} claimed</div>
+            </div>
           </div>
-          <p class="text-xs leading-snug" style="color: rgba(250,243,232,0.6);">{tier.perks[0]}</p>
-          <div class="text-[0.6rem] mt-1" style="color: rgba(250,243,232,0.4);">{tier.claimed} of {tier.total} claimed</div>
         </button>
       ))}
     </div>
@@ -777,6 +789,7 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
         <div class="float-pill-cta">
           <i class="ph-bold ph-heart" style="font-size:0.8rem;"></i>
           <span>Back This Project</span>
+          <i class="ph-bold ph-caret-up float-pill-chevron" style="font-size:0.65rem;"></i>
         </div>
       </button>
     )}
@@ -924,43 +937,82 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
   .float-pill-btn:hover .float-pill-cta--funded {
     background: rgba(250, 243, 232, 0.15);
   }
+  /* Float pill chevron indicator */
+  .float-pill-chevron {
+    transition: transform 0.25s;
+    margin-left: 2px;
+  }
+  .float-pill-btn.open .float-pill-chevron {
+    transform: rotate(180deg);
+  }
+
   /* Expanded tier panel */
   .float-pill-panel {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s cubic-bezier(0.2, 0, 0, 1), padding 0.3s, margin 0.3s;
-    background: rgba(26, 26, 26, 0.92);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    transition: max-height 0.35s cubic-bezier(0.2, 0, 0, 1), padding 0.35s, margin 0.35s, opacity 0.25s;
+    background: rgba(26, 26, 26, 0.94);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-radius: 0.875rem;
     margin-bottom: 0;
-    padding: 0 1rem;
+    padding: 0;
+    opacity: 0;
   }
   .float-pill-panel.expanded {
-    max-height: 400px;
-    padding: 1rem 1.25rem;
-    margin-bottom: 0.5rem;
-    box-shadow: 0 4px 20px rgba(26, 26, 26, 0.25);
+    max-height: 450px;
+    padding: 0;
+    margin-bottom: 0.625rem;
+    box-shadow: 0 8px 32px rgba(26, 26, 26, 0.35);
+    opacity: 1;
+  }
+  .float-panel-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1rem 0.5rem;
+    border-bottom: 1px solid rgba(250, 243, 232, 0.08);
   }
 
-  .share-float-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 0.5rem;
-    border: 1.5px solid rgba(26, 26, 26, 0.12);
-    background: transparent;
-    color: #4A3D2F;
+  /* Hero overlay navigation buttons */
+  .hero-media-wrap {
+    position: relative;
+  }
+  .hero-overlay-btn {
+    position: absolute;
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(26, 26, 26, 0.55);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #FAF3E8;
+    border: 1.5px solid rgba(250, 243, 232, 0.15);
     cursor: pointer;
     font-size: 1rem;
-    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: all 0.15s;
+    text-decoration: none;
   }
-  .share-float-btn:hover {
-    border-color: #D94800;
-    color: #D94800;
+  .hero-overlay-btn:hover {
+    background: rgba(26, 26, 26, 0.8);
+    border-color: rgba(250, 243, 232, 0.3);
+  }
+  .hero-overlay-btn--back {
+    top: 12px;
+    left: 12px;
+  }
+  .hero-overlay-btn--share {
+    top: 12px;
+    right: 12px;
+  }
+
+  /* Octagonal avatar helper */
+  .oct-sm {
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
   }
 
   /* BOM table */
@@ -1060,21 +1112,50 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
     display: block;
     width: 100%;
     text-align: left;
-    padding: 0.75rem;
-    border-radius: 0.5rem;
-    border: 1.5px solid rgba(250, 243, 232, 0.1);
-    background: rgba(250, 243, 232, 0.05);
+    padding: 0.75rem 1rem;
+    border: none;
+    border-bottom: 1px solid rgba(250, 243, 232, 0.06);
+    border-radius: 0;
+    background: transparent;
     color: #FAF3E8;
     cursor: pointer;
-    transition: border-color 0.15s, background 0.15s;
-    margin-bottom: 0.5rem;
+    transition: background 0.15s;
   }
   .float-tier-option:last-child {
-    margin-bottom: 0;
+    border-bottom: none;
   }
   .float-tier-option:hover {
-    border-color: #D94800;
+    background: rgba(250, 243, 232, 0.06);
+  }
+  .float-tier-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .float-tier-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 0.5rem;
+    background: rgba(255, 89, 0, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #FF5900;
+    font-size: 0.85rem;
+  }
+  .float-tier-progress {
+    height: 3px;
     background: rgba(250, 243, 232, 0.1);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 0.4rem;
+    margin-bottom: 0.25rem;
+  }
+  .float-tier-progress-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: #FF5900;
   }
 
   /* Checkout mock modal */
@@ -1144,18 +1225,9 @@ document.querySelectorAll('.share-float-btn').forEach(function(btn) {
   var tiers = document.getElementById('float-tiers');
   if (!backBtn || !tiers) return;
 
-  var ctaEl = backBtn.querySelector('.float-pill-cta');
-  var origCta = ctaEl ? ctaEl.innerHTML : '';
-
   backBtn.addEventListener('click', function() {
-    tiers.classList.toggle('expanded');
-    if (ctaEl) {
-      if (tiers.classList.contains('expanded')) {
-        ctaEl.innerHTML = '<i class="ph-bold ph-x" style="font-size:0.8rem;"></i><span>Close</span>';
-      } else {
-        ctaEl.innerHTML = origCta;
-      }
-    }
+    var isExpanded = tiers.classList.toggle('expanded');
+    backBtn.classList.toggle('open', isExpanded);
   });
 
   // Tier selection -> checkout modal
@@ -1172,7 +1244,7 @@ document.querySelectorAll('.share-float-btn').forEach(function(btn) {
       modalDesc.textContent = 'This will redirect you to the checkout page for the ' + name + ' tier. Payment processing is coming soon.';
       modal.classList.add('active');
       tiers.classList.remove('expanded');
-      if (ctaEl) ctaEl.innerHTML = origCta;
+      backBtn.classList.remove('open');
     });
   });
 
