@@ -128,19 +128,26 @@ function spotsLeft(event: AbsurdEvent): number | null {
           <span class="event-date-day">{{ formatDay(event.date) }}</span>
         </div>
         <div class="flex-1 min-w-0">
+          <div class="flex flex-wrap items-center gap-2 mb-1">
+            <span class="event-category-tag capitalize">{{ categoryLabel(event.category) }}</span>
+            <span class="event-price-tag" :class="event.priceINR === 0 ? 'price-free' : 'price-paid'">
+              {{ priceDisplay(event) }}
+            </span>
+            <span v-if="spotsLeft(event) != null && spotsLeft(event)! > 0" class="text-xs font-semibold text-stamp">
+              {{ spotsLeft(event) }} spots left
+            </span>
+          </div>
           <h3 class="font-serif font-bold text-base leading-snug text-ink mb-0.5">
             {{ event.title }}
           </h3>
-          <p class="text-sm text-stencil mb-1.5">{{ event.time }}</p>
-          <div class="flex flex-wrap items-center gap-2 text-xs text-stencil">
+          <div class="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-sm text-stencil mt-0.5">
             <span class="flex items-center gap-1">
-              <i class="ph-bold ph-map-pin" style="font-size:0.6rem;"></i>
-              {{ event.venue }}
+              <i class="ph-bold ph-clock" style="font-size:0.65rem;"></i>
+              {{ event.time }}
             </span>
-            <span>&middot;</span>
-            <span class="capitalize">{{ categoryLabel(event.category) }}</span>
-            <span class="event-price-tag" :class="event.priceINR === 0 ? 'price-free' : 'price-paid'">
-              {{ priceDisplay(event) }}
+            <span class="flex items-center gap-1">
+              <i class="ph-bold ph-map-pin" style="font-size:0.65rem;"></i>
+              {{ event.venue }}
             </span>
           </div>
           <p class="text-xs text-ink-faint leading-relaxed mt-1.5 line-clamp-2">
@@ -150,9 +157,6 @@ function spotsLeft(event: AbsurdEvent): number | null {
             <span v-if="event.attendees > 0" class="text-xs text-stencil flex items-center gap-1">
               <i class="ph-bold ph-users" style="font-size:0.65rem;"></i>
               {{ event.attendees }} attending
-            </span>
-            <span v-if="spotsLeft(event) != null && spotsLeft(event)! > 0" class="text-xs font-semibold text-stamp">
-              {{ spotsLeft(event) }} spots left
             </span>
             <span class="text-xs text-stencil">
               Hosted by <strong class="text-ink">{{ event.hostName }}</strong>
@@ -194,26 +198,36 @@ function spotsLeft(event: AbsurdEvent): number | null {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 52px;
-  min-width: 52px;
-  height: 52px;
-  border-radius: 0.625rem;
+  width: 64px;
+  min-width: 64px;
+  height: 68px;
+  border-radius: 0.75rem;
   background: rgba(255, 89, 0, 0.08);
   flex-shrink: 0;
 }
 .event-date-month {
-  font-size: 0.55rem;
+  font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
   color: #FF5900;
   line-height: 1;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
 }
 .event-date-day {
-  font-size: 1.25rem;
+  font-size: 1.6rem;
   font-weight: 900;
   color: #1A1A1A;
   line-height: 1;
+}
+
+.event-category-tag {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: #6B5B4A;
+  background: rgba(26, 26, 26, 0.05);
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
 }
 
 .event-price-tag {
