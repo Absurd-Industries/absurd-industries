@@ -14,6 +14,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Card from "../../components/Card.astro";
 import Tag from "../../components/Tag.astro";
 import ProgressBar from "../../components/ProgressBar.astro";
+import GalleryViewer from "../../components/GalleryViewer.vue";
 import { campaigns } from "../../data/campaigns";
 import type { Campaign } from "../../types";
 
@@ -42,7 +43,7 @@ const isWaterPurifier = campaign.slug === "open-source-water-purifier";
 // let's check for soilpulse (which has bornFromRequest) or lampy as the
 // showcase. We'll use the first live campaign with bornFromRequest,
 // or fall back to the first campaign.
-const isShowcase = campaign.slug === "soilpulse-open-moisture-sensor";
+const isShowcase = campaign.slug === "soilpulse-open-moisture-sensor" || campaign.slug === "supersaber-open-lightsaber-kit";
 
 const bom = [
   { name: "Ceramic filter element", qty: "1", source: "Potters for Peace / local kiln", cost: "₹295" },
@@ -200,24 +201,22 @@ const comments = [
 
 const statusLabel = campaign.status === "live" ? "Live" : campaign.status === "funded" ? "Funded" : "Coming Soon";
 const statusVariant = campaign.status === "live" ? "stamp" : campaign.status === "funded" ? "funded" : "default";
+
+const detailContextNav = { backHref: "/campaigns", backLabel: "Campaigns", items: [] as { label: string; value: string; icon: string }[] };
 ---
 
 <BaseLayout
   title={campaign.title}
   description={campaign.tagline}
   activeTab="campaigns"
+  contextNav={detailContextNav}
 >
   <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-8 pb-6 md:pt-12 md:pb-10">
 
-    <!-- Breadcrumb -->
-    <nav class="text-sm mb-6 flex items-center gap-2 breadcrumb">
-      <a href="/campaigns" class="text-ink-faint font-medium hover:text-stamp transition-colors" style="text-decoration:none;">
-        <i class="ph-bold ph-rocket-launch" style="font-size:0.75rem;"></i>
-        Campaigns
-      </a>
-      <span class="text-ink-faint/40">/</span>
-      <span class="text-ink font-medium">{campaign.title}</span>
-    </nav>
+    <a href="/campaigns" class="back-btn mb-6 inline-flex">
+      <i class="ph-bold ph-arrow-left"></i>
+      Campaigns
+    </a>
 
     <div class="flex flex-col lg:flex-row gap-6">
 
@@ -226,9 +225,17 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
 
         <!-- Hero image area -->
         <Card class="mb-5">
-          <div class="h-48 sm:h-64 bg-kraft-light flex items-center justify-center" style="border-radius: 0.875rem;">
-            <i class:list={[campaign.icon, "text-7xl sm:text-8xl text-stencil opacity-40"]}></i>
-          </div>
+          {campaign.gallery && campaign.gallery.length > 0 ? (
+            <GalleryViewer images={campaign.gallery} alt={campaign.title} client:visible />
+          ) : campaign.image ? (
+            <div class="h-48 sm:h-64 overflow-hidden" style="border-radius: 0.875rem;">
+              <img src={campaign.image} alt={campaign.title} class="w-full h-full object-cover" />
+            </div>
+          ) : (
+            <div class="h-48 sm:h-64 bg-kraft-light flex items-center justify-center" style="border-radius: 0.875rem;">
+              <i class:list={[campaign.icon, "text-7xl sm:text-8xl text-stencil opacity-40"]}></i>
+            </div>
+          )}
         </Card>
 
         <!-- Title section -->
@@ -304,6 +311,83 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
             </div>
           </div>
         </Card>
+
+        {/* Rich description */}
+        {campaign.richDescription && (
+          <Card class="mb-5">
+            <div class="p-5 sm:p-7">
+              <h2 class="font-serif font-bold text-lg mb-3">
+                <i class="ph-duotone ph-article mr-2" style="font-size:1rem;"></i>
+                About this project
+              </h2>
+              <div class="text-sm text-ink leading-relaxed whitespace-pre-line">{campaign.richDescription}</div>
+            </div>
+          </Card>
+        )}
+
+        {/* Video embed */}
+        {campaign.videoUrl && (
+          <Card class="mb-5">
+            <div class="p-5 sm:p-7">
+              <h2 class="font-serif font-bold text-lg mb-3">
+                <i class="ph-duotone ph-video-camera mr-2" style="font-size:1rem;"></i>
+                Demo Video
+              </h2>
+              <div class="aspect-video rounded-lg overflow-hidden">
+                <iframe
+                  src={campaign.videoUrl}
+                  title={`${campaign.title} demo video`}
+                  class="w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+              </div>
+            </div>
+          </Card>
+        )}
+
+        {/* 3D model viewer */}
+        {campaign.modelUrl && (
+          <Card class="mb-5">
+            <div class="p-5 sm:p-7">
+              <h2 class="font-serif font-bold text-lg mb-3">
+                <i class="ph-duotone ph-cube mr-2" style="font-size:1rem;"></i>
+                3D Model
+              </h2>
+              <div class="rounded-lg overflow-hidden" style="height: 400px; background: #F5F0EB;">
+                <model-viewer
+                  src={campaign.modelUrl}
+                  alt={`${campaign.title} 3D model`}
+                  camera-controls
+                  auto-rotate
+                  shadow-intensity="1"
+                  style="width: 100%; height: 100%;"
+                ></model-viewer>
+              </div>
+              <p class="text-xs text-stencil mt-2">Drag to rotate, scroll to zoom, pinch on mobile</p>
+            </div>
+          </Card>
+        )}
+
+        {/* PCB viewer */}
+        {campaign.pcbViewerUrl && (
+          <Card class="mb-5">
+            <div class="p-5 sm:p-7">
+              <h2 class="font-serif font-bold text-lg mb-3">
+                <i class="ph-duotone ph-circuit-board mr-2" style="font-size:1rem;"></i>
+                PCB Design
+              </h2>
+              <div class="rounded-lg overflow-hidden" style="height: 400px; border: 1px solid rgba(26,26,26,0.08);">
+                <iframe
+                  src={campaign.pcbViewerUrl}
+                  title={`${campaign.title} PCB design`}
+                  class="w-full h-full"
+                  style="border: none;"
+                ></iframe>
+              </div>
+            </div>
+          </Card>
+        )}
 
         <!-- BOM Table (showcase only) -->
         {isShowcase && (
@@ -469,11 +553,14 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
                   <div class="flex-1">
                     <textarea
                       class="comment-textarea"
-                      placeholder="Ask a question, share feedback, or discuss this project..."
-                      rows="3"
+                      placeholder="Comments coming soon. Join Discord to discuss this project."
+                      rows="2"
+                      disabled
+                      style="opacity: 0.5; cursor: not-allowed;"
                     ></textarea>
-                    <div class="flex items-center justify-end mt-2">
-                      <button class="btn btn-stamp btn-sm">Post Comment</button>
+                    <div class="flex items-center justify-between mt-2">
+                      <a href="https://discord.gg/DUSUtguG2H" target="_blank" rel="noopener" class="text-xs text-stamp hover:underline">Discuss on Discord</a>
+                      <button class="btn btn-stamp btn-sm" disabled style="opacity: 0.4; cursor: not-allowed;">Post Comment</button>
                     </div>
                   </div>
                 </div>
@@ -500,10 +587,10 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
                         </div>
                         <p class="text-sm leading-relaxed text-ink-light">{comment.content}</p>
                         <div class="flex items-center gap-2 mt-2">
-                          <span class="comment-vote">
+                          <span class="comment-vote" style="cursor: default; opacity: 0.5;" title="Coming soon">
                             <i class="ph-bold ph-heart"></i>
                           </span>
-                          <span class="comment-action">
+                          <span class="comment-action" style="cursor: default; opacity: 0.5;" title="Coming soon">
                             <i class="ph-bold ph-chat-circle"></i>
                             Reply
                           </span>
@@ -531,7 +618,7 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
                                     </div>
                                     <p class="text-sm leading-relaxed text-ink-light">{reply.content}</p>
                                     <div class="flex items-center gap-2 mt-1.5">
-                                      <span class="comment-vote">
+                                      <span class="comment-vote" style="cursor: default; opacity: 0.5;" title="Coming soon">
                                         <i class="ph-bold ph-heart"></i>
                                       </span>
                                     </div>
@@ -616,19 +703,19 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
             </div>
 
             {campaign.status === "live" && (
-              <button class="btn btn-stamp w-full">
+              <a href="https://discord.gg/DUSUtguG2H" target="_blank" rel="noopener" class="btn btn-stamp w-full">
                 <i class="ph-bold ph-heart mr-2"></i>Back This Project
-              </button>
+              </a>
             )}
             {campaign.status === "funded" && (
-              <button class="btn w-full" style="background: #2A5F41; color: #FAF3E8;">
+              <div class="btn w-full" style="background: #2A5F41; color: #FAF3E8; cursor: default;">
                 <i class="ph-bold ph-check-circle mr-2"></i>Fully Funded
-              </button>
+              </div>
             )}
             {campaign.status === "coming" && (
-              <button class="btn btn-outline w-full">
+              <a href="https://discord.gg/DUSUtguG2H" target="_blank" rel="noopener" class="btn btn-outline w-full">
                 <i class="ph-bold ph-bell mr-2"></i>Notify Me
-              </button>
+              </a>
             )}
           </div>
         </Card>
@@ -661,7 +748,7 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
                 <strong class="text-ink">{tier.claimed} of {tier.total}</strong> claimed
               </div>
 
-              <button class="btn btn-outline btn-sm w-full mt-3">Select This Tier</button>
+              <a href="https://discord.gg/DUSUtguG2H" target="_blank" rel="noopener" class="btn btn-outline btn-sm w-full mt-3">Select This Tier</a>
             </div>
           </Card>
         ))}
@@ -918,3 +1005,24 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
     background: rgba(255, 89, 0, 0.04);
   }
 </style>
+
+<script is:inline>
+// Load model-viewer only if a 3D model viewer is present on this page
+if (document.querySelector('model-viewer')) {
+  const script = document.createElement('script');
+  script.type = 'module';
+  script.src = 'https://ajax.googleapis.com/ajax/libs/model-viewer/4.0/model-viewer.min.js';
+  document.head.appendChild(script);
+}
+
+// Copy link share button
+document.querySelectorAll('.share-btn[title="Copy link"]').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    navigator.clipboard.writeText(window.location.href).then(function() {
+      var icon = btn.querySelector('i');
+      icon.className = 'ph-bold ph-check';
+      setTimeout(function() { icon.className = 'ph-bold ph-link'; }, 1500);
+    });
+  });
+});
+</script>

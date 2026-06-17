@@ -307,23 +307,21 @@ const relatedRequests = requests
     (r) => r.slug !== request.slug && r.category === request.category
   )
   .slice(0, 4);
+
+const detailContextNav = { backHref: "/requests", backLabel: "Requests", items: [] as { label: string; value: string; icon: string }[] };
 ---
 
 <BaseLayout
   title={`${request.title} — Requests`}
   description={`${request.upvotes} people want this built. ${request.description}`}
   activeTab="requests"
+  contextNav={detailContextNav}
 >
   <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-8 pb-6 md:pt-12 md:pb-10">
-    <!-- Breadcrumb -->
-    <nav class="text-sm mb-6 flex items-center gap-2 breadcrumb">
-      <a href="/requests/" class="text-ink-faint font-medium hover:text-stamp transition-colors" style="text-decoration:none;">
-        <i class="ph-bold ph-megaphone" style="font-size:0.75rem;"></i>
-        Requests
-      </a>
-      <span class="text-ink-faint/40">/</span>
-      <span class="text-ink font-medium">{request.title}</span>
-    </nav>
+    <a href="/requests" class="back-btn mb-6 inline-flex">
+      <i class="ph-bold ph-arrow-left"></i>
+      Requests
+    </a>
 
     <div class="flex flex-col lg:flex-row gap-6">
       <!-- ===== Main Column ===== -->
@@ -389,9 +387,9 @@ const relatedRequests = requests
           <div class="p-5 sm:p-7">
             <div class="flex items-center justify-between mb-1">
               <h2 class="font-serif font-bold text-lg">Specifications</h2>
-              <button class="btn btn-ghost btn-sm text-xs">
+              <a href="https://discord.gg/DUSUtguG2H" target="_blank" rel="noopener" class="btn btn-ghost btn-sm text-xs" style="text-decoration:none;">
                 <i class="ph-bold ph-pencil-simple mr-1"></i>Suggest Edit
-              </button>
+              </a>
             </div>
             <p class="text-xs text-ink-faint mb-4">
               <i class="ph-bold ph-users-three mr-1"></i>Community-edited
@@ -509,11 +507,11 @@ const relatedRequests = requests
                           set:html={comment.content}
                         />
                         <div class="flex items-center gap-2 mt-2">
-                          <span class="comment-vote">
+                          <span class="comment-vote" style="cursor: default; opacity: 0.5;" title="Coming soon">
                             <i class="ph-bold ph-heart" />
                             {comment.likes}
                           </span>
-                          <span class="comment-action">
+                          <span class="comment-action" style="cursor: default; opacity: 0.5;" title="Coming soon">
                             <i class="ph-bold ph-chat-circle" />
                             Reply
                           </span>
@@ -545,7 +543,7 @@ const relatedRequests = requests
                                       set:html={reply.content}
                                     />
                                     <div class="flex items-center gap-2 mt-1.5">
-                                      <span class="comment-vote">
+                                      <span class="comment-vote" style="cursor: default; opacity: 0.5;" title="Coming soon">
                                         <i class="ph-bold ph-heart" />
                                         {reply.likes}
                                       </span>
@@ -665,10 +663,10 @@ const relatedRequests = requests
                   If you can build this, claim it and start a campaign. The
                   community will back you.
                 </p>
-                <button class="btn btn-stamp w-full mb-3">
+                <a href="https://discord.gg/DUSUtguG2H" target="_blank" rel="noopener" class="btn btn-stamp w-full mb-3" style="text-decoration:none;">
                   <i class="ph-bold ph-hammer mr-2" />
                   Claim as Maker
-                </button>
+                </a>
               </div>
             </Card>
           )

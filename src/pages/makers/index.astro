@@ -10,21 +10,19 @@ import Card from "../../components/Card.astro";
 import MakerCard from "../../components/MakerCard.astro";
 import MakersListing from "../../components/MakersListing.vue";
 import { makers } from "../../data/makers";
+import { makersContextNav } from "../../data/navigation";
 ---
 
 <BaseLayout
   title="Makers"
   description="Meet the hardware rebels building open-source tools, gadgets, and machines. Absurd Industries maker profiles."
   activeTab="makers"
+  contextNav={makersContextNav}
+  activeFilter="all"
 >
   <!-- Header -->
   <section class="pt-6 pb-8 sm:pt-8 sm:pb-10">
     <div class="max-w-5xl mx-auto px-5 sm:px-6">
-      <nav class="text-sm flex items-center gap-2 mb-4">
-        <a href="/" class="text-ink-faint hover:text-stamp transition-colors" style="text-decoration:none;">Home</a>
-        <span class="text-ink-faint/40">/</span>
-        <span class="text-ink font-medium">Makers</span>
-      </nav>
       <div class="max-w-2xl">
         <h1 class="font-serif font-bold text-3xl sm:text-4xl tracking-tight mb-2">Makers</h1>
         <p class="text-ink text-base sm:text-lg leading-relaxed">

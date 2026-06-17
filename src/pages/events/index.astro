@@ -9,26 +9,24 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import EventsListing from "../../components/EventsListing.vue";
 import { events } from "../../data/events";
+import { eventsContextNav } from "../../data/navigation";
 ---
 
 <BaseLayout
   title="Events"
   description="Bengaluru-first STEAM events — meetups, workshops, hackathons, talks, and conferences for makers, scientists, artists, and engineers."
   activeTab="events"
+  contextNav={eventsContextNav}
+  activeFilter="all"
 >
   <div class="max-w-4xl mx-auto px-4 sm:px-6 pt-6 pb-8 md:pt-8 md:pb-12">
     <!-- Page Header -->
     <div class="mb-6">
-      <nav class="text-sm flex items-center gap-2 mb-4">
-        <a href="/" class="text-ink-faint hover:text-stamp transition-colors" style="text-decoration:none;">Home</a>
-        <span class="text-ink-faint/40">/</span>
-        <span class="text-ink font-medium">Events</span>
-      </nav>
       <h1 class="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-ink mb-2">
         Events
       </h1>
       <p class="text-sm text-ink max-w-lg leading-relaxed">
-        Bengaluru-first STEAM events for makers, scientists, artists, engineers,
+        Bengaluru-first <abbr style="border-bottom: 1px dotted currentColor; cursor: help; text-decoration: none; font-style: normal;" title="Science, Technology, Engineering, Art & Math">STEAM</abbr> events for makers, scientists, artists, engineers,
         and the endlessly curious. Find your people.
       </p>
     </div>

@@ -114,6 +114,31 @@
 
 
 /* -----------------------------------------------------------------------
+   3a. BACK BUTTON — app-style navigation
+   ----------------------------------------------------------------------- */
+
+@layer components {
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #6B5B4A;
+    text-decoration: none;
+    padding: 0.35rem 0;
+    transition: color 0.15s;
+  }
+  .back-btn:hover {
+    color: #FF5900;
+  }
+  .back-btn i {
+    font-size: 0.75rem;
+  }
+}
+
+
+/* -----------------------------------------------------------------------
    3. BUTTONS
    .btn, .btn-primary, .btn-stamp, .btn-outline, .btn-ghost, .btn-sm
    ----------------------------------------------------------------------- */

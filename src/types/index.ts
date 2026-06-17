@@ -67,6 +67,21 @@ export interface Campaign {
 
   /** Path or URL to the campaign cover image. */
   image?: string;
+
+  /** Array of gallery image paths for the campaign detail page. */
+  gallery?: string[];
+
+  /** Embeddable video URL (e.g. YouTube embed link). */
+  videoUrl?: string;
+
+  /** Path or URL to a 3D model file (.glb) for model-viewer. */
+  modelUrl?: string;
+
+  /** URL for an embedded PCB viewer (e.g. KiCanvas). */
+  pcbViewerUrl?: string;
+
+  /** Extended project description with full technical details. */
+  richDescription?: string;
 }
 
 // ---------------------------------------------------------------------------

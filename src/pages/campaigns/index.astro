@@ -8,20 +8,18 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import CampaignsListing from "../../components/CampaignsListing.vue";
 import { campaigns } from "../../data/campaigns";
+import { campaignsContextNav } from "../../data/navigation";
 ---
 
 <BaseLayout
   title="Campaigns"
   description="Back open-source, repairable indie hardware. Every project ships with full source files."
   activeTab="campaigns"
+  contextNav={campaignsContextNav}
+  activeFilter="all"
 >
   <section class="pt-6 pb-6 sm:pt-8 sm:pb-8">
     <div class="max-w-6xl mx-auto px-5 sm:px-6">
-      <nav class="text-sm flex items-center gap-2 mb-4">
-        <a href="/" class="text-ink-faint hover:text-stamp transition-colors" style="text-decoration:none;">Home</a>
-        <span class="text-ink-faint/40">/</span>
-        <span class="text-ink font-medium">Campaigns</span>
-      </nav>
       <h1 class="font-serif font-bold text-3xl sm:text-4xl text-ink mb-2">Campaigns</h1>
       <p class="text-ink text-base sm:text-lg max-w-xl leading-relaxed">
         Back open-source, repairable indie hardware. Every project ships with full source files.

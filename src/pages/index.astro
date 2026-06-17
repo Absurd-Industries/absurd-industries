@@ -1,109 +1,195 @@
 ---
 /**
  * Homepage — the main landing page for Absurd Industries.
- * Crisp manifesto-style pitch, how-it-works flow, explore grid,
- * community CTA, and auto-scrolling Friends of Absurd.
+ * Manifesto-style hero, image-rich how-it-works flow with real project
+ * examples, featured campaigns strip, community CTA, and auto-scrolling
+ * Friends of Absurd marquee.
  */
 
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Card from "../components/Card.astro";
 import Tag from "../components/Tag.astro";
+import ProgressBar from "../components/ProgressBar.astro";
 import { friends } from "../data/friends";
 import { makers } from "../data/makers";
 import { events } from "../data/events";
+import { campaigns } from "../data/campaigns";
+import { requests } from "../data/requests";
 
-const makerCount = makers.length;
-const upcomingEvents = events.filter(e => new Date(e.date) >= new Date()).length;
+const liveCampaigns = campaigns.filter((c) => c.status === "live");
+const featuredCampaigns = liveCampaigns.slice(0, 3);
+const topRequest = [...requests]
+  .filter((r) => r.status === "open")
+  .sort((a, b) => b.upvotes - a.upvotes)[0];
+const showcaseCampaign = liveCampaigns[0]; // Lampy — 142% funded
+const fundedCampaign = campaigns.find((c) => c.status === "funded");
+const nextEvent = events.find((e) => new Date(e.date) >= new Date());
 ---
 
 <BaseLayout title="Open Source STEAM for Makers, Tinkerers & Rebels">
   <!-- Hero — manifesto pitch -->
-  <section class="pt-10 pb-12 md:pt-16 md:pb-20">
+  <section class="pt-10 pb-10 md:pt-16 md:pb-16">
     <div class="max-w-4xl mx-auto px-5 sm:px-6">
-      <p class="text-sm font-semibold uppercase tracking-widest text-stamp mb-4">Bengaluru, India</p>
+      <p class="text-sm font-semibold uppercase tracking-widest text-stamp mb-4 anim-fade-up">Bengaluru, India</p>
 
-      <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl font-black leading-[0.95] tracking-tight mb-6">
+      <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl font-black leading-[0.95] tracking-tight mb-6 anim-fade-up anim-d1">
         We build things<br class="hidden sm:block" /> that don't exist yet.
       </h1>
 
-      <p class="text-base sm:text-lg text-ink max-w-xl mb-8 leading-relaxed">
-        Absurd Industries is an open-source STEAM community. We fund hardware campaigns,
-        connect makers, and turn wild ideas into real, repairable, documented things anyone can build.
+      <p class="text-base sm:text-lg text-ink max-w-xl mb-8 leading-relaxed anim-fade-up anim-d2">
+        Absurd Industries is an open-source <abbr class="steam-abbr" title="Science, Technology, Engineering, Art & Math">STEAM</abbr> community.
+        Find and fund products that solve real problems — or turn your own ideas into campaigns the community backs.
+        Every design ships with full source files.
       </p>
 
-      <div class="flex flex-wrap gap-3">
+      <div class="flex flex-wrap gap-3 anim-fade-up anim-d3">
         <a href="/campaigns" class="btn btn-primary">
-          <i class="ph-bold ph-rocket-launch mr-1.5" style="font-size:0.85rem;"></i>
+          <i class="ph-duotone ph-rocket-launch mr-1.5" style="font-size:0.9rem;"></i>
           Explore Campaigns
         </a>
         <a href="/requests" class="btn btn-outline">
-          <i class="ph-bold ph-megaphone mr-1.5" style="font-size:0.85rem;"></i>
+          <i class="ph-duotone ph-megaphone mr-1.5" style="font-size:0.9rem;"></i>
           Request Something
         </a>
       </div>
     </div>
   </section>
 
-  <!-- How it works — 3-step horizontal flow -->
+  <!-- How it works — 3 image-rich cards with real project examples -->
   <section class="pb-14 md:pb-20">
     <div class="max-w-5xl mx-auto px-5 sm:px-6">
+      <h2 class="font-serif text-2xl sm:text-3xl font-bold mb-6 anim-fade-up">How it works</h2>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
-        {[
-          {
-            step: "01",
-            icon: "ph-bold ph-megaphone",
-            title: "Request",
-            desc: "Describe a product that should exist. The community refines the spec.",
-            href: "/requests",
-          },
-          {
-            step: "02",
-            icon: "ph-bold ph-rocket-launch",
-            title: "Fund",
-            desc: "Back the campaign with real money. Makers build it with full source files.",
-            href: "/campaigns",
-          },
-          {
-            step: "03",
-            icon: "ph-bold ph-package",
-            title: "Build",
-            desc: "Get the finished product — or build it yourself. Every design is open.",
-            href: "/makers",
-          },
-        ].map((item) => (
-          <a href={item.href} class="card card-hover block no-underline text-ink group">
-            <div class="card-bg"></div>
-            <div class="card-content p-6">
-              <div class="flex items-center gap-3 mb-3">
-                <span class="text-xs font-bold text-stamp font-mono">{item.step}</span>
-                <i class={item.icon} style="font-size: 1.25rem; color: #1A1A1A; opacity: 0.6;"></i>
+
+        <!-- Step 1: Request -->
+        <a href="/requests" class="card card-hover block no-underline text-ink group anim-fade-up anim-d1">
+          <div class="card-bg"></div>
+          <div class="card-content">
+            {topRequest && (
+              <div class="h-36 overflow-hidden" style="border-radius: 0.875rem 0.875rem 0 0;">
+                <div class="h-full bg-kraft-light flex items-center justify-center p-4">
+                  <div class="text-center">
+                    <i class="ph-duotone ph-megaphone text-3xl text-stamp mb-2 block"></i>
+                    <p class="text-xs font-semibold text-ink line-clamp-2">{topRequest.title}</p>
+                    <p class="text-xs text-stencil mt-1">
+                      <i class="ph-duotone ph-arrow-fat-up" style="font-size:0.65rem;"></i>
+                      {topRequest.upvotes} upvotes
+                    </p>
+                  </div>
+                </div>
               </div>
-              <h3 class="font-serif font-bold text-lg mb-1.5 group-hover:text-stamp transition-colors">{item.title}</h3>
-              <p class="text-sm text-ink leading-relaxed">{item.desc}</p>
+            )}
+            <div class="p-5">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-xs font-bold text-stamp font-mono">01</span>
+                <span class="text-xs font-semibold uppercase tracking-wider text-stencil">Request</span>
+              </div>
+              <p class="text-sm text-ink leading-relaxed">Describe something that should exist. The community refines the spec together.</p>
             </div>
-          </a>
-        ))}
+          </div>
+        </a>
+
+        <!-- Step 2: Fund -->
+        <a href="/campaigns" class="card card-hover block no-underline text-ink group anim-fade-up anim-d2">
+          <div class="card-bg"></div>
+          <div class="card-content">
+            <div class="h-36 overflow-hidden" style="border-radius: 0.875rem 0.875rem 0 0;">
+              <img
+                src={showcaseCampaign.image}
+                alt={showcaseCampaign.title}
+                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                loading="lazy"
+              />
+            </div>
+            <div class="p-5">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-xs font-bold text-stamp font-mono">02</span>
+                <span class="text-xs font-semibold uppercase tracking-wider text-stencil">Fund</span>
+              </div>
+              <p class="text-sm text-ink leading-relaxed">Back the campaign. Makers build it with open-source files, transparent BOM, and public updates.</p>
+              <div class="mt-3">
+                <ProgressBar percent={showcaseCampaign.percent} hot={showcaseCampaign.percent >= 100} />
+                <p class="text-xs text-funded font-semibold mt-1">{showcaseCampaign.percent}% funded &middot; {showcaseCampaign.backers} backers</p>
+              </div>
+            </div>
+          </div>
+        </a>
+
+        <!-- Step 3: Get it -->
+        <a href="/campaigns" class="card card-hover block no-underline text-ink group anim-fade-up anim-d3">
+          <div class="card-bg"></div>
+          <div class="card-content">
+            <div class="h-36 overflow-hidden" style="border-radius: 0.875rem 0.875rem 0 0;">
+              <img
+                src={fundedCampaign?.image ?? "/images/campaigns/workdesk-ii.jpg"}
+                alt="Funded project"
+                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                loading="lazy"
+              />
+            </div>
+            <div class="p-5">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-xs font-bold text-stamp font-mono">03</span>
+                <span class="text-xs font-semibold uppercase tracking-wider text-stencil">Get it</span>
+              </div>
+              <p class="text-sm text-ink leading-relaxed">Receive the finished product — or build it yourself. Every design is open-source.</p>
+              {fundedCampaign && (
+                <p class="text-xs text-funded font-semibold mt-3">
+                  <i class="ph-duotone ph-seal-check mr-1" style="font-size:0.7rem;"></i>
+                  {fundedCampaign.title} — fully funded
+                </p>
+              )}
+            </div>
+          </div>
+        </a>
       </div>
+
+      <!-- Next event callout -->
+      {nextEvent && (
+        <a href="/events" class="flex items-center gap-3 mt-6 py-3 px-4 rounded-lg no-underline text-ink hover:bg-paper transition-colors anim-fade-up anim-d3" style="border: 1px solid rgba(26,26,26,0.08);">
+          <i class="ph-duotone ph-calendar-dots text-xl text-stamp"></i>
+          <div class="flex-1 min-w-0">
+            <span class="text-xs font-semibold uppercase tracking-wider text-stencil">Next event</span>
+            <p class="text-sm font-medium truncate">{nextEvent.title}</p>
+          </div>
+          <span class="text-xs text-stencil flex-shrink-0">{new Date(nextEvent.date + "T00:00:00").toLocaleDateString("en-IN", { month: "short", day: "numeric" })}</span>
+          <i class="ph-bold ph-arrow-right text-xs text-stencil"></i>
+        </a>
+      )}
     </div>
   </section>
 
-  <!-- Explore the platform — quick links grid -->
+  <!-- Featured campaigns — image-forward strip -->
   <section class="pb-14">
     <div class="max-w-5xl mx-auto px-5 sm:px-6">
-      <h2 class="font-serif text-2xl sm:text-3xl font-bold mb-6">Explore</h2>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 card-grid">
-        {[
-          { title: "Campaigns", desc: "Back open-source hardware", icon: "ph-bold ph-rocket-launch", href: "/campaigns", color: "#FF5900" },
-          { title: "Makers", desc: `${makerCount} builders and counting`, icon: "ph-bold ph-users-three", href: "/makers", color: "#2A5F41" },
-          { title: "Requests", desc: "Ask for what you need", icon: "ph-bold ph-megaphone", href: "/requests", color: "#6B5B4A" },
-          { title: "Events", desc: `${upcomingEvents} upcoming in Bengaluru`, icon: "ph-bold ph-calendar-dots", href: "/events", color: "#CC4700" },
-        ].map((item) => (
-          <a href={item.href} class="card card-hover block no-underline text-ink">
+      <div class="flex items-center justify-between mb-5">
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold anim-fade-up">Live now</h2>
+        <a href="/campaigns" class="btn btn-ghost btn-sm anim-fade-up">
+          All campaigns <i class="ph-bold ph-arrow-right ml-1"></i>
+        </a>
+      </div>
+      <div class="featured-strip">
+        {featuredCampaigns.map((campaign) => (
+          <a href={`/campaigns/${campaign.slug}`} class="card card-hover block no-underline text-ink group featured-card anim-fade-up">
             <div class="card-bg"></div>
-            <div class="card-content p-5">
-              <i class={item.icon} style={`color: ${item.color}; font-size: 1.5rem;`}></i>
-              <h3 class="font-serif font-bold text-base mt-3 mb-1">{item.title}</h3>
-              <p class="text-xs text-ink">{item.desc}</p>
+            <div class="card-content">
+              <div class="h-44 overflow-hidden" style="border-radius: 0.875rem 0.875rem 0 0;">
+                <img
+                  src={campaign.image}
+                  alt={campaign.title}
+                  class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  loading="lazy"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-serif font-bold text-sm mb-1 group-hover:text-stamp transition-colors truncate">{campaign.title}</h3>
+                <p class="text-xs text-stencil mb-3">{campaign.makerName} &middot; {campaign.location}</p>
+                <ProgressBar percent={campaign.percent} hot={campaign.percent >= 100} />
+                <div class="flex items-center justify-between mt-2 text-xs">
+                  <span class="font-semibold text-funded">{campaign.percent}%</span>
+                  <span class="text-stencil">{campaign.backers} backers</span>
+                </div>
+              </div>
             </div>
           </a>
         ))}
@@ -112,13 +198,13 @@ const upcomingEvents = events.filter(e => new Date(e.date) >= new Date()).length
   </section>
 
   <!-- Community CTA -->
-  <section class="pb-12">
+  <section class="pb-12 anim-fade-up">
     <div class="max-w-5xl mx-auto px-5 sm:px-6">
       <Card variant="dark">
         <div class="px-6 py-10 sm:px-10 sm:py-12">
           <div class="flex flex-col sm:flex-row sm:items-center gap-6">
             <div class="flex-1 min-w-0">
-              <h2 class="font-serif font-bold text-2xl sm:text-3xl text-paper tracking-tight mb-2">Join the workshop</h2>
+              <h2 class="font-serif font-bold text-2xl sm:text-3xl text-paper tracking-tight mb-2">Join the Guild</h2>
               <p class="text-sm text-kraft max-w-md leading-relaxed">
                 Chat with makers, get build help, share your projects,
                 and stay in the loop on new campaigns and events.
@@ -140,17 +226,16 @@ const upcomingEvents = events.filter(e => new Date(e.date) >= new Date()).length
   </section>
 
   <!-- Friends of Absurd — auto-scrolling marquee -->
-  <section class="pb-14">
+  <section class="pb-14 overflow-hidden">
     <div class="max-w-5xl mx-auto px-5 sm:px-6">
-      <h2 class="font-serif text-xl font-bold mb-1">Friends of Absurd</h2>
-      <p class="text-sm text-ink max-w-md leading-relaxed mb-5">
-        Communities and companies building the open-source STEAM ecosystem with us.
+      <h2 class="font-serif text-xl font-bold mb-1 anim-fade-up">Friends of Absurd</h2>
+      <p class="text-sm text-ink max-w-md leading-relaxed mb-5 anim-fade-up">
+        Communities and companies building the open-source <abbr class="steam-abbr" title="Science, Technology, Engineering, Art & Math">STEAM</abbr> ecosystem with us.
       </p>
     </div>
     <div class="friends-marquee-wrapper">
       <div class="friends-marquee" aria-label="Partner logos">
-        {/* Duplicate the list for seamless looping */}
-        {[...friends, ...friends].map((friend, i) => (
+        {[...friends, ...friends].map((friend) => (
           <a
             href={friend.url}
             target="_blank"
@@ -172,7 +257,59 @@ const upcomingEvents = events.filter(e => new Date(e.date) >= new Date()).length
   </section>
 </BaseLayout>
 
+<script is:inline>
+// Scroll-triggered entrance animations via Intersection Observer
+document.addEventListener('DOMContentLoaded', () => {
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
+
+  const elements = document.querySelectorAll('.anim-fade-up');
+  if (!elements.length) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('anim-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  elements.forEach((el) => observer.observe(el));
+});
+</script>
+
 <style>
+  /* STEAM abbreviation tooltip */
+  .steam-abbr {
+    border-bottom: 1px dotted currentColor;
+    cursor: help;
+    text-decoration: none;
+    font-style: normal;
+  }
+
+  /* Featured campaigns strip */
+  .featured-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+  @media (max-width: 640px) {
+    .featured-strip {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 0.5rem;
+    }
+    .featured-card {
+      min-width: 260px;
+      scroll-snap-align: start;
+      flex-shrink: 0;
+    }
+  }
+
   /* Auto-scrolling marquee for Friends of Absurd */
   .friends-marquee-wrapper {
     overflow: hidden;
@@ -205,5 +342,28 @@ const upcomingEvents = events.filter(e => new Date(e.date) >= new Date()).length
   @keyframes marquee-scroll {
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
+  }
+
+  /* Scroll-triggered entrance animations */
+  .anim-fade-up {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .anim-fade-up.anim-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .anim-d1 { transition-delay: 0.1s; }
+  .anim-d2 { transition-delay: 0.2s; }
+  .anim-d3 { transition-delay: 0.3s; }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .anim-fade-up {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
   }
 </style>

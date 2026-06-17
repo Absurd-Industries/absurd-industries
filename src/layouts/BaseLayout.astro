@@ -25,6 +25,10 @@ interface Props {
   activeTab?: string;
   /** Enable dark mode (class="dark" on html) — used by inventory */
   darkMode?: boolean;
+  /** Context navigation config — swaps bottom bar tabs for section-specific items */
+  contextNav?: import("../data/navigation").ContextNavConfig;
+  /** Active filter value for context nav pill highlighting */
+  activeFilter?: string;
 }
 
 const {
@@ -33,6 +37,8 @@ const {
   ogImage = "/images/absurd-logo.png",
   activeTab,
   darkMode = false,
+  contextNav,
+  activeFilter,
 } = Astro.props;
 
 const fullTitle = `${title} | Absurd Industries`;
@@ -44,6 +50,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content={darkMode ? "light dark" : "light"} />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
 
@@ -79,7 +86,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
     <slot />
 
     <Footer />
-    <BottomBar activeTab={activeTab} client:load />
+    <BottomBar activeTab={activeTab} contextNav={contextNav} activeFilter={activeFilter} client:load />
     <DesktopNav activeTab={activeTab} client:load />
     {isDev && (
       <DebugPanel
