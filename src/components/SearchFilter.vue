@@ -96,9 +96,9 @@ function toggleCategory(id: string) {
 .filter-pill {
   display: inline-flex;
   align-items: center;
-  padding: 0.35rem 0.85rem;
+  padding: 0.3rem 0.75rem;
   border-radius: 999px;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 600;
   border: 1.5px solid rgba(26, 26, 26, 0.12);
   background: transparent;

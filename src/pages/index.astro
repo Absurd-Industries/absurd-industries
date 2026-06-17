@@ -239,13 +239,19 @@ const upcomingEvents = [...events]
               rel="noopener"
               class="btn btn-stamp flex-shrink-0"
             >
-              <i class="fa-brands fa-discord mr-2" style="font-size:1rem;"></i>
+              <i class="ph-bold ph-discord-logo mr-2" style="font-size:1rem;"></i>
               Join Discord
             </a>
           </div>
         </div>
       </Card>
     </div>
+  </section>
+
+  <!-- Open Source Hardware ethos -->
+  <section class="osh-banner anim-fade-up">
+    <img src="/images/open-source-hardware.png" alt="Open Source Hardware" class="osh-logo" />
+    <p class="osh-text">Open source is about collaborating, not competing.</p>
   </section>
 
   <!-- Friends of Absurd — auto-scrolling marquee -->
@@ -394,6 +400,33 @@ const upcomingEvents = [...events]
   .anim-d1 { transition-delay: 0.1s; }
   .anim-d2 { transition-delay: 0.2s; }
   .anim-d3 { transition-delay: 0.3s; }
+
+  /* Open Source Hardware banner */
+  .osh-banner {
+    background: #1A1A1A;
+    padding: 3rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .osh-logo {
+    height: 6rem;
+    width: auto;
+    margin-bottom: 1.25rem;
+    filter: brightness(0) invert(1);
+    opacity: 0.85;
+  }
+  .osh-text {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: #FAF3E8;
+    opacity: 0.7;
+    max-width: 24rem;
+    line-height: 1.5;
+  }
 
   /* Respect reduced motion */
   @media (prefers-reduced-motion: reduce) {

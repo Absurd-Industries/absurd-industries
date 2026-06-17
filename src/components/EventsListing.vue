@@ -8,6 +8,7 @@
 
 import { ref, computed } from "vue";
 import type { AbsurdEvent } from "../types";
+import { useScrollHideSearch } from "../composables/useScrollHideSearch";
 
 const props = defineProps<{
   events: AbsurdEvent[];
@@ -16,6 +17,10 @@ const props = defineProps<{
 // --- State ---
 const searchText = ref("");
 const activeCity = ref("Bengaluru");
+
+// --- Scroll-hide search bar ---
+const isFilterActive = computed(() => false);
+const { hidden: searchHidden } = useScrollHideSearch(searchText, isFilterActive);
 
 // --- Constants ---
 const cities = ["Bengaluru", "Mumbai", "Pune", "Online"];
@@ -184,24 +189,26 @@ function isToday(dateStr: string): boolean {
     </div>
 
     <!-- Search input -->
-    <div class="relative mb-6">
-      <i
-        class="ph-bold ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2"
-        style="font-size: 0.9rem; color: #6B5B4A"
-      ></i>
-      <input
-        v-model="searchText"
-        type="text"
-        placeholder="Search events, venues, tags..."
-        class="search-input"
-      />
-      <button
-        v-if="searchText"
-        class="absolute right-3 top-1/2 -translate-y-1/2 clear-btn"
-        @click="searchText = ''"
-      >
-        <i class="ph-bold ph-x" style="font-size: 0.8rem"></i>
-      </button>
+    <div class="search-wrap" :class="{ 'search-wrap--hidden': searchHidden }">
+      <div class="relative mb-6">
+        <i
+          class="ph-bold ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2"
+          style="font-size: 0.9rem; color: #6B5B4A"
+        ></i>
+        <input
+          v-model="searchText"
+          type="text"
+          placeholder="Search events, venues, tags..."
+          class="search-input"
+        />
+        <button
+          v-if="searchText"
+          class="absolute right-3 top-1/2 -translate-y-1/2 clear-btn"
+          @click="searchText = ''"
+        >
+          <i class="ph-bold ph-x" style="font-size: 0.8rem"></i>
+        </button>
+      </div>
     </div>
 
     <!-- Calendar planner card -->
@@ -654,5 +661,18 @@ function isToday(dateStr: string): boolean {
   .event-action-btn {
     align-self: flex-end;
   }
+}
+
+/* Search bar - slides up on scroll */
+.search-wrap {
+  transition: opacity 0.2s, max-height 0.25s, margin 0.25s;
+  max-height: 60px;
+  overflow: hidden;
+}
+.search-wrap--hidden {
+  opacity: 0;
+  max-height: 0;
+  margin-bottom: 0;
+  pointer-events: none;
 }
 </style>

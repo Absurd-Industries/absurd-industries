@@ -12,7 +12,7 @@ export const megaMenuItems: NavItem[] = [
   {
     label: "Discord",
     href: "https://discord.gg/DUSUtguG2H",
-    icon: "fa-brands fa-discord",
+    icon: "ph-bold ph-discord-logo",
     isExternal: true,
   },
   {

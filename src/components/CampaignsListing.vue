@@ -5,8 +5,9 @@
  * the Astro page and manages client-side filtering.
  */
 
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import { ref, computed } from "vue";
 import type { Campaign } from "../types";
+import { useScrollHideSearch } from "../composables/useScrollHideSearch";
 
 const props = defineProps<{
   campaigns: Campaign[];
@@ -66,27 +67,8 @@ const filteredCampaigns = computed(() => {
 });
 
 // --- Scroll-hide search bar ---
-const searchHidden = ref(false);
-let lastScrollY = 0;
-let ticking = false;
-
-function onScroll() {
-  if (ticking) return;
-  ticking = true;
-  requestAnimationFrame(() => {
-    const y = window.scrollY;
-    if (y > 80 && y > lastScrollY) {
-      searchHidden.value = true;
-    } else {
-      searchHidden.value = false;
-    }
-    lastScrollY = y;
-    ticking = false;
-  });
-}
-
-onMounted(() => window.addEventListener("scroll", onScroll, { passive: true }));
-onUnmounted(() => window.removeEventListener("scroll", onScroll));
+const isFilterActive = computed(() => activeCategory.value !== "All" || activeStatus.value !== "All");
+const { hidden: searchHidden } = useScrollHideSearch(searchText, isFilterActive);
 
 // --- Helpers ---
 function statusLabel(status: string): string {
