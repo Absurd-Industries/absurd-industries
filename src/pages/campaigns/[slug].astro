@@ -1017,14 +1017,18 @@ if (document.querySelector('model-viewer')) {
   document.head.appendChild(script);
 }
 
-// Share button — copy page URL to clipboard
+// Share button — native share on mobile, clipboard fallback on desktop
 document.querySelectorAll('.share-float-btn').forEach(function(btn) {
   btn.addEventListener('click', function() {
-    navigator.clipboard.writeText(window.location.href).then(function() {
-      var icon = btn.querySelector('i');
-      icon.className = 'ph-bold ph-check';
-      setTimeout(function() { icon.className = 'ph-bold ph-share-network'; }, 1500);
-    });
+    if (navigator.share) {
+      navigator.share({ title: document.title, url: window.location.href }).catch(function() {});
+    } else {
+      navigator.clipboard.writeText(window.location.href).then(function() {
+        var icon = btn.querySelector('i');
+        icon.className = 'ph-bold ph-check';
+        setTimeout(function() { icon.className = 'ph-bold ph-share-network'; }, 1500);
+      });
+    }
   });
 });
 

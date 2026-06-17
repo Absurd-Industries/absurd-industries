@@ -83,43 +83,40 @@ function statusTagClass(status: string): string {
   <div>
     <!-- Sticky search + filters -->
     <div class="sticky-filters">
-      <!-- Search input -->
-      <div class="relative max-w-md mb-3">
-        <i
-          class="ph-bold ph-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-stencil"
-          style="font-size: 0.9rem"
-        ></i>
+      <!-- Search bar -->
+      <div class="search-bar">
+        <i class="ph-bold ph-magnifying-glass search-icon"></i>
         <input
           v-model="searchText"
           type="text"
           placeholder="Search campaigns..."
-          class="w-full pl-10 pr-4 py-2.5 rounded-full border border-ink/10 bg-paper text-sm text-ink placeholder:text-kraft-dark focus:outline-none focus:border-stamp focus:ring-1 focus:ring-stamp/30 transition-colors"
+          class="search-input"
         />
         <button
           v-if="searchText"
-          class="absolute right-3 top-1/2 -translate-y-1/2 text-ink-faint hover:text-ink transition-colors"
+          class="search-clear"
           @click="searchText = ''"
         >
-          <i class="ph-bold ph-x" style="font-size: 0.8rem"></i>
+          <i class="ph-bold ph-x"></i>
         </button>
       </div>
 
-      <!-- Filter pills — both rows combined -->
-      <div class="flex flex-wrap gap-2">
+      <!-- Scrollable filter strip -->
+      <div class="filter-strip">
         <button
           v-for="cat in categories"
           :key="cat"
-          class="filter-pill"
+          class="filter-chip"
           :class="{ active: activeCategory === cat }"
           @click="activeCategory = activeCategory === cat && cat !== 'All' ? 'All' : cat"
         >
           {{ cat }}
         </button>
-        <span class="filter-divider"></span>
+        <span class="filter-dot"></span>
         <button
           v-for="s in statuses"
           :key="s.id"
-          class="status-pill"
+          class="filter-chip filter-chip--status"
           :class="{ active: activeStatus === s.id }"
           @click="activeStatus = activeStatus === s.id && s.id !== 'All' ? 'All' : s.id"
         >
@@ -279,67 +276,119 @@ function statusTagClass(status: string): string {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: #D4B896;
-  padding: 0.75rem 0 0.75rem;
-  margin-bottom: 1.25rem;
+  background: rgba(212, 184, 150, 0.97);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 0.6rem 0 0.5rem;
+  margin-bottom: 1rem;
 }
 
-.filter-divider {
-  width: 1px;
-  height: 1.5rem;
-  background: rgba(26, 26, 26, 0.15);
-  align-self: center;
-  flex-shrink: 0;
+/* Search bar */
+.search-bar {
+  position: relative;
+  margin-bottom: 0.5rem;
 }
-
-/* Category filter pills */
-.filter-pill {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.4rem 1rem;
-  border-radius: 999px;
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  color: #4A3D2F;
+  pointer-events: none;
+}
+.search-input {
+  width: 100%;
+  padding: 0.65rem 2.5rem 0.65rem 2.75rem;
+  border-radius: 0.75rem;
+  border: 1.5px solid rgba(26, 26, 26, 0.1);
+  background: #FAF3E8;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1A1A1A;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-shadow: 0 1px 3px rgba(26, 26, 26, 0.06);
+}
+.search-input::placeholder {
+  color: #B8956A;
+  font-weight: 450;
+}
+.search-input:focus {
+  outline: none;
+  border-color: #D94800;
+  box-shadow: 0 1px 3px rgba(26, 26, 26, 0.06), 0 0 0 3px rgba(217, 72, 0, 0.08);
+}
+.search-clear {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #4A3D2F;
   font-size: 0.8rem;
-  font-weight: 600;
-  border: 1.5px solid rgba(26, 26, 26, 0.15);
-  background: transparent;
-  color: #6b5b4a;
+  padding: 0.25rem;
+  background: none;
+  border: none;
   cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
+  opacity: 0.5;
+  transition: opacity 0.15s;
 }
-.filter-pill:hover {
-  border-color: #1a1a1a;
-  color: #1a1a1a;
-}
-.filter-pill.active {
-  background: #1a1a1a;
-  color: #faf3e8;
-  border-color: #1a1a1a;
+.search-clear:hover {
+  opacity: 1;
 }
 
-/* Status filter pills — slightly different style */
-.status-pill {
+/* Filter strip — horizontally scrollable */
+.filter-strip {
+  display: flex;
+  gap: 0.35rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+.filter-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-chip {
   display: inline-flex;
   align-items: center;
-  padding: 0.35rem 0.85rem;
-  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+  border-radius: 0.5rem;
   font-size: 0.72rem;
   font-weight: 600;
   border: 1.5px solid rgba(26, 26, 26, 0.12);
-  background: transparent;
-  color: #6b5b4a;
+  background: rgba(250, 243, 232, 0.6);
+  color: #4A3D2F;
   cursor: pointer;
   transition: all 0.15s;
   white-space: nowrap;
+  flex-shrink: 0;
 }
-.status-pill:hover {
-  border-color: #1a1a1a;
-  color: #1a1a1a;
+.filter-chip:hover {
+  border-color: #1A1A1A;
+  color: #1A1A1A;
+  background: rgba(250, 243, 232, 0.9);
 }
-.status-pill.active {
-  background: #1a1a1a;
-  color: #faf3e8;
-  border-color: #1a1a1a;
+.filter-chip.active {
+  background: #1A1A1A;
+  color: #FAF3E8;
+  border-color: #1A1A1A;
+}
+
+.filter-chip--status {
+  border-style: dashed;
+}
+.filter-chip--status.active {
+  border-style: solid;
+}
+
+.filter-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(26, 26, 26, 0.2);
+  align-self: center;
+  flex-shrink: 0;
 }
 
 /* Fade in animation for cards */

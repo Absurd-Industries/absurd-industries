@@ -268,10 +268,15 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
 >
   <section class="pt-6 pb-0 sm:pt-8">
     <div class="max-w-5xl mx-auto px-5 sm:px-6">
-      <a href="/makers" class="back-btn">
-        <i class="ph-bold ph-arrow-left"></i>
-        Makers
-      </a>
+      <div class="flex items-center justify-between">
+        <a href="/makers" class="back-btn">
+          <i class="ph-bold ph-arrow-left"></i>
+          Makers
+        </a>
+        <button class="share-float-btn" title="Share" onclick="if(navigator.share){navigator.share({title:document.title,url:window.location.href})}else{navigator.clipboard.writeText(window.location.href).then(function(){var i=event.currentTarget.querySelector('i');i.className='ph-bold ph-check';setTimeout(function(){i.className='ph-bold ph-share-network'},1500)})}">
+          <i class="ph-bold ph-share-network"></i>
+        </button>
+      </div>
     </div>
   </section>
 
@@ -378,58 +383,20 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
         <div class="flex-1 min-w-0">
 
           <Card>
-            <!-- ── WORKSHOP / SETUP ── -->
+            <!-- ── SETUP ── -->
             <div id="setup" class="profile-section profile-section--dark">
                 <div class="text-paper">
-                  <div class="flex items-center gap-2 mb-5">
+                  <div class="flex items-center gap-3 mb-5">
                     <i class="ph-bold ph-wrench text-stamp text-xl"></i>
-                    <h2 class="font-serif font-bold text-xl sm:text-2xl tracking-tight">Workshop / Setup</h2>
-                  </div>
-
-                  <div class="flex flex-col sm:flex-row gap-6">
-                    <!-- Workshop info -->
-                    <div class="flex-1">
-                      <h3 class="font-serif font-semibold text-base text-paper mb-2">{workshop.name}</h3>
-                      <div class="space-y-2 mb-4">
-                        <div class="flex items-center gap-2 text-sm text-kraft">
-                          <i class="ph-bold ph-map-pin text-xs text-stamp"></i>
-                          {workshop.location}
-                        </div>
-                        <div class="flex items-center gap-2 text-sm text-kraft">
-                          <i class="ph-bold ph-ruler text-xs text-kraft-dark"></i>
-                          {workshop.size}
-                        </div>
-                        <div class="flex items-center gap-2 text-sm text-kraft">
-                          <i class="ph-bold ph-clock text-xs text-kraft-dark"></i>
-                          {workshop.hours}
-                        </div>
-                      </div>
-
-                      <button onclick="window.__comingSoon && window.__comingSoon('Lab Inventory', 'Browse the full equipment list and specs for this maker\'s workshop. Inventory pages are coming soon.')" class="flex items-center gap-2 text-sm font-semibold text-stamp hover:underline cursor-pointer bg-transparent border-none p-0">
-                        <i class="ph-bold ph-package text-sm"></i>
-                        View full lab inventory
-                        <i class="ph-bold ph-arrow-right text-xs"></i>
-                      </button>
-                    </div>
-
-                    <!-- Equipment grid -->
-                    <div class="sm:w-56 flex-shrink-0">
-                      <div class="text-xs font-semibold uppercase tracking-wider text-kraft-dark mb-3">Equipment</div>
-                      <div class="grid grid-cols-2 gap-2">
-                        {workshop.equipment.map((e) => (
-                          <div class="flex items-center gap-2 p-2 rounded-lg" style="background:rgba(250,243,232,0.06);">
-                            <div class="equip-icon" style="width:28px; height:28px; font-size:0.85rem;">
-                              <i class={`ph-bold ph-${e.icon}`}></i>
-                            </div>
-                            <span class="text-[0.65rem] text-kraft leading-tight">{e.name}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                    <h2 class="font-serif font-bold text-xl sm:text-2xl tracking-tight">Setup</h2>
+                    <button onclick="window.__comingSoon && window.__comingSoon('Ping for Visit', 'Let this maker know you\'d like to visit their workshop. Visit scheduling launches with the next update.')" class="btn btn-sm" style="background:rgba(250,243,232,0.12); color:#FAF3E8; border:1.5px solid rgba(250,243,232,0.2); font-size:0.7rem; padding:0.3rem 0.7rem;">
+                      <i class="ph-bold ph-bell-ringing mr-1" style="font-size:0.6rem;"></i>
+                      Ping
+                    </button>
                   </div>
 
                   <!-- Workspace photo placeholders -->
-                  <div class="mt-5 pt-5 border-t border-paper/10">
+                  <div class="mb-5">
                     <div class="text-xs font-semibold uppercase tracking-wider text-kraft-dark mb-3">Workspace Photos</div>
                     <div class="grid grid-cols-3 gap-2">
                       {[1, 2, 3].map(() => (
@@ -439,6 +406,27 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
                       ))}
                     </div>
                   </div>
+
+                  <!-- Equipment grid -->
+                  <div class="mb-5 pt-5 border-t border-paper/10">
+                    <div class="text-xs font-semibold uppercase tracking-wider text-kraft-dark mb-3">Equipment</div>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                      {workshop.equipment.map((e) => (
+                        <div class="flex items-center gap-2 p-2 rounded-lg" style="background:rgba(250,243,232,0.06);">
+                          <div class="equip-icon" style="width:28px; height:28px; font-size:0.85rem;">
+                            <i class={`ph-bold ph-${e.icon}`}></i>
+                          </div>
+                          <span class="text-[0.65rem] text-kraft leading-tight">{e.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <button onclick="window.__comingSoon && window.__comingSoon('Lab Inventory', 'Browse the full equipment list and specs for this maker\'s workshop. Inventory pages are coming soon.')" class="flex items-center gap-2 text-sm font-semibold text-stamp hover:underline cursor-pointer bg-transparent border-none p-0">
+                    <i class="ph-bold ph-package text-sm"></i>
+                    View full lab inventory
+                    <i class="ph-bold ph-arrow-right text-xs"></i>
+                  </button>
                 </div>
             </div>
 
@@ -478,11 +466,8 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
             <!-- ── ACTIVITY & WALL ── -->
             <div id="wall" class="profile-section">
               <div class="flex items-center justify-between mb-5">
-                <h2 class="font-serif font-bold text-xl sm:text-2xl tracking-tight">Activity & Wall</h2>
+                <h2 class="font-serif font-bold text-xl sm:text-2xl tracking-tight">Log</h2>
               </div>
-
-              <!-- Recent Activity -->
-              <h3 class="font-serif font-semibold text-base mb-4">Recent Activity</h3>
               <div class="space-y-4">
                 {activities.map((a) => (
                   <div class="flex items-start gap-3">
@@ -589,17 +574,9 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
           <!-- ── QUICK INFO + SKILLS ── -->
           <Card>
             <div class="p-5 sm:p-6">
-              <h3 class="font-serif font-bold text-base mb-4">Profile Info</h3>
-
-              <!-- Currently working on -->
-              <div class="p-3 rounded-lg bg-kraft-light/50 border border-ink/5 mb-5">
-                <div class="text-[0.6rem] font-semibold uppercase tracking-wider text-ink-faint mb-1.5">Currently working on</div>
-                <p class="text-sm text-ink leading-snug font-medium">{showcase.name}</p>
-              </div>
-
               <!-- Links -->
               {externalLinks.length > 0 && (
-                <div class="border-t border-ink/5 pt-4 space-y-2.5">
+                <div class="space-y-2.5">
                   {externalLinks.map((link) => (
                     <a href={link.url} target="_blank" rel="noopener" class="flex items-center gap-2.5 text-sm text-ink hover:text-stamp transition-colors no-underline group">
                       <i class={`${link.iconClass} text-base text-ink-faint group-hover:text-stamp transition-colors`}></i>
@@ -645,7 +622,7 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
         <a href="#about" class="profile-nav-pill">About</a>
         <a href="#setup" class="profile-nav-pill">Setup</a>
         <a href="#projects" class="profile-nav-pill">Projects</a>
-        <a href="#wall" class="profile-nav-pill">Wall</a>
+        <a href="#wall" class="profile-nav-pill">Log</a>
         <a href="#badges" class="profile-nav-pill">Badges</a>
       </div>
     </div>
@@ -918,10 +895,21 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
   .profile-section--dark {
     background: #1A1A1A;
     border-top: none;
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    margin: 0 0.5rem;
+    filter: url(#papercut);
+    padding: 1.5rem;
   }
   @media (min-width: 640px) {
     .profile-section {
       padding: 2rem;
+    }
+    .profile-section--dark {
+      padding: 2rem;
+      margin: 0 0.75rem;
+      border-radius: 0.75rem;
     }
   }
 
@@ -939,23 +927,21 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
     background: rgba(26, 26, 26, 0.1);
   }
 
-  /* Profile section nav — fixed bottom bar replacing main nav */
+  /* Profile section nav — fixed bottom bar matching main bottom bar style */
   .profile-nav {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     z-index: 40;
-    background: rgba(250, 243, 232, 0.95);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-top: 1px solid rgba(26, 26, 26, 0.08);
-    padding: 0.6rem 0;
+    background: #1A1A1A;
+    padding: 0.5rem 0;
+    box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.15);
   }
   .profile-nav-inner {
     display: flex;
-    gap: 0.5rem;
-    justify-content: center;
+    gap: 0;
+    justify-content: space-around;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
@@ -966,23 +952,45 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
   .profile-nav-pill {
     display: inline-flex;
     align-items: center;
-    padding: 0.35rem 0.75rem;
-    border-radius: 9999px;
-    font-size: 0.75rem;
+    justify-content: center;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.7rem;
     font-weight: 600;
-    color: #4A3D2F;
-    background: rgba(250, 243, 232, 0.5);
+    color: rgba(250, 243, 232, 0.5);
     text-decoration: none;
     white-space: nowrap;
-    transition: background 0.15s, color 0.15s;
-    flex-shrink: 0;
+    transition: color 0.15s;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
   }
   .profile-nav-pill:hover {
-    background: #1A1A1A;
     color: #FAF3E8;
+    background: transparent;
   }
   .profile-nav-pill.active {
-    background: #1A1A1A;
     color: #FAF3E8;
+    background: transparent;
+  }
+
+  /* Share button */
+  .share-float-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 0.5rem;
+    border: 1.5px solid rgba(26, 26, 26, 0.12);
+    background: transparent;
+    color: #4A3D2F;
+    cursor: pointer;
+    font-size: 1rem;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .share-float-btn:hover {
+    border-color: #D94800;
+    color: #D94800;
   }
 </style>

@@ -78,17 +78,9 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css" />
 
-    <!-- Icons: FontAwesome (brands via Kit) -->
-    <script src="https://kit.fontawesome.com/e0c6d65845.js" crossorigin="anonymous"></script>
-
-    <!-- Re-init FontAwesome SVG after client-side navigation -->
-    <script is:inline>
-    document.addEventListener('astro:page-load', function() {
-      if (window.FontAwesome && window.FontAwesome.dom) {
-        window.FontAwesome.dom.i2svg();
-      }
-    });
-    </script>
+    <!-- Icons: FontAwesome brands (CSS webfont — no JS, survives view transitions) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/brands.min.css" integrity="sha512-8RxmFOVaKQe/xtg6lbscU9DU0IRhURWEuiI0tXevv+lXbAHfkpamD4VKFQRto9WgfOJDwOZ74c/s9Yesv3VvIQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/fontawesome.min.css" integrity="sha512-d0olNN35C6VLiulAobxYHZiXJmq+vl+BGIgAxQtD5+kqudro/xNMvv2yIHAciGHpExTmF6XHQZFpKBtLW5csw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <ClientRouter />
   </head>

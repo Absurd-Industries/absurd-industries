@@ -316,10 +316,15 @@ const relatedRequests = requests
   activeTab="requests"
 >
   <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-8 pb-6 md:pt-12 md:pb-10">
-    <a href="/requests" class="back-btn mb-6 inline-flex">
-      <i class="ph-bold ph-arrow-left"></i>
-      Requests
-    </a>
+    <div class="flex items-center justify-between mb-6">
+      <a href="/requests" class="back-btn inline-flex">
+        <i class="ph-bold ph-arrow-left"></i>
+        Requests
+      </a>
+      <button class="share-float-btn" title="Share">
+        <i class="ph-bold ph-share-network"></i>
+      </button>
+    </div>
 
     <div class="flex flex-col lg:flex-row gap-6">
       <!-- ===== Main Column ===== -->
@@ -833,6 +838,27 @@ const relatedRequests = requests
     font-size: 1rem;
   }
 
+  /* ── Share button ── */
+  .share-float-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 0.5rem;
+    border: 1.5px solid rgba(26, 26, 26, 0.12);
+    background: transparent;
+    color: #4A3D2F;
+    cursor: pointer;
+    font-size: 1rem;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .share-float-btn:hover {
+    border-color: #D94800;
+    color: #D94800;
+  }
+
   /* ── Contributor row ── */
   .contributor-row {
     display: flex;
@@ -841,3 +867,19 @@ const relatedRequests = requests
     padding: 0.5rem 0;
   }
 </style>
+
+<script is:inline data-astro-rerun>
+document.querySelectorAll('.share-float-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    if (navigator.share) {
+      navigator.share({ title: document.title, url: window.location.href }).catch(function() {});
+    } else {
+      navigator.clipboard.writeText(window.location.href).then(function() {
+        var icon = btn.querySelector('i');
+        icon.className = 'ph-bold ph-check';
+        setTimeout(function() { icon.className = 'ph-bold ph-share-network'; }, 1500);
+      });
+    }
+  });
+});
+</script>
