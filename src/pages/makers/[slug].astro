@@ -258,14 +258,12 @@ const tools = maker.skills.slice(0, 4);
 /** Contribution count (mock) */
 const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
 
-const detailContextNav = { backHref: "/makers", backLabel: "Makers", items: [] as { label: string; value: string; icon: string }[] };
 ---
 
 <BaseLayout
   title={`${maker.name} — ${maker.title}`}
   description={maker.bio ?? `${maker.name} is a ${maker.title} from ${maker.location} on Absurd Industries.`}
   activeTab="makers"
-  contextNav={detailContextNav}
 >
   <section class="pt-6 pb-0 sm:pt-8">
     <div class="max-w-5xl mx-auto px-5 sm:px-6">

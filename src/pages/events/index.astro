@@ -9,15 +9,12 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import EventsListing from "../../components/EventsListing.vue";
 import { events } from "../../data/events";
-import { eventsContextNav } from "../../data/navigation";
 ---
 
 <BaseLayout
   title="Events"
   description="Bengaluru-first STEAM events — meetups, workshops, hackathons, talks, and conferences for makers, scientists, artists, and engineers."
   activeTab="events"
-  contextNav={eventsContextNav}
-  activeFilter="all"
 >
   <div class="max-w-4xl mx-auto px-4 sm:px-6 pt-6 pb-8 md:pt-8 md:pb-12">
     <!-- Page Header -->

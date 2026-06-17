@@ -16,14 +16,21 @@ import { events } from "../data/events";
 import { campaigns } from "../data/campaigns";
 import { requests } from "../data/requests";
 
-const liveCampaigns = campaigns.filter((c) => c.status === "live");
-const featuredCampaigns = liveCampaigns.slice(0, 3);
-const topRequest = [...requests]
+const featuredCampaigns = campaigns.filter((c) => c.status === "live").slice(0, 3);
+
+const featuredRequests = [...requests]
   .filter((r) => r.status === "open")
-  .sort((a, b) => b.upvotes - a.upvotes)[0];
-const showcaseCampaign = liveCampaigns[0]; // Lampy — 142% funded
-const fundedCampaign = campaigns.find((c) => c.status === "funded");
-const nextEvent = events.find((e) => new Date(e.date) >= new Date());
+  .sort((a, b) => b.upvotes - a.upvotes)
+  .slice(0, 3);
+
+const featuredMakers = [...makers]
+  .sort((a, b) => b.backers - a.backers)
+  .slice(0, 3);
+
+const upcomingEvents = [...events]
+  .filter((e) => new Date(e.date) >= new Date())
+  .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+  .slice(0, 3);
 ---
 
 <BaseLayout title="Open Source STEAM for Makers, Tinkerers & Rebels">
@@ -55,144 +62,159 @@ const nextEvent = events.find((e) => new Date(e.date) >= new Date());
     </div>
   </section>
 
-  <!-- How it works — 3 image-rich cards with real project examples -->
+  <!-- Explore — 4 sections with featured microcards -->
   <section class="pb-14 md:pb-20">
-    <div class="max-w-5xl mx-auto px-5 sm:px-6">
-      <h2 class="font-serif text-2xl sm:text-3xl font-bold mb-6 anim-fade-up">How it works</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+    <div class="max-w-5xl mx-auto px-5 sm:px-6 space-y-12">
 
-        <!-- Step 1: Request -->
-        <a href="/requests" class="card card-hover block no-underline text-ink group anim-fade-up anim-d1">
-          <div class="card-bg"></div>
-          <div class="card-content">
-            {topRequest && (
-              <div class="h-36 overflow-hidden" style="border-radius: 0.875rem 0.875rem 0 0;">
-                <div class="h-full bg-kraft-light flex items-center justify-center p-4">
-                  <div class="text-center">
-                    <i class="ph-duotone ph-megaphone text-3xl text-stamp mb-2 block"></i>
-                    <p class="text-xs font-semibold text-ink line-clamp-2">{topRequest.title}</p>
-                    <p class="text-xs text-stencil mt-1">
-                      <i class="ph-duotone ph-arrow-fat-up" style="font-size:0.65rem;"></i>
-                      {topRequest.upvotes} upvotes
-                    </p>
+      <!-- Campaigns -->
+      <div class="anim-fade-up">
+        <div class="flex items-center justify-between mb-2">
+          <h2 class="font-serif text-2xl sm:text-3xl font-bold">
+            <i class="ph-duotone ph-rocket-launch text-stamp mr-1" style="font-size:1.2rem;"></i>
+            Campaigns
+          </h2>
+          <a href="/campaigns" class="text-sm text-stamp font-semibold no-underline hover:underline">
+            All campaigns <i class="ph-bold ph-arrow-right ml-0.5" style="font-size:0.65rem;"></i>
+          </a>
+        </div>
+        <p class="text-sm text-ink max-w-lg leading-relaxed mb-5">
+          Back open-source hardware that ships with full source files. Every campaign is transparent — BOM, schematics, firmware, everything.
+        </p>
+        <div class="campaign-strip">
+          {featuredCampaigns.map((campaign) => (
+            <a href={`/campaigns/${campaign.slug}`} class="card card-hover block no-underline text-ink group campaign-card anim-fade-up">
+              <div class="card-bg"></div>
+              <div class="card-content">
+                <div class="h-36 overflow-hidden" style="border-radius: 0.875rem 0.875rem 0 0;">
+                  <img
+                    src={campaign.image}
+                    alt={campaign.title}
+                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="p-4">
+                  <h3 class="font-serif font-bold text-sm mb-1 group-hover:text-stamp transition-colors truncate">{campaign.title}</h3>
+                  <p class="text-xs text-stencil mb-3">{campaign.makerName} &middot; {campaign.location}</p>
+                  <ProgressBar percent={campaign.percent} hot={campaign.percent >= 100} />
+                  <div class="flex items-center justify-between mt-2 text-xs">
+                    <span class="font-semibold text-funded">{campaign.percent}%</span>
+                    <span class="text-stencil">{campaign.backers} backers</span>
                   </div>
                 </div>
               </div>
-            )}
-            <div class="p-5">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="text-xs font-bold text-stamp font-mono">01</span>
-                <span class="text-xs font-semibold uppercase tracking-wider text-stencil">Request</span>
-              </div>
-              <p class="text-sm text-ink leading-relaxed">Describe something that should exist. The community refines the spec together.</p>
-            </div>
-          </div>
-        </a>
-
-        <!-- Step 2: Fund -->
-        <a href="/campaigns" class="card card-hover block no-underline text-ink group anim-fade-up anim-d2">
-          <div class="card-bg"></div>
-          <div class="card-content">
-            <div class="h-36 overflow-hidden" style="border-radius: 0.875rem 0.875rem 0 0;">
-              <img
-                src={showcaseCampaign.image}
-                alt={showcaseCampaign.title}
-                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                loading="lazy"
-              />
-            </div>
-            <div class="p-5">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="text-xs font-bold text-stamp font-mono">02</span>
-                <span class="text-xs font-semibold uppercase tracking-wider text-stencil">Fund</span>
-              </div>
-              <p class="text-sm text-ink leading-relaxed">Back the campaign. Makers build it with open-source files, transparent BOM, and public updates.</p>
-              <div class="mt-3">
-                <ProgressBar percent={showcaseCampaign.percent} hot={showcaseCampaign.percent >= 100} />
-                <p class="text-xs text-funded font-semibold mt-1">{showcaseCampaign.percent}% funded &middot; {showcaseCampaign.backers} backers</p>
-              </div>
-            </div>
-          </div>
-        </a>
-
-        <!-- Step 3: Get it -->
-        <a href="/campaigns" class="card card-hover block no-underline text-ink group anim-fade-up anim-d3">
-          <div class="card-bg"></div>
-          <div class="card-content">
-            <div class="h-36 overflow-hidden" style="border-radius: 0.875rem 0.875rem 0 0;">
-              <img
-                src={fundedCampaign?.image ?? "/images/campaigns/workdesk-ii.jpg"}
-                alt="Funded project"
-                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                loading="lazy"
-              />
-            </div>
-            <div class="p-5">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="text-xs font-bold text-stamp font-mono">03</span>
-                <span class="text-xs font-semibold uppercase tracking-wider text-stencil">Get it</span>
-              </div>
-              <p class="text-sm text-ink leading-relaxed">Receive the finished product — or build it yourself. Every design is open-source.</p>
-              {fundedCampaign && (
-                <p class="text-xs text-funded font-semibold mt-3">
-                  <i class="ph-duotone ph-seal-check mr-1" style="font-size:0.7rem;"></i>
-                  {fundedCampaign.title} — fully funded
-                </p>
-              )}
-            </div>
-          </div>
-        </a>
+            </a>
+          ))}
+        </div>
       </div>
 
-      <!-- Next event callout -->
-      {nextEvent && (
-        <a href="/events" class="flex items-center gap-3 mt-6 py-3 px-4 rounded-lg no-underline text-ink hover:bg-paper transition-colors anim-fade-up anim-d3" style="border: 1px solid rgba(26,26,26,0.08);">
-          <i class="ph-duotone ph-calendar-dots text-xl text-stamp"></i>
-          <div class="flex-1 min-w-0">
-            <span class="text-xs font-semibold uppercase tracking-wider text-stencil">Next event</span>
-            <p class="text-sm font-medium truncate">{nextEvent.title}</p>
-          </div>
-          <span class="text-xs text-stencil flex-shrink-0">{new Date(nextEvent.date + "T00:00:00").toLocaleDateString("en-IN", { month: "short", day: "numeric" })}</span>
-          <i class="ph-bold ph-arrow-right text-xs text-stencil"></i>
-        </a>
-      )}
-    </div>
-  </section>
-
-  <!-- Featured campaigns — image-forward strip -->
-  <section class="pb-14">
-    <div class="max-w-5xl mx-auto px-5 sm:px-6">
-      <div class="flex items-center justify-between mb-5">
-        <h2 class="font-serif text-2xl sm:text-3xl font-bold anim-fade-up">Live now</h2>
-        <a href="/campaigns" class="btn btn-ghost btn-sm anim-fade-up">
-          All campaigns <i class="ph-bold ph-arrow-right ml-1"></i>
-        </a>
-      </div>
-      <div class="featured-strip">
-        {featuredCampaigns.map((campaign) => (
-          <a href={`/campaigns/${campaign.slug}`} class="card card-hover block no-underline text-ink group featured-card anim-fade-up">
-            <div class="card-bg"></div>
-            <div class="card-content">
-              <div class="h-44 overflow-hidden" style="border-radius: 0.875rem 0.875rem 0 0;">
-                <img
-                  src={campaign.image}
-                  alt={campaign.title}
-                  class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  loading="lazy"
-                />
+      <!-- Requests -->
+      <div class="anim-fade-up">
+        <div class="flex items-center justify-between mb-2">
+          <h2 class="font-serif text-2xl sm:text-3xl font-bold">
+            <i class="ph-duotone ph-megaphone text-stamp mr-1" style="font-size:1.2rem;"></i>
+            Requests
+          </h2>
+          <a href="/requests" class="text-sm text-stamp font-semibold no-underline hover:underline">
+            All requests <i class="ph-bold ph-arrow-right ml-0.5" style="font-size:0.65rem;"></i>
+          </a>
+        </div>
+        <p class="text-sm text-ink max-w-lg leading-relaxed mb-5">
+          Describe something that should exist. The community refines the spec, and a maker brings it to life.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {featuredRequests.map((req) => (
+            <a href={`/requests/${req.slug}`} class="microcard group">
+              <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background: rgba(255,89,0,0.08);">
+                <i class="ph-duotone ph-arrow-fat-up text-stamp"></i>
               </div>
-              <div class="p-4">
-                <h3 class="font-serif font-bold text-sm mb-1 group-hover:text-stamp transition-colors truncate">{campaign.title}</h3>
-                <p class="text-xs text-stencil mb-3">{campaign.makerName} &middot; {campaign.location}</p>
-                <ProgressBar percent={campaign.percent} hot={campaign.percent >= 100} />
-                <div class="flex items-center justify-between mt-2 text-xs">
-                  <span class="font-semibold text-funded">{campaign.percent}%</span>
-                  <span class="text-stencil">{campaign.backers} backers</span>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-semibold text-ink leading-snug group-hover:text-stamp transition-colors line-clamp-2">{req.title}</p>
+                <div class="flex items-center gap-2 mt-1 text-xs text-stencil">
+                  <span class="font-semibold">{req.upvotes} votes</span>
+                  <span>&middot;</span>
+                  <span>{req.category}</span>
                 </div>
               </div>
-            </div>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Makers -->
+      <div class="anim-fade-up">
+        <div class="flex items-center justify-between mb-2">
+          <h2 class="font-serif text-2xl sm:text-3xl font-bold">
+            <i class="ph-duotone ph-users-three text-stamp mr-1" style="font-size:1.2rem;"></i>
+            Makers
+          </h2>
+          <a href="/makers" class="text-sm text-stamp font-semibold no-underline hover:underline">
+            All makers <i class="ph-bold ph-arrow-right ml-0.5" style="font-size:0.65rem;"></i>
           </a>
-        ))}
+        </div>
+        <p class="text-sm text-ink max-w-lg leading-relaxed mb-5">
+          Hardware rebels with workshops, not just followers. Meet the people who build what the community needs.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {featuredMakers.map((maker) => (
+            <a href={`/makers/${maker.slug}`} class="microcard group">
+              <div
+                class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold text-paper flex-shrink-0"
+                style={`background: ${maker.avatarColor}`}
+              >
+                {maker.name.split(" ").map((w: string) => w[0]).join("").slice(0, 2)}
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-semibold text-ink leading-snug group-hover:text-stamp transition-colors">{maker.name}</p>
+                <p class="text-xs text-stencil truncate">{maker.title}</p>
+                <div class="flex items-center gap-2 mt-0.5 text-xs text-stencil">
+                  <span>{maker.projects} projects</span>
+                  <span>&middot;</span>
+                  <span>{maker.backers} backers</span>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Events -->
+      <div class="anim-fade-up">
+        <div class="flex items-center justify-between mb-2">
+          <h2 class="font-serif text-2xl sm:text-3xl font-bold">
+            <i class="ph-duotone ph-calendar-dots text-stamp mr-1" style="font-size:1.2rem;"></i>
+            Events
+          </h2>
+          <a href="/events" class="text-sm text-stamp font-semibold no-underline hover:underline">
+            All events <i class="ph-bold ph-arrow-right ml-0.5" style="font-size:0.65rem;"></i>
+          </a>
+        </div>
+        <p class="text-sm text-ink max-w-lg leading-relaxed mb-5">
+          Bengaluru-first <abbr class="steam-abbr" title="Science, Technology, Engineering, Art & Math">STEAM</abbr> meetups, workshops, hackathons, and talks for the endlessly curious.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {upcomingEvents.map((ev) => (
+            <a href="/events" class="microcard group">
+              <div class="flex flex-col items-center justify-center w-12 h-12 rounded-lg flex-shrink-0 text-center" style="background: rgba(255,89,0,0.08);">
+                <span class="text-[0.6rem] font-bold uppercase text-stamp leading-none">
+                  {new Date(ev.date + "T00:00:00").toLocaleDateString("en-IN", { month: "short" })}
+                </span>
+                <span class="text-lg font-black text-ink leading-none">
+                  {new Date(ev.date + "T00:00:00").getDate()}
+                </span>
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-semibold text-ink leading-snug group-hover:text-stamp transition-colors line-clamp-1">{ev.title}</p>
+                <p class="text-xs text-stencil truncate">{ev.venue}</p>
+                <div class="flex items-center gap-2 mt-0.5 text-xs text-stencil">
+                  <span class="capitalize">{ev.category}</span>
+                  <span>&middot;</span>
+                  <span>{ev.attendees} attending</span>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
       </div>
     </div>
   </section>
@@ -288,14 +310,14 @@ document.addEventListener('DOMContentLoaded', () => {
     font-style: normal;
   }
 
-  /* Featured campaigns strip */
-  .featured-strip {
+  /* Campaign microcards strip */
+  .campaign-strip {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.25rem;
   }
   @media (max-width: 640px) {
-    .featured-strip {
+    .campaign-strip {
       display: flex;
       gap: 1rem;
       overflow-x: auto;
@@ -303,11 +325,29 @@ document.addEventListener('DOMContentLoaded', () => {
       -webkit-overflow-scrolling: touch;
       padding-bottom: 0.5rem;
     }
-    .featured-card {
+    .campaign-card {
       min-width: 260px;
       scroll-snap-align: start;
       flex-shrink: 0;
     }
+  }
+
+  /* Microcard — compact interactive item */
+  .microcard {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-radius: 0.625rem;
+    border: 1px solid rgba(26, 26, 26, 0.06);
+    background: rgba(250, 243, 232, 0.4);
+    transition: border-color 0.15s, background 0.15s;
+    text-decoration: none;
+    color: inherit;
+  }
+  .microcard:hover {
+    border-color: #FF5900;
+    background: rgba(255, 89, 0, 0.04);
   }
 
   /* Auto-scrolling marquee for Friends of Absurd */

@@ -10,15 +10,12 @@ import Card from "../../components/Card.astro";
 import MakerCard from "../../components/MakerCard.astro";
 import MakersListing from "../../components/MakersListing.vue";
 import { makers } from "../../data/makers";
-import { makersContextNav } from "../../data/navigation";
 ---
 
 <BaseLayout
   title="Makers"
   description="Meet the hardware rebels building open-source tools, gadgets, and machines. Absurd Industries maker profiles."
   activeTab="makers"
-  contextNav={makersContextNav}
-  activeFilter="all"
 >
   <!-- Header -->
   <section class="pt-6 pb-8 sm:pt-8 sm:pb-10">

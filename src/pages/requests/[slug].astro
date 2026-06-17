@@ -308,14 +308,12 @@ const relatedRequests = requests
   )
   .slice(0, 4);
 
-const detailContextNav = { backHref: "/requests", backLabel: "Requests", items: [] as { label: string; value: string; icon: string }[] };
 ---
 
 <BaseLayout
   title={`${request.title} — Requests`}
   description={`${request.upvotes} people want this built. ${request.description}`}
   activeTab="requests"
-  contextNav={detailContextNav}
 >
   <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-8 pb-6 md:pt-12 md:pb-10">
     <a href="/requests" class="back-btn mb-6 inline-flex">
@@ -465,9 +463,10 @@ const detailContextNav = { backHref: "/requests", backLabel: "Requests", items: 
                 <div class="flex-1">
                   <textarea
                     rows="3"
-                    placeholder="Share your thoughts, specs, or resources..."
+                    placeholder="Comments coming soon. Join Discord to discuss this request."
                     class="comment-textarea"
                     disabled
+                    style="opacity: 0.5; cursor: not-allowed;"
                   ></textarea>
                   <div class="flex items-center justify-end mt-2">
                     <span
@@ -755,17 +754,6 @@ const detailContextNav = { backHref: "/requests", backLabel: "Requests", items: 
 </BaseLayout>
 
 <style>
-  /* ── Breadcrumb ── */
-  .breadcrumb a {
-    color: #6b5b4a;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.12s;
-  }
-  .breadcrumb a:hover {
-    color: #ff5900;
-  }
-
   /* ── Upvote button (detail page — inline horizontal) ── */
   .upvote-btn {
     display: inline-flex;
@@ -826,81 +814,6 @@ const detailContextNav = { backHref: "/requests", backLabel: "Requests", items: 
   }
   .use-case-item:last-child {
     border-bottom: none;
-  }
-
-  /* ── Comments ── */
-  .comment-textarea {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border-radius: 0.625rem;
-    border: 1.5px solid rgba(26, 26, 26, 0.12);
-    background: rgba(250, 243, 232, 0.5);
-    font-family: "DM Sans", system-ui, sans-serif;
-    font-size: 0.875rem;
-    color: #1a1a1a;
-    resize: vertical;
-    min-height: 80px;
-    transition: border-color 0.15s;
-  }
-  .comment-textarea:focus {
-    outline: none;
-    border-color: #ff5900;
-    background: #faf3e8;
-    box-shadow: 0 0 0 3px rgba(255, 89, 0, 0.08);
-  }
-  .comment-textarea::placeholder {
-    color: #b8956a;
-  }
-
-  .comment-entry {
-    padding: 1rem 0;
-    border-bottom: 1px solid rgba(26, 26, 26, 0.06);
-  }
-  .comment-entry:last-child {
-    border-bottom: none;
-  }
-
-  .comment-reply {
-    margin-left: 2.5rem;
-    padding-left: 1rem;
-    border-left: 2px solid rgba(26, 26, 26, 0.08);
-  }
-
-  .comment-vote {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: #6b5b4a;
-    cursor: pointer;
-    padding: 0.15rem 0.4rem;
-    border-radius: 0.375rem;
-    transition: all 0.12s;
-  }
-  .comment-vote:hover {
-    background: rgba(26, 26, 26, 0.06);
-    color: #1a1a1a;
-  }
-  .comment-vote i {
-    font-size: 0.8rem;
-  }
-
-  .comment-action {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: #6b5b4a;
-    cursor: pointer;
-    padding: 0.15rem 0.4rem;
-    border-radius: 0.375rem;
-    transition: all 0.12s;
-  }
-  .comment-action:hover {
-    background: rgba(26, 26, 26, 0.06);
-    color: #1a1a1a;
   }
 
   /* ── Sidebar stats ── */

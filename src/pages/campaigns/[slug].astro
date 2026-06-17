@@ -202,14 +202,12 @@ const comments = [
 const statusLabel = campaign.status === "live" ? "Live" : campaign.status === "funded" ? "Funded" : "Coming Soon";
 const statusVariant = campaign.status === "live" ? "stamp" : campaign.status === "funded" ? "funded" : "default";
 
-const detailContextNav = { backHref: "/campaigns", backLabel: "Campaigns", items: [] as { label: string; value: string; icon: string }[] };
 ---
 
 <BaseLayout
   title={campaign.title}
   description={campaign.tagline}
   activeTab="campaigns"
-  contextNav={detailContextNav}
 >
   <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-8 pb-6 md:pt-12 md:pb-10">
 
@@ -293,6 +291,9 @@ const detailContextNav = { backHref: "/campaigns", backLabel: "Campaigns", items
             <h2 class="font-serif font-bold text-lg mb-4">About This Project</h2>
             <div class="text-sm leading-relaxed text-ink-light space-y-4">
               <p>{campaign.tagline}</p>
+              {campaign.richDescription && (
+                <div class="whitespace-pre-line">{campaign.richDescription}</div>
+              )}
               {isShowcase && (
                 <>
                   <p>
@@ -311,19 +312,6 @@ const detailContextNav = { backHref: "/campaigns", backLabel: "Campaigns", items
             </div>
           </div>
         </Card>
-
-        {/* Rich description */}
-        {campaign.richDescription && (
-          <Card class="mb-5">
-            <div class="p-5 sm:p-7">
-              <h2 class="font-serif font-bold text-lg mb-3">
-                <i class="ph-duotone ph-article mr-2" style="font-size:1rem;"></i>
-                About this project
-              </h2>
-              <div class="text-sm text-ink leading-relaxed whitespace-pre-line">{campaign.richDescription}</div>
-            </div>
-          </Card>
-        )}
 
         {/* Video embed */}
         {campaign.videoUrl && (
@@ -569,7 +557,7 @@ const detailContextNav = { backHref: "/campaigns", backLabel: "Campaigns", items
               <!-- Comments list -->
               <div>
                 {comments.map((comment) => (
-                  <div class="comment">
+                  <div class="comment-entry">
                     <div class="flex gap-3">
                       <div
                         class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-paper flex-shrink-0"
@@ -600,7 +588,7 @@ const detailContextNav = { backHref: "/campaigns", backLabel: "Campaigns", items
                         {comment.replies && comment.replies.length > 0 && (
                           <div class="mt-3">
                             {comment.replies.map((reply) => (
-                              <div class="comment-reply comment">
+                              <div class="comment-reply comment-entry">
                                 <div class="flex gap-3">
                                   <div
                                     class="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold text-paper flex-shrink-0"
@@ -637,30 +625,21 @@ const detailContextNav = { backHref: "/campaigns", backLabel: "Campaigns", items
           </Card>
         )}
 
-        <!-- Simple description for non-showcase campaigns -->
+        <!-- Open Source Files (non-showcase) -->
         {!isShowcase && (
-          <>
-            <Card class="mb-5">
-              <div class="p-5 sm:p-7">
-                <h2 class="font-serif font-bold text-lg mb-4">About This Project</h2>
-                <p class="text-sm leading-relaxed text-ink-light">{campaign.tagline}</p>
-              </div>
-            </Card>
-
-            <Card class="mb-5">
-              <div class="p-5 sm:p-7">
-                <h2 class="font-serif font-bold text-lg mb-4">Open Source Files</h2>
-                <Tag variant="funded">
-                  <i class="ph-bold ph-scales mr-1" style="font-size: 0.65rem;"></i>
-                  {campaign.license}
-                </Tag>
-                <p class="text-sm text-ink-faint mt-3 leading-relaxed">
-                  All source files for this project will be released under the {campaign.license} license.
-                  CAD files, schematics, firmware, and documentation will be available for download once the campaign is funded.
-                </p>
-              </div>
-            </Card>
-          </>
+          <Card class="mb-5">
+            <div class="p-5 sm:p-7">
+              <h2 class="font-serif font-bold text-lg mb-4">Open Source Files</h2>
+              <Tag variant="funded">
+                <i class="ph-bold ph-scales mr-1" style="font-size: 0.65rem;"></i>
+                {campaign.license}
+              </Tag>
+              <p class="text-sm text-ink-faint mt-3 leading-relaxed">
+                All source files for this project will be released under the {campaign.license} license.
+                CAD files, schematics, firmware, and documentation will be available for download once the campaign is funded.
+              </p>
+            </div>
+          </Card>
         )}
       </div>
 
@@ -895,79 +874,6 @@ const detailContextNav = { backHref: "/campaigns", backLabel: "Campaigns", items
   }
   .file-card:hover .file-card-icon {
     color: #FF5900;
-  }
-
-  /* Comment styles */
-  .comment {
-    padding: 1rem 0;
-    border-bottom: 1px solid rgba(26, 26, 26, 0.06);
-  }
-  .comment:last-child {
-    border-bottom: none;
-  }
-  .comment-reply {
-    margin-left: 2.5rem;
-    padding-left: 1rem;
-    border-left: 2px solid rgba(26, 26, 26, 0.08);
-  }
-  .comment-vote {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: #6B5B4A;
-    cursor: pointer;
-    padding: 0.15rem 0.4rem;
-    border-radius: 0.375rem;
-    transition: all 0.12s;
-  }
-  .comment-vote:hover {
-    background: rgba(26, 26, 26, 0.06);
-    color: #1A1A1A;
-  }
-  .comment-vote i {
-    font-size: 0.8rem;
-  }
-  .comment-action {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: #6B5B4A;
-    cursor: pointer;
-    padding: 0.15rem 0.4rem;
-    border-radius: 0.375rem;
-    transition: all 0.12s;
-  }
-  .comment-action:hover {
-    background: rgba(26, 26, 26, 0.06);
-    color: #1A1A1A;
-  }
-
-  /* Comment textarea */
-  .comment-textarea {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border-radius: 0.625rem;
-    border: 1.5px solid rgba(26, 26, 26, 0.12);
-    background: rgba(250, 243, 232, 0.5);
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-size: 0.875rem;
-    color: #1A1A1A;
-    resize: vertical;
-    min-height: 80px;
-    transition: border-color 0.15s;
-  }
-  .comment-textarea:focus {
-    outline: none;
-    border-color: #FF5900;
-    background: #FAF3E8;
-    box-shadow: 0 0 0 3px rgba(255, 89, 0, 0.08);
-  }
-  .comment-textarea::placeholder {
-    color: #B8956A;
   }
 
   /* Reward tier progress */

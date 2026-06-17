@@ -9,7 +9,6 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import RequestsListing from "../../components/RequestsListing.vue";
 import { requests } from "../../data/requests";
 import { makers } from "../../data/makers";
-import { requestsContextNav } from "../../data/navigation";
 
 // Build a slug -> display name map for claimed-by lookups
 const makerNames: Record<string, string> = {};
@@ -22,8 +21,6 @@ for (const m of makers) {
   title="Requests"
   description="Request open-source projects that don't exist yet. Describe what you need, refine specs together, and let makers bring it to life."
   activeTab="requests"
-  contextNav={requestsContextNav}
-  activeFilter="hot"
 >
   <div class="max-w-3xl mx-auto px-4 sm:px-6 pt-6 pb-4">
     <!-- Page header (on kraft background) -->

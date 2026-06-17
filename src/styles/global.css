@@ -570,7 +570,83 @@ html.dark ::-webkit-scrollbar-thumb {
 
 
 /* -----------------------------------------------------------------------
-   12. PRINT
+   12. COMMENT THREAD
+   Shared styles for discussion/comment sections across detail pages.
+   ----------------------------------------------------------------------- */
+
+.comment-entry {
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(26, 26, 26, 0.06);
+}
+.comment-entry:last-child {
+  border-bottom: none;
+}
+.comment-reply {
+  margin-left: 2.5rem;
+  padding-left: 1rem;
+  border-left: 2px solid rgba(26, 26, 26, 0.08);
+}
+.comment-vote {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #6b5b4a;
+  cursor: pointer;
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.375rem;
+  transition: all 0.12s;
+}
+.comment-vote:hover {
+  background: rgba(26, 26, 26, 0.06);
+  color: #1a1a1a;
+}
+.comment-vote i {
+  font-size: 0.8rem;
+}
+.comment-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #6b5b4a;
+  cursor: pointer;
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.375rem;
+  transition: all 0.12s;
+}
+.comment-action:hover {
+  background: rgba(26, 26, 26, 0.06);
+  color: #1a1a1a;
+}
+.comment-textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.625rem;
+  border: 1.5px solid rgba(26, 26, 26, 0.12);
+  background: rgba(250, 243, 232, 0.5);
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 0.875rem;
+  color: #1a1a1a;
+  resize: vertical;
+  min-height: 80px;
+  transition: border-color 0.15s;
+}
+.comment-textarea:focus {
+  outline: none;
+  border-color: #ff5900;
+  background: #faf3e8;
+  box-shadow: 0 0 0 3px rgba(255, 89, 0, 0.08);
+}
+.comment-textarea::placeholder {
+  color: #b8956a;
+}
+
+
+/* -----------------------------------------------------------------------
+   13. PRINT
    Hide navigation and interactive elements when printing.
    ----------------------------------------------------------------------- */
 
