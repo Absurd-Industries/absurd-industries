@@ -8,7 +8,6 @@
 import { ref, computed } from "vue";
 import type { Maker } from "../types";
 import SearchFilter from "./SearchFilter.vue";
-import { useScrollHideSearch } from "../composables/useScrollHideSearch";
 
 const props = defineProps<{
   makers: Maker[];
@@ -46,9 +45,6 @@ const filteredMakers = computed(() => {
   return result;
 });
 
-const isFilterActive = computed(() => activeCategory.value !== "all");
-const { hidden: searchHidden } = useScrollHideSearch(searchText, isFilterActive);
-
 function getInitial(name: string): string {
   return name.charAt(0).toUpperCase();
 }
@@ -57,7 +53,7 @@ function getInitial(name: string): string {
 <template>
   <div>
     <!-- Search + filter controls -->
-    <div class="search-wrap" :class="{ 'search-wrap--hidden': searchHidden }">
+    <div class="search-wrap">
       <div class="max-w-xl">
         <SearchFilter
           :categories="categories"
@@ -268,13 +264,6 @@ function getInitial(name: string): string {
   position: absolute;
   inset: 0;
   background: var(--card-bg, #1A1A1A);
-  background-image: repeating-linear-gradient(
-    135deg,
-    transparent,
-    transparent 20px,
-    rgba(250, 243, 232, 0.03) 20px,
-    rgba(250, 243, 232, 0.03) 22px
-  );
   filter: url(#papercut);
   z-index: 0;
   pointer-events: none;
@@ -516,17 +505,16 @@ function getInitial(name: string): string {
   flex-shrink: 0;
 }
 
-/* Search bar - slides up on scroll */
 .search-wrap {
-  margin-bottom: 0.75rem;
-  transition: opacity 0.2s, max-height 0.25s, margin 0.25s;
-  max-height: 200px;
-  overflow: hidden;
-}
-.search-wrap--hidden {
-  opacity: 0;
-  max-height: 0;
-  margin-bottom: 0;
-  pointer-events: none;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: rgba(212, 184, 150, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 0.75rem 0;
+  margin: 0 -1.25rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
 }
 </style>

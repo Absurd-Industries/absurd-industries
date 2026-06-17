@@ -37,19 +37,19 @@ const upcomingEvents = [...events]
   <!-- Hero — manifesto pitch -->
   <section class="pt-10 pb-10 md:pt-16 md:pb-16">
     <div class="max-w-4xl mx-auto px-5 sm:px-6">
-      <p class="text-sm font-semibold uppercase tracking-widest text-stamp mb-4 anim-fade-up">Bengaluru, India</p>
+      <p class="text-sm font-semibold uppercase tracking-widest text-stamp mb-4">Bengaluru, India</p>
 
-      <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl font-black leading-[0.95] tracking-tight mb-6 anim-fade-up anim-d1">
+      <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl font-black leading-[0.95] tracking-tight mb-6">
         We build things<br class="hidden sm:block" /> that don't exist yet.
       </h1>
 
-      <p class="text-base sm:text-lg text-ink max-w-xl mb-8 leading-relaxed anim-fade-up anim-d2">
+      <p class="text-base sm:text-lg text-ink max-w-xl mb-8 leading-relaxed">
         Absurd Industries is an open-source STEAM (Science, Technology, Engineering, Art & Math) community.
         Find and fund products that solve real problems - or turn your own ideas into campaigns the community backs.
         Every design ships with full source files.
       </p>
 
-      <div class="flex flex-wrap gap-3 anim-fade-up anim-d3">
+      <div class="flex flex-wrap gap-3">
         <a href="/campaigns" class="btn btn-primary">
           <i class="ph-duotone ph-rocket-launch mr-1.5" style="font-size:0.9rem;"></i>
           Explore Campaigns
@@ -70,7 +70,7 @@ const upcomingEvents = [...events]
       <div class="anim-fade-up">
         <div class="flex items-center justify-between mb-2">
           <h2 class="font-serif text-2xl sm:text-3xl font-bold">
-            <i class="ph-duotone ph-rocket-launch text-stamp mr-1" style="font-size:1.4rem;"></i>
+            <i class="ph-duotone ph-rocket-launch text-ink mr-1" style="font-size:1.4rem;"></i>
             Campaigns
           </h2>
           <a href="/campaigns" class="text-sm text-stamp font-bold no-underline hover:underline">
@@ -83,7 +83,7 @@ const upcomingEvents = [...events]
         <div class="campaign-strip-wrap">
           <div class="campaign-strip">
             {featuredCampaigns.map((campaign) => (
-              <a href={`/campaigns/${campaign.slug}`} class="card card-hover block no-underline text-ink group campaign-card anim-fade-up">
+              <a href={`/campaigns/${campaign.slug}`} class="card card-hover block no-underline text-ink group campaign-card">
                 <div class="card-bg"></div>
                 <div class="card-content">
                   <div class="campaign-card-img" style="border-radius: 0.875rem 0.875rem 0 0;">
@@ -112,7 +112,7 @@ const upcomingEvents = [...events]
       <div class="anim-fade-up">
         <div class="flex items-center justify-between mb-2">
           <h2 class="font-serif text-2xl sm:text-3xl font-bold">
-            <i class="ph-duotone ph-hand-palm text-stamp mr-1" style="font-size:1.4rem;"></i>
+            <i class="ph-duotone ph-hand-palm text-ink mr-1" style="font-size:1.4rem;"></i>
             Requests
           </h2>
           <a href="/requests" class="text-sm text-stamp font-bold no-underline hover:underline">
@@ -145,7 +145,7 @@ const upcomingEvents = [...events]
       <div class="anim-fade-up">
         <div class="flex items-center justify-between mb-2">
           <h2 class="font-serif text-2xl sm:text-3xl font-bold">
-            <i class="ph-duotone ph-users-three text-stamp mr-1" style="font-size:1.4rem;"></i>
+            <i class="ph-duotone ph-users-three text-ink mr-1" style="font-size:1.4rem;"></i>
             Makers
           </h2>
           <a href="/makers" class="text-sm text-stamp font-bold no-underline hover:underline">
@@ -168,12 +168,6 @@ const upcomingEvents = [...events]
                   </div>
                 )}
                 <h3 class="maker-mini-name">{maker.name}</h3>
-                <div class="maker-mini-meta">
-                  <i class="ph-bold ph-map-pin" style="font-size:0.5rem;"></i>
-                  {maker.location}
-                  <span style="opacity:0.4;">&middot;</span>
-                  {maker.specialty}
-                </div>
                 <p class="maker-mini-bio">{maker.bio ?? maker.title}</p>
               </div>
             </a>
@@ -185,7 +179,7 @@ const upcomingEvents = [...events]
       <div class="anim-fade-up">
         <div class="flex items-center justify-between mb-2">
           <h2 class="font-serif text-2xl sm:text-3xl font-bold">
-            <i class="ph-duotone ph-calendar-dots text-stamp mr-1" style="font-size:1.4rem;"></i>
+            <i class="ph-duotone ph-calendar-dots text-ink mr-1" style="font-size:1.4rem;"></i>
             Events
           </h2>
           <a href="/events" class="text-sm text-stamp font-bold no-underline hover:underline">
@@ -223,7 +217,7 @@ const upcomingEvents = [...events]
   </section>
 
   <!-- Community CTA -->
-  <section class="pb-12 anim-fade-up">
+  <section class="pb-12">
     <div class="max-w-5xl mx-auto px-5 sm:px-6">
       <Card variant="dark">
         <div class="px-6 py-10 sm:px-10 sm:py-12">
@@ -251,7 +245,7 @@ const upcomingEvents = [...events]
   </section>
 
   <!-- Open Source Hardware ethos -->
-  <section class="osh-banner anim-fade-up">
+  <section class="osh-banner">
     <img src="/images/open-source-hardware.png" alt="Open Source Hardware" class="osh-logo" />
     <p class="osh-text">Open source is about collaborating, not competing.</p>
   </section>
@@ -259,8 +253,8 @@ const upcomingEvents = [...events]
   <!-- Friends of Absurd — auto-scrolling marquee -->
   <section class="pb-14 overflow-hidden">
     <div class="max-w-5xl mx-auto px-5 sm:px-6">
-      <h2 class="font-serif text-xl font-bold mb-1 anim-fade-up">Friends of Absurd</h2>
-      <p class="text-sm text-ink max-w-md leading-relaxed mb-5 anim-fade-up">
+      <h2 class="font-serif text-xl font-bold mb-1">Friends of Absurd</h2>
+      <p class="text-sm text-ink max-w-md leading-relaxed mb-5">
         Communities and companies building the open-source STEAM ecosystem with us.
       </p>
     </div>
@@ -288,26 +282,6 @@ const upcomingEvents = [...events]
   </section>
 </BaseLayout>
 
-<script is:inline data-astro-rerun>
-(function() {
-  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReduced) return;
-
-  var elements = document.querySelectorAll('.anim-fade-up');
-  if (!elements.length) return;
-
-  var observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('anim-visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-  elements.forEach(function(el) { observer.observe(el); });
-})();
-</script>
 
 <style>
   /* Campaign strip with scroll hint */
@@ -377,7 +351,7 @@ const upcomingEvents = [...events]
     position: relative;
     background: var(--card-bg, #1A1A1A);
     border-radius: 0.875rem;
-    padding: 1rem 1rem 0.85rem;
+    padding: 0.75rem 0.85rem 0.6rem;
     overflow: hidden;
   }
   .maker-mini-inner::before {
@@ -385,10 +359,6 @@ const upcomingEvents = [...events]
     position: absolute;
     inset: 0;
     background: var(--card-bg, #1A1A1A);
-    background-image: repeating-linear-gradient(
-      135deg, transparent, transparent 20px,
-      rgba(250,243,232,0.03) 20px, rgba(250,243,232,0.03) 22px
-    );
     filter: url(#papercut);
     z-index: 0;
     pointer-events: none;
@@ -401,11 +371,11 @@ const upcomingEvents = [...events]
     position: absolute;
     top: 10px;
     right: 12px;
-    width: 16px;
-    height: 16px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
     background: var(--card-bg, #1A1A1A);
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.4), 0 0 0 2px rgba(255,255,255,0.08);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.4), 0 0 0 1.5px rgba(255,255,255,0.08);
     z-index: 2;
   }
   .maker-mini-punch::after {
@@ -417,15 +387,15 @@ const upcomingEvents = [...events]
     box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
   }
   .maker-mini-avatar {
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
     object-fit: cover;
     clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
   }
   .maker-mini-avatar-fb {
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -434,8 +404,8 @@ const upcomingEvents = [...events]
     color: #FAF3E8;
     font-weight: 700;
     font-family: 'Fraunces', serif;
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    margin-bottom: 0.4rem;
   }
   .maker-mini-name {
     font-family: 'Fraunces', serif;
@@ -448,14 +418,6 @@ const upcomingEvents = [...events]
   }
   .maker-mini-card:hover .maker-mini-name {
     color: #FF5900;
-  }
-  .maker-mini-meta {
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-    font-size: 0.6rem;
-    color: rgba(250,243,232,0.45);
-    margin-top: 0.2rem;
   }
   .maker-mini-bio {
     font-size: 0.7rem;
@@ -520,19 +482,6 @@ const upcomingEvents = [...events]
     to { transform: translateX(-50%); }
   }
 
-  /* Scroll-triggered entrance animations */
-  .anim-fade-up {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-  .anim-fade-up.anim-visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  .anim-d1 { transition-delay: 0.1s; }
-  .anim-d2 { transition-delay: 0.2s; }
-  .anim-d3 { transition-delay: 0.3s; }
 
   /* Open Source Hardware banner */
   .osh-banner {
@@ -561,12 +510,4 @@ const upcomingEvents = [...events]
     line-height: 1.5;
   }
 
-  /* Respect reduced motion */
-  @media (prefers-reduced-motion: reduce) {
-    .anim-fade-up {
-      opacity: 1;
-      transform: none;
-      transition: none;
-    }
-  }
 </style>

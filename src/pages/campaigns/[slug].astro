@@ -792,18 +792,6 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
         </div>
       </button>
     )}
-    {campaign.status === "coming" && (
-      <div class="float-pill-btn float-pill-btn--coming">
-        <div class="float-pill-info">
-          <span class="float-pill-title">Coming Soon</span>
-          <span class="float-pill-sub">Campaign not yet live</span>
-        </div>
-        <div class="float-pill-cta float-pill-cta--coming">
-          <i class="ph-bold ph-bell" style="font-size:0.8rem;"></i>
-          <span>Notify Me</span>
-        </div>
-      </div>
-    )}
   </div>
 
   <!-- Checkout mock modal -->
@@ -851,15 +839,16 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    max-width: 420px;
+    max-width: 42rem;
     margin: 0 auto;
   }
   @media (min-width: 640px) {
     .float-pill {
-      left: auto;
+      left: 1.5rem;
       right: 1.5rem;
       bottom: 1.5rem;
-      max-width: 380px;
+      max-width: 42rem;
+      margin: 0 auto;
     }
   }
 
@@ -871,7 +860,9 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
     width: 100%;
     padding: 0.75rem 1rem;
     border-radius: 0.875rem;
-    background: #1A1A1A;
+    background: rgba(26, 26, 26, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     color: #FAF3E8;
     border: none;
     cursor: pointer;
@@ -894,11 +885,6 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
   .float-pill-btn--funded:hover {
     transform: none;
   }
-  .float-pill-btn--coming {
-    background: #4A3D2F;
-    cursor: pointer;
-  }
-
   .float-pill-info {
     display: flex;
     flex-direction: column;
@@ -938,23 +924,21 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
   .float-pill-btn:hover .float-pill-cta--funded {
     background: rgba(250, 243, 232, 0.15);
   }
-  .float-pill-cta--coming {
-    background: rgba(250, 243, 232, 0.12);
-  }
-
   /* Expanded tier panel */
   .float-pill-panel {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s cubic-bezier(0.2, 0, 0, 1), padding 0.3s, margin 0.3s;
-    background: #1A1A1A;
+    background: rgba(26, 26, 26, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border-radius: 0.875rem;
     margin-bottom: 0;
     padding: 0 1rem;
   }
   .float-pill-panel.expanded {
     max-height: 400px;
-    padding: 0.75rem 1rem;
+    padding: 1rem 1.25rem;
     margin-bottom: 0.5rem;
     box-shadow: 0 4px 20px rgba(26, 26, 26, 0.25);
   }
@@ -1198,5 +1182,26 @@ document.querySelectorAll('.share-float-btn').forEach(function(btn) {
   modal.addEventListener('click', function(e) {
     if (e.target === modal) modal.classList.remove('active');
   });
+})();
+
+// Show float pill after scrolling past hero
+(function() {
+  var pill = document.getElementById('campaign-float');
+  if (!pill) return;
+  pill.style.opacity = '0';
+  pill.style.transform = 'translateY(20px)';
+  pill.style.transition = 'opacity 0.3s, transform 0.3s';
+  pill.style.pointerEvents = 'none';
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 300) {
+      pill.style.opacity = '1';
+      pill.style.transform = 'translateY(0)';
+      pill.style.pointerEvents = 'auto';
+    } else {
+      pill.style.opacity = '0';
+      pill.style.transform = 'translateY(20px)';
+      pill.style.pointerEvents = 'none';
+    }
+  }, { passive: true });
 })();
 </script>

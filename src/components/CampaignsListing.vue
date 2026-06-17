@@ -7,7 +7,6 @@
 
 import { ref, computed } from "vue";
 import type { Campaign } from "../types";
-import { useScrollHideSearch } from "../composables/useScrollHideSearch";
 
 const props = defineProps<{
   campaigns: Campaign[];
@@ -66,10 +65,6 @@ const filteredCampaigns = computed(() => {
   return items;
 });
 
-// --- Scroll-hide search bar ---
-const isFilterActive = computed(() => activeCategory.value !== "All" || activeStatus.value !== "All");
-const { hidden: searchHidden } = useScrollHideSearch(searchText, isFilterActive);
-
 // --- Helpers ---
 function statusLabel(status: string): string {
   if (status === "live") return "Live";
@@ -87,7 +82,7 @@ function statusTagClass(status: string): string {
 <template>
   <div>
     <!-- Search bar (hides on scroll down) -->
-    <div class="search-wrap" :class="{ 'search-wrap--hidden': searchHidden }">
+    <div class="search-wrap">
       <div class="relative max-w-md">
         <i class="ph-bold ph-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-stencil" style="font-size:0.9rem"></i>
         <input
@@ -275,18 +270,17 @@ function statusTagClass(status: string): string {
 </template>
 
 <style scoped>
-/* Search bar - slides up on scroll */
 .search-wrap {
-  margin-bottom: 0.75rem;
-  transition: opacity 0.2s, max-height 0.25s, margin 0.25s;
-  max-height: 60px;
-  overflow: hidden;
-}
-.search-wrap--hidden {
-  opacity: 0;
-  max-height: 0;
-  margin-bottom: 0;
-  pointer-events: none;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: rgba(212, 184, 150, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 0.75rem 0;
+  margin: 0 -1.25rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
 }
 
 /* Filter pills - matches requests page style */

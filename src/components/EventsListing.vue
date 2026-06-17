@@ -8,7 +8,6 @@
 
 import { ref, computed } from "vue";
 import type { AbsurdEvent } from "../types";
-import { useScrollHideSearch } from "../composables/useScrollHideSearch";
 
 const props = defineProps<{
   events: AbsurdEvent[];
@@ -17,10 +16,6 @@ const props = defineProps<{
 // --- State ---
 const searchText = ref("");
 const activeCity = ref("Bengaluru");
-
-// --- Scroll-hide search bar ---
-const isFilterActive = computed(() => false);
-const { hidden: searchHidden } = useScrollHideSearch(searchText, isFilterActive);
 
 // --- Constants ---
 const cities = ["Bengaluru", "Mumbai", "Pune", "Online"];
@@ -189,7 +184,7 @@ function isToday(dateStr: string): boolean {
     </div>
 
     <!-- Search input -->
-    <div class="search-wrap" :class="{ 'search-wrap--hidden': searchHidden }">
+    <div class="search-wrap">
       <div class="relative mb-6">
         <i
           class="ph-bold ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2"
@@ -663,16 +658,16 @@ function isToday(dateStr: string): boolean {
   }
 }
 
-/* Search bar - slides up on scroll */
 .search-wrap {
-  transition: opacity 0.2s, max-height 0.25s, margin 0.25s;
-  max-height: 60px;
-  overflow: hidden;
-}
-.search-wrap--hidden {
-  opacity: 0;
-  max-height: 0;
-  margin-bottom: 0;
-  pointer-events: none;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: rgba(212, 184, 150, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 0.75rem 0;
+  margin: 0 -1.25rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
 }
 </style>
