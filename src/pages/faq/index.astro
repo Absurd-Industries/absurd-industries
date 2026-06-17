@@ -31,7 +31,7 @@ import Card from "../../components/Card.astro";
   <section class="pb-16 sm:pb-20">
     <div class="max-w-3xl mx-auto px-5 sm:px-6">
       <Card>
-        <div class="faq-list">
+        <div class="faq-list" id="faq-accordion">
 
           <details>
             <summary>
@@ -174,6 +174,10 @@ import Card from "../../components/Card.astro";
       transform: rotate(180deg);
       color: #FF5900;
     }
+    .faq-list {
+      background: rgba(250, 243, 232, 0.6);
+      border-radius: 0.75rem;
+    }
     .faq-answer {
       font-size: 0.9rem;
       color: #4A3D2F;
@@ -181,4 +185,19 @@ import Card from "../../components/Card.astro";
       padding: 0 1.5rem 1.25rem 3.25rem;
     }
   </style>
+
+  <script is:inline>
+  (function() {
+    var accordion = document.getElementById('faq-accordion');
+    if (!accordion) return;
+    accordion.addEventListener('click', function(e) {
+      var summary = e.target.closest('summary');
+      if (!summary) return;
+      var parent = summary.parentElement;
+      accordion.querySelectorAll('details[open]').forEach(function(d) {
+        if (d !== parent) d.removeAttribute('open');
+      });
+    });
+  })();
+  </script>
 </BaseLayout>

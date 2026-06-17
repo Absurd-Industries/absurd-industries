@@ -158,13 +158,6 @@ function getInitial(name: string): string {
             </span>
           </div>
 
-          <!-- Open link -->
-          <div class="id-footer">
-            <span class="id-open-link">
-              Open
-              <i class="ph-bold ph-arrow-right" style="font-size:0.6rem;"></i>
-            </span>
-          </div>
         </div>
       </a>
     </div>
@@ -379,24 +372,6 @@ function getInitial(name: string): string {
   border: 1px solid rgba(250, 243, 232, 0.08);
 }
 
-.id-footer {
-  margin-top: auto;
-  padding-top: 0.75rem;
-  display: flex;
-  justify-content: flex-end;
-}
-.id-open-link {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: rgba(250, 243, 232, 0.4);
-  transition: color 0.15s;
-}
-.id-card:hover .id-open-link {
-  color: #FF5900;
-}
 
 /* View toggle buttons */
 .view-toggle {

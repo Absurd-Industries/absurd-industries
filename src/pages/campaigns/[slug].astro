@@ -754,28 +754,10 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
   <div class="float-pill" id="campaign-float">
     <!-- Expanded panel (tiers) -->
     <div class="float-pill-panel" id="float-tiers">
-      <div class="float-panel-header">
-        <i class="ph-bold ph-heart" style="font-size:0.9rem; color:#FF5900;"></i>
-        <span class="font-serif font-bold text-sm" style="color: #FAF3E8;">Choose a tier</span>
-      </div>
       {isShowcase && rewardTiers.map((tier) => (
         <button class="float-tier-option" data-tier-name={tier.name} data-tier-price={tier.price}>
-          <div class="float-tier-row">
-            <div class="float-tier-icon">
-              <i class="ph-bold ph-package"></i>
-            </div>
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center justify-between">
-                <span class="font-serif font-bold text-sm" style="color: #FAF3E8;">{tier.name}</span>
-                <span class="font-bold text-xs" style="color: #FF5900;">{tier.price}</span>
-              </div>
-              <p class="text-xs leading-snug mt-0.5" style="color: rgba(250,243,232,0.6);">{tier.perks[0]}</p>
-              <div class="float-tier-progress">
-                <div class="float-tier-progress-fill" style={`width: ${(tier.claimed / tier.total) * 100}%`}></div>
-              </div>
-              <div class="text-[0.6rem]" style="color: rgba(250,243,232,0.4);">{tier.claimed} of {tier.total} claimed</div>
-            </div>
-          </div>
+          <span class="font-serif font-bold text-sm" style="color: #FAF3E8;">{tier.name}</span>
+          <span class="font-bold text-xs" style="color: rgba(250,243,232,0.45);">{tier.price}</span>
         </button>
       ))}
     </div>
@@ -786,9 +768,8 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
           <span class="float-pill-title">{campaign.percent}% funded</span>
           <span class="float-pill-sub">{campaign.backers} backers</span>
         </div>
-        <div class="float-pill-cta">
-          <i class="ph-bold ph-heart" style="font-size:0.8rem;"></i>
-          <span>Back This Project</span>
+        <div class="float-pill-right">
+          <span class="float-pill-label">Back This Project</span>
           <i class="ph-bold ph-caret-up float-pill-chevron" style="font-size:0.65rem;"></i>
         </div>
       </button>
@@ -799,9 +780,8 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
           <span class="float-pill-title">Fully funded</span>
           <span class="float-pill-sub">{campaign.backers} backers</span>
         </div>
-        <div class="float-pill-cta float-pill-cta--funded">
-          <i class="ph-bold ph-check-circle" style="font-size:0.8rem;"></i>
-          <span>Funded</span>
+        <div class="float-pill-right">
+          <i class="ph-bold ph-check-circle" style="font-size:0.8rem; opacity:0.5;"></i>
         </div>
       </button>
     )}
@@ -914,28 +894,21 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
     opacity: 0.5;
     margin-top: 0.1rem;
   }
-  .float-pill-cta {
+  .float-pill-right {
     display: flex;
     align-items: center;
     gap: 0.4rem;
-    padding: 0.5rem 0.85rem;
-    border-radius: 0.625rem;
-    background: #D94800;
-    color: #FAF3E8;
-    font-size: 0.75rem;
-    font-weight: 700;
-    white-space: nowrap;
-    transition: background 0.15s;
     flex-shrink: 0;
   }
-  .float-pill-btn:hover .float-pill-cta {
-    background: #FF5900;
+  .float-pill-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: rgba(250, 243, 232, 0.5);
+    white-space: nowrap;
+    transition: color 0.15s;
   }
-  .float-pill-cta--funded {
-    background: rgba(250, 243, 232, 0.15);
-  }
-  .float-pill-btn:hover .float-pill-cta--funded {
-    background: rgba(250, 243, 232, 0.15);
+  .float-pill-btn:hover .float-pill-label {
+    color: #FF5900;
   }
   /* Float pill chevron indicator */
   .float-pill-chevron {
@@ -965,13 +938,6 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
     margin-bottom: 0.625rem;
     box-shadow: 0 8px 32px rgba(26, 26, 26, 0.35);
     opacity: 1;
-  }
-  .float-panel-header {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.875rem 1rem 0.5rem;
-    border-bottom: 1px solid rgba(250, 243, 232, 0.08);
   }
 
   /* Hero overlay navigation buttons */
@@ -1096,22 +1062,11 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
     transition: width 0.6s ease;
   }
 
-  /* Expandable tier panel */
-  .float-tiers {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s cubic-bezier(0.2, 0, 0, 1), padding 0.3s;
-    padding: 0;
-  }
-  .float-tiers.expanded {
-    max-height: 400px;
-    padding: 0.75rem 0;
-  }
-
   .float-tier-option {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     width: 100%;
-    text-align: left;
     padding: 0.75rem 1rem;
     border: none;
     border-bottom: 1px solid rgba(250, 243, 232, 0.06);
@@ -1125,37 +1080,7 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
     border-bottom: none;
   }
   .float-tier-option:hover {
-    background: rgba(250, 243, 232, 0.06);
-  }
-  .float-tier-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-  }
-  .float-tier-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 0.5rem;
-    background: rgba(255, 89, 0, 0.12);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    color: #FF5900;
-    font-size: 0.85rem;
-  }
-  .float-tier-progress {
-    height: 3px;
-    background: rgba(250, 243, 232, 0.1);
-    border-radius: 999px;
-    overflow: hidden;
-    margin-top: 0.4rem;
-    margin-bottom: 0.25rem;
-  }
-  .float-tier-progress-fill {
-    height: 100%;
-    border-radius: 999px;
-    background: #FF5900;
+    background: rgba(250, 243, 232, 0.08);
   }
 
   /* Checkout mock modal */
