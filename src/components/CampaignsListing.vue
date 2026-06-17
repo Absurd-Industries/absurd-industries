@@ -81,51 +81,51 @@ function statusTagClass(status: string): string {
 
 <template>
   <div>
-    <!-- Search input -->
-    <div class="relative max-w-md mb-5">
-      <i
-        class="ph-bold ph-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-stencil"
-        style="font-size: 0.9rem"
-      ></i>
-      <input
-        v-model="searchText"
-        type="text"
-        placeholder="Search campaigns..."
-        class="w-full pl-10 pr-4 py-2.5 rounded-full border border-ink/10 bg-paper text-sm text-ink placeholder:text-kraft-dark focus:outline-none focus:border-stamp focus:ring-1 focus:ring-stamp/30 transition-colors"
-      />
-      <button
-        v-if="searchText"
-        class="absolute right-3 top-1/2 -translate-y-1/2 text-ink-faint hover:text-ink transition-colors"
-        @click="searchText = ''"
-      >
-        <i class="ph-bold ph-x" style="font-size: 0.8rem"></i>
-      </button>
-    </div>
+    <!-- Sticky search + filters -->
+    <div class="sticky-filters">
+      <!-- Search input -->
+      <div class="relative max-w-md mb-3">
+        <i
+          class="ph-bold ph-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-stencil"
+          style="font-size: 0.9rem"
+        ></i>
+        <input
+          v-model="searchText"
+          type="text"
+          placeholder="Search campaigns..."
+          class="w-full pl-10 pr-4 py-2.5 rounded-full border border-ink/10 bg-paper text-sm text-ink placeholder:text-kraft-dark focus:outline-none focus:border-stamp focus:ring-1 focus:ring-stamp/30 transition-colors"
+        />
+        <button
+          v-if="searchText"
+          class="absolute right-3 top-1/2 -translate-y-1/2 text-ink-faint hover:text-ink transition-colors"
+          @click="searchText = ''"
+        >
+          <i class="ph-bold ph-x" style="font-size: 0.8rem"></i>
+        </button>
+      </div>
 
-    <!-- Category filter pills -->
-    <div class="flex flex-wrap gap-2 mb-4">
-      <button
-        v-for="cat in categories"
-        :key="cat"
-        class="filter-pill"
-        :class="{ active: activeCategory === cat }"
-        @click="activeCategory = activeCategory === cat && cat !== 'All' ? 'All' : cat"
-      >
-        {{ cat }}
-      </button>
-    </div>
-
-    <!-- Status filter pills -->
-    <div class="flex flex-wrap gap-2 mb-6">
-      <button
-        v-for="s in statuses"
-        :key="s.id"
-        class="status-pill"
-        :class="{ active: activeStatus === s.id }"
-        @click="activeStatus = activeStatus === s.id && s.id !== 'All' ? 'All' : s.id"
-      >
-        {{ s.label }}
-      </button>
+      <!-- Filter pills — both rows combined -->
+      <div class="flex flex-wrap gap-2">
+        <button
+          v-for="cat in categories"
+          :key="cat"
+          class="filter-pill"
+          :class="{ active: activeCategory === cat }"
+          @click="activeCategory = activeCategory === cat && cat !== 'All' ? 'All' : cat"
+        >
+          {{ cat }}
+        </button>
+        <span class="filter-divider"></span>
+        <button
+          v-for="s in statuses"
+          :key="s.id"
+          class="status-pill"
+          :class="{ active: activeStatus === s.id }"
+          @click="activeStatus = activeStatus === s.id && s.id !== 'All' ? 'All' : s.id"
+        >
+          {{ s.label }}
+        </button>
+      </div>
     </div>
 
     <!-- Results count -->
@@ -274,6 +274,24 @@ function statusTagClass(status: string): string {
 </template>
 
 <style scoped>
+/* Sticky search + filter bar */
+.sticky-filters {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #D4B896;
+  padding: 0.75rem 0 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.filter-divider {
+  width: 1px;
+  height: 1.5rem;
+  background: rgba(26, 26, 26, 0.15);
+  align-self: center;
+  flex-shrink: 0;
+}
+
 /* Category filter pills */
 .filter-pill {
   display: inline-flex;

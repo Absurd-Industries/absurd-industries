@@ -74,9 +74,21 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
       rel="stylesheet"
     />
 
-    <!-- Icons -->
+    <!-- Icons: Phosphor (CSS only — bold + duotone weights used) -->
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css" />
+
+    <!-- Icons: FontAwesome (brands via Kit) -->
     <script src="https://kit.fontawesome.com/e0c6d65845.js" crossorigin="anonymous"></script>
-    <script is:inline src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+
+    <!-- Re-init FontAwesome SVG after client-side navigation -->
+    <script is:inline>
+    document.addEventListener('astro:page-load', function() {
+      if (window.FontAwesome && window.FontAwesome.dom) {
+        window.FontAwesome.dom.i2svg();
+      }
+    });
+    </script>
 
     <ClientRouter />
   </head>

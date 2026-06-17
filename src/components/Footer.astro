@@ -1,81 +1,140 @@
 ---
 /**
- * Site-wide footer with platform links, community links, resources, and legal.
+ * Site-wide footer — craft-style with angled logo, organized links.
  * Static component — no JS shipped.
  */
 ---
 
-<footer class="py-10" style="background: rgba(184,149,106,0.45);">
+<footer class="footer-wrap">
   <div class="max-w-5xl mx-auto px-5 sm:px-6">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-      <div>
-        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Platform</h4>
-        <ul class="space-y-2 text-sm list-none p-0 m-0">
-          <li><a href="/campaigns" class="footer-link"><i class="ph-duotone ph-rocket-launch"></i> Campaigns</a></li>
-          <li><a href="/makers" class="footer-link"><i class="ph-duotone ph-users-three"></i> Makers</a></li>
-          <li><a href="/requests" class="footer-link"><i class="ph-duotone ph-megaphone"></i> Requests</a></li>
-          <li><a href="/events" class="footer-link"><i class="ph-duotone ph-calendar-dots"></i> Events</a></li>
-        </ul>
+
+    <!-- Top section: angled logo + tagline -->
+    <div class="flex flex-col items-center mb-8 pt-2">
+      <a href="/" class="footer-logo-link">
+        <img src="/images/absurd-logo.png" alt="Absurd Industries" class="footer-logo" />
+      </a>
+      <p class="text-sm text-stencil text-center mt-3 max-w-xs leading-relaxed" style="font-weight:500;">
+        Pushing boundaries, making science<br class="hidden sm:inline" /> and technology more fun.
+      </p>
+    </div>
+
+    <!-- Links: compact horizontal layout -->
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4 class="footer-heading">Platform</h4>
+        <a href="/campaigns">Campaigns</a>
+        <a href="/makers">Makers</a>
+        <a href="/requests">Requests</a>
+        <a href="/events">Events</a>
       </div>
-      <div>
-        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Community</h4>
-        <ul class="space-y-2 text-sm list-none p-0 m-0">
-          <li><a href="https://discord.gg/DUSUtguG2H" target="_blank" rel="noopener" class="footer-link"><i class="fa-brands fa-discord"></i> Discord</a></li>
-          <li><a href="https://www.instagram.com/absurd.industries" target="_blank" rel="noopener" class="footer-link"><i class="fa-brands fa-instagram"></i> Instagram</a></li>
-          <li><a href="https://www.youtube.com/@absurd.industries" target="_blank" rel="noopener" class="footer-link"><i class="fa-brands fa-youtube"></i> YouTube</a></li>
-          <li><a href="https://www.linkedin.com/company/absurd-industries" target="_blank" rel="noopener" class="footer-link"><i class="fa-brands fa-linkedin"></i> LinkedIn</a></li>
-        </ul>
+      <div class="footer-col">
+        <h4 class="footer-heading">Community</h4>
+        <a href="https://discord.gg/DUSUtguG2H" target="_blank" rel="noopener"><i class="fa-brands fa-discord"></i> Discord</a>
+        <a href="https://www.instagram.com/absurd.industries" target="_blank" rel="noopener"><i class="fa-brands fa-instagram"></i> Instagram</a>
+        <a href="https://www.youtube.com/@absurd.industries" target="_blank" rel="noopener"><i class="fa-brands fa-youtube"></i> YouTube</a>
+        <a href="https://www.linkedin.com/company/absurd-industries" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
       </div>
-      <div>
-        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Resources</h4>
-        <ul class="space-y-2 text-sm list-none p-0 m-0">
-          <li><a href="/hardware-devroom" class="footer-link"><i class="ph-duotone ph-monitor"></i> Hardware Devroom</a></li>
-          <li><a href="/contact" class="footer-link"><i class="ph-duotone ph-envelope"></i> Contact</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Legal</h4>
-        <ul class="space-y-2 text-sm list-none p-0 m-0">
-          <li><a href="/privacy-policy" class="footer-link"><i class="ph-duotone ph-shield-check"></i> Privacy</a></li>
-          <li><a href="/terms-and-conditions" class="footer-link"><i class="ph-duotone ph-file-text"></i> Terms</a></li>
-          <li><a href="/policies" class="footer-link"><i class="ph-duotone ph-scroll"></i> Policies</a></li>
-        </ul>
+      <div class="footer-col">
+        <h4 class="footer-heading">More</h4>
+        <a href="/hardware-devroom">Hardware Devroom</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy-policy">Privacy</a>
+        <a href="/terms-and-conditions">Terms</a>
       </div>
     </div>
-    <div class="border-t border-ink/10 pt-5 flex flex-col sm:flex-row justify-between items-center gap-2">
-      <a href="/" class="flex items-center gap-2 no-underline text-ink hover:text-stamp transition-colors">
-        <img src="/images/absurd-logo.png" alt="Absurd Industries" class="h-6 w-auto" />
-        <span class="text-xs font-semibold">Absurd Industries</span>
-      </a>
-      <p class="text-xs text-ink-faint">
-        <span class="copyleft">&copy;</span> Copyleft 2023&ndash;2026. Made with curiosity in Bengaluru.
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+      <p class="text-xs text-stencil">
+        <span class="copyleft">&copy;</span> Copyleft 2023&ndash;2026 &middot; Made with curiosity in Bengaluru
       </p>
     </div>
   </div>
 </footer>
 
 <style>
-  .footer-link {
+  .footer-wrap {
+    background: rgba(184,149,106,0.35);
+    padding: 2.5rem 0 1.5rem;
+    border-top: 1px solid rgba(26,26,26,0.06);
+  }
+
+  .footer-logo-link {
+    display: block;
+    transition: transform 0.3s ease;
+  }
+  .footer-logo-link:hover {
+    transform: rotate(-5deg) scale(1.05);
+  }
+  .footer-logo {
+    height: 3.5rem;
+    width: auto;
+    transform: rotate(-3deg);
+    filter: drop-shadow(0 2px 6px rgba(26,26,26,0.12));
+  }
+
+  .footer-links {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  @media (max-width: 480px) {
+    .footer-links {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+    .footer-links .footer-col:last-child {
+      grid-column: span 2;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0 1.5rem;
+    }
+    .footer-links .footer-col:last-child .footer-heading {
+      width: 100%;
+    }
+  }
+
+  .footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .footer-heading {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #4A3D2F;
+    margin-bottom: 0.25rem;
+  }
+  .footer-col a {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.4rem;
+    font-size: 0.82rem;
+    font-weight: 500;
     color: #1A1A1A;
     text-decoration: none;
-    font-weight: 500;
     transition: color 0.15s;
   }
-  .footer-link:hover {
-    color: #FF5900;
-    text-decoration: underline;
+  .footer-col a:hover {
+    color: #D94800;
   }
-  .footer-link i {
-    font-size: 0.85rem;
-    width: 1rem;
+  .footer-col a i {
+    font-size: 0.8rem;
+    opacity: 0.5;
+    width: 0.9rem;
     text-align: center;
     flex-shrink: 0;
-    opacity: 0.6;
   }
-  .footer-link:hover i {
+  .footer-col a:hover i {
     opacity: 1;
+  }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(26,26,26,0.08);
+    padding-top: 1rem;
+    text-align: center;
   }
 </style>

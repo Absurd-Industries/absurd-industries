@@ -373,6 +373,10 @@
     background: #1A1A1A;
     z-index: 50;
     box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .bottom-bar--hidden {
+    transform: translateY(100%);
   }
 
   /* Bottom bar is phone-only — desktop uses DesktopNav */

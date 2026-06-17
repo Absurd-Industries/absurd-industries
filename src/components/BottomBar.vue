@@ -5,25 +5,54 @@
  * Hydrated with client:load since it's always visible.
  *
  * Primary tabs never change — Flutter-style persistent bottom nav.
+ * Hides on scroll down, reappears on scroll up.
  */
 
-import { ref } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import { bottomBarTabs, megaMenuItems } from "../data/navigation";
 
 const props = defineProps<{
-  /** Currently active tab slug, e.g. "campaigns" or "events" */
   activeTab?: string;
 }>();
 
 const megaMenuOpen = ref(false);
+const hidden = ref(false);
+
+let lastScrollY = 0;
+let ticking = false;
+
+function onScroll() {
+  if (ticking) return;
+  ticking = true;
+  requestAnimationFrame(() => {
+    const y = window.scrollY;
+    if (y > lastScrollY && y > 80) {
+      hidden.value = true;
+      megaMenuOpen.value = false;
+    } else {
+      hidden.value = false;
+    }
+    lastScrollY = y;
+    ticking = false;
+  });
+}
 
 function closeMegaMenu() {
   megaMenuOpen.value = false;
 }
+
+onMounted(() => {
+  lastScrollY = window.scrollY;
+  window.addEventListener('scroll', onScroll, { passive: true });
+});
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', onScroll);
+});
 </script>
 
 <template>
-  <nav class="bottom-bar">
+  <nav :class="['bottom-bar', { 'bottom-bar--hidden': hidden }]">
     <div class="grid grid-cols-5">
       <a
         v-for="tab in bottomBarTabs"
