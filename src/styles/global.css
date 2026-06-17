@@ -24,14 +24,7 @@
     background-image: url('/images/kraft-paper.jpg');
     background-repeat: repeat;
     background-size: auto;
-    padding-bottom: 72px;              /* room for the fixed bottom bar (phone) */
     font-weight: 450;
-  }
-
-  @media (min-width: 1024px) {
-    body {
-      padding-bottom: 0;              /* desktop uses floating DesktopNav instead */
-    }
   }
 
   html.dark body {

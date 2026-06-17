@@ -117,7 +117,7 @@ function spotsLeft(event: AbsurdEvent): number | null {
     </p>
 
     <!-- Event cards -->
-    <div class="space-y-3">
+    <div class="event-grid">
       <div
         v-for="event in filteredEvents"
         :key="event.slug"
@@ -178,6 +178,17 @@ function spotsLeft(event: AbsurdEvent): number | null {
 </template>
 
 <style scoped>
+.event-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+@media (min-width: 1024px) {
+  .event-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 .event-item {
   display: flex;
   align-items: flex-start;
