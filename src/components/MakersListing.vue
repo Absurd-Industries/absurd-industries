@@ -44,41 +44,6 @@ const filteredMakers = computed(() => {
   return result;
 });
 
-function generateBarcode(slug: string): number[] {
-  const bars: number[] = [];
-  const count = 30;
-  let hash = 0;
-  for (const ch of slug) {
-    hash = ((hash << 5) - hash + ch.charCodeAt(0)) | 0;
-  }
-  for (let i = 0; i < count; i++) {
-    hash = ((hash * 1103515245 + 12345) >>> 0) & 0x7fffffff;
-    bars.push(8 + (hash % 16));
-  }
-  return bars;
-}
-
-function generateMemberId(slug: string): string {
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  let hash = 0;
-  for (const ch of slug) {
-    hash = ((hash << 5) - hash + ch.charCodeAt(0)) | 0;
-  }
-  let id = "";
-  for (let i = 0; i < 6; i++) {
-    hash = ((hash * 1103515245 + 12345) >>> 0) & 0x7fffffff;
-    id += chars[hash % chars.length];
-  }
-  return id;
-}
-
-function getIdNum(slug: string): string {
-  const h = Math.abs(
-    Array.from(slug).reduce((a, c) => ((a << 5) - a + c.charCodeAt(0)) | 0, 0)
-  ) % 10000;
-  return String(h).padStart(4, "0");
-}
-
 function getInitial(name: string): string {
   return name.charAt(0).toUpperCase();
 }
@@ -129,7 +94,7 @@ function getInitial(name: string): string {
         class="card card-hover id-card no-underline text-ink block group"
       >
         <div class="card-bg"></div>
-        <div class="card-content flex flex-col">
+        <div class="card-content flex flex-col h-full">
 
           <!-- Black jagged top bar with avatar + name -->
           <div class="id-card-header">
@@ -179,37 +144,11 @@ function getInitial(name: string): string {
             </span>
           </div>
 
-          <!-- Stats row -->
-          <div class="px-5 pt-4 flex items-center gap-5">
-            <div class="text-center">
-              <div class="text-lg font-bold font-serif leading-none">{{ maker.projects }}</div>
-              <div class="text-[0.6rem] text-ink-faint uppercase tracking-wide mt-0.5">Projects</div>
-            </div>
-            <div class="w-px h-8 bg-ink/10"></div>
-            <div class="text-center">
-              <div class="text-lg font-bold font-serif leading-none">{{ maker.backers }}</div>
-              <div class="text-[0.6rem] text-ink-faint uppercase tracking-wide mt-0.5">Backers</div>
-            </div>
-          </div>
-
           <!-- Perforation + bottom section -->
-          <div class="mt-4 mx-4 perforation"></div>
-          <div class="px-5 pt-3 pb-4 flex items-end justify-between">
-            <div>
-              <div class="barcode">
-                <span
-                  v-for="(h, i) in generateBarcode(maker.slug)"
-                  :key="i"
-                  :style="{ height: h + 'px' }"
-                ></span>
-              </div>
-              <div class="text-[0.55rem] text-ink-faint/40 font-mono mt-1 tracking-widest">
-                AI-{{ getIdNum(maker.slug) }}-{{ generateMemberId(maker.slug) }}
-              </div>
-            </div>
-
+          <div class="mt-auto mx-4 perforation"></div>
+          <div class="px-5 pt-3 pb-4 flex items-end justify-end">
             <span class="text-stamp font-semibold text-sm flex items-center gap-1 flex-shrink-0 group-hover:underline">
-              Profile
+              Open
               <i class="ph-bold ph-arrow-right text-xs"></i>
             </span>
           </div>
@@ -279,25 +218,6 @@ function getInitial(name: string): string {
   border-radius: 50%;
   border: 2px solid rgba(250, 243, 232, 0.15);
   flex-shrink: 0;
-}
-
-.barcode {
-  display: flex;
-  align-items: flex-end;
-  gap: 1px;
-  height: 24px;
-  opacity: 0.2;
-}
-.barcode span {
-  display: block;
-  background: #1A1A1A;
-  width: 2px;
-}
-.barcode span:nth-child(3n) {
-  width: 3px;
-}
-.barcode span:nth-child(5n) {
-  width: 1px;
 }
 
 .perforation {

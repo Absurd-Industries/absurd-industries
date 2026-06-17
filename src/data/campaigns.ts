@@ -3,7 +3,7 @@ import type { Campaign } from "../types";
 export const campaigns: Campaign[] = [
   {
     slug: "lampy-open-source-desk-lamp",
-    title: "Lampy — The Open-Source Desk Lamp",
+    title: "Lampy -The Open-Source Desk Lamp",
     tagline:
       "A modular, repairable LED desk lamp with adjustable color temperature.",
     icon: "ph-bold ph-lamp",
@@ -24,7 +24,7 @@ export const campaigns: Campaign[] = [
   },
   {
     slug: "soilpulse-open-moisture-sensor",
-    title: "SoilPulse — Open Moisture Sensor Network",
+    title: "SoilPulse -Open Moisture Sensor Network",
     tagline:
       "LoRa-connected soil sensors for small farms. Solar-powered nodes that last 3 years.",
     icon: "ph-bold ph-plant",
@@ -46,7 +46,7 @@ export const campaigns: Campaign[] = [
   },
   {
     slug: "tinytracker-gps-wildlife",
-    title: "TinyTracker — GPS Module for Wildlife",
+    title: "TinyTracker -GPS Module for Wildlife",
     tagline:
       "A 4-gram solar-powered GPS tracker for bird migration research.",
     icon: "ph-bold ph-map-pin",
@@ -67,7 +67,7 @@ export const campaigns: Campaign[] = [
   },
   {
     slug: "hexwrench-parametric-multitool",
-    title: "HexWrench — Parametric Multitool",
+    title: "HexWrench -Parametric Multitool",
     tagline:
       "A 3D-printable, customizable hex wrench set generated from OpenSCAD parameters.",
     icon: "ph-bold ph-wrench",
@@ -88,7 +88,7 @@ export const campaigns: Campaign[] = [
   },
   {
     slug: "breathbox-air-quality-monitor",
-    title: "BreathBox — Open Air Quality Monitor",
+    title: "BreathBox -Open Air Quality Monitor",
     tagline:
       "Indoor air quality station measuring CO2, PM2.5, VOCs, and humidity.",
     icon: "ph-bold ph-wind",
@@ -109,7 +109,7 @@ export const campaigns: Campaign[] = [
   },
   {
     slug: "logicbuddy-learn-digital-circuits",
-    title: "LogicBuddy — Learn Digital Circuits",
+    title: "LogicBuddy -Learn Digital Circuits",
     tagline:
       "A tactile logic gate learning kit with magnetic snap-together modules.",
     icon: "ph-bold ph-circuit-board",
@@ -129,7 +129,7 @@ export const campaigns: Campaign[] = [
   },
   {
     slug: "crateamp-portable-speaker",
-    title: "CrateAmp — Portable Open-Source Speaker",
+    title: "CrateAmp -Portable Open-Source Speaker",
     tagline:
       "A 20W portable speaker built into a laser-cut wooden crate. Class-D amp PCB included.",
     icon: "ph-bold ph-speaker-high",
@@ -150,7 +150,7 @@ export const campaigns: Campaign[] = [
   },
   {
     slug: "picoprobe-usb-logic-analyzer",
-    title: "PicoProbe — USB Logic Analyzer",
+    title: "PicoProbe -USB Logic Analyzer",
     tagline:
       "An RP2040-based 8-channel logic analyzer with a web UI. Captures at 100 MHz.",
     icon: "ph-bold ph-cpu",
@@ -171,7 +171,7 @@ export const campaigns: Campaign[] = [
   },
   {
     slug: "growframe-vertical-garden-controller",
-    title: "GrowFrame — Vertical Garden Controller",
+    title: "GrowFrame -Vertical Garden Controller",
     tagline:
       "Automated vertical garden with open irrigation, grow-light scheduling, and nutrient dosing.",
     icon: "ph-bold ph-potted-plant",
@@ -192,7 +192,7 @@ export const campaigns: Campaign[] = [
   },
   {
     slug: "supersaber-open-lightsaber-kit",
-    title: "SuperSaber — Open Lightsaber Kit",
+    title: "SuperSaber -Open Lightsaber Kit",
     tagline:
       "A smooth-swing, sound-reactive lightsaber with swappable blade colors. Arduino-compatible.",
     icon: "ph-bold ph-lightning",

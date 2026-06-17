@@ -1,11 +1,11 @@
 <script setup lang="ts">
 /**
- * Campaigns listing island — handles search, category filter, status filter,
+ * Campaigns listing island - handles search, category filter, status filter,
  * and renders the campaign card grid. Receives all campaigns as a prop from
  * the Astro page and manages client-side filtering.
  */
 
-import { ref, computed } from "vue";
+import { ref, computed, onMounted, onUnmounted } from "vue";
 import type { Campaign } from "../types";
 
 const props = defineProps<{
@@ -65,6 +65,29 @@ const filteredCampaigns = computed(() => {
   return items;
 });
 
+// --- Scroll-hide search bar ---
+const searchHidden = ref(false);
+let lastScrollY = 0;
+let ticking = false;
+
+function onScroll() {
+  if (ticking) return;
+  ticking = true;
+  requestAnimationFrame(() => {
+    const y = window.scrollY;
+    if (y > 80 && y > lastScrollY) {
+      searchHidden.value = true;
+    } else {
+      searchHidden.value = false;
+    }
+    lastScrollY = y;
+    ticking = false;
+  });
+}
+
+onMounted(() => window.addEventListener("scroll", onScroll, { passive: true }));
+onUnmounted(() => window.removeEventListener("scroll", onScroll));
+
 // --- Helpers ---
 function statusLabel(status: string): string {
   if (status === "live") return "Live";
@@ -81,48 +104,47 @@ function statusTagClass(status: string): string {
 
 <template>
   <div>
-    <!-- Sticky search + filters -->
-    <div class="sticky-filters">
-      <!-- Search bar -->
-      <div class="search-bar">
-        <i class="ph-bold ph-magnifying-glass search-icon"></i>
+    <!-- Search bar (hides on scroll down) -->
+    <div class="search-wrap" :class="{ 'search-wrap--hidden': searchHidden }">
+      <div class="relative max-w-md">
+        <i class="ph-bold ph-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-stencil" style="font-size:0.9rem"></i>
         <input
           v-model="searchText"
           type="text"
           placeholder="Search campaigns..."
-          class="search-input"
+          class="w-full pl-10 pr-4 py-2.5 rounded-full border border-ink/10 bg-paper text-sm text-ink placeholder:text-kraft-dark focus:outline-none focus:border-stamp focus:ring-1 focus:ring-stamp/30 transition-colors"
         />
         <button
           v-if="searchText"
-          class="search-clear"
+          class="absolute right-3 top-1/2 -translate-y-1/2 text-ink-faint hover:text-ink transition-colors"
           @click="searchText = ''"
         >
-          <i class="ph-bold ph-x"></i>
+          <i class="ph-bold ph-x" style="font-size:0.8rem"></i>
         </button>
       </div>
+    </div>
 
-      <!-- Scrollable filter strip -->
-      <div class="filter-strip">
-        <button
-          v-for="cat in categories"
-          :key="cat"
-          class="filter-chip"
-          :class="{ active: activeCategory === cat }"
-          @click="activeCategory = activeCategory === cat && cat !== 'All' ? 'All' : cat"
-        >
-          {{ cat }}
-        </button>
-        <span class="filter-dot"></span>
-        <button
-          v-for="s in statuses"
-          :key="s.id"
-          class="filter-chip filter-chip--status"
-          :class="{ active: activeStatus === s.id }"
-          @click="activeStatus = activeStatus === s.id && s.id !== 'All' ? 'All' : s.id"
-        >
-          {{ s.label }}
-        </button>
-      </div>
+    <!-- Filter pills -->
+    <div class="flex flex-wrap gap-1.5 mb-2">
+      <button
+        v-for="cat in categories"
+        :key="cat"
+        class="filter-pill"
+        :class="{ active: activeCategory === cat }"
+        @click="activeCategory = activeCategory === cat && cat !== 'All' ? 'All' : cat"
+      >
+        {{ cat }}
+      </button>
+      <span class="filter-dot"></span>
+      <button
+        v-for="s in statuses"
+        :key="s.id"
+        class="filter-pill filter-pill--status"
+        :class="{ active: activeStatus === s.id }"
+        @click="activeStatus = activeStatus === s.id && s.id !== 'All' ? 'All' : s.id"
+      >
+        {{ s.label }}
+      </button>
     </div>
 
     <!-- Results count -->
@@ -271,114 +293,49 @@ function statusTagClass(status: string): string {
 </template>
 
 <style scoped>
-/* Sticky search + filter bar */
-.sticky-filters {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background: rgba(212, 184, 150, 0.97);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  padding: 0.6rem 0 0.5rem;
-  margin-bottom: 1rem;
+/* Search bar - slides up on scroll */
+.search-wrap {
+  margin-bottom: 0.75rem;
+  transition: opacity 0.2s, max-height 0.25s, margin 0.25s;
+  max-height: 60px;
+  overflow: hidden;
 }
-
-/* Search bar */
-.search-bar {
-  position: relative;
-  margin-bottom: 0.5rem;
-}
-.search-icon {
-  position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1rem;
-  color: #4A3D2F;
+.search-wrap--hidden {
+  opacity: 0;
+  max-height: 0;
+  margin-bottom: 0;
   pointer-events: none;
 }
-.search-input {
-  width: 100%;
-  padding: 0.65rem 2.5rem 0.65rem 2.75rem;
-  border-radius: 0.75rem;
-  border: 1.5px solid rgba(26, 26, 26, 0.1);
-  background: #FAF3E8;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #1A1A1A;
-  transition: border-color 0.15s, box-shadow 0.15s;
-  box-shadow: 0 1px 3px rgba(26, 26, 26, 0.06);
-}
-.search-input::placeholder {
-  color: #B8956A;
-  font-weight: 450;
-}
-.search-input:focus {
-  outline: none;
-  border-color: #D94800;
-  box-shadow: 0 1px 3px rgba(26, 26, 26, 0.06), 0 0 0 3px rgba(217, 72, 0, 0.08);
-}
-.search-clear {
-  position: absolute;
-  right: 0.75rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #4A3D2F;
-  font-size: 0.8rem;
-  padding: 0.25rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  opacity: 0.5;
-  transition: opacity 0.15s;
-}
-.search-clear:hover {
-  opacity: 1;
-}
 
-/* Filter strip — horizontally scrollable */
-.filter-strip {
-  display: flex;
-  gap: 0.35rem;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  padding-bottom: 2px;
-}
-.filter-strip::-webkit-scrollbar {
-  display: none;
-}
-
-.filter-chip {
+/* Filter pills - matches requests page style */
+.filter-pill {
   display: inline-flex;
   align-items: center;
   padding: 0.3rem 0.75rem;
-  border-radius: 0.5rem;
-  font-size: 0.72rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
   font-weight: 600;
   border: 1.5px solid rgba(26, 26, 26, 0.12);
-  background: rgba(250, 243, 232, 0.6);
-  color: #4A3D2F;
+  background: transparent;
+  color: #6b5b4a;
   cursor: pointer;
   transition: all 0.15s;
   white-space: nowrap;
-  flex-shrink: 0;
 }
-.filter-chip:hover {
-  border-color: #1A1A1A;
-  color: #1A1A1A;
-  background: rgba(250, 243, 232, 0.9);
+.filter-pill:hover {
+  border-color: #1a1a1a;
+  color: #1a1a1a;
 }
-.filter-chip.active {
-  background: #1A1A1A;
-  color: #FAF3E8;
-  border-color: #1A1A1A;
+.filter-pill.active {
+  background: #1a1a1a;
+  color: #faf3e8;
+  border-color: #1a1a1a;
 }
 
-.filter-chip--status {
+.filter-pill--status {
   border-style: dashed;
 }
-.filter-chip--status.active {
+.filter-pill--status.active {
   border-style: solid;
 }
 

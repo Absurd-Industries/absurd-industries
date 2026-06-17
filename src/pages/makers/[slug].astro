@@ -36,9 +36,6 @@ const bannerAccent = "#FF5900";
 const initial = maker.name.charAt(0).toUpperCase();
 const firstName = maker.name.split(" ")[0];
 
-/** Mock level based on projects + backers */
-const level = Math.min(Math.floor((maker.projects * 2 + maker.backers / 20)), 30);
-
 /** Showcase — first project (mock campaign data) */
 const showcase = {
   name: `${firstName}'s Featured Project`,
@@ -261,7 +258,7 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
 ---
 
 <BaseLayout
-  title={`${maker.name} — ${maker.title}`}
+  title={`${maker.name} - ${maker.title}`}
   description={maker.bio ?? `${maker.name} is a ${maker.title} from ${maker.location} on Absurd Industries.`}
   activeTab="makers"
   hideNav
@@ -297,36 +294,25 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
         <div class="relative z-10 px-6 py-8 sm:px-10 sm:py-10">
           <div class="banner-layout">
 
-            <!-- Hexagon Avatar -->
+            <!-- Octagon Avatar -->
             <div class="relative flex-shrink-0">
-              <div class="hex-avatar">
+              <div class="oct-avatar">
                 {maker.avatar ? (
-                  <img src={maker.avatar} alt={maker.name} class="hex-avatar-img" />
+                  <img src={maker.avatar} alt={maker.name} class="oct-avatar-img" />
                 ) : (
                   <span class="font-serif font-bold text-4xl sm:text-5xl text-ink-faint/40 select-none">{initial}</span>
                 )}
               </div>
-              <div class="status-online"></div>
             </div>
 
-            <!-- Name + rank -->
+            <!-- Name + info -->
             <div class="banner-name-section">
               <div class="flex flex-wrap items-center gap-2 sm:gap-3">
                 <h1 class="font-serif font-bold text-xl sm:text-2xl md:text-3xl text-paper tracking-tight leading-tight">{maker.name}</h1>
-                <div class="level-badge" title={`Level ${level}`}>{level}</div>
                 <span class="tag" style="background:rgba(42,95,65,0.25); color:#7FE0A0; font-size:0.6rem;">
                   <i class="ph-bold ph-seal-check mr-1" style="font-size:0.55rem;"></i>
                   Verified
                 </span>
-              </div>
-              <p class="text-kraft text-sm mt-1 truncate">{maker.title}</p>
-              <div class="flex flex-wrap items-center gap-3 mt-2 text-xs text-kraft-light">
-                <span class="flex items-center gap-1">
-                  <span class="w-2 h-2 rounded-full bg-funded inline-block"></span>
-                  Online now
-                </span>
-                <span class="opacity-50 hidden sm:inline">|</span>
-                <span class="hidden sm:inline">Last active 2 hours ago</span>
               </div>
               <div class="flex flex-wrap items-center gap-3 mt-2 text-xs text-kraft-light">
                 <span class="flex items-center gap-1">
@@ -334,22 +320,12 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
                   {maker.location}
                 </span>
                 <span>·</span>
-                <span>Member since 2024</span>
-                <span>·</span>
                 <span>{maker.specialty}</span>
               </div>
             </div>
 
             <!-- Action buttons -->
             <div class="banner-actions">
-              <button
-                class="btn btn-sm"
-                style="border-color: rgba(250,243,232,0.3); color: #FAF3E8; background: transparent; border: 1.5px solid rgba(250,243,232,0.3);"
-                onclick="window.__comingSoon && window.__comingSoon('Follow', 'Follow this maker to get notified when they launch new projects or post updates.')"
-              >
-                <i class="ph-bold ph-plus mr-1.5" style="font-size:0.75rem;"></i>
-                Follow
-              </button>
               <button
                 class="btn btn-sm"
                 style="background:rgba(250,243,232,0.12); color:#FAF3E8; border:1.5px solid rgba(250,243,232,0.2);"
@@ -395,15 +371,18 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
                     </button>
                   </div>
 
-                  <!-- Workspace photo placeholders -->
+                  <!-- Workspace photos -->
                   <div class="mb-5">
-                    <div class="text-xs font-semibold uppercase tracking-wider text-kraft-dark mb-3">Workspace Photos</div>
                     <div class="grid grid-cols-3 gap-2">
-                      {[1, 2, 3].map(() => (
-                        <div class="aspect-video rounded-lg flex items-center justify-center" style="background:rgba(250,243,232,0.08);">
-                          <i class="ph-bold ph-image text-xl text-paper/20"></i>
-                        </div>
-                      ))}
+                      <div class="aspect-video rounded-lg overflow-hidden">
+                        <img src="/images/projects/workdesk.jpg" alt="Workshop" class="w-full h-full object-cover" loading="lazy" />
+                      </div>
+                      <div class="aspect-video rounded-lg overflow-hidden">
+                        <img src="/images/projects/workdesk-ii.jpg" alt="Workspace" class="w-full h-full object-cover" loading="lazy" />
+                      </div>
+                      <div class="aspect-video rounded-lg overflow-hidden">
+                        <img src="/images/projects/drone-on-cutting-mat.jpg" alt="Project in progress" class="w-full h-full object-cover" loading="lazy" />
+                      </div>
                     </div>
                   </div>
 
@@ -427,6 +406,18 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
                     View full lab inventory
                     <i class="ph-bold ph-arrow-right text-xs"></i>
                   </button>
+
+                  {externalLinks.length > 0 && (
+                    <div class="mt-5 pt-5 border-t border-paper/10 space-y-2.5">
+                      {externalLinks.map((link) => (
+                        <a href={link.url} target="_blank" rel="noopener" class="flex items-center gap-2.5 text-sm text-kraft hover:text-stamp transition-colors no-underline group">
+                          <i class={`${link.iconClass} text-base text-kraft-dark group-hover:text-stamp transition-colors`}></i>
+                          <span class="font-medium">{link.label}</span>
+                          <i class="ph-bold ph-arrow-square-out text-xs text-paper/30 ml-auto"></i>
+                        </a>
+                      ))}
+                    </div>
+                  )}
                 </div>
             </div>
 
@@ -574,20 +565,6 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
           <!-- ── QUICK INFO + SKILLS ── -->
           <Card>
             <div class="p-5 sm:p-6">
-              <!-- Links -->
-              {externalLinks.length > 0 && (
-                <div class="space-y-2.5">
-                  {externalLinks.map((link) => (
-                    <a href={link.url} target="_blank" rel="noopener" class="flex items-center gap-2.5 text-sm text-ink hover:text-stamp transition-colors no-underline group">
-                      <i class={`${link.iconClass} text-base text-ink-faint group-hover:text-stamp transition-colors`}></i>
-                      <span class="font-medium">{link.label}</span>
-                      <i class="ph-bold ph-arrow-square-out text-xs text-ink-faint/50 ml-auto"></i>
-                    </a>
-                  ))}
-                </div>
-              )}
-            </div>
-            <div class="border-t border-ink/5 p-5 sm:p-6">
               <h3 class="font-serif font-bold text-base mb-4">Skills & Tools</h3>
 
               <div class="mb-4">
@@ -619,11 +596,11 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
   <nav class="profile-nav">
     <div class="max-w-5xl mx-auto px-5 sm:px-6">
       <div class="profile-nav-inner">
-        <a href="#about" class="profile-nav-pill">About</a>
-        <a href="#setup" class="profile-nav-pill">Setup</a>
-        <a href="#projects" class="profile-nav-pill">Projects</a>
-        <a href="#wall" class="profile-nav-pill">Log</a>
-        <a href="#badges" class="profile-nav-pill">Badges</a>
+        <a href="#about" class="profile-nav-pill"><i class="ph-bold ph-user"></i> About</a>
+        <a href="#setup" class="profile-nav-pill"><i class="ph-bold ph-wrench"></i> Setup</a>
+        <a href="#projects" class="profile-nav-pill"><i class="ph-bold ph-folder-open"></i> Projects</a>
+        <a href="#wall" class="profile-nav-pill"><i class="ph-bold ph-chat-circle"></i> Log</a>
+        <a href="#badges" class="profile-nav-pill"><i class="ph-bold ph-medal"></i> Badges</a>
       </div>
     </div>
   </nav>
@@ -744,63 +721,27 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
     }
   }
 
-  /* Hexagon avatar */
-  .hex-avatar {
+  /* Octagon avatar */
+  .oct-avatar {
     width: 96px;
     height: 96px;
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
     background: #FAF3E8;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     overflow: hidden;
   }
-  .hex-avatar-img {
+  .oct-avatar-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
   @media (min-width: 640px) {
-    .hex-avatar {
+    .oct-avatar {
       width: 112px;
       height: 112px;
     }
-  }
-
-  /* Online status dot */
-  .status-online {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #2A5F41;
-    border: 2px solid #1A1A1A;
-    position: absolute;
-    bottom: 2px;
-    right: 2px;
-  }
-  @keyframes blink-online {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-  }
-  .status-online {
-    animation: blink-online 3s ease-in-out infinite;
-  }
-
-  /* Level badge */
-  .level-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 0.5rem;
-    background: linear-gradient(135deg, #D94800, #CC4700);
-    color: #FAF3E8;
-    font-family: 'Fraunces', Georgia, serif;
-    font-weight: 800;
-    font-size: 0.875rem;
-    box-shadow: 0 2px 8px rgba(217, 72, 0, 0.3);
   }
 
   /* Showcase section */
@@ -897,9 +838,8 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
     border-top: none;
     position: relative;
     overflow: hidden;
-    border-radius: 0.5rem;
+    border-radius: 0.75rem;
     margin: 0 0.5rem;
-    filter: url(#papercut);
     padding: 1.5rem;
   }
   @media (min-width: 640px) {
@@ -909,7 +849,6 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
     .profile-section--dark {
       padding: 2rem;
       margin: 0 0.75rem;
-      border-radius: 0.75rem;
     }
   }
 
@@ -953,6 +892,7 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 0.3rem;
     padding: 0.5rem 0.75rem;
     border-radius: 0.5rem;
     font-size: 0.7rem;

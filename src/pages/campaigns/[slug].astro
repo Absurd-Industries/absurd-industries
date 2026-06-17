@@ -1057,7 +1057,7 @@ document.querySelectorAll('.share-float-btn').forEach(function(btn) {
     opt.addEventListener('click', function() {
       var name = opt.getAttribute('data-tier-name');
       var price = opt.getAttribute('data-tier-price');
-      modalTitle.textContent = name + ' — ' + price;
+      modalTitle.textContent = name + ' - ' + price;
       modalDesc.textContent = 'This will redirect you to the checkout page for the ' + name + ' tier. Payment processing is coming soon.';
       modal.classList.add('active');
       tiers.classList.remove('expanded');
