@@ -157,37 +157,24 @@ const upcomingEvents = [...events]
         </p>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {featuredMakers.map((maker) => (
-            <a href={`/makers/${maker.slug}`} class="card card-hover block no-underline text-ink group maker-id-card">
-              <div class="card-bg"></div>
-              <div class="card-content flex flex-col">
-                <div class="maker-card-header" style={`--header-bg: ${maker.avatarColor}`}>
-                  <div class="flex items-center gap-3 flex-1 min-w-0">
-                    {maker.avatar ? (
-                      <img
-                        src={maker.avatar}
-                        alt={maker.name}
-                        class="maker-octagon-avatar"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div class="maker-octagon-fallback" style={`background: ${maker.avatarColor}`}>
-                        <span>{maker.name.charAt(0)}</span>
-                      </div>
-                    )}
-                    <div class="min-w-0">
-                      <h3 class="text-white font-serif font-bold text-base leading-tight truncate group-hover:text-stamp transition-colors">{maker.name}</h3>
-                      <span class="text-white/40 text-[0.55rem] font-semibold uppercase tracking-widest">{maker.specialty}</span>
-                    </div>
+            <a href={`/makers/${maker.slug}`} class="maker-mini-card group no-underline block" style={`--card-bg: ${maker.avatarColor}`}>
+              <div class="maker-mini-inner">
+                <div class="maker-mini-punch"></div>
+                {maker.avatar ? (
+                  <img src={maker.avatar} alt={maker.name} class="maker-mini-avatar" loading="lazy" />
+                ) : (
+                  <div class="maker-mini-avatar-fb">
+                    <span>{maker.name.charAt(0)}</span>
                   </div>
-                  <div class="maker-punch-hole"></div>
+                )}
+                <h3 class="maker-mini-name">{maker.name}</h3>
+                <div class="maker-mini-meta">
+                  <i class="ph-bold ph-map-pin" style="font-size:0.5rem;"></i>
+                  {maker.location}
+                  <span style="opacity:0.4;">&middot;</span>
+                  {maker.specialty}
                 </div>
-                <div class="px-4 pt-3 pb-4">
-                  <p class="text-xs text-ink-light leading-relaxed line-clamp-2">{maker.bio ?? maker.title}</p>
-                  <p class="text-[0.65rem] text-ink-faint mt-1.5 flex items-center gap-1">
-                    <i class="ph-bold ph-map-pin text-stamp" style="font-size:0.55rem;"></i>
-                    {maker.location}
-                  </p>
-                </div>
+                <p class="maker-mini-bio">{maker.bio ?? maker.title}</p>
               </div>
             </a>
           ))}
@@ -375,58 +362,110 @@ const upcomingEvents = [...events]
     }
   }
 
-  /* Maker ID cards on homepage */
-  .maker-id-card {
-    position: relative;
+  /* Maker mini cards - full-color, matching listing */
+  .maker-mini-card {
+    display: block;
+    border-radius: 0.875rem;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
   }
-  .maker-card-header {
-    padding: 0.75rem 1rem;
-    border-radius: 0.875rem 0.875rem 0 0;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
+  .maker-mini-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(26, 26, 26, 0.15);
+  }
+  .maker-mini-inner {
     position: relative;
+    background: var(--card-bg, #1A1A1A);
+    border-radius: 0.875rem;
+    padding: 1rem 1rem 0.85rem;
     overflow: hidden;
   }
-  .maker-card-header::before {
+  .maker-mini-inner::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: var(--header-bg, #1A1A1A);
-    border-radius: 0.875rem 0.875rem 0 0;
+    background: var(--card-bg, #1A1A1A);
+    background-image: repeating-linear-gradient(
+      135deg, transparent, transparent 20px,
+      rgba(250,243,232,0.03) 20px, rgba(250,243,232,0.03) 22px
+    );
     filter: url(#papercut);
     z-index: 0;
+    pointer-events: none;
   }
-  .maker-card-header > * {
+  .maker-mini-inner > * {
     position: relative;
     z-index: 1;
   }
-  .maker-octagon-avatar {
-    width: 40px;
-    height: 40px;
+  .maker-mini-punch {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--card-bg, #1A1A1A);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.4), 0 0 0 2px rgba(255,255,255,0.08);
+    z-index: 2;
+  }
+  .maker-mini-punch::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    background: #D4B896;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
+  }
+  .maker-mini-avatar {
+    width: 48px;
+    height: 48px;
     object-fit: cover;
     clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
-    flex-shrink: 0;
+    margin-bottom: 0.5rem;
   }
-  .maker-octagon-fallback {
-    width: 40px;
-    height: 40px;
+  .maker-mini-avatar-fb {
+    width: 48px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
     clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+    background: rgba(250,243,232,0.15);
     color: #FAF3E8;
     font-weight: 700;
     font-family: 'Fraunces', serif;
-    font-size: 1rem;
-    flex-shrink: 0;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
   }
-  .maker-punch-hole {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    border: 2px solid rgba(250, 243, 232, 0.15);
-    flex-shrink: 0;
+  .maker-mini-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #FAF3E8;
+    line-height: 1.2;
+    margin: 0;
+    transition: color 0.15s;
+  }
+  .maker-mini-card:hover .maker-mini-name {
+    color: #FF5900;
+  }
+  .maker-mini-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.6rem;
+    color: rgba(250,243,232,0.45);
+    margin-top: 0.2rem;
+  }
+  .maker-mini-bio {
+    font-size: 0.7rem;
+    color: rgba(250,243,232,0.55);
+    line-height: 1.5;
+    margin: 0.5rem 0 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   /* Microcard — compact interactive item */

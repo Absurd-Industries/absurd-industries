@@ -113,65 +113,60 @@ function getInitial(name: string): string {
         v-for="maker in filteredMakers"
         :key="maker.slug"
         :href="`/makers/${maker.slug}`"
-        class="card card-hover id-card no-underline text-ink block group"
+        class="id-card no-underline block group"
+        :style="{ '--card-bg': maker.avatarColor }"
       >
-        <div class="card-bg"></div>
-        <div class="card-content flex flex-col h-full">
+        <div class="id-card-inner">
+          <!-- Punch hole on right -->
+          <div class="id-punch"></div>
 
-          <!-- Black jagged top bar with avatar + name -->
-          <div class="id-card-header" :style="{ '--header-bg': maker.avatarColor }">
-            <div class="flex items-center gap-3 flex-1 min-w-0">
-              <!-- Octagon avatar -->
-              <div class="octagon-avatar-wrap">
-                <img
-                  v-if="maker.avatar"
-                  :src="maker.avatar"
-                  :alt="maker.name"
-                  class="octagon-avatar"
-                />
-                <div
-                  v-else
-                  class="octagon-avatar-fallback"
-                  :style="{ background: maker.avatarColor }"
-                >
-                  <span>{{ getInitial(maker.name) }}</span>
-                </div>
-              </div>
-              <div class="min-w-0">
-                <h3 class="text-white font-serif font-bold text-lg leading-tight truncate group-hover:text-stamp transition-colors">{{ maker.name }}</h3>
-                <span class="text-white/40 text-[0.6rem] font-semibold uppercase tracking-widest">{{ maker.specialty }}</span>
-              </div>
+          <!-- Avatar -->
+          <div class="id-avatar-wrap">
+            <img
+              v-if="maker.avatar"
+              :src="maker.avatar"
+              :alt="maker.name"
+              class="id-avatar"
+            />
+            <div
+              v-else
+              class="id-avatar-fallback"
+            >
+              <span>{{ getInitial(maker.name) }}</span>
             </div>
-            <!-- Punch hole -->
-            <div class="punch-hole"></div>
           </div>
 
-          <!-- Title + Location -->
-          <div class="px-5 pt-4">
-            <p class="text-sm text-ink-light">{{ maker.title }}</p>
-            <p class="text-xs text-ink-faint mt-1.5 flex items-center gap-1">
-              <i class="ph-bold ph-map-pin text-xs text-stamp"></i>
-              {{ maker.location }}
-            </p>
+          <!-- Name + meta -->
+          <h3 class="id-name">{{ maker.name }}</h3>
+          <div class="id-meta">
+            <i class="ph-bold ph-map-pin" style="font-size:0.55rem;"></i>
+            {{ maker.location }}
+            <span style="opacity:0.4;">&middot;</span>
+            {{ maker.specialty }}
           </div>
+
+          <!-- Divider -->
+          <div class="id-divider"></div>
+
+          <!-- Bio -->
+          <p class="id-bio">{{ maker.bio || maker.title }}</p>
 
           <!-- Skills -->
-          <div class="px-5 pt-3 flex flex-wrap gap-1.5">
+          <div class="id-skills">
             <span
-              v-for="skill in maker.skills"
+              v-for="skill in maker.skills.slice(0, 4)"
               :key="skill"
-              class="tag tag-default text-[0.6rem]"
+              class="id-skill-tag"
             >
               {{ skill }}
             </span>
           </div>
 
-          <!-- Perforation + bottom section -->
-          <div class="mt-auto mx-4 perforation"></div>
-          <div class="px-5 pt-3 pb-4 flex items-end justify-end">
-            <span class="text-stamp font-semibold text-sm flex items-center gap-1 flex-shrink-0 group-hover:underline">
+          <!-- Open link -->
+          <div class="id-footer">
+            <span class="id-open-link">
               Open
-              <i class="ph-bold ph-arrow-right text-xs"></i>
+              <i class="ph-bold ph-arrow-right" style="font-size:0.6rem;"></i>
             </span>
           </div>
         </div>
@@ -245,69 +240,173 @@ function getInitial(name: string): string {
 </template>
 
 <style scoped>
+/* Full-color ID card - matches profile page banner */
 .id-card {
   position: relative;
+  display: block;
+  border-radius: 0.875rem;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.id-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(26, 26, 26, 0.15);
 }
 
-.id-card-header {
-  padding: 0.85rem 1.25rem;
-  border-radius: 0.875rem 0.875rem 0 0;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+.id-card-inner {
   position: relative;
+  background: var(--card-bg, #1A1A1A);
+  border-radius: 0.875rem;
+  padding: 1.25rem 1.25rem 1rem;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
-.id-card-header::before {
+.id-card-inner::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: var(--header-bg, #1A1A1A);
-  border-radius: 0.875rem 0.875rem 0 0;
+  background: var(--card-bg, #1A1A1A);
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent,
+    transparent 20px,
+    rgba(250, 243, 232, 0.03) 20px,
+    rgba(250, 243, 232, 0.03) 22px
+  );
   filter: url(#papercut);
   z-index: 0;
+  pointer-events: none;
 }
-.id-card-header > :deep(*) {
+.id-card-inner > * {
   position: relative;
   z-index: 1;
 }
 
-.octagon-avatar-wrap {
-  width: 44px;
-  height: 44px;
-  flex-shrink: 0;
+/* Punch hole - top right */
+.id-punch {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--card-bg, #1A1A1A);
+  box-shadow:
+    inset 0 1px 3px rgba(0,0,0,0.4),
+    inset 0 -1px 2px rgba(255,255,255,0.05),
+    0 0 0 2px rgba(255,255,255,0.08);
+  z-index: 2;
+}
+.id-punch::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: #D4B896;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.15);
 }
 
-.octagon-avatar {
-  width: 44px;
-  height: 44px;
+/* Octagon avatar */
+.id-avatar-wrap {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  margin-bottom: 0.75rem;
+}
+.id-avatar {
+  width: 64px;
+  height: 64px;
   object-fit: cover;
   clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
 }
-
-.octagon-avatar-fallback {
-  width: 44px;
-  height: 44px;
+.id-avatar-fallback {
+  width: 64px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: center;
   clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+  background: rgba(250, 243, 232, 0.15);
   color: #FAF3E8;
   font-weight: 700;
   font-family: 'Fraunces', serif;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
 }
 
-.punch-hole {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  border: 2px solid rgba(250, 243, 232, 0.15);
-  flex-shrink: 0;
+.id-name {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #FAF3E8;
+  line-height: 1.2;
+  margin: 0;
+  transition: color 0.15s;
+}
+.id-card:hover .id-name {
+  color: #FF5900;
 }
 
-.perforation {
-  border-top: 2px dashed rgba(26, 26, 26, 0.1);
+.id-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.65rem;
+  color: rgba(250, 243, 232, 0.5);
+  margin-top: 0.25rem;
+}
+
+.id-divider {
+  border-top: 1px solid rgba(250, 243, 232, 0.12);
+  margin: 0.75rem 0;
+}
+
+.id-bio {
+  font-size: 0.78rem;
+  color: rgba(250, 243, 232, 0.65);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0;
+}
+
+.id-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.75rem;
+}
+.id-skill-tag {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.55rem;
+  font-weight: 600;
+  background: rgba(250, 243, 232, 0.1);
+  color: rgba(250, 243, 232, 0.6);
+  border: 1px solid rgba(250, 243, 232, 0.08);
+}
+
+.id-footer {
+  margin-top: auto;
+  padding-top: 0.75rem;
+  display: flex;
+  justify-content: flex-end;
+}
+.id-open-link {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: rgba(250, 243, 232, 0.4);
+  transition: color 0.15s;
+}
+.id-card:hover .id-open-link {
+  color: #FF5900;
 }
 
 /* View toggle buttons */
