@@ -24,7 +24,14 @@
     background-image: url('/images/kraft-paper.jpg');
     background-repeat: repeat;
     background-size: auto;
+    padding-bottom: 72px;
     font-weight: 450;
+  }
+
+  @media (min-width: 1024px) {
+    body {
+      padding-bottom: 0;
+    }
   }
 
   html.dark body {

@@ -155,24 +155,24 @@ const upcomingEvents = [...events]
         <p class="text-sm text-ink max-w-lg leading-relaxed mb-5">
           Hardware rebels with workshops, not just followers. Meet the people who build what the community needs.
         </p>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="maker-list">
           {featuredMakers.map((maker) => (
-            <a href={`/makers/${maker.slug}`} class="maker-mini-card group no-underline block" style={`--card-bg: ${maker.avatarColor}`}>
-              <div class="maker-mini-inner">
-                <div class="maker-mini-punch"></div>
-                <div class="maker-mini-row">
-                  {maker.avatar ? (
-                    <img src={maker.avatar} alt={maker.name} class="maker-mini-avatar" loading="lazy" />
-                  ) : (
-                    <div class="maker-mini-avatar-fb">
-                      <span>{maker.name.charAt(0)}</span>
-                    </div>
-                  )}
-                  <div class="maker-mini-info">
-                    <h3 class="maker-mini-name">{maker.name}</h3>
-                    <p class="maker-mini-specialty">{maker.specialty}</p>
-                  </div>
+            <a href={`/makers/${maker.slug}`} class="maker-list-row group no-underline">
+              {maker.avatar ? (
+                <img src={maker.avatar} alt={maker.name} class="maker-list-avatar" loading="lazy" />
+              ) : (
+                <div class="maker-list-avatar-fb" style={`background: ${maker.avatarColor}`}>
+                  <span>{maker.name.charAt(0)}</span>
                 </div>
+              )}
+              <div class="flex-1 min-w-0">
+                <span class="maker-list-name">{maker.name}</span>
+                <span class="maker-list-meta">{maker.specialty} &middot; {maker.location}</span>
+              </div>
+              <div class="maker-list-skills">
+                {maker.skills.slice(0, 3).map((skill) => (
+                  <span class="maker-list-skill">{skill}</span>
+                ))}
               </div>
             </a>
           ))}
@@ -381,103 +381,78 @@ const upcomingEvents = [...events]
     }
   }
 
-  /* Maker mini cards - full-color, matching listing */
-  .maker-mini-card {
-    display: block;
-    border-radius: 0.875rem;
-    overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .maker-mini-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(26, 26, 26, 0.15);
-  }
-  .maker-mini-inner {
-    position: relative;
-    background: var(--card-bg, #1A1A1A);
-    border-radius: 0.875rem;
-    padding: 0.85rem 1rem;
-    overflow: hidden;
-  }
-  .maker-mini-inner::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--card-bg, #1A1A1A);
-    filter: url(#papercut);
-    z-index: 0;
-    pointer-events: none;
-  }
-  .maker-mini-inner > * {
-    position: relative;
-    z-index: 1;
-  }
-  .maker-mini-row {
+  /* Maker list rows — compact table style */
+  .maker-list-row {
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.06);
+    color: #1A1A1A;
+    text-decoration: none;
   }
-  .maker-mini-info {
-    flex: 1;
-    min-width: 0;
+  .maker-list-row:last-child {
+    border-bottom: none;
   }
-  .maker-mini-punch {
-    position: absolute;
-    top: 50%;
-    right: 12px;
-    transform: translateY(-50%);
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: var(--card-bg, #1A1A1A);
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.4), inset 0 -1px 2px rgba(255,255,255,0.05), 0 0 0 2px rgba(255,255,255,0.08);
-    z-index: 2;
-  }
-  .maker-mini-punch::after {
-    content: '';
-    position: absolute;
-    inset: 5px;
-    border-radius: 50%;
-    background: #D4B896;
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.15);
-  }
-  .maker-mini-avatar {
-    width: 52px;
-    height: 52px;
-    object-fit: cover;
+  .maker-list-avatar {
+    width: 36px;
+    height: 36px;
     clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+    object-fit: cover;
     flex-shrink: 0;
   }
-  .maker-mini-avatar-fb {
-    width: 52px;
-    height: 52px;
+  .maker-list-avatar-fb {
+    width: 36px;
+    height: 36px;
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
     display: flex;
     align-items: center;
     justify-content: center;
-    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
-    background: rgba(250,243,232,0.15);
     color: #FAF3E8;
     font-weight: 700;
-    font-family: 'Fraunces', serif;
-    font-size: 1.2rem;
+    font-size: 0.75rem;
     flex-shrink: 0;
   }
-  .maker-mini-name {
-    font-family: 'Fraunces', serif;
-    font-weight: 700;
-    font-size: 0.95rem;
-    color: #FAF3E8;
+  .maker-list-name {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1A1A1A;
     line-height: 1.2;
-    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     transition: color 0.15s;
   }
-  .maker-mini-card:hover .maker-mini-name {
+  .maker-list-row:hover .maker-list-name {
     color: #FF5900;
   }
-  .maker-mini-specialty {
-    font-size: 0.65rem;
-    color: rgba(250,243,232,0.55);
-    margin: 0.15rem 0 0;
+  .maker-list-meta {
+    display: block;
+    font-size: 0.75rem;
+    color: #6B5B4A;
+    margin-top: 0.1rem;
+  }
+  .maker-list-skills {
+    display: none;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin-left: auto;
+  }
+  @media (min-width: 640px) {
+    .maker-list-skills {
+      display: flex;
+    }
+  }
+  .maker-list-skill {
+    display: inline-block;
+    padding: 0.15rem 0.45rem;
+    border-radius: 999px;
+    font-size: 0.55rem;
+    font-weight: 600;
+    background: rgba(26, 26, 26, 0.05);
+    color: #6B5B4A;
+    border: 1px solid rgba(26, 26, 26, 0.08);
   }
 
   /* Microcard — compact interactive item */

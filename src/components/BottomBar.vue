@@ -41,13 +41,23 @@ function closeMegaMenu() {
   megaMenuOpen.value = false;
 }
 
+function onClickOutside(e: MouseEvent) {
+  if (!megaMenuOpen.value) return;
+  const nav = (e.target as HTMLElement).closest('.bottom-bar');
+  if (!nav) {
+    megaMenuOpen.value = false;
+  }
+}
+
 onMounted(() => {
   lastScrollY = window.scrollY;
   window.addEventListener('scroll', onScroll, { passive: true });
+  document.addEventListener('click', onClickOutside);
 });
 
 onUnmounted(() => {
   window.removeEventListener('scroll', onScroll);
+  document.removeEventListener('click', onClickOutside);
 });
 </script>
 
