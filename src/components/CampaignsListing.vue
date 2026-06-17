@@ -163,8 +163,8 @@ function statusTagClass(status: string): string {
           <!-- Image / icon area -->
           <div
             v-if="campaign.image"
-            class="m-4 mb-0 rounded-xl overflow-hidden"
-            style="height: 170px"
+            class="overflow-hidden"
+            style="height: 190px; border-radius: 0.875rem 0.875rem 0 0;"
           >
             <img
               :src="campaign.image"
@@ -175,8 +175,8 @@ function statusTagClass(status: string): string {
           </div>
           <div
             v-else
-            class="bg-kraft-light rounded-xl flex items-center justify-center m-4 mb-0"
-            style="min-height: 170px"
+            class="bg-kraft-light flex items-center justify-center"
+            style="border-radius: 0.875rem 0.875rem 0 0; min-height: 170px"
           >
             <i
               :class="[

@@ -8,7 +8,7 @@ export const bottomBarTabs: NavItem[] = [
 ];
 
 export const megaMenuItems: NavItem[] = [
-  { label: "Requests", href: "/requests", icon: "ph-bold ph-megaphone" },
+  { label: "Requests", href: "/requests", icon: "ph-bold ph-hand-palm" },
   {
     label: "Discord",
     href: "https://discord.gg/DUSUtguG2H",

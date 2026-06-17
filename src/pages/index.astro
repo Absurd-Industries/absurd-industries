@@ -55,7 +55,7 @@ const upcomingEvents = [...events]
           Explore Campaigns
         </a>
         <a href="/requests" class="btn btn-outline">
-          <i class="ph-duotone ph-megaphone mr-1.5" style="font-size:0.9rem;"></i>
+          <i class="ph-duotone ph-hand-palm mr-1.5" style="font-size:0.9rem;"></i>
           Request Something
         </a>
       </div>
@@ -70,7 +70,7 @@ const upcomingEvents = [...events]
       <div class="anim-fade-up">
         <div class="flex items-center justify-between mb-2">
           <h2 class="font-serif text-2xl sm:text-3xl font-bold">
-            <i class="ph-duotone ph-rocket-launch text-stamp mr-1" style="font-size:1.2rem;"></i>
+            <i class="ph-duotone ph-rocket-launch text-stamp mr-1" style="font-size:1.4rem;"></i>
             Campaigns
           </h2>
           <a href="/campaigns" class="text-sm text-stamp font-bold no-underline hover:underline">
@@ -80,28 +80,31 @@ const upcomingEvents = [...events]
         <p class="text-sm text-ink max-w-lg leading-relaxed mb-5">
           Back open-source hardware that ships with full source files. Every campaign is transparent - BOM, schematics, firmware, everything.
         </p>
-        <div class="campaign-strip">
-          {featuredCampaigns.map((campaign) => (
-            <a href={`/campaigns/${campaign.slug}`} class="card card-hover block no-underline text-ink group campaign-card anim-fade-up">
-              <div class="card-bg"></div>
-              <div class="card-content">
-                <div class="h-36 overflow-hidden" style="border-radius: 0.875rem 0.875rem 0 0;">
-                  <img
-                    src={campaign.image}
-                    alt={campaign.title}
-                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    loading="lazy"
-                  />
+        <div class="campaign-strip-wrap">
+          <div class="campaign-strip">
+            {featuredCampaigns.map((campaign) => (
+              <a href={`/campaigns/${campaign.slug}`} class="card card-hover block no-underline text-ink group campaign-card anim-fade-up">
+                <div class="card-bg"></div>
+                <div class="card-content">
+                  <div class="campaign-card-img" style="border-radius: 0.875rem 0.875rem 0 0;">
+                    <img
+                      src={campaign.image}
+                      alt={campaign.title}
+                      class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div class="p-4">
+                    <h3 class="font-serif font-bold text-sm mb-1 group-hover:text-stamp transition-colors truncate">{campaign.title}</h3>
+                    <p class="text-xs text-stencil mb-2">{campaign.makerName} &middot; {campaign.location}</p>
+                    <ProgressBar percent={campaign.percent} hot={campaign.percent >= 100} />
+                    <p class="text-[0.65rem] text-stencil mt-1.5">{campaign.percent >= 100 ? "Fully funded" : `${campaign.percent}% funded`}</p>
+                  </div>
                 </div>
-                <div class="p-4">
-                  <h3 class="font-serif font-bold text-sm mb-1 group-hover:text-stamp transition-colors truncate">{campaign.title}</h3>
-                  <p class="text-xs text-stencil mb-2">{campaign.makerName} &middot; {campaign.location}</p>
-                  <ProgressBar percent={campaign.percent} hot={campaign.percent >= 100} />
-                  <p class="text-[0.65rem] text-stencil mt-1.5">{campaign.percent >= 100 ? "Fully funded" : `${campaign.percent}% funded`}</p>
-                </div>
-              </div>
-            </a>
-          ))}
+              </a>
+            ))}
+          </div>
+          <div class="campaign-strip-fade" aria-hidden="true"></div>
         </div>
       </div>
 
@@ -109,7 +112,7 @@ const upcomingEvents = [...events]
       <div class="anim-fade-up">
         <div class="flex items-center justify-between mb-2">
           <h2 class="font-serif text-2xl sm:text-3xl font-bold">
-            <i class="ph-duotone ph-megaphone text-stamp mr-1" style="font-size:1.2rem;"></i>
+            <i class="ph-duotone ph-hand-palm text-stamp mr-1" style="font-size:1.4rem;"></i>
             Requests
           </h2>
           <a href="/requests" class="text-sm text-stamp font-bold no-underline hover:underline">
@@ -142,7 +145,7 @@ const upcomingEvents = [...events]
       <div class="anim-fade-up">
         <div class="flex items-center justify-between mb-2">
           <h2 class="font-serif text-2xl sm:text-3xl font-bold">
-            <i class="ph-duotone ph-users-three text-stamp mr-1" style="font-size:1.2rem;"></i>
+            <i class="ph-duotone ph-users-three text-stamp mr-1" style="font-size:1.4rem;"></i>
             Makers
           </h2>
           <a href="/makers" class="text-sm text-stamp font-bold no-underline hover:underline">
@@ -152,27 +155,39 @@ const upcomingEvents = [...events]
         <p class="text-sm text-ink max-w-lg leading-relaxed mb-5">
           Hardware rebels with workshops, not just followers. Meet the people who build what the community needs.
         </p>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {featuredMakers.map((maker) => (
-            <a href={`/makers/${maker.slug}`} class="microcard group">
-              {maker.avatar ? (
-                <img
-                  src={maker.avatar}
-                  alt={maker.name}
-                  class="w-11 h-11 rounded-lg object-cover flex-shrink-0"
-                  loading="lazy"
-                />
-              ) : (
-                <div
-                  class="w-11 h-11 rounded-lg flex items-center justify-center text-xs font-bold text-paper flex-shrink-0"
-                  style={`background: ${maker.avatarColor}`}
-                >
-                  {maker.name.split(" ").map((w: string) => w[0]).join("").slice(0, 2)}
+            <a href={`/makers/${maker.slug}`} class="card card-hover block no-underline text-ink group maker-id-card">
+              <div class="card-bg"></div>
+              <div class="card-content flex flex-col">
+                <div class="maker-card-header" style={`--header-bg: ${maker.avatarColor}`}>
+                  <div class="flex items-center gap-3 flex-1 min-w-0">
+                    {maker.avatar ? (
+                      <img
+                        src={maker.avatar}
+                        alt={maker.name}
+                        class="maker-octagon-avatar"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div class="maker-octagon-fallback" style={`background: ${maker.avatarColor}`}>
+                        <span>{maker.name.charAt(0)}</span>
+                      </div>
+                    )}
+                    <div class="min-w-0">
+                      <h3 class="text-white font-serif font-bold text-base leading-tight truncate group-hover:text-stamp transition-colors">{maker.name}</h3>
+                      <span class="text-white/40 text-[0.55rem] font-semibold uppercase tracking-widest">{maker.specialty}</span>
+                    </div>
+                  </div>
+                  <div class="maker-punch-hole"></div>
                 </div>
-              )}
-              <div class="flex-1 min-w-0">
-                <p class="text-sm font-semibold text-ink leading-snug group-hover:text-stamp transition-colors">{maker.name}</p>
-                <p class="text-xs text-stencil line-clamp-2 leading-relaxed mt-0.5">{maker.bio ?? maker.title}</p>
+                <div class="px-4 pt-3 pb-4">
+                  <p class="text-xs text-ink-light leading-relaxed line-clamp-2">{maker.bio ?? maker.title}</p>
+                  <p class="text-[0.65rem] text-ink-faint mt-1.5 flex items-center gap-1">
+                    <i class="ph-bold ph-map-pin text-stamp" style="font-size:0.55rem;"></i>
+                    {maker.location}
+                  </p>
+                </div>
               </div>
             </a>
           ))}
@@ -183,7 +198,7 @@ const upcomingEvents = [...events]
       <div class="anim-fade-up">
         <div class="flex items-center justify-between mb-2">
           <h2 class="font-serif text-2xl sm:text-3xl font-bold">
-            <i class="ph-duotone ph-calendar-dots text-stamp mr-1" style="font-size:1.2rem;"></i>
+            <i class="ph-duotone ph-calendar-dots text-stamp mr-1" style="font-size:1.4rem;"></i>
             Events
           </h2>
           <a href="/events" class="text-sm text-stamp font-bold no-underline hover:underline">
@@ -308,11 +323,21 @@ const upcomingEvents = [...events]
 </script>
 
 <style>
-  /* Campaign microcards strip */
+  /* Campaign strip with scroll hint */
+  .campaign-strip-wrap {
+    position: relative;
+  }
   .campaign-strip {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.25rem;
+  }
+  .campaign-strip-fade {
+    display: none;
+  }
+  .campaign-card-img {
+    height: 180px;
+    overflow: hidden;
   }
   @media (max-width: 640px) {
     .campaign-strip {
@@ -322,6 +347,7 @@ const upcomingEvents = [...events]
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
       padding-bottom: 0.5rem;
+      padding-right: 2rem;
       scrollbar-width: none;
       -ms-overflow-style: none;
     }
@@ -329,10 +355,78 @@ const upcomingEvents = [...events]
       display: none;
     }
     .campaign-card {
-      min-width: 260px;
+      min-width: 72vw;
       scroll-snap-align: start;
       flex-shrink: 0;
     }
+    .campaign-card-img {
+      height: 200px;
+    }
+    .campaign-strip-fade {
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 3rem;
+      background: linear-gradient(to right, transparent, rgba(212, 184, 150, 0.6));
+      pointer-events: none;
+      border-radius: 0 0.875rem 0.875rem 0;
+    }
+  }
+
+  /* Maker ID cards on homepage */
+  .maker-id-card {
+    position: relative;
+  }
+  .maker-card-header {
+    padding: 0.75rem 1rem;
+    border-radius: 0.875rem 0.875rem 0 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .maker-card-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--header-bg, #1A1A1A);
+    border-radius: 0.875rem 0.875rem 0 0;
+    filter: url(#papercut);
+    z-index: 0;
+  }
+  .maker-card-header > * {
+    position: relative;
+    z-index: 1;
+  }
+  .maker-octagon-avatar {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+    flex-shrink: 0;
+  }
+  .maker-octagon-fallback {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+    color: #FAF3E8;
+    font-weight: 700;
+    font-family: 'Fraunces', serif;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .maker-punch-hole {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid rgba(250, 243, 232, 0.15);
+    flex-shrink: 0;
   }
 
   /* Microcard — compact interactive item */

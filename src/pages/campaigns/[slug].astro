@@ -752,42 +752,58 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
     </div>
   </div>
 
-  <!-- Floating "Back This Campaign" bar -->
-  <div class="campaign-float-bar" id="campaign-float">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6">
-      <!-- Expandable tier panel -->
-      <div class="float-tiers" id="float-tiers">
-        {isShowcase && rewardTiers.map((tier, idx) => (
-          <button class="float-tier-option" data-tier-name={tier.name} data-tier-price={tier.price}>
-            <div class="flex items-center justify-between mb-1">
-              <span class="font-serif font-bold text-sm text-ink">{tier.name}</span>
-              <span class="text-xs font-bold text-stamp">{tier.price}</span>
-            </div>
-            <p class="text-xs text-stencil leading-snug">{tier.perks[0]}</p>
-            <div class="text-[0.6rem] text-ink-faint mt-1">{tier.claimed} of {tier.total} claimed</div>
-          </button>
-        ))}
-      </div>
-      <!-- Main bar row -->
-      <div class="flex items-center justify-between gap-3">
-        <div class="flex-1 min-w-0">
-          <p class="text-sm font-semibold text-ink truncate">{campaign.title}</p>
-          <p class="text-xs text-stencil">{campaign.percent >= 100 ? "Fully funded" : `${campaign.percent}% funded`}</p>
-        </div>
-        {campaign.status === "live" && (
-          <button class="btn btn-stamp btn-sm flex-shrink-0" id="back-project-btn">
-            <i class="ph-bold ph-heart mr-1.5" style="font-size:0.75rem;"></i>
-            Back This Project
-          </button>
-        )}
-        {campaign.status === "funded" && (
-          <div class="btn btn-sm flex-shrink-0" style="background: #2A5F41; color: #FAF3E8; cursor: default;">
-            <i class="ph-bold ph-check-circle mr-1.5" style="font-size:0.75rem;"></i>
-            Funded
+  <!-- Floating CTA pill -->
+  <div class="float-pill" id="campaign-float">
+    <!-- Expanded panel (tiers) -->
+    <div class="float-pill-panel" id="float-tiers">
+      {isShowcase && rewardTiers.map((tier) => (
+        <button class="float-tier-option" data-tier-name={tier.name} data-tier-price={tier.price}>
+          <div class="flex items-center justify-between mb-1">
+            <span class="font-serif font-bold text-sm">{tier.name}</span>
+            <span class="text-xs font-bold" style="color: #FAF3E8;">{tier.price}</span>
           </div>
-        )}
-      </div>
+          <p class="text-xs leading-snug" style="color: rgba(250,243,232,0.6);">{tier.perks[0]}</p>
+          <div class="text-[0.6rem] mt-1" style="color: rgba(250,243,232,0.4);">{tier.claimed} of {tier.total} claimed</div>
+        </button>
+      ))}
     </div>
+    <!-- Pill button -->
+    {campaign.status === "live" && (
+      <button class="float-pill-btn" id="back-project-btn">
+        <div class="float-pill-info">
+          <span class="float-pill-title">{campaign.percent}% funded</span>
+          <span class="float-pill-sub">{campaign.backers} backers</span>
+        </div>
+        <div class="float-pill-cta">
+          <i class="ph-bold ph-heart" style="font-size:0.8rem;"></i>
+          <span>Back This Project</span>
+        </div>
+      </button>
+    )}
+    {campaign.status === "funded" && (
+      <button class="float-pill-btn float-pill-btn--funded">
+        <div class="float-pill-info">
+          <span class="float-pill-title">Fully funded</span>
+          <span class="float-pill-sub">{campaign.backers} backers</span>
+        </div>
+        <div class="float-pill-cta float-pill-cta--funded">
+          <i class="ph-bold ph-check-circle" style="font-size:0.8rem;"></i>
+          <span>Funded</span>
+        </div>
+      </button>
+    )}
+    {campaign.status === "coming" && (
+      <div class="float-pill-btn float-pill-btn--coming">
+        <div class="float-pill-info">
+          <span class="float-pill-title">Coming Soon</span>
+          <span class="float-pill-sub">Campaign not yet live</span>
+        </div>
+        <div class="float-pill-cta float-pill-cta--coming">
+          <i class="ph-bold ph-bell" style="font-size:0.8rem;"></i>
+          <span>Notify Me</span>
+        </div>
+      </div>
+    )}
   </div>
 
   <!-- Checkout mock modal -->
@@ -825,19 +841,124 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
     }
   }
 
-  /* Floating bar */
-  .campaign-float-bar {
+  /* Floating pill CTA */
+  .float-pill {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
     z-index: 40;
-    background: rgba(250, 243, 232, 0.95);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-top: 1px solid rgba(26, 26, 26, 0.08);
-    padding: 0.75rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    max-width: 420px;
+    margin: 0 auto;
   }
+  @media (min-width: 640px) {
+    .float-pill {
+      left: auto;
+      right: 1.5rem;
+      bottom: 1.5rem;
+      max-width: 380px;
+    }
+  }
+
+  .float-pill-btn {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 0.875rem;
+    background: #1A1A1A;
+    color: #FAF3E8;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(26, 26, 26, 0.25), 0 0 0 1px rgba(26, 26, 26, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .float-pill-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(26, 26, 26, 0.3), 0 0 0 1px rgba(26, 26, 26, 0.08);
+  }
+  .float-pill-btn:active {
+    transform: translateY(0);
+  }
+  .float-pill-btn--funded {
+    background: #2A5F41;
+    cursor: default;
+  }
+  .float-pill-btn--funded:hover {
+    transform: none;
+  }
+  .float-pill-btn--coming {
+    background: #4A3D2F;
+    cursor: pointer;
+  }
+
+  .float-pill-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .float-pill-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    line-height: 1.2;
+  }
+  .float-pill-sub {
+    font-size: 0.65rem;
+    opacity: 0.5;
+    margin-top: 0.1rem;
+  }
+  .float-pill-cta {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 0.85rem;
+    border-radius: 0.625rem;
+    background: #D94800;
+    color: #FAF3E8;
+    font-size: 0.75rem;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: background 0.15s;
+    flex-shrink: 0;
+  }
+  .float-pill-btn:hover .float-pill-cta {
+    background: #FF5900;
+  }
+  .float-pill-cta--funded {
+    background: rgba(250, 243, 232, 0.15);
+  }
+  .float-pill-btn:hover .float-pill-cta--funded {
+    background: rgba(250, 243, 232, 0.15);
+  }
+  .float-pill-cta--coming {
+    background: rgba(250, 243, 232, 0.12);
+  }
+
+  /* Expanded tier panel */
+  .float-pill-panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s cubic-bezier(0.2, 0, 0, 1), padding 0.3s, margin 0.3s;
+    background: #1A1A1A;
+    border-radius: 0.875rem;
+    margin-bottom: 0;
+    padding: 0 1rem;
+  }
+  .float-pill-panel.expanded {
+    max-height: 400px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 4px 20px rgba(26, 26, 26, 0.25);
+  }
+
   .share-float-btn {
     display: inline-flex;
     align-items: center;
@@ -957,8 +1078,9 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
     text-align: left;
     padding: 0.75rem;
     border-radius: 0.5rem;
-    border: 1.5px solid rgba(26, 26, 26, 0.08);
-    background: rgba(250, 243, 232, 0.6);
+    border: 1.5px solid rgba(250, 243, 232, 0.1);
+    background: rgba(250, 243, 232, 0.05);
+    color: #FAF3E8;
     cursor: pointer;
     transition: border-color 0.15s, background 0.15s;
     margin-bottom: 0.5rem;
@@ -968,7 +1090,7 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
   }
   .float-tier-option:hover {
     border-color: #D94800;
-    background: rgba(250, 243, 232, 0.9);
+    background: rgba(250, 243, 232, 0.1);
   }
 
   /* Checkout mock modal */
@@ -1038,16 +1160,21 @@ document.querySelectorAll('.share-float-btn').forEach(function(btn) {
   var tiers = document.getElementById('float-tiers');
   if (!backBtn || !tiers) return;
 
+  var ctaEl = backBtn.querySelector('.float-pill-cta');
+  var origCta = ctaEl ? ctaEl.innerHTML : '';
+
   backBtn.addEventListener('click', function() {
     tiers.classList.toggle('expanded');
-    if (tiers.classList.contains('expanded')) {
-      backBtn.innerHTML = '<i class="ph-bold ph-x mr-1.5" style="font-size:0.75rem;"></i> Close';
-    } else {
-      backBtn.innerHTML = '<i class="ph-bold ph-heart mr-1.5" style="font-size:0.75rem;"></i> Back This Project';
+    if (ctaEl) {
+      if (tiers.classList.contains('expanded')) {
+        ctaEl.innerHTML = '<i class="ph-bold ph-x" style="font-size:0.8rem;"></i><span>Close</span>';
+      } else {
+        ctaEl.innerHTML = origCta;
+      }
     }
   });
 
-  // Tier selection → checkout modal
+  // Tier selection -> checkout modal
   var modal = document.getElementById('checkout-modal');
   var modalTitle = document.getElementById('checkout-title');
   var modalDesc = document.getElementById('checkout-desc');
@@ -1061,7 +1188,7 @@ document.querySelectorAll('.share-float-btn').forEach(function(btn) {
       modalDesc.textContent = 'This will redirect you to the checkout page for the ' + name + ' tier. Payment processing is coming soon.';
       modal.classList.add('active');
       tiers.classList.remove('expanded');
-      backBtn.innerHTML = '<i class="ph-bold ph-heart mr-1.5" style="font-size:0.75rem;"></i> Back This Project';
+      if (ctaEl) ctaEl.innerHTML = origCta;
     });
   });
 

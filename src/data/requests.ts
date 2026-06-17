@@ -5,7 +5,7 @@ export const requests: Request[] = [
     slug: "open-source-air-quality-monitor-network",
     title: "Open-Source Air Quality Monitor Network for Bengaluru",
     description:
-      "Bengaluru's air quality has been deteriorating rapidly -we need a citizen-science network of affordable, open-source PM2.5/PM10/AQI monitors deployed across the city. Each node should cost under ₹3,000, run on ESP32 with a PMS5003 sensor, solar-powered with LoRa backhaul to a public dashboard. Open PCB designs, 3D-printed weatherproof enclosures, and a self-hostable map frontend.",
+      "Bengaluru's air quality has been deteriorating rapidly - we need a citizen-science network of affordable, open-source PM2.5/PM10/AQI monitors deployed across the city. Each node should cost under ₹3,000, run on ESP32 with a PMS5003 sensor, solar-powered with LoRa backhaul to a public dashboard. Open PCB designs, 3D-printed weatherproof enclosures, and a self-hostable map frontend.",
     category: "Sustainability",
     status: "fulfilled",
     upvotes: 387,
@@ -37,7 +37,7 @@ export const requests: Request[] = [
     slug: "affordable-ev-conversion-kit-autorickshaw",
     title: "Affordable EV Conversion Kit for Autorickshaws",
     description:
-      "Bengaluru has thousands of aging petrol autorickshaws. We need an open-source EV conversion kit -BLDC hub motor, battery management system, motor controller, and wiring harness -with full assembly documentation. Target cost under ₹60,000 for the complete kit. Must handle Bengaluru's hills and traffic. Open hardware designs so local workshops can fabricate and install.",
+      "Bengaluru has thousands of aging petrol autorickshaws. We need an open-source EV conversion kit - BLDC hub motor, battery management system, motor controller, and wiring harness - with full assembly documentation. Target cost under ₹60,000 for the complete kit. Must handle Bengaluru's hills and traffic. Open hardware designs so local workshops can fabricate and install.",
     category: "Hardware",
     status: "claimed",
     upvotes: 398,
@@ -95,7 +95,7 @@ export const requests: Request[] = [
     slug: "open-source-traffic-signal-controller",
     title: "Open-Source Adaptive Traffic Signal Controller",
     description:
-      "Bengaluru traffic is legendary for a reason -fixed-timer signals can't handle dynamic flow. Need an open-source adaptive traffic signal controller that uses camera-based vehicle counting (running on Raspberry Pi or Jetson Nano) to dynamically adjust signal timing. Simulation-ready with SUMO integration, open firmware, and a dashboard showing real-time intersection throughput. For civic tech advocacy and pilot proposals to BBMP.",
+      "Bengaluru traffic is legendary for a reason - fixed-timer signals can't handle dynamic flow. Need an open-source adaptive traffic signal controller that uses camera-based vehicle counting (running on Raspberry Pi or Jetson Nano) to dynamically adjust signal timing. Simulation-ready with SUMO integration, open firmware, and a dashboard showing real-time intersection throughput. For civic tech advocacy and pilot proposals to BBMP.",
     category: "Software",
     status: "open",
     upvotes: 356,
@@ -123,7 +123,7 @@ export const requests: Request[] = [
     slug: "modular-vertical-farming-bengaluru-apartments",
     title: "Modular Vertical Farming System for Bengaluru Apartments",
     description:
-      "Space-constrained Bengaluru apartments need compact, modular vertical farming units. Design an open-source system that fits on a balcony or window -stackable grow modules with automated drip irrigation, grow lights on a timer, and nutrient dosing. ESP32-based controller with a mobile app. Should grow leafy greens, herbs, and microgreens. Full BOM sourced from Indian suppliers, target cost under ₹8,000 for a 4-tier unit.",
+      "Space-constrained Bengaluru apartments need compact, modular vertical farming units. Design an open-source system that fits on a balcony or window - stackable grow modules with automated drip irrigation, grow lights on a timer, and nutrient dosing. ESP32-based controller with a mobile app. Should grow leafy greens, herbs, and microgreens. Full BOM sourced from Indian suppliers, target cost under ₹8,000 for a 4-tier unit.",
     category: "Sustainability",
     status: "open",
     upvotes: 189,
@@ -137,7 +137,7 @@ export const requests: Request[] = [
     slug: "open-source-kannada-language-learning-kit",
     title: "Open-Source Kannada Language Learning Hardware Kit",
     description:
-      "Bengaluru is home to people from all over India and the world -many want to learn Kannada but lack immersive tools. Need an open-source hardware kit: a tactile board with capacitive touch pads for Kannada script (vowels, consonants, conjuncts), audio playback of pronunciation via I2S speaker, LED feedback, and a companion app with spaced-repetition exercises. Designed for adults and children alike. Arduino-based, full PCB and enclosure files open-sourced.",
+      "Bengaluru is home to people from all over India and the world - many want to learn Kannada but lack immersive tools. Need an open-source hardware kit: a tactile board with capacitive touch pads for Kannada script (vowels, consonants, conjuncts), audio playback of pronunciation via I2S speaker, LED feedback, and a companion app with spaced-repetition exercises. Designed for adults and children alike. Arduino-based, full PCB and enclosure files open-sourced.",
     category: "Education",
     status: "open",
     upvotes: 156,
