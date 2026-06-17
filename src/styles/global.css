@@ -698,3 +698,90 @@ html.dark ::-webkit-scrollbar-thumb {
     display: none;
   }
 }
+
+
+/* -----------------------------------------------------------------------
+   COMING SOON MODAL
+   Debug layer for unhooked features. Replace with live interactions later.
+   ----------------------------------------------------------------------- */
+
+.coming-soon-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(26, 26, 26, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.coming-soon-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.coming-soon-modal {
+  background: #FAF3E8;
+  border-radius: 1rem;
+  padding: 2rem 1.75rem;
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+  transform: scale(0.95) translateY(8px);
+  transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1);
+  box-shadow: 0 8px 32px rgba(26, 26, 26, 0.15);
+}
+.coming-soon-backdrop.active .coming-soon-modal {
+  transform: scale(1) translateY(0);
+}
+
+.coming-soon-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 0.75rem;
+  background: rgba(217, 72, 0, 0.1);
+  color: #D94800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.coming-soon-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #1A1A1A;
+  margin-bottom: 0.5rem;
+}
+
+.coming-soon-desc {
+  font-size: 0.85rem;
+  color: #4A3D2F;
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+}
+
+.coming-soon-dismiss {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #4A3D2F;
+  background: rgba(26, 26, 26, 0.06);
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.coming-soon-dismiss:hover {
+  background: rgba(26, 26, 26, 0.12);
+}

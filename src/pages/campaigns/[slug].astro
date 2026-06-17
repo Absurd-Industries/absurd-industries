@@ -212,10 +212,15 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
 >
   <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-8 pb-24 md:pt-12 md:pb-28">
 
-    <a href="/campaigns" class="back-btn mb-6 inline-flex">
-      <i class="ph-bold ph-arrow-left"></i>
-      Campaigns
-    </a>
+    <div class="flex items-center justify-between mb-6">
+      <a href="/campaigns" class="back-btn inline-flex">
+        <i class="ph-bold ph-arrow-left"></i>
+        Campaigns
+      </a>
+      <button class="share-float-btn" title="Copy link">
+        <i class="ph-bold ph-share-network"></i>
+      </button>
+    </div>
 
     <div class="flex flex-col lg:flex-row gap-6">
 
@@ -673,9 +678,9 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
             </div>
 
             {campaign.status === "live" && (
-              <a href="https://discord.gg/DUSUtguG2H" target="_blank" rel="noopener" class="btn btn-stamp w-full">
+              <button onclick="window.__comingSoon && window.__comingSoon('Back This Project', 'Choose a reward tier and complete checkout. Payment processing launches with the next platform update.')" class="btn btn-stamp w-full">
                 <i class="ph-bold ph-heart mr-2"></i>Back This Project
-              </a>
+              </button>
             )}
             {campaign.status === "funded" && (
               <div class="btn w-full" style="background: #2A5F41; color: #FAF3E8; cursor: default;">
@@ -683,9 +688,9 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
               </div>
             )}
             {campaign.status === "coming" && (
-              <a href="https://discord.gg/DUSUtguG2H" target="_blank" rel="noopener" class="btn btn-outline w-full">
+              <button onclick="window.__comingSoon && window.__comingSoon('Get Notified', 'Sign up for launch notifications so you never miss this campaign going live.')" class="btn btn-outline w-full">
                 <i class="ph-bold ph-bell mr-2"></i>Notify Me
-              </a>
+              </button>
             )}
           </div>
         </Card>
@@ -718,7 +723,7 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
                 <strong class="text-ink">{tier.claimed} of {tier.total}</strong> claimed
               </div>
 
-              <a href="https://discord.gg/DUSUtguG2H" target="_blank" rel="noopener" class="btn btn-outline btn-sm w-full mt-3">Select This Tier</a>
+              <button onclick="window.__comingSoon && window.__comingSoon('Select Tier', 'Proceed to checkout for this reward tier. Payment processing launches with the next platform update.')" class="btn btn-outline btn-sm w-full mt-3">Select This Tier</button>
             </div>
           </Card>
         ))}
@@ -748,21 +753,52 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
   </div>
 
   <!-- Floating "Back This Campaign" bar -->
-  <div class="campaign-float-bar">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between gap-3">
-      <div class="flex-1 min-w-0">
-        <p class="text-sm font-semibold text-ink truncate">{campaign.title}</p>
-        <p class="text-xs text-stencil">{campaign.percent >= 100 ? "Fully funded" : `${campaign.percent}% funded`}</p>
+  <div class="campaign-float-bar" id="campaign-float">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <!-- Expandable tier panel -->
+      <div class="float-tiers" id="float-tiers">
+        {isShowcase && rewardTiers.map((tier, idx) => (
+          <button class="float-tier-option" data-tier-name={tier.name} data-tier-price={tier.price}>
+            <div class="flex items-center justify-between mb-1">
+              <span class="font-serif font-bold text-sm text-ink">{tier.name}</span>
+              <span class="text-xs font-bold text-stamp">{tier.price}</span>
+            </div>
+            <p class="text-xs text-stencil leading-snug">{tier.perks[0]}</p>
+            <div class="text-[0.6rem] text-ink-faint mt-1">{tier.claimed} of {tier.total} claimed</div>
+          </button>
+        ))}
       </div>
-      {campaign.status === "live" && (
-        <a href="https://discord.gg/DUSUtguG2H" target="_blank" rel="noopener" class="btn btn-stamp btn-sm flex-shrink-0">
-          <i class="ph-bold ph-heart mr-1.5" style="font-size:0.75rem;"></i>
-          Back This Project
-        </a>
-      )}
-      <button class="share-float-btn" title="Share">
-        <i class="ph-bold ph-share-network"></i>
-      </button>
+      <!-- Main bar row -->
+      <div class="flex items-center justify-between gap-3">
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-semibold text-ink truncate">{campaign.title}</p>
+          <p class="text-xs text-stencil">{campaign.percent >= 100 ? "Fully funded" : `${campaign.percent}% funded`}</p>
+        </div>
+        {campaign.status === "live" && (
+          <button class="btn btn-stamp btn-sm flex-shrink-0" id="back-project-btn">
+            <i class="ph-bold ph-heart mr-1.5" style="font-size:0.75rem;"></i>
+            Back This Project
+          </button>
+        )}
+        {campaign.status === "funded" && (
+          <div class="btn btn-sm flex-shrink-0" style="background: #2A5F41; color: #FAF3E8; cursor: default;">
+            <i class="ph-bold ph-check-circle mr-1.5" style="font-size:0.75rem;"></i>
+            Funded
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout mock modal -->
+  <div class="checkout-backdrop" id="checkout-modal">
+    <div class="checkout-modal">
+      <div class="coming-soon-icon">
+        <i class="ph-bold ph-shopping-cart"></i>
+      </div>
+      <div class="coming-soon-title" id="checkout-title">Checkout</div>
+      <p class="coming-soon-desc" id="checkout-desc">Redirecting to payment...</p>
+      <button class="coming-soon-dismiss" id="checkout-dismiss">Got it</button>
     </div>
   </div>
 </BaseLayout>
@@ -903,6 +939,73 @@ const statusVariant = campaign.status === "live" ? "stamp" : campaign.status ===
     transition: width 0.6s ease;
   }
 
+  /* Expandable tier panel */
+  .float-tiers {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s cubic-bezier(0.2, 0, 0, 1), padding 0.3s;
+    padding: 0;
+  }
+  .float-tiers.expanded {
+    max-height: 400px;
+    padding: 0.75rem 0;
+  }
+
+  .float-tier-option {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    border: 1.5px solid rgba(26, 26, 26, 0.08);
+    background: rgba(250, 243, 232, 0.6);
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    margin-bottom: 0.5rem;
+  }
+  .float-tier-option:last-child {
+    margin-bottom: 0;
+  }
+  .float-tier-option:hover {
+    border-color: #D94800;
+    background: rgba(250, 243, 232, 0.9);
+  }
+
+  /* Checkout mock modal */
+  .checkout-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(26, 26, 26, 0.4);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+  .checkout-backdrop.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .checkout-modal {
+    background: #FAF3E8;
+    border-radius: 1rem;
+    padding: 2rem 1.75rem;
+    max-width: 360px;
+    width: 100%;
+    text-align: center;
+    transform: scale(0.95) translateY(8px);
+    transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1);
+    box-shadow: 0 8px 32px rgba(26, 26, 26, 0.15);
+  }
+  .checkout-backdrop.active .checkout-modal {
+    transform: scale(1) translateY(0);
+  }
+
 </style>
 
 <script is:inline data-astro-rerun>
@@ -914,7 +1017,7 @@ if (document.querySelector('model-viewer')) {
   document.head.appendChild(script);
 }
 
-// Share float button — copy page URL to clipboard
+// Share button — copy page URL to clipboard
 document.querySelectorAll('.share-float-btn').forEach(function(btn) {
   btn.addEventListener('click', function() {
     navigator.clipboard.writeText(window.location.href).then(function() {
@@ -925,4 +1028,44 @@ document.querySelectorAll('.share-float-btn').forEach(function(btn) {
   });
 });
 
+// Expandable backing tiers
+(function() {
+  var backBtn = document.getElementById('back-project-btn');
+  var tiers = document.getElementById('float-tiers');
+  if (!backBtn || !tiers) return;
+
+  backBtn.addEventListener('click', function() {
+    tiers.classList.toggle('expanded');
+    if (tiers.classList.contains('expanded')) {
+      backBtn.innerHTML = '<i class="ph-bold ph-x mr-1.5" style="font-size:0.75rem;"></i> Close';
+    } else {
+      backBtn.innerHTML = '<i class="ph-bold ph-heart mr-1.5" style="font-size:0.75rem;"></i> Back This Project';
+    }
+  });
+
+  // Tier selection → checkout modal
+  var modal = document.getElementById('checkout-modal');
+  var modalTitle = document.getElementById('checkout-title');
+  var modalDesc = document.getElementById('checkout-desc');
+  var modalDismiss = document.getElementById('checkout-dismiss');
+
+  document.querySelectorAll('.float-tier-option').forEach(function(opt) {
+    opt.addEventListener('click', function() {
+      var name = opt.getAttribute('data-tier-name');
+      var price = opt.getAttribute('data-tier-price');
+      modalTitle.textContent = name + ' — ' + price;
+      modalDesc.textContent = 'This will redirect you to the checkout page for the ' + name + ' tier. Payment processing is coming soon.';
+      modal.classList.add('active');
+      tiers.classList.remove('expanded');
+      backBtn.innerHTML = '<i class="ph-bold ph-heart mr-1.5" style="font-size:0.75rem;"></i> Back This Project';
+    });
+  });
+
+  modalDismiss.addEventListener('click', function() {
+    modal.classList.remove('active');
+  });
+  modal.addEventListener('click', function(e) {
+    if (e.target === modal) modal.classList.remove('active');
+  });
+})();
 </script>

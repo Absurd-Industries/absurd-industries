@@ -101,7 +101,7 @@ const activities = [
   },
   {
     icon: "trophy",
-    text: `Earned badge: <strong>${maker.backers >= 100 ? "100+ Backers" : "First Backer"}</strong>`,
+    text: `Earned badge: <strong>${maker.backers >= 100 ? "Crowd Favourite" : "First Backer"}</strong>`,
     time: "1 month ago",
     highlight: true,
     miniCard: null as null | { icon: string; name: string; percent: number; backers: number },
@@ -170,9 +170,9 @@ const badges = [
   ...(maker.backers >= 100
     ? [
         {
-          name: "100+ Backers",
+          name: "Crowd Favourite",
           icon: "users-three",
-          description: "Reached 100 cumulative backers",
+          description: "Projects loved by the community",
           bg: "rgba(26,26,26,0.08)",
           color: "#1A1A1A",
         },
@@ -264,6 +264,7 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
   title={`${maker.name} — ${maker.title}`}
   description={maker.bio ?? `${maker.name} is a ${maker.title} from ${maker.location} on Absurd Industries.`}
   activeTab="makers"
+  hideNav
 >
   <section class="pt-6 pb-0 sm:pt-8">
     <div class="max-w-5xl mx-auto px-5 sm:px-6">
@@ -274,18 +275,6 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
     </div>
   </section>
 
-  <!-- Secondary section nav -->
-  <nav class="profile-nav">
-    <div class="max-w-5xl mx-auto px-5 sm:px-6">
-      <div class="profile-nav-inner">
-        <a href="#about" class="profile-nav-pill">About</a>
-        <a href="#setup" class="profile-nav-pill">Setup</a>
-        <a href="#projects" class="profile-nav-pill">Projects</a>
-        <a href="#wall" class="profile-nav-pill">Wall</a>
-        <a href="#badges" class="profile-nav-pill">Badges</a>
-      </div>
-    </div>
-  </nav>
 
   <!-- ══════════════════════════════════════ -->
   <!-- PROFILE BANNER                        -->
@@ -348,18 +337,22 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
 
             <!-- Action buttons -->
             <div class="banner-actions">
-              <a href="https://discord.gg/DUSUtguG2H" target="_blank" rel="noopener"
-                class="btn btn-sm" style="border-color: rgba(250,243,232,0.3); color: #FAF3E8; background: transparent; border: 1.5px solid rgba(250,243,232,0.3);"
+              <button
+                class="btn btn-sm"
+                style="border-color: rgba(250,243,232,0.3); color: #FAF3E8; background: transparent; border: 1.5px solid rgba(250,243,232,0.3);"
+                onclick="window.__comingSoon && window.__comingSoon('Follow', 'Follow this maker to get notified when they launch new projects or post updates.')"
               >
                 <i class="ph-bold ph-plus mr-1.5" style="font-size:0.75rem;"></i>
                 Follow
-              </a>
-              <a href="https://discord.gg/DUSUtguG2H" target="_blank" rel="noopener"
-                class="btn btn-sm" style="background:rgba(250,243,232,0.12); color:#FAF3E8; border:1.5px solid rgba(250,243,232,0.2);"
+              </button>
+              <button
+                class="btn btn-sm"
+                style="background:rgba(250,243,232,0.12); color:#FAF3E8; border:1.5px solid rgba(250,243,232,0.2);"
+                onclick="window.__comingSoon && window.__comingSoon('Direct Messages', 'Send a private message to this maker. Messaging launches with the next platform update.')"
               >
                 <i class="ph-bold ph-envelope-simple mr-1.5" style="font-size:0.75rem;"></i>
                 Message
-              </a>
+              </button>
             </div>
           </div>
 
@@ -386,8 +379,7 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
 
           <Card>
             <!-- ── WORKSHOP / SETUP ── -->
-            <div id="setup" class="profile-section">
-              <div class="rounded-lg p-5 sm:p-6" style="background: #1A1A1A;">
+            <div id="setup" class="profile-section profile-section--dark">
                 <div class="text-paper">
                   <div class="flex items-center gap-2 mb-5">
                     <i class="ph-bold ph-wrench text-stamp text-xl"></i>
@@ -413,11 +405,11 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
                         </div>
                       </div>
 
-                      <a href="/inventory" class="flex items-center gap-2 text-sm font-semibold text-stamp hover:underline no-underline">
+                      <button onclick="window.__comingSoon && window.__comingSoon('Lab Inventory', 'Browse the full equipment list and specs for this maker\'s workshop. Inventory pages are coming soon.')" class="flex items-center gap-2 text-sm font-semibold text-stamp hover:underline cursor-pointer bg-transparent border-none p-0">
                         <i class="ph-bold ph-package text-sm"></i>
                         View full lab inventory
                         <i class="ph-bold ph-arrow-right text-xs"></i>
-                      </a>
+                      </button>
                     </div>
 
                     <!-- Equipment grid -->
@@ -448,60 +440,36 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
                     </div>
                   </div>
                 </div>
-              </div>
             </div>
 
             <!-- ── ALL PROJECTS ── -->
             <div id="projects" class="profile-section">
-              <div class="flex items-center justify-between mb-5">
-                <h2 class="font-serif font-bold text-xl sm:text-2xl tracking-tight">All Projects</h2>
-                <span class="text-xs text-ink-faint font-semibold">{projects.length} projects</span>
-              </div>
+              <h2 class="font-serif font-bold text-xl sm:text-2xl tracking-tight mb-5">Projects</h2>
 
               <div class="space-y-3">
                 {projects.map((project, idx) => (
                   <a
                     href="/campaigns"
                     class:list={[
-                      "flex items-center gap-4 p-3 rounded-lg hover:bg-kraft-light/40 transition-colors no-underline text-ink group",
+                      "block p-4 rounded-lg hover:bg-kraft-light/40 transition-colors no-underline text-ink group",
                       idx === 0 && "bg-kraft-light/30 border border-stamp/15",
                     ]}
                   >
-                    {/* Project icon */}
-                    <div class="w-12 h-12 rounded-lg bg-kraft-light flex items-center justify-center flex-shrink-0">
-                      <i class={`ph-bold ph-${project.icon} text-xl text-stencil group-hover:text-stamp transition-colors`}></i>
-                    </div>
-
-                    {/* Project info */}
-                    <div class="flex-1 min-w-0">
-                      <div class="flex items-center gap-2 mb-0.5">
-                        <h3 class="text-sm font-semibold truncate group-hover:text-stamp transition-colors">{project.name}</h3>
-                        {idx === 0 && (
-                          <span class="inline-flex items-center gap-1 text-[0.55rem] font-bold uppercase tracking-wide text-stamp"><i class="ph-bold ph-push-pin" style="font-size:0.5rem;"></i> Featured</span>
-                        )}
-                        <Tag
-                          variant={project.status === "Live" ? "funded" : project.status === "Completed" ? "stamp" : "default"}
-                          class="text-[0.55rem] flex-shrink-0"
-                        >
-                          {project.status}
-                        </Tag>
+                    <div class="flex items-center gap-3 mb-2">
+                      <div class="w-10 h-10 rounded-lg bg-kraft-light flex items-center justify-center flex-shrink-0">
+                        <i class={`ph-bold ph-${project.icon} text-lg text-stencil group-hover:text-stamp transition-colors`}></i>
                       </div>
-                      <p class="text-xs text-ink-faint truncate">{project.description}</p>
+                      <div class="flex-1 min-w-0">
+                        <h3 class="text-sm font-semibold truncate group-hover:text-stamp transition-colors">{project.name}</h3>
+                      </div>
+                      <i class="ph-bold ph-caret-right text-xs text-ink-faint/40 flex-shrink-0"></i>
                     </div>
-
-                    {/* Progress or status */}
-                    <div class="w-24 flex-shrink-0 hidden sm:block">
-                      {project.percent !== null ? (
-                        <div>
-                          <ProgressBar percent={project.percent} hot={project.percent >= 100} />
-                          <div class="text-[0.6rem] text-ink-faint text-right mt-1">{project.percent}%</div>
-                        </div>
-                      ) : (
-                        <div class="text-xs text-ink-faint italic text-right">Upcoming</div>
-                      )}
-                    </div>
-
-                    <i class="ph-bold ph-caret-right text-xs text-ink-faint/40 flex-shrink-0"></i>
+                    <p class="text-xs text-stencil leading-relaxed line-clamp-2">{project.description}</p>
+                    {project.percent !== null && (
+                      <div class="mt-2.5">
+                        <ProgressBar percent={project.percent} hot={project.percent >= 100} />
+                      </div>
+                    )}
                   </a>
                 ))}
               </div>
@@ -515,38 +483,30 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
 
               <!-- Recent Activity -->
               <h3 class="font-serif font-semibold text-base mb-4">Recent Activity</h3>
-              <div class="relative pl-8">
-                <div class="timeline-line"></div>
+              <div class="space-y-4">
                 {activities.map((a) => (
-                  <div class="relative flex items-start gap-3 pb-5 last:pb-0">
-                    <div
-                      class:list={["timeline-dot absolute", { highlight: a.highlight }]}
-                      style="left: -27px; top: 4px;"
-                    ></div>
+                  <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5" style={`background: ${a.highlight ? "rgba(217,72,0,0.1)" : "rgba(26,26,26,0.04)"}`}>
+                      <i class={`ph-bold ph-${a.icon} text-sm`} style={`color: ${a.highlight ? "#D94800" : "#4A3D2F"}`}></i>
+                    </div>
                     <div class="flex-1">
-                      <div class="flex items-start gap-2">
-                        <i class={`ph-bold ph-${a.icon} text-sm mt-0.5`} style={`color: ${a.highlight ? "#D94800" : "#4A3D2F"}`}></i>
-                        <div class="flex-1">
-                          <p class="text-sm text-ink leading-snug" set:html={a.text} />
-                          <span class="text-xs text-ink-faint mt-0.5 block">{a.time}</span>
+                      <p class="text-sm text-ink leading-snug" set:html={a.text} />
+                      <span class="text-xs text-ink-faint mt-0.5 block">{a.time}</span>
 
-                          {/* Inline mini card for campaign activity */}
-                          {a.miniCard && (
-                            <div class="mt-2 p-3 rounded-lg bg-kraft-light/50 border border-ink/5">
-                              <div class="flex items-center gap-2 mb-1.5">
-                                <i class={`ph-bold ph-${a.miniCard.icon} text-sm text-stencil`}></i>
-                                <span class="text-xs font-semibold text-ink">{a.miniCard.name}</span>
-                              </div>
-                              <div class="progress mb-1" style="height:4px;">
-                                <div class="progress-fill" style={`width: ${a.miniCard.percent}%`}></div>
-                              </div>
-                              <div class="text-[0.6rem] text-ink-faint">
-                                <strong class="text-ink font-semibold">{a.miniCard.percent}%</strong> funded &middot; {a.miniCard.backers} backers
-                              </div>
-                            </div>
-                          )}
+                      {a.miniCard && (
+                        <div class="mt-2 p-3 rounded-lg bg-kraft-light/50 border border-ink/5">
+                          <div class="flex items-center gap-2 mb-1.5">
+                            <i class={`ph-bold ph-${a.miniCard.icon} text-sm text-stencil`}></i>
+                            <span class="text-xs font-semibold text-ink">{a.miniCard.name}</span>
+                          </div>
+                          <div class="progress mb-1" style="height:4px;">
+                            <div class="progress-fill" style={`width: ${a.miniCard.percent}%`}></div>
+                          </div>
+                          <div class="text-[0.6rem] text-ink-faint">
+                            <strong class="text-ink font-semibold">{a.miniCard.percent}%</strong> funded
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -556,7 +516,6 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
               <div class="border-t border-ink/5 pt-5 mt-6">
                 <!-- Comments -->
                 <h3 class="font-serif font-semibold text-base mb-4">Comments</h3>
-                <span class="text-xs text-ink-faint font-semibold mb-4 block">{comments.length} comments</span>
 
                 <!-- Existing comments -->
                 <div class="mb-5">
@@ -592,10 +551,10 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
                         disabled
                       ></textarea>
                       <div class="flex justify-end mt-2">
-                        <span class="btn btn-primary btn-sm" style="opacity:0.4; cursor:not-allowed; transform:none;">
+                        <button class="btn btn-primary btn-sm" style="opacity:0.5; transform:none;" onclick="window.__comingSoon && window.__comingSoon('Profile Wall', 'Post comments on maker profiles. Wall comments launch with the next platform update.')">
                           <i class="ph-bold ph-paper-plane-tilt mr-1.5" style="font-size:0.7rem;"></i>
                           Post Comment
-                        </span>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -605,10 +564,7 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
 
             <!-- ── BADGES ── -->
             <div id="badges" class="profile-section" data-configurable="badges">
-              <div class="flex items-center justify-between mb-4">
-                <h2 class="font-serif font-bold text-xl sm:text-2xl tracking-tight">Badges</h2>
-                <span class="text-[0.6rem] text-ink-faint font-semibold uppercase tracking-wide">{badges.length} earned</span>
-              </div>
+              <h2 class="font-serif font-bold text-xl sm:text-2xl tracking-tight mb-4">Badges</h2>
 
               <div class="grid grid-cols-3 sm:grid-cols-6 gap-1">
                 {badges.map((b) => (
@@ -639,22 +595,6 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
               <div class="p-3 rounded-lg bg-kraft-light/50 border border-ink/5 mb-5">
                 <div class="text-[0.6rem] font-semibold uppercase tracking-wider text-ink-faint mb-1.5">Currently working on</div>
                 <p class="text-sm text-ink leading-snug font-medium">{showcase.name}</p>
-              </div>
-
-              <!-- Stats row -->
-              <div class="grid grid-cols-3 gap-3 text-center mb-5">
-                <div>
-                  <div class="font-serif font-bold text-lg text-ink">{maker.projects}</div>
-                  <div class="text-[0.6rem] text-ink-faint font-semibold uppercase tracking-wide">Projects</div>
-                </div>
-                <div>
-                  <div class="font-serif font-bold text-lg text-ink">{maker.backers}</div>
-                  <div class="text-[0.6rem] text-ink-faint font-semibold uppercase tracking-wide">Backers</div>
-                </div>
-                <div>
-                  <div class="font-serif font-bold text-lg text-ink">{contributions}</div>
-                  <div class="text-[0.6rem] text-ink-faint font-semibold uppercase tracking-wide">Contribs</div>
-                </div>
               </div>
 
               <!-- Links -->
@@ -697,6 +637,19 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
       </div>
     </div>
   </section>
+
+  <!-- Fixed bottom profile nav (replaces main nav) -->
+  <nav class="profile-nav">
+    <div class="max-w-5xl mx-auto px-5 sm:px-6">
+      <div class="profile-nav-inner">
+        <a href="#about" class="profile-nav-pill">About</a>
+        <a href="#setup" class="profile-nav-pill">Setup</a>
+        <a href="#projects" class="profile-nav-pill">Projects</a>
+        <a href="#wall" class="profile-nav-pill">Wall</a>
+        <a href="#badges" class="profile-nav-pill">Badges</a>
+      </div>
+    </div>
+  </nav>
 </BaseLayout>
 
 <script is:inline data-astro-rerun>
@@ -962,6 +915,10 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
   .profile-section:first-child {
     border-top: none;
   }
+  .profile-section--dark {
+    background: #1A1A1A;
+    border-top: none;
+  }
   @media (min-width: 640px) {
     .profile-section {
       padding: 2rem;
@@ -982,18 +939,23 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
     background: rgba(26, 26, 26, 0.1);
   }
 
-  /* Profile section nav */
+  /* Profile section nav — fixed bottom bar replacing main nav */
   .profile-nav {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: #D4B896;
-    border-bottom: 1px solid rgba(26, 26, 26, 0.08);
-    padding: 0.5rem 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 40;
+    background: rgba(250, 243, 232, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(26, 26, 26, 0.08);
+    padding: 0.6rem 0;
   }
   .profile-nav-inner {
     display: flex;
     gap: 0.5rem;
+    justify-content: center;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
