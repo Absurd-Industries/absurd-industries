@@ -143,9 +143,11 @@
 
 				//
 
-				new STLLoader().load(
-					'static/models/glados.stl',
-					function (geometry) {
+				fetch('static/models/glados.stl.gz')
+					.then(r => new Response(r.body.pipeThrough(new DecompressionStream('gzip'))).arrayBuffer())
+					.then(buffer => {
+						const loader = new STLLoader();
+						const geometry = loader.parse(buffer);
 						geometry.scale( 0.2, 0.2, 0.2 );
 						geometry.computeVertexNormals();
 
@@ -157,14 +159,8 @@
 						mesh.castShadow = true;
 						mesh.receiveShadow = true;
 						scene.add( mesh );
-					},
-					(xhr) => {
-						console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
-					},
-					(error) => {
-						console.log(error)
-					}
-				)
+					})
+					.catch(error => console.log(error))
 
 				window.addEventListener( 'resize', onWindowResize );
 

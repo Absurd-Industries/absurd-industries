@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Source Water Purifier | Campaigns | Absurd Industries</title>
+    <meta name="description" content="Community-designed, field-repairable water purification for off-grid communities. UV-C + ceramic filtration, solar powered, fully open-source hardware under CERN-OHL-S.">
+
+    <meta property="og:title" content="Open Source Water Purifier | Absurd Industries">
+    <meta property="og:description" content="Back an open-source, solar-powered water purifier designed for rural communities and disaster relief. 73% funded.">
+    <meta property="og:image" content="https://absurd.industries/hardware-devroom/screen.png">
+    <meta property="og:url" content="https://absurd.industries/campaigns/detail.html">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16x16.png">
+    <link rel="shortcut icon" href="../assets/favicon/favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap" rel="stylesheet">
+
+    <script src="https://kit.fontawesome.com/e0c6d65845.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kraft: { DEFAULT: '#D4B896', light: '#E8D5B7', dark: '#B8956A' },
+                        ink: { DEFAULT: '#1A1A1A', light: '#3D3D3D', faint: '#6B5B4A' },
+                        stamp: { DEFAULT: '#FF5900', dark: '#CC4700' },
+                        tape: '#F5E6C8',
+                        paper: '#FAF3E8',
+                        stencil: '#6B5B4A',
+                        funded: '#2A5F41',
+                    },
+                    fontFamily: {
+                        serif: ['"Fraunces"', 'Georgia', 'serif'],
+                        sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
+                    },
+                },
+            },
+        };
+    </script>
+
+    <style>
+        body {
+            background-color: #D4B896;
+            background-image: url('../hardware-devroom/images/kraft-paper.jpg');
+            background-repeat: repeat;
+            background-size: auto;
+        }
+
+        /* Paper-cut cards */
+        .card { position: relative; }
+        .card-bg {
+            position: absolute; inset: 0;
+            background: #FAF3E8;
+            border-radius: 0.875rem;
+            filter: url(#papercut);
+            z-index: 0;
+        }
+        .card-bg-dark {
+            position: absolute; inset: 0;
+            background: #1A1A1A;
+            border-radius: 0.875rem;
+            filter: url(#papercut);
+            z-index: 0;
+        }
+        .card-content { position: relative; z-index: 1; }
+
+        .card-v2 > .card-bg,
+        .card-v2 > .card-bg-dark { filter: url(#papercut-2); }
+        .card-v3 > .card-bg,
+        .card-v3 > .card-bg-dark { filter: url(#papercut-3); }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 0.7rem 1.6rem;
+            font-family: 'DM Sans', system-ui, sans-serif;
+            font-weight: 600; font-size: 0.875rem;
+            letter-spacing: 0.01em;
+            border-radius: 0.625rem;
+            text-decoration: none;
+            transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+            cursor: pointer; border: none;
+        }
+        .btn:hover { transform: translateY(-1px); }
+        .btn-primary { background: #1A1A1A; color: #FAF3E8; }
+        .btn-primary:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .btn-stamp { background: #FF5900; color: #FAF3E8; }
+        .btn-stamp:hover { box-shadow: 0 4px 12px rgba(255,89,0,0.25); }
+        .btn-outline { background: transparent; color: #1A1A1A; border: 1.5px solid #1A1A1A; }
+        .btn-outline:hover { background: #1A1A1A; color: #FAF3E8; }
+        .btn-ghost { background: transparent; color: #1A1A1A; padding: 0.5rem 1rem; }
+        .btn-ghost:hover { background: rgba(26,26,26,0.06); border-radius: 0.625rem; }
+        .btn-sm { padding: 0.5rem 1.15rem; font-size: 0.8rem; }
+        .btn-funded { background: #2A5F41; color: #FAF3E8; }
+        .btn-funded:hover { box-shadow: 0 4px 12px rgba(42,95,65,0.25); }
+
+        /* Tags */
+        .tag {
+            display: inline-flex; align-items: center;
+            padding: 0.2rem 0.65rem; border-radius: 999px;
+            font-size: 0.68rem; font-weight: 600;
+            letter-spacing: 0.04em; text-transform: uppercase;
+        }
+        .tag-default { background: rgba(26,26,26,0.08); color: #1A1A1A; }
+        .tag-stamp { background: rgba(255,89,0,0.12); color: #FF5900; }
+        .tag-funded { background: rgba(42,95,65,0.12); color: #2A5F41; }
+
+        /* Progress */
+        .progress { height: 5px; background: #E8D5B7; border-radius: 999px; overflow: hidden; }
+        .progress-fill { height: 100%; border-radius: 999px; background: #2A5F41; transition: width 0.6s ease; }
+        .progress-fill.hot { background: #FF5900; }
+
+        /* Fixed wonky logo */
+        .wonky-logo {
+            position: fixed; top: 1rem; left: 50%; transform: translateX(-50%) rotate(-2deg);
+            z-index: 40; transition: transform 0.2s ease;
+        }
+        .wonky-logo:hover { transform: translateX(-50%) rotate(0deg) scale(1.05); }
+
+        /* Bottom bar */
+        .bottom-bar {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: #1A1A1A;
+            z-index: 50;
+            box-shadow: 0 -2px 12px rgba(0,0,0,0.15);
+        }
+        .bottom-bar a, .bottom-bar button {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 10px 0;
+            color: rgba(250,243,232,0.55);
+            text-decoration: none; background: none; border: none;
+            font-family: 'DM Sans', system-ui, sans-serif;
+            font-size: 0.6rem; font-weight: 600;
+            letter-spacing: 0.03em; text-transform: uppercase;
+            transition: color 0.15s; cursor: pointer;
+        }
+        .bottom-bar a:hover, .bottom-bar a:active,
+        .bottom-bar button:hover { color: #FF5900; }
+        .bottom-bar a.active { color: #FF5900; }
+        .bottom-bar i, .bottom-bar .ph-bold { font-size: 1.25rem; margin-bottom: 3px; }
+
+        /* Mega menu */
+        .mega-menu {
+            position: absolute; bottom: 100%; right: 0; left: 0;
+            background: #FAF3E8;
+            border-radius: 0.875rem 0.875rem 0 0;
+            box-shadow: 0 -4px 24px rgba(0,0,0,0.12);
+            padding: 1.25rem 1.5rem;
+        }
+        .mega-menu a {
+            display: flex; align-items: center; gap: 0.75rem;
+            color: #1A1A1A; text-decoration: none;
+            font-size: 0.875rem; font-weight: 500;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid rgba(26,26,26,0.06);
+            flex-direction: row;
+        }
+        .mega-menu a:last-child { border-bottom: none; }
+        .mega-menu a i { font-size: 1.1rem; color: #6B5B4A; }
+        .mega-menu a:hover { color: #FF5900; }
+        .mega-menu a:hover i { color: #FF5900; }
+
+        body { padding-bottom: 72px; }
+
+        .copyleft { display: inline-block; transform: rotate(180deg); }
+
+        /* Breadcrumb */
+        .breadcrumb a {
+            color: #6B5B4A; text-decoration: none; font-weight: 500;
+            transition: color 0.12s;
+        }
+        .breadcrumb a:hover { color: #FF5900; }
+
+        /* Comment */
+        .comment {
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(26,26,26,0.06);
+        }
+        .comment:last-child { border-bottom: none; }
+        .comment-reply {
+            margin-left: 2.5rem;
+            padding-left: 1rem;
+            border-left: 2px solid rgba(26,26,26,0.08);
+        }
+        .comment-vote {
+            display: inline-flex; align-items: center; gap: 0.25rem;
+            font-size: 0.72rem; font-weight: 600; color: #6B5B4A;
+            cursor: pointer; padding: 0.15rem 0.4rem; border-radius: 0.375rem;
+            transition: all 0.12s;
+        }
+        .comment-vote:hover { background: rgba(26,26,26,0.06); color: #1A1A1A; }
+        .comment-vote.voted { color: #FF5900; }
+        .comment-vote i { font-size: 0.8rem; }
+        .comment-action {
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            font-size: 0.72rem; font-weight: 600; color: #6B5B4A;
+            cursor: pointer; padding: 0.15rem 0.4rem; border-radius: 0.375rem;
+            transition: all 0.12s;
+        }
+        .comment-action:hover { background: rgba(26,26,26,0.06); color: #1A1A1A; }
+
+        /* Comment textarea */
+        .comment-textarea {
+            width: 100%; padding: 0.75rem 1rem;
+            border-radius: 0.625rem;
+            border: 1.5px solid rgba(26,26,26,0.12);
+            background: rgba(250,243,232,0.5);
+            font-family: 'DM Sans', system-ui, sans-serif;
+            font-size: 0.875rem; color: #1A1A1A;
+            resize: vertical; min-height: 80px;
+            transition: border-color 0.15s;
+        }
+        .comment-textarea:focus { outline: none; border-color: #FF5900; background: #FAF3E8; box-shadow: 0 0 0 3px rgba(255,89,0,0.08); }
+        .comment-textarea::placeholder { color: #B8956A; }
+
+        /* BOM table */
+        .bom-table {
+            width: 100%; border-collapse: collapse; font-size: 0.8rem;
+        }
+        .bom-table th {
+            text-align: left; padding: 0.6rem 0.75rem;
+            font-size: 0.68rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.04em;
+            color: #6B5B4A; border-bottom: 1.5px solid rgba(26,26,26,0.1);
+        }
+        .bom-table td {
+            padding: 0.55rem 0.75rem;
+            border-bottom: 1px solid rgba(26,26,26,0.06);
+            color: #1A1A1A;
+        }
+        .bom-table tr:last-child td { border-bottom: none; }
+        .bom-table .total-row td {
+            border-top: 1.5px solid rgba(26,26,26,0.1);
+            font-weight: 700; padding-top: 0.75rem;
+        }
+
+        /* Timeline stepper */
+        .step-line {
+            width: 2px; min-height: 28px;
+            margin-left: 13px;
+        }
+        .step-dot {
+            width: 28px; height: 28px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; font-size: 0.75rem;
+        }
+
+        /* File card */
+        .file-card {
+            display: flex; align-items: center; gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: 0.625rem;
+            border: 1.5px solid rgba(26,26,26,0.08);
+            background: rgba(250,243,232,0.4);
+            transition: all 0.15s; cursor: pointer;
+        }
+        .file-card:hover {
+            border-color: #FF5900; background: rgba(255,89,0,0.04);
+        }
+        .file-card:hover .file-card-icon { color: #FF5900; }
+
+        /* Upvote button */
+        .upvote-btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.55rem 1.1rem; border-radius: 0.625rem;
+            border: 1.5px solid rgba(26,26,26,0.2); background: transparent;
+            font-size: 0.8rem; font-weight: 700; cursor: pointer;
+            transition: all 0.15s; color: #1A1A1A;
+            font-family: 'DM Sans', system-ui, sans-serif;
+        }
+        .upvote-btn:hover { border-color: #FF5900; color: #FF5900; background: rgba(255,89,0,0.04); }
+        .upvote-btn.voted { background: #1A1A1A; color: #FAF3E8; border-color: #1A1A1A; }
+        .upvote-btn i { font-size: 1rem; }
+
+        /* Share button row */
+        .share-btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 38px; height: 38px; border-radius: 0.625rem;
+            border: 1.5px solid rgba(26,26,26,0.12); background: transparent;
+            color: #6B5B4A; cursor: pointer; transition: all 0.15s;
+            font-size: 1rem;
+        }
+        .share-btn:hover { border-color: #FF5900; color: #FF5900; background: rgba(255,89,0,0.04); }
+
+        /* Reward tier claimed bar */
+        .tier-progress { height: 3px; background: #E8D5B7; border-radius: 999px; overflow: hidden; }
+        .tier-progress-fill { height: 100%; border-radius: 999px; background: #FF5900; transition: width 0.6s ease; }
+    </style>
+</head>
+
+<body class="font-sans text-ink min-h-screen antialiased">
+
+    <!-- SVG Filters -->
+    <svg width="0" height="0" style="position:absolute">
+        <filter id="papercut">
+            <feTurbulence type="turbulence" baseFrequency="0.04" numOctaves="4" result="n"/>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <filter id="papercut-2">
+            <feTurbulence type="turbulence" baseFrequency="0.035" numOctaves="4" seed="3" result="n"/>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <filter id="papercut-3">
+            <feTurbulence type="turbulence" baseFrequency="0.045" numOctaves="4" seed="7" result="n"/>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="3.5" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+    </svg>
+
+    <div id="app">
+
+        <!-- Fixed wonky logo -->
+        <a href="../" class="wonky-logo">
+            <img src="../hardware-devroom/images/absurd-logo-for-any-background.png" alt="Absurd Industries" class="h-9 sm:h-10 drop-shadow-sm">
+        </a>
+
+        <!-- Main content -->
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-20 pb-6 md:pt-24 md:pb-10">
+
+            <!-- Breadcrumb -->
+            <div class="breadcrumb text-sm mb-6 flex items-center gap-2">
+                <a href="./">Campaigns</a>
+                <i class="ph-bold ph-caret-right text-xs text-stencil"></i>
+                <span class="text-ink font-medium">Open Source Water Purifier</span>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-6">
+
+                <!-- ===== Main Column ===== -->
+                <div class="flex-1 min-w-0">
+
+                    <!-- Hero image area -->
+                    <div class="card mb-5">
+                        <div class="card-bg"></div>
+                        <div class="card-content">
+                            <div class="h-48 sm:h-64 bg-kraft-light flex items-center justify-center" style="border-radius: 0.875rem;">
+                                <i class="ph-bold ph-drop text-7xl sm:text-8xl text-stencil opacity-40"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Title section -->
+                    <div class="card mb-5">
+                        <div class="card-bg"></div>
+                        <div class="card-content p-5 sm:p-7">
+                            <h1 class="font-serif text-2xl sm:text-3xl md:text-4xl font-black tracking-tight leading-tight mb-3">Open Source Water Purifier</h1>
+
+                            <div class="flex flex-wrap items-center gap-2 mb-4">
+                                <span class="tag tag-funded">Live</span>
+                                <span class="tag tag-default">Sustainability</span>
+                                <span class="tag tag-default"><i class="ph-bold ph-scales mr-1" style="font-size:0.65rem;"></i>CERN-OHL-S</span>
+                            </div>
+
+                            <div class="flex flex-wrap items-center gap-3 text-sm text-ink-faint">
+                                <span>by <a href="../makers/detail.html" class="font-semibold text-ink hover:text-stamp transition-colors" style="text-decoration:none;">Priya Sharma</a></span>
+                                <span class="flex items-center gap-1"><i class="ph-bold ph-map-pin text-xs"></i> Bangalore, India</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Born from request callout -->
+                    <div class="card card-v2 mb-5">
+                        <div class="card-bg"></div>
+                        <div class="card-content p-5 sm:p-7" style="border-left: 3px solid #FF5900;">
+                            <div class="flex items-start gap-3">
+                                <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background: rgba(255,89,0,0.08);">
+                                    <i class="ph-bold ph-megaphone text-stamp"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm leading-relaxed">
+                                        This campaign was born from community <a href="../requests/detail.html" class="font-semibold text-stamp hover:underline" style="text-decoration:none;">Request #47: Open Source Water Purification System</a>
+                                    </p>
+                                    <div class="flex items-center gap-2 mt-1.5">
+                                        <span class="upvote-btn" :class="{ voted: upvoted }" @click="toggleUpvote" style="padding:0.3rem 0.7rem; font-size:0.72rem;">
+                                            <i class="ph-bold ph-arrow-fat-up" style="font-size:0.8rem;"></i>
+                                            {{ upvoteCount }}
+                                        </span>
+                                        <span class="text-xs text-ink-faint">upvotes on the original request</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="card card-v3 mb-5">
+                        <div class="card-bg"></div>
+                        <div class="card-content p-5 sm:p-7">
+                            <h2 class="font-serif font-bold text-lg mb-4">About This Project</h2>
+                            <div class="text-sm leading-relaxed text-ink-light space-y-4">
+                                <p>
+                                    Clean water should not be a luxury. Yet over 2 billion people worldwide lack access to safely managed drinking water, and the systems available to them are either prohibitively expensive, impossible to repair locally, or locked behind proprietary designs that prevent communities from adapting the technology to their specific conditions.
+                                </p>
+                                <p>
+                                    The <strong>Open Source Water Purifier</strong> is a community-designed, field-repairable water purification system built for off-grid communities, disaster relief operations, and rural households. It combines a <strong>ceramic filter element</strong> for sediment and bacteria removal with a <strong>UV-C LED array</strong> for viral disinfection, all powered by a small <strong>solar panel and battery pack</strong> that can operate independently of any power grid.
+                                </p>
+                                <p>
+                                    Every component has been chosen for global availability. The housing is made from <strong>bamboo composite</strong> instead of injection-molded plastic, meaning it can be fabricated in any workshop with basic woodworking tools. The electronics use through-hole components wherever possible, so the control board can be hand-soldered without specialized reflow equipment. And the ceramic filter elements are manufactured using locally sourced clay and colloidal silver, following a process documented by Potters for Peace and adapted for small-batch production.
+                                </p>
+                                <p>
+                                    This is not a proof of concept. We have been field testing Prototype v3 in three villages in Karnataka since January 2026, processing an average of 120 liters per day per unit. The results from independent lab testing confirm removal of <strong>99.97% of bacteria</strong> and <strong>99.9% of viruses</strong> in source water samples taken from local bore wells and surface water.
+                                </p>
+
+                                <h3 class="font-serif font-bold text-base pt-2">What's Included</h3>
+                                <ul class="list-disc list-inside space-y-1.5 text-sm text-ink-light">
+                                    <li>Fully assembled water purifier unit with bamboo composite housing</li>
+                                    <li>Ceramic filter element (replaceable, rated for 6 months of continuous use)</li>
+                                    <li>UV-C LED array module with driver circuit</li>
+                                    <li>10W solar panel with mounting bracket</li>
+                                    <li>12V 6Ah LiFePO4 battery pack with charge controller</li>
+                                    <li>Flow sensor and basic water quality indicator (TDS)</li>
+                                    <li>Complete assembly guide and maintenance manual (printed)</li>
+                                    <li>Access to all source files: KiCad schematics, STEP models, firmware source, and BOM spreadsheet</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bill of Materials -->
+                    <div class="card mb-5">
+                        <div class="card-bg"></div>
+                        <div class="card-content p-5 sm:p-7">
+                            <div class="flex items-center justify-between mb-4">
+                                <h2 class="font-serif font-bold text-lg">Bill of Materials</h2>
+                                <span class="tag tag-default"><i class="ph-bold ph-table mr-1" style="font-size:0.65rem;"></i>10 components</span>
+                            </div>
+
+                            <div class="overflow-x-auto -mx-2">
+                                <table class="bom-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Component</th>
+                                            <th>Qty</th>
+                                            <th class="hidden sm:table-cell">Source</th>
+                                            <th class="text-right">Est. Cost</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="item in bom" :key="item.name">
+                                            <td class="font-medium">{{ item.name }}</td>
+                                            <td>{{ item.qty }}</td>
+                                            <td class="hidden sm:table-cell text-ink-faint">{{ item.source }}</td>
+                                            <td class="text-right">{{ item.cost }}</td>
+                                        </tr>
+                                        <tr class="total-row">
+                                            <td colspan="2" class="hidden sm:table-cell"></td>
+                                            <td class="sm:hidden"></td>
+                                            <td class="hidden sm:table-cell text-right font-semibold">Total</td>
+                                            <td class="sm:hidden text-right font-semibold">Total</td>
+                                            <td class="text-right font-semibold">~&#8377;2,400</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Open Source Files -->
+                    <div class="card card-v2 mb-5">
+                        <div class="card-bg"></div>
+                        <div class="card-content p-5 sm:p-7">
+                            <div class="flex items-center justify-between mb-4">
+                                <h2 class="font-serif font-bold text-lg">Open Source Files</h2>
+                                <span class="tag tag-funded"><i class="ph-bold ph-scales mr-1" style="font-size:0.65rem;"></i>CERN-OHL-S</span>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div class="file-card" v-for="file in sourceFiles" :key="file.name">
+                                    <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background: rgba(26,26,26,0.05);">
+                                        <i :class="file.icon" class="file-card-icon text-stencil text-lg transition-colors"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="text-sm font-semibold leading-snug">{{ file.name }}</div>
+                                        <div class="text-xs text-ink-faint">{{ file.format }}</div>
+                                    </div>
+                                    <i class="ph-bold ph-download-simple text-stencil file-card-icon transition-colors"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Manufacturing Status -->
+                    <div class="card card-v3 mb-5">
+                        <div class="card-bg"></div>
+                        <div class="card-content p-5 sm:p-7">
+                            <h2 class="font-serif font-bold text-lg mb-5">Manufacturing Status</h2>
+
+                            <div v-for="(step, idx) in manufacturingSteps" :key="step.label">
+                                <div class="flex items-center gap-3">
+                                    <div class="step-dot"
+                                         :class="{
+                                            'bg-funded text-paper': step.status === 'done',
+                                            'bg-stamp text-paper': step.status === 'current',
+                                            'bg-kraft-light text-stencil': step.status === 'pending'
+                                         }">
+                                        <i v-if="step.status === 'done'" class="ph-bold ph-check"></i>
+                                        <i v-else-if="step.status === 'current'" class="ph-bold ph-circle-notch"></i>
+                                        <i v-else class="ph-bold ph-circle-dashed"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="text-sm font-semibold" :class="{ 'text-ink-faint': step.status === 'pending' }">{{ step.label }}</div>
+                                        <div class="text-xs text-ink-faint">{{ step.note }}</div>
+                                    </div>
+                                    <span v-if="step.status === 'current'" class="tag tag-stamp">In Progress</span>
+                                    <span v-if="step.status === 'done'" class="tag tag-funded">Complete</span>
+                                </div>
+                                <div v-if="idx < manufacturingSteps.length - 1"
+                                     class="step-line"
+                                     :class="{
+                                        'bg-funded': step.status === 'done',
+                                        'bg-stamp': step.status === 'current',
+                                        'bg-kraft-light': step.status === 'pending'
+                                     }">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Updates Timeline -->
+                    <div class="card mb-5">
+                        <div class="card-bg"></div>
+                        <div class="card-content p-5 sm:p-7">
+                            <h2 class="font-serif font-bold text-lg mb-5">Updates</h2>
+
+                            <div v-for="(update, idx) in updates" :key="update.title">
+                                <div class="flex gap-3">
+                                    <div class="flex flex-col items-center flex-shrink-0">
+                                        <div class="w-3 h-3 rounded-full mt-1" :class="idx === 0 ? 'bg-stamp' : 'bg-kraft-dark'"></div>
+                                        <div v-if="idx < updates.length - 1" class="w-0.5 flex-1 mt-1" :class="idx === 0 ? 'bg-stamp/30' : 'bg-kraft-dark/20'"></div>
+                                    </div>
+                                    <div class="pb-6">
+                                        <div class="text-xs text-ink-faint mb-1">{{ update.date }}</div>
+                                        <h4 class="text-sm font-semibold mb-1">{{ update.title }}</h4>
+                                        <p class="text-sm text-ink-faint leading-relaxed">{{ update.text }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Discussion -->
+                    <div class="card card-v2 mb-5">
+                        <div class="card-bg"></div>
+                        <div class="card-content p-5 sm:p-7">
+                            <h2 class="font-serif font-bold text-lg mb-2">
+                                Discussion
+                                <span class="text-sm font-sans font-normal text-ink-faint ml-1">({{ comments.length }} comments)</span>
+                            </h2>
+
+                            <!-- Comment composer -->
+                            <div class="mb-6 mt-4">
+                                <div class="flex gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-kraft-dark flex items-center justify-center text-xs font-bold text-paper flex-shrink-0 mt-0.5">
+                                        <i class="ph-bold ph-user text-xs"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <textarea class="comment-textarea" placeholder="Ask a question, share feedback, or discuss this project..." v-model="newComment"></textarea>
+                                        <div class="flex items-center justify-end mt-2">
+                                            <button class="btn btn-stamp btn-sm" @click="addComment">Post Comment</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Comments list -->
+                            <div>
+                                <div v-for="comment in comments" :key="comment.id" class="comment">
+                                    <div class="flex gap-3">
+                                        <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-paper flex-shrink-0"
+                                             :style="{ background: comment.color }">
+                                            {{ comment.initials }}
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex flex-wrap items-center gap-2 mb-1">
+                                                <span class="text-sm font-semibold">{{ comment.author }}</span>
+                                                <span v-if="comment.badge" class="tag text-[0.6rem] py-0" :class="comment.badgeClass">{{ comment.badge }}</span>
+                                                <span class="text-xs text-ink-faint">{{ comment.time }}</span>
+                                            </div>
+                                            <div class="text-sm leading-relaxed text-ink-light" v-html="comment.content"></div>
+                                            <div class="flex items-center gap-2 mt-2">
+                                                <span
+                                                    class="comment-vote"
+                                                    :class="{ voted: comment.liked }"
+                                                    @click="toggleCommentLike(comment)"
+                                                >
+                                                    <i class="ph-bold ph-heart"></i>
+                                                    {{ comment.likes }}
+                                                </span>
+                                                <span class="comment-action" @click="toggleReply(comment)">
+                                                    <i class="ph-bold ph-chat-circle"></i>
+                                                    Reply
+                                                </span>
+                                            </div>
+
+                                            <!-- Reply composer -->
+                                            <div v-if="comment.showReply" class="mt-3 flex gap-2">
+                                                <textarea class="comment-textarea" style="min-height:60px;" placeholder="Write a reply..." v-model="comment.replyText"></textarea>
+                                                <button class="btn btn-stamp btn-sm flex-shrink-0 self-end" @click="postReply(comment)">Reply</button>
+                                            </div>
+
+                                            <!-- Nested replies -->
+                                            <div v-if="comment.replies && comment.replies.length" class="mt-3">
+                                                <div v-for="reply in comment.replies" :key="reply.id" class="comment-reply comment">
+                                                    <div class="flex gap-3">
+                                                        <div class="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold text-paper flex-shrink-0"
+                                                             :style="{ background: reply.color }">
+                                                            {{ reply.initials }}
+                                                        </div>
+                                                        <div class="flex-1 min-w-0">
+                                                            <div class="flex flex-wrap items-center gap-2 mb-1">
+                                                                <span class="text-sm font-semibold">{{ reply.author }}</span>
+                                                                <span v-if="reply.badge" class="tag text-[0.6rem] py-0" :class="reply.badgeClass">{{ reply.badge }}</span>
+                                                                <span class="text-xs text-ink-faint">{{ reply.time }}</span>
+                                                            </div>
+                                                            <div class="text-sm leading-relaxed text-ink-light" v-html="reply.content"></div>
+                                                            <div class="flex items-center gap-2 mt-1.5">
+                                                                <span
+                                                                    class="comment-vote"
+                                                                    :class="{ voted: reply.liked }"
+                                                                    @click="toggleCommentLike(reply)"
+                                                                >
+                                                                    <i class="ph-bold ph-heart"></i>
+                                                                    {{ reply.likes }}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- ===== Sidebar ===== -->
+                <div class="w-full lg:w-80 flex-shrink-0">
+
+                    <!-- Funding Progress -->
+                    <div class="card mb-5">
+                        <div class="card-bg"></div>
+                        <div class="card-content p-5">
+                            <div class="font-serif text-4xl font-black text-funded leading-none mb-2">73%</div>
+                            <div class="text-sm font-semibold text-funded mb-3">Funded</div>
+
+                            <div class="progress mb-3" style="height:7px;">
+                                <div class="progress-fill" style="width:73%;"></div>
+                            </div>
+
+                            <div class="space-y-2 mb-4">
+                                <div class="text-sm">
+                                    <strong class="text-ink font-semibold">&#8377;1,82,500</strong>
+                                    <span class="text-ink-faint">raised of &#8377;2,50,000</span>
+                                </div>
+                                <div class="flex items-center gap-4 text-sm">
+                                    <span class="flex items-center gap-1.5">
+                                        <i class="ph-bold ph-clock text-stencil"></i>
+                                        <strong class="text-ink font-semibold">18</strong>
+                                        <span class="text-ink-faint">days left</span>
+                                    </span>
+                                    <span class="flex items-center gap-1.5">
+                                        <i class="ph-bold ph-users text-stencil"></i>
+                                        <strong class="text-ink font-semibold">184</strong>
+                                        <span class="text-ink-faint">backers</span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-stamp w-full">
+                                <i class="ph-bold ph-heart mr-2"></i>Back This Project
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Reward Tiers -->
+                    <div v-for="(tier, idx) in rewardTiers" :key="tier.name" class="card mb-5" :class="{ 'card-v2': idx === 1, 'card-v3': idx === 2 }">
+                        <div class="card-bg"></div>
+                        <div class="card-content p-5">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="font-serif font-bold text-base">{{ tier.name }}</h3>
+                                <span class="tag tag-stamp">{{ tier.price }}</span>
+                            </div>
+
+                            <ul class="space-y-1.5 mb-4">
+                                <li v-for="perk in tier.perks" :key="perk" class="flex items-start gap-2 text-sm text-ink-light">
+                                    <i class="ph-bold ph-check-circle text-funded mt-0.5 flex-shrink-0" style="font-size:0.85rem;"></i>
+                                    <span>{{ perk }}</span>
+                                </li>
+                            </ul>
+
+                            <div class="tier-progress mb-1.5">
+                                <div class="tier-progress-fill" :style="{ width: (tier.claimed / tier.total * 100) + '%' }"></div>
+                            </div>
+                            <div class="text-xs text-ink-faint">
+                                <strong class="text-ink">{{ tier.claimed }} of {{ tier.total }}</strong> claimed
+                            </div>
+
+                            <button class="btn btn-outline btn-sm w-full mt-3">Select This Tier</button>
+                        </div>
+                    </div>
+
+                    <!-- Shipping Info -->
+                    <div class="card mb-5">
+                        <div class="card-bg"></div>
+                        <div class="card-content p-5">
+                            <h3 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Shipping Info</h3>
+                            <div class="space-y-2 text-sm text-ink-light">
+                                <div class="flex items-start gap-2">
+                                    <i class="ph-bold ph-map-pin text-stencil mt-0.5 flex-shrink-0"></i>
+                                    <span>Ships from <strong class="text-ink">Bangalore, India</strong></span>
+                                </div>
+                                <div class="flex items-start gap-2">
+                                    <i class="ph-bold ph-calendar-blank text-stencil mt-0.5 flex-shrink-0"></i>
+                                    <span>Estimated delivery: <strong class="text-ink">September 2026</strong></span>
+                                </div>
+                                <div class="flex items-start gap-2">
+                                    <i class="ph-bold ph-globe text-stencil mt-0.5 flex-shrink-0"></i>
+                                    <span>Ships worldwide</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Maker Profile Card -->
+                    <div class="card card-v2 mb-5">
+                        <div class="card-bg"></div>
+                        <div class="card-content p-5">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-12 h-12 rounded-full bg-funded flex items-center justify-center text-sm font-bold text-paper flex-shrink-0">
+                                    PS
+                                </div>
+                                <div>
+                                    <div class="font-semibold text-sm">Priya Sharma</div>
+                                    <div class="text-xs text-ink-faint">Sustainability Engineer</div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-1.5 mb-4">
+                                <div class="flex items-center gap-2 text-xs text-ink-faint">
+                                    <i class="ph-bold ph-map-pin" style="font-size:0.75rem;"></i>
+                                    Bangalore, India
+                                </div>
+                                <div class="flex items-center gap-2 text-xs text-ink-faint">
+                                    <i class="ph-bold ph-rocket-launch" style="font-size:0.75rem;"></i>
+                                    3 campaigns
+                                </div>
+                                <div class="flex items-center gap-2 text-xs text-ink-faint">
+                                    <i class="ph-bold ph-users" style="font-size:0.75rem;"></i>
+                                    127 followers
+                                </div>
+                            </div>
+
+                            <a href="../makers/detail.html" class="btn btn-outline btn-sm w-full" style="text-decoration:none;">View Profile</a>
+                        </div>
+                    </div>
+
+                    <!-- Share buttons -->
+                    <div class="card card-v3 mb-5">
+                        <div class="card-bg"></div>
+                        <div class="card-content p-5">
+                            <h3 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Share</h3>
+                            <div class="flex items-center gap-2">
+                                <button class="share-btn" @click="shareLink" title="Copy link">
+                                    <i class="ph-bold ph-link"></i>
+                                </button>
+                                <a href="https://twitter.com/intent/tweet?url=https://absurd.industries/campaigns/detail.html&text=Check%20out%20this%20open-source%20water%20purifier%20on%20Absurd%20Industries" target="_blank" class="share-btn" title="Share on X" style="text-decoration:none;">
+                                    <i class="fa-brands fa-x-twitter"></i>
+                                </a>
+                                <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://absurd.industries/campaigns/detail.html" target="_blank" class="share-btn" title="Share on LinkedIn" style="text-decoration:none;">
+                                    <i class="fa-brands fa-linkedin-in"></i>
+                                </a>
+                            </div>
+                            <div v-if="linkCopied" class="text-xs text-funded mt-2 font-semibold">Link copied to clipboard!</div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="py-10" style="background: rgba(184,149,106,0.45);">
+            <div class="max-w-5xl mx-auto px-5 sm:px-6">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+                    <div>
+                        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Platform</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="./" class="text-ink hover:underline font-medium">Campaigns</a></li>
+                            <li><a href="../makers/" class="text-ink hover:underline font-medium">Makers</a></li>
+                            <li><a href="../requests/" class="text-ink hover:underline font-medium">Requests</a></li>
+                            <li><a href="../events/" class="text-ink hover:underline font-medium">Events</a></li>
+                            <li><a href="../inventory/" class="text-ink hover:underline font-medium">Inventory</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Community</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="https://discord.gg/DUSUtguG2H" target="_blank" class="text-ink hover:underline font-medium">Discord</a></li>
+                            <li><a href="https://www.instagram.com/absurd.industries" target="_blank" class="text-ink hover:underline font-medium">Instagram</a></li>
+                            <li><a href="https://www.youtube.com/@absurd.industries" target="_blank" class="text-ink hover:underline font-medium">YouTube</a></li>
+                            <li><a href="https://www.linkedin.com/company/absurd-industries" target="_blank" class="text-ink hover:underline font-medium">LinkedIn</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Resources</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="../hardware-devroom/" class="text-ink hover:underline font-medium">Hardware Devroom</a></li>
+                            <li><a href="../contact.htm" class="text-ink hover:underline font-medium">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Legal</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="../privacy-policy.htm" class="text-ink hover:underline font-medium">Privacy</a></li>
+                            <li><a href="../terms-and-conditions.htm" class="text-ink hover:underline font-medium">Terms</a></li>
+                            <li><a href="../policies.htm" class="text-ink hover:underline font-medium">Policies</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="border-t border-ink/10 pt-5 flex flex-col sm:flex-row justify-between items-center gap-2">
+                    <div class="flex items-center gap-2">
+                        <img src="../hardware-devroom/images/absurd-logo-for-any-background.png" alt="" class="h-5">
+                        <span class="text-xs font-semibold">Absurd Industries</span>
+                    </div>
+                    <p class="text-xs text-ink-faint">
+                        <span class="copyleft">&copy;</span> Copyleft 2023&ndash;2026. Made with curiosity in Bengaluru.
+                    </p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Bottom Bar (mobile) -->
+        <nav class="bottom-bar" style="position:relative;">
+            <div class="grid grid-cols-5">
+                <a href="./" class="active"><i class="ph-bold ph-rocket-launch"></i><span>Campaigns</span></a>
+                <a href="../makers/"><i class="ph-bold ph-users-three"></i><span>Makers</span></a>
+                <a href="../requests/"><i class="ph-bold ph-megaphone"></i><span>Requests</span></a>
+                <a href="../events/"><i class="ph-bold ph-calendar-dots"></i><span>Events</span></a>
+                <button @click="megaMenuOpen = !megaMenuOpen">
+                    <i :class="megaMenuOpen ? 'ph-bold ph-x' : 'ph-bold ph-dots-three'"></i>
+                    <span>More</span>
+                </button>
+            </div>
+
+            <transition name="slide">
+                <div v-if="megaMenuOpen" class="mega-menu" @click="megaMenuOpen = false">
+                    <a href="../inventory/">
+                        <i class="ph-bold ph-package"></i> Inventory
+                    </a>
+                    <a href="https://discord.gg/DUSUtguG2H" target="_blank">
+                        <i class="fa-brands fa-discord"></i> Discord
+                    </a>
+                    <a href="../hardware-devroom/">
+                        <i class="ph-bold ph-microchip"></i> Hardware Devroom
+                    </a>
+                    <a href="../contact.htm">
+                        <i class="ph-bold ph-envelope"></i> Contact
+                    </a>
+                </div>
+            </transition>
+        </nav>
+
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            data() {
+                return {
+                    megaMenuOpen: false,
+                    linkCopied: false,
+                    upvoted: false,
+                    upvoteCount: 342,
+                    newComment: '',
+                    bom: [
+                        { name: 'Ceramic filter element', qty: '1', source: 'Potters for Peace / local kiln', cost: '₹295' },
+                        { name: 'UV-C LED array (4x 275nm)', qty: '1', source: 'LCSC / Mouser', cost: '₹520' },
+                        { name: 'Bamboo composite housing', qty: '1', source: 'Local workshop', cost: '₹235' },
+                        { name: 'Solar charge controller (MPPT)', qty: '1', source: 'AliExpress / local', cost: '₹285' },
+                        { name: '12V 6Ah LiFePO4 battery pack', qty: '1', source: 'EVE Energy / local', cost: '₹460' },
+                        { name: '10W solar panel', qty: '1', source: 'Global sourcing', cost: '₹270' },
+                        { name: 'Flow rate sensor (YF-S201)', qty: '1', source: 'LCSC / AliExpress', cost: '₹92' },
+                        { name: 'TDS sensor module', qty: '1', source: 'AliExpress / local', cost: '₹75' },
+                        { name: 'PCB + through-hole components', qty: '1', source: 'JLCPCB / hand-solder', cost: '₹100' },
+                        { name: 'Silicone tubing + fittings', qty: '1 set', source: 'Local hardware store', cost: '₹59' },
+                    ],
+                    sourceFiles: [
+                        { name: 'PCB Schematics', format: 'KiCad', icon: 'ph-bold ph-circuit-board' },
+                        { name: '3D Models', format: 'STEP', icon: 'ph-bold ph-cube' },
+                        { name: 'Firmware', format: 'C', icon: 'ph-bold ph-code' },
+                        { name: 'Assembly Guide', format: 'PDF', icon: 'ph-bold ph-file-pdf' },
+                        { name: 'BOM Spreadsheet', format: 'CSV / ODS', icon: 'ph-bold ph-table' },
+                    ],
+                    manufacturingSteps: [
+                        { label: 'Design Complete', note: 'All CAD, schematics, and firmware finalized', status: 'done' },
+                        { label: 'Prototyping', note: '3 prototype iterations completed', status: 'done' },
+                        { label: 'Testing', note: 'Field testing in 3 villages in Karnataka', status: 'current' },
+                        { label: 'Production Setup', note: 'Tooling and supply chain preparation', status: 'pending' },
+                        { label: 'Shipping', note: 'Fulfillment to backers worldwide', status: 'pending' },
+                    ],
+                    updates: [
+                        {
+                            date: 'June 2, 2026',
+                            title: 'Prototype v3 passed field testing!',
+                            text: 'After 5 months of continuous operation in three test sites, Prototype v3 has exceeded all performance targets. Lab results confirm 99.97% bacteria removal and 99.9% virus inactivation. The bamboo housing showed zero degradation despite monsoon conditions. We are now finalizing the production BOM.',
+                        },
+                        {
+                            date: 'April 18, 2026',
+                            title: 'UV-C LED driver redesigned for reliability',
+                            text: 'We discovered thermal issues with the original LED driver during extended operation in direct sunlight. The redesigned board uses a more conservative derating curve and adds a thermistor-based cutoff. Updated KiCad files have been pushed to the repository.',
+                        },
+                        {
+                            date: 'February 5, 2026',
+                            title: 'Prototype v2 deployed for field testing',
+                            text: 'Three units deployed across rural sites near Mysore. Each unit is processing 100-140 liters per day for households of 5-8 people. Community health workers are logging daily output and collecting water samples for monthly lab analysis. Early feedback on usability has been very positive.',
+                        },
+                    ],
+                    rewardTiers: [
+                        {
+                            name: 'Early Bird',
+                            price: '₹1,500',
+                            perks: [
+                                '1 fully assembled water purifier unit',
+                                'Complete schematics and source files',
+                                'Name in project credits',
+                            ],
+                            claimed: 42,
+                            total: 50,
+                        },
+                        {
+                            name: 'Maker Bundle',
+                            price: '₹3,500',
+                            perks: [
+                                '1 complete kit (unassembled) with all parts',
+                                '3 extra ceramic filter elements',
+                                'Your name etched on the PCB silkscreen',
+                                'Printed assembly guide',
+                            ],
+                            claimed: 89,
+                            total: 150,
+                        },
+                        {
+                            name: 'Workshop Pack',
+                            price: '₹12,000',
+                            perks: [
+                                '5 complete units (assembled)',
+                                'Workshop hosting guide and slides',
+                                'Priority email support from the maker',
+                                'Logo placement on project page',
+                            ],
+                            claimed: 12,
+                            total: 30,
+                        },
+                    ],
+                    comments: [
+                        {
+                            id: 1,
+                            author: 'Rahul Deshmukh',
+                            initials: 'RD',
+                            color: '#2A5F41',
+                            badge: 'Backer',
+                            badgeClass: 'tag-funded',
+                            time: '3 days ago',
+                            content: 'Backed the Maker Bundle tier. I run a small NGO in rural Maharashtra and we have been looking for exactly this kind of solution. The fact that the ceramic filters can be manufactured locally is a game changer for us. How difficult is the filter production process? Could a village potter handle it with basic training?',
+                            likes: 14,
+                            liked: false,
+                            showReply: false,
+                            replyText: '',
+                            replies: [
+                                {
+                                    id: 101,
+                                    author: 'Priya Sharma',
+                                    initials: 'PS',
+                                    color: '#FF5900',
+                                    badge: 'Creator',
+                                    badgeClass: 'tag-stamp',
+                                    time: '2 days ago',
+                                    content: 'Great question, Rahul! The filter production follows the Potters for Peace protocol, which was specifically designed to be teachable to local potters. The key steps are mixing clay with sawdust (for porosity), shaping in a simple press mold, firing at 890°C, and then coating with colloidal silver. We have a detailed training guide in the repository. A potter with basic experience can learn the process in about 2 days.',
+                                    likes: 9,
+                                    liked: false,
+                                },
+                            ],
+                        },
+                        {
+                            id: 2,
+                            author: 'Dr. Meena Iyer',
+                            initials: 'MI',
+                            color: '#6B5B4A',
+                            badge: null,
+                            badgeClass: '',
+                            time: '5 days ago',
+                            content: 'As a public health researcher, I want to highlight how important the <strong>UV-C stage</strong> is in this design. Ceramic filters alone handle bacteria and protozoa well, but they are unreliable against viruses like Hepatitis A and Norovirus, which are a major concern in flood-affected areas. The dual-barrier approach here (ceramic + UV-C) is the right call. Have you considered adding a chlorine dosing option as a tertiary backup for extreme turbidity events?',
+                            likes: 18,
+                            liked: false,
+                            showReply: false,
+                            replyText: '',
+                            replies: [
+                                {
+                                    id: 201,
+                                    author: 'Priya Sharma',
+                                    initials: 'PS',
+                                    color: '#FF5900',
+                                    badge: 'Creator',
+                                    badgeClass: 'tag-stamp',
+                                    time: '4 days ago',
+                                    content: 'Thanks for the expert perspective, Dr. Iyer. We considered chlorine dosing but decided against it for v1 because it adds supply chain complexity (you need a reliable source of sodium hypochlorite) and because the UV-C stage handles viruses effectively when turbidity is below 5 NTU. For high-turbidity events, our recommendation is a pre-settlement step using alum, which is cheap and universally available. That said, the modular design means a chlorine stage could be added as an optional module later.',
+                                    likes: 11,
+                                    liked: false,
+                                },
+                            ],
+                        },
+                        {
+                            id: 3,
+                            author: 'Kenji Tanaka',
+                            initials: 'KT',
+                            color: '#1A1A1A',
+                            badge: 'Backer',
+                            badgeClass: 'tag-funded',
+                            time: '1 week ago',
+                            content: 'Shipping to Japan — is that feasible with the battery included? LiFePO4 batteries have strict air freight regulations. I want to order the Workshop Pack but need to know about customs and shipping logistics for battery-containing devices.',
+                            likes: 7,
+                            liked: false,
+                            showReply: false,
+                            replyText: '',
+                            replies: [],
+                        },
+                        {
+                            id: 4,
+                            author: 'Amara Obi',
+                            initials: 'AO',
+                            color: '#B8956A',
+                            badge: null,
+                            badgeClass: '',
+                            time: '1 week ago',
+                            content: 'This is exactly what several communities in Nigeria need. I work with a rural electrification project and the solar-powered aspect is critical for us. Two questions: (1) What is the minimum solar irradiance needed for continuous operation? (2) Can the system run directly from a 12V car battery as an alternative power source during extended cloudy periods?',
+                            likes: 11,
+                            liked: false,
+                            showReply: false,
+                            replyText: '',
+                            replies: [],
+                        },
+                        {
+                            id: 5,
+                            author: 'Marcus Weber',
+                            initials: 'MW',
+                            color: '#CC4700',
+                            badge: null,
+                            badgeClass: '',
+                            time: '2 weeks ago',
+                            content: 'Love the CERN-OHL-S licensing choice. I teach an appropriate technology course at TU Berlin and I would like to use this project as a case study. The combination of open hardware, local manufacturability, and rigorous field testing makes it an ideal teaching example. Would you be open to a video call to discuss the design decisions for our students?',
+                            likes: 21,
+                            liked: false,
+                            showReply: false,
+                            replyText: '',
+                            replies: [],
+                        },
+                    ],
+                };
+            },
+            methods: {
+                toggleUpvote() {
+                    if (this.upvoted) {
+                        this.upvoteCount--;
+                        this.upvoted = false;
+                    } else {
+                        this.upvoteCount++;
+                        this.upvoted = true;
+                    }
+                },
+                toggleCommentLike(item) {
+                    if (item.liked) {
+                        item.likes--;
+                        item.liked = false;
+                    } else {
+                        item.likes++;
+                        item.liked = true;
+                    }
+                },
+                toggleReply(comment) {
+                    comment.showReply = !comment.showReply;
+                },
+                addComment() {
+                    if (!this.newComment.trim()) return;
+                    this.comments.unshift({
+                        id: Date.now(),
+                        author: 'You',
+                        initials: 'Y',
+                        color: '#B8956A',
+                        badge: null,
+                        badgeClass: '',
+                        time: 'just now',
+                        content: this.newComment.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>'),
+                        likes: 1,
+                        liked: true,
+                        showReply: false,
+                        replyText: '',
+                        replies: [],
+                    });
+                    this.newComment = '';
+                },
+                postReply(comment) {
+                    if (!comment.replyText.trim()) return;
+                    comment.replies.push({
+                        id: Date.now(),
+                        author: 'You',
+                        initials: 'Y',
+                        color: '#B8956A',
+                        badge: null,
+                        badgeClass: '',
+                        time: 'just now',
+                        content: comment.replyText.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>'),
+                        likes: 1,
+                        liked: true,
+                    });
+                    comment.replyText = '';
+                    comment.showReply = false;
+                },
+                shareLink() {
+                    navigator.clipboard.writeText(window.location.href).then(() => {
+                        this.linkCopied = true;
+                        setTimeout(() => { this.linkCopied = false; }, 2000);
+                    }).catch(() => {
+                        this.linkCopied = true;
+                        setTimeout(() => { this.linkCopied = false; }, 2000);
+                    });
+                },
+            },
+        }).mount('#app');
+    </script>
+</body>
+</html>

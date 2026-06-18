@@ -1,0 +1,560 @@
+---
+/**
+ * Homepage — the main landing page for ooru.build.
+ * Manifesto-style hero, image-rich how-it-works flow with real project
+ * examples, featured campaigns strip, community CTA, and auto-scrolling
+ * Friends of ooru marquee.
+ */
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Card from "../components/Card.astro";
+import Tag from "../components/Tag.astro";
+import ProgressBar from "../components/ProgressBar.astro";
+import { friends } from "../data/friends";
+import { makers } from "../data/makers";
+import { events } from "../data/events";
+import { campaigns } from "../data/campaigns";
+import { requests } from "../data/requests";
+
+const featuredCampaigns = campaigns.filter((c) => c.status === "live").slice(0, 3);
+
+const featuredRequests = [...requests]
+  .filter((r) => r.status === "open")
+  .sort((a, b) => b.upvotes - a.upvotes)
+  .slice(0, 3);
+
+const featuredMakers = [...makers]
+  .sort((a, b) => b.backers - a.backers)
+  .slice(0, 3);
+
+const upcomingEvents = [...events]
+  .filter((e) => new Date(e.date) >= new Date())
+  .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+  .slice(0, 3);
+---
+
+<BaseLayout title="Open Source STEAM for Makers, Tinkerers & Rebels">
+  <!-- Hero — manifesto pitch -->
+  <section class="pt-10 pb-10 md:pt-16 md:pb-16">
+    <div class="max-w-5xl mx-auto px-5 sm:px-6">
+      <p class="text-sm font-semibold uppercase tracking-widest text-stamp mb-4">Bengaluru, India</p>
+
+      <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[0.95] tracking-tight mb-6">
+        Built open.<br class="hidden sm:block" /> Backed by you.
+      </h1>
+
+      <p class="text-base sm:text-lg lg:text-xl text-ink max-w-2xl mb-8 leading-relaxed">
+        Ooru is an open-source STEAM platform. Back hardware projects that ship with full schematics, firmware, and CAD files — because you should have the right to study, repair, and rebuild the things you own.
+      </p>
+
+      <div class="flex flex-wrap gap-3">
+        <a href="/campaigns" class="btn btn-primary">
+          <i class="ph-duotone ph-rocket-launch mr-1.5" style="font-size:0.9rem;"></i>
+          Explore Campaigns
+        </a>
+        <a href="/requests" class="btn btn-outline">
+          <i class="ph-duotone ph-hand-palm mr-1.5" style="font-size:0.9rem;"></i>
+          Request Something
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Explore — 4 sections with featured microcards -->
+  <section class="pb-14 md:pb-20">
+    <div class="max-w-5xl mx-auto px-5 sm:px-6 space-y-12">
+
+      <!-- Campaigns -->
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <h2 class="font-serif text-2xl sm:text-3xl font-bold">
+            <i class="ph-duotone ph-rocket-launch text-ink mr-1" style="font-size:1.4rem;"></i>
+            Campaigns
+          </h2>
+          <a href="/campaigns" class="text-sm text-stamp font-bold no-underline hover:underline">
+            All campaigns <i class="ph-bold ph-arrow-right ml-0.5" style="font-size:0.65rem;"></i>
+          </a>
+        </div>
+        <p class="text-sm text-ink max-w-lg leading-relaxed mb-5">
+          Back open-source hardware that ships with full source files. Every campaign is transparent - BOM, schematics, firmware, everything.
+        </p>
+        <div class="campaign-strip-wrap">
+          <div class="campaign-strip">
+            {featuredCampaigns.map((campaign) => (
+              <a href={`/campaigns/${campaign.slug}`} class="card card-hover block no-underline text-ink group campaign-card">
+                <div class="card-bg"></div>
+                <div class="card-content">
+                  <div class="campaign-card-img" style="border-radius: 0.875rem 0.875rem 0 0;">
+                    <img
+                      src={campaign.image}
+                      alt={campaign.title}
+                      class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div class="p-4">
+                    <h3 class="font-serif font-bold text-sm mb-1 group-hover:text-stamp transition-colors truncate">{campaign.title}</h3>
+                    <p class="text-xs text-stencil mb-2">{campaign.makerName} &middot; {campaign.location}</p>
+                    <ProgressBar percent={campaign.percent} hot={campaign.percent >= 100} />
+                    <p class="text-[0.65rem] text-stencil mt-1.5">{campaign.percent >= 100 ? "Fully funded" : `${campaign.percent}% funded`}</p>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+          <div class="campaign-strip-fade" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <!-- Requests -->
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <h2 class="font-serif text-2xl sm:text-3xl font-bold">
+            <i class="ph-duotone ph-hand-palm text-ink mr-1" style="font-size:1.4rem;"></i>
+            Requests
+          </h2>
+          <a href="/requests" class="text-sm text-stamp font-bold no-underline hover:underline">
+            All requests <i class="ph-bold ph-arrow-right ml-0.5" style="font-size:0.65rem;"></i>
+          </a>
+        </div>
+        <p class="text-sm text-ink max-w-lg leading-relaxed mb-5">
+          Describe something that should exist. The community refines the spec, and a maker brings it to life.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {featuredRequests.map((req) => (
+            <a href={`/requests/${req.slug}`} class="microcard group">
+              <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background: rgba(255,89,0,0.08);">
+                <i class="ph-duotone ph-arrow-fat-up text-stamp"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-semibold text-ink leading-snug group-hover:text-stamp transition-colors line-clamp-2">{req.title}</p>
+                <div class="flex items-center gap-2 mt-1 text-xs text-stencil">
+                  <span class="font-semibold">{req.upvotes} votes</span>
+                  <span>&middot;</span>
+                  <span>{req.category}</span>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Makers -->
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <h2 class="font-serif text-2xl sm:text-3xl font-bold">
+            <i class="ph-duotone ph-users-three text-ink mr-1" style="font-size:1.4rem;"></i>
+            Makers
+          </h2>
+          <a href="/makers" class="text-sm text-stamp font-bold no-underline hover:underline">
+            All makers <i class="ph-bold ph-arrow-right ml-0.5" style="font-size:0.65rem;"></i>
+          </a>
+        </div>
+        <p class="text-sm text-ink max-w-lg leading-relaxed mb-5">
+          Hardware rebels with workshops, not just followers. Meet the people who build what the community needs.
+        </p>
+        <div class="maker-list">
+          {featuredMakers.map((maker) => (
+            <a href={`/makers/${maker.slug}`} class="maker-list-row group no-underline">
+              {maker.avatar ? (
+                <img src={maker.avatar} alt={maker.name} class="maker-list-avatar" loading="lazy" />
+              ) : (
+                <div class="maker-list-avatar-fb" style={`background: ${maker.avatarColor}`}>
+                  <span>{maker.name.charAt(0)}</span>
+                </div>
+              )}
+              <div class="flex-1 min-w-0">
+                <span class="maker-list-name">{maker.name}</span>
+                <span class="maker-list-meta">{maker.specialty} &middot; {maker.location}</span>
+              </div>
+              <div class="maker-list-skills">
+                {maker.skills.slice(0, 3).map((skill) => (
+                  <span class="maker-list-skill">{skill}</span>
+                ))}
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Events -->
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <h2 class="font-serif text-2xl sm:text-3xl font-bold">
+            <i class="ph-duotone ph-calendar-dots text-ink mr-1" style="font-size:1.4rem;"></i>
+            Events
+          </h2>
+          <a href="/events" class="text-sm text-stamp font-bold no-underline hover:underline">
+            All events <i class="ph-bold ph-arrow-right ml-0.5" style="font-size:0.65rem;"></i>
+          </a>
+        </div>
+        <p class="text-sm text-ink max-w-lg leading-relaxed mb-5">
+          Bengaluru-first STEAM meetups, workshops, hackathons, and talks for the endlessly curious.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {upcomingEvents.map((ev) => (
+            <a href="/events" class="microcard group">
+              <div class="flex flex-col items-center justify-center w-12 h-12 rounded-lg flex-shrink-0 text-center" style="background: rgba(255,89,0,0.08);">
+                <span class="text-[0.6rem] font-bold uppercase text-stamp leading-none">
+                  {new Date(ev.date + "T00:00:00").toLocaleDateString("en-IN", { month: "short" })}
+                </span>
+                <span class="text-lg font-black text-ink leading-none">
+                  {new Date(ev.date + "T00:00:00").getDate()}
+                </span>
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-semibold text-ink leading-snug group-hover:text-stamp transition-colors line-clamp-1">{ev.title}</p>
+                <p class="text-xs text-stencil truncate">{ev.time}</p>
+                <div class="flex items-center gap-2 mt-0.5 text-xs text-stencil">
+                  <span>{ev.city}</span>
+                  <span>&middot;</span>
+                  <span class="capitalize">{ev.category}</span>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Community CTA -->
+  <section class="pb-12">
+    <div class="max-w-5xl mx-auto px-5 sm:px-6">
+      <Card variant="dark">
+        <div class="px-6 py-10 sm:px-10 sm:py-12">
+          <div class="flex flex-col sm:flex-row sm:items-center gap-6">
+            <div class="flex-1 min-w-0">
+              <h2 class="font-serif font-bold text-2xl sm:text-3xl text-paper tracking-tight mb-2">Join the Guild</h2>
+              <p class="text-sm text-kraft max-w-md leading-relaxed">
+                Chat with makers, get build help, share your projects,
+                and stay in the loop on new campaigns and events.
+              </p>
+            </div>
+            <a
+              href="https://discord.gg/DUSUtguG2H"
+              target="_blank"
+              rel="noopener"
+              class="btn btn-stamp flex-shrink-0"
+            >
+              <i class="ph-bold ph-discord-logo mr-2" style="font-size:1rem;"></i>
+              Join Discord
+            </a>
+          </div>
+        </div>
+      </Card>
+    </div>
+  </section>
+
+  <!-- FAQ Teaser -->
+  <section class="pb-12">
+    <div class="max-w-5xl mx-auto px-5 sm:px-6">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold">
+          <i class="ph-duotone ph-question text-ink mr-1" style="font-size:1.4rem;"></i>
+          FAQ
+        </h2>
+        <a href="/faq" class="text-sm text-stamp font-bold no-underline hover:underline">
+          All questions <i class="ph-bold ph-arrow-right ml-0.5" style="font-size:0.65rem;"></i>
+        </a>
+      </div>
+      <div class="faq-teaser-list">
+        <details class="faq-teaser-item">
+          <summary class="faq-teaser-summary">
+            <i class="ph-duotone ph-question text-stencil faq-teaser-icon"></i>
+            <span>What is Ooru?</span>
+            <i class="ph-bold ph-caret-down faq-teaser-caret"></i>
+          </summary>
+          <div class="faq-teaser-answer">
+            Ooru is an open-source STEAM platform built by Absurd Industries, based in Bengaluru, India. 'Ooru' means village in Kannada and Telugu — we're building a digital village where makers, tinkerers, engineers, artists, and the endlessly curious come together to build hardware and software in the open. Everything we make ships with full source files.
+          </div>
+        </details>
+        <details class="faq-teaser-item">
+          <summary class="faq-teaser-summary">
+            <i class="ph-duotone ph-rocket-launch text-stencil faq-teaser-icon"></i>
+            <span>How do campaigns work?</span>
+            <i class="ph-bold ph-caret-down faq-teaser-caret"></i>
+          </summary>
+          <div class="faq-teaser-answer">
+            Makers launch crowdfunding campaigns for open-source hardware projects. Each campaign includes a bill of materials, schematics, firmware, and CAD files. You back a project you believe in, the maker builds it, and you get both the product and the knowledge to build it yourself.
+          </div>
+        </details>
+        <details class="faq-teaser-item">
+          <summary class="faq-teaser-summary">
+            <i class="ph-duotone ph-hand-palm text-stencil faq-teaser-icon"></i>
+            <span>How do requests work?</span>
+            <i class="ph-bold ph-caret-down faq-teaser-caret"></i>
+          </summary>
+          <div class="faq-teaser-answer">
+            Anyone can describe something that should exist but doesn't. The community upvotes, discusses, and refines the spec. When a maker picks up a request, it becomes a campaign. Your idea could become a real product backed by the community.
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Friends of Absurd — auto-scrolling marquee -->
+  <section class="pb-14 overflow-hidden">
+    <div class="max-w-5xl mx-auto px-5 sm:px-6">
+      <h2 class="font-serif text-xl font-bold mb-1">Friends of Ooru</h2>
+      <p class="text-sm text-ink max-w-md leading-relaxed mb-5">
+        Communities and companies building the open-source STEAM ecosystem with us.
+      </p>
+    </div>
+    <div class="friends-marquee-wrapper">
+      <div class="friends-marquee" aria-label="Partner logos">
+        {[...friends, ...friends].map((friend) => (
+          <a
+            href={friend.url}
+            target="_blank"
+            rel="noopener"
+            class="friend-item"
+            title={friend.name}
+          >
+            <img
+              src={`/images/partners/${friend.logo}`}
+              alt={friend.name}
+              class="h-8 sm:h-10 object-contain"
+              loading="lazy"
+            />
+            <span class="text-xs font-semibold text-ink">{friend.name}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+
+<style>
+  /* Campaign strip with scroll hint */
+  .campaign-strip-wrap {
+    position: relative;
+  }
+  .campaign-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+  .campaign-strip-fade {
+    display: none;
+  }
+  .campaign-card-img {
+    height: 180px;
+    overflow: hidden;
+  }
+  @media (max-width: 640px) {
+    .campaign-strip {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 0.5rem;
+      padding-right: 2rem;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .campaign-strip::-webkit-scrollbar {
+      display: none;
+    }
+    .campaign-card {
+      min-width: 72vw;
+      scroll-snap-align: start;
+      flex-shrink: 0;
+    }
+    .campaign-card-img {
+      height: 200px;
+    }
+    .campaign-strip-fade {
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 3rem;
+      background: linear-gradient(to right, transparent, rgba(212, 184, 150, 0.6));
+      pointer-events: none;
+      border-radius: 0 0.875rem 0.875rem 0;
+    }
+  }
+
+  /* Maker list rows — compact table style */
+  .maker-list-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.06);
+    color: #1A1A1A;
+    text-decoration: none;
+  }
+  .maker-list-row:last-child {
+    border-bottom: none;
+  }
+  .maker-list-avatar {
+    width: 36px;
+    height: 36px;
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .maker-list-avatar-fb {
+    width: 36px;
+    height: 36px;
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FAF3E8;
+    font-weight: 700;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+  }
+  .maker-list-name {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1A1A1A;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.15s;
+  }
+  .maker-list-row:hover .maker-list-name {
+    color: #FF5900;
+  }
+  .maker-list-meta {
+    display: block;
+    font-size: 0.75rem;
+    color: #6B5B4A;
+    margin-top: 0.1rem;
+  }
+  .maker-list-skills {
+    display: none;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin-left: auto;
+  }
+  @media (min-width: 640px) {
+    .maker-list-skills {
+      display: flex;
+    }
+  }
+  .maker-list-skill {
+    display: inline-block;
+    padding: 0.15rem 0.45rem;
+    border-radius: 999px;
+    font-size: 0.55rem;
+    font-weight: 600;
+    background: rgba(26, 26, 26, 0.05);
+    color: #6B5B4A;
+    border: 1px solid rgba(26, 26, 26, 0.08);
+  }
+
+  /* Microcard — compact interactive item */
+  .microcard {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-radius: 0.625rem;
+    border: 1px solid rgba(26, 26, 26, 0.06);
+    background: rgba(250, 243, 232, 0.75);
+    transition: border-color 0.15s, background 0.15s;
+    text-decoration: none;
+    color: inherit;
+  }
+  .microcard:hover {
+    border-color: #1A1A1A;
+    background: rgba(250, 243, 232, 0.95);
+  }
+
+  /* Auto-scrolling marquee for Friends of Absurd */
+  .friends-marquee-wrapper {
+    overflow: hidden;
+    width: 100%;
+    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+  }
+  .friends-marquee {
+    display: flex;
+    gap: 3rem;
+    width: max-content;
+    animation: marquee-scroll 25s linear infinite;
+  }
+  .friends-marquee:hover {
+    animation-play-state: paused;
+  }
+  .friend-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    text-decoration: none;
+    flex-shrink: 0;
+    opacity: 0.65;
+    transition: opacity 0.2s;
+  }
+  .friend-item:hover {
+    opacity: 1;
+  }
+  @keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* FAQ teaser — inline expandable accordions */
+  .faq-teaser-list {
+    border: 1px solid rgba(26, 26, 26, 0.08);
+    border-radius: 0.75rem;
+    background: rgba(250, 243, 232, 0.6);
+    overflow: hidden;
+  }
+  .faq-teaser-item {
+    border-bottom: 1px solid rgba(26, 26, 26, 0.06);
+  }
+  .faq-teaser-item:last-child {
+    border-bottom: none;
+  }
+  .faq-teaser-summary {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1rem;
+    cursor: pointer;
+    list-style: none;
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #1A1A1A;
+    transition: color 0.15s;
+  }
+  .faq-teaser-summary::-webkit-details-marker { display: none; }
+  .faq-teaser-summary:hover { color: #FF5900; }
+  .faq-teaser-item[open] .faq-teaser-summary { color: #FF5900; }
+  .faq-teaser-icon {
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .faq-teaser-summary span {
+    flex: 1;
+  }
+  .faq-teaser-caret {
+    font-size: 0.75rem;
+    color: #6B5B4A;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+  }
+  .faq-teaser-item[open] .faq-teaser-caret {
+    transform: rotate(180deg);
+    color: #FF5900;
+  }
+  .faq-teaser-answer {
+    padding: 0 1rem 1rem 2.6rem;
+    font-size: 0.85rem;
+    color: #4A3D2F;
+    line-height: 1.65;
+  }
+</style>

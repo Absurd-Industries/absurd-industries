@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaigns — Absurd Industries</title>
+    <meta name="description" content="Back open-source, repairable indie hardware. Every project ships with full source files.">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16x16.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <script src="https://kit.fontawesome.com/e0c6d65845.js" crossorigin="anonymous"></script>
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kraft: { DEFAULT: '#D4B896', light: '#E8D5B7', dark: '#B8956A' },
+                        ink: { DEFAULT: '#1A1A1A', light: '#3D3D3D', faint: '#6B5B4A' },
+                        stamp: { DEFAULT: '#FF5900', dark: '#CC4700' },
+                        tape: '#F5E6C8',
+                        paper: '#FAF3E8',
+                        stencil: '#6B5B4A',
+                        funded: '#2A5F41',
+                    },
+                    fontFamily: {
+                        serif: ['"Fraunces"', 'Georgia', 'serif'],
+                        sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        'card': '1.25rem',
+                    },
+                },
+            },
+        };
+    </script>
+
+    <!-- Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <style>
+        /* ── Base ── */
+        body {
+            background-color: #D4B896;
+            background-image: url('../hardware-devroom/images/kraft-paper.jpg');
+            background-repeat: repeat;
+            background-size: auto;
+        }
+
+        /* ── Paper Card ── */
+        .paper-card {
+            background: #FAF3E8;
+            border-radius: 1.25rem;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05), 0 4px 16px rgba(0,0,0,0.04);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .paper-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 8px 28px rgba(0,0,0,0.07);
+        }
+
+        /* ── Buttons ── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.75rem;
+            font-family: 'DM Sans', system-ui, sans-serif;
+            font-weight: 600;
+            font-size: 0.875rem;
+            border-radius: 0.625rem;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .btn:hover { transform: translateY(-1px); }
+        .btn-primary { background: #1A1A1A; color: #FAF3E8; }
+        .btn-primary:hover { background: #3D3D3D; }
+        .btn-stamp { background: #FF5900; color: #FAF3E8; }
+        .btn-stamp:hover { background: #CC4700; }
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid #1A1A1A;
+            color: #1A1A1A;
+        }
+        .btn-outline:hover { background: #1A1A1A; color: #FAF3E8; }
+        .btn-ghost {
+            background: transparent;
+            color: #1A1A1A;
+            padding: 0.5rem 1rem;
+        }
+        .btn-ghost:hover { background: rgba(26,26,26,0.06); }
+        .btn-sm { padding: 0.5rem 1.25rem; font-size: 0.8rem; }
+
+        /* ── Tags ── */
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+        .tag-default { background: rgba(26,26,26,0.08); color: #1A1A1A; }
+        .tag-stamp { background: rgba(255,89,0,0.12); color: #FF5900; }
+        .tag-funded { background: rgba(42,95,65,0.12); color: #2A5F41; }
+
+        /* ── Progress Bar ── */
+        .progress {
+            height: 6px;
+            background: #E8D5B7;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #2A5F41;
+            border-radius: 999px;
+            transition: width 0.6s ease;
+        }
+        .progress-fill.hot { background: #FF5900; }
+
+        /* ── Fixed wonky logo ── */
+        .wonky-logo {
+            position: fixed; top: 1rem; left: 50%; transform: translateX(-50%) rotate(-2deg);
+            z-index: 40; transition: transform 0.2s ease;
+        }
+        .wonky-logo:hover { transform: translateX(-50%) rotate(0deg) scale(1.05); }
+
+        /* ── Filter Pill ── */
+        .filter-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.4rem 1rem;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1.5px solid rgba(26,26,26,0.15);
+            background: transparent;
+            color: #6B5B4A;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .filter-pill:hover { border-color: #1A1A1A; color: #1A1A1A; }
+        .filter-pill.active {
+            background: #1A1A1A;
+            color: #FAF3E8;
+            border-color: #1A1A1A;
+        }
+
+        /* ── Search Input ── */
+        .search-input {
+            background: #FAF3E8;
+            border: 1.5px solid rgba(26,26,26,0.12);
+            border-radius: 999px;
+            padding: 0.65rem 1.25rem 0.65rem 2.75rem;
+            font-family: 'DM Sans', system-ui, sans-serif;
+            font-size: 0.875rem;
+            color: #1A1A1A;
+            width: 100%;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .search-input::placeholder { color: #B8956A; }
+        .search-input:focus {
+            border-color: #FF5900;
+            box-shadow: 0 0 0 3px rgba(255,89,0,0.08);
+        }
+
+        /* ── Bottom bar (mobile) ── */
+        .bottom-bar {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: #1A1A1A;
+            z-index: 50;
+            box-shadow: 0 -2px 12px rgba(0,0,0,0.15);
+        }
+        .bottom-bar a, .bottom-bar button {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 10px 0;
+            color: rgba(250,243,232,0.55);
+            text-decoration: none; background: none; border: none;
+            font-family: 'DM Sans', system-ui, sans-serif;
+            font-size: 0.6rem; font-weight: 600;
+            letter-spacing: 0.03em; text-transform: uppercase;
+            transition: color 0.15s; cursor: pointer;
+        }
+        .bottom-bar a:hover, .bottom-bar a:active,
+        .bottom-bar button:hover { color: #FF5900; }
+        .bottom-bar a.active { color: #FF5900; }
+        .bottom-bar i, .bottom-bar .ph-bold { font-size: 1.25rem; margin-bottom: 3px; }
+
+        /* Mega menu */
+        .mega-menu {
+            position: absolute; bottom: 100%; right: 0; left: 0;
+            background: #FAF3E8;
+            border-radius: 0.875rem 0.875rem 0 0;
+            box-shadow: 0 -4px 24px rgba(0,0,0,0.12);
+            padding: 1.25rem 1.5rem;
+        }
+        .mega-menu a {
+            display: flex; align-items: center; gap: 0.75rem;
+            color: #1A1A1A; text-decoration: none;
+            font-size: 0.875rem; font-weight: 500;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid rgba(26,26,26,0.06);
+            flex-direction: row;
+        }
+        .mega-menu a:last-child { border-bottom: none; }
+        .mega-menu a i { font-size: 1.1rem; color: #6B5B4A; }
+        .mega-menu a:hover { color: #FF5900; }
+        .mega-menu a:hover i { color: #FF5900; }
+
+        /* ── Copyleft ── */
+        .copyleft {
+            display: inline-block;
+            transform: rotate(180deg);
+        }
+
+        /* ── Responsive ── */
+        body { padding-bottom: 72px; }
+
+        /* ── Card image area ── */
+        .card-image-area {
+            background: #E8D5B7;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 160px;
+            position: relative;
+            overflow: hidden;
+        }
+        .card-image-area i {
+            color: #B8956A;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+        .paper-card:hover .card-image-area i {
+            transform: scale(1.08);
+            color: #FF5900;
+        }
+
+        /* ── Fade-in animation ── */
+        .fade-in {
+            animation: fadeIn 0.4s ease forwards;
+            opacity: 0;
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="font-sans text-ink min-h-screen antialiased">
+
+<div id="app">
+
+    <!-- Fixed wonky logo -->
+    <a href="../" class="wonky-logo">
+        <img src="../hardware-devroom/images/absurd-logo-for-any-background.png" alt="Absurd Industries" class="h-9 sm:h-10 drop-shadow-sm">
+    </a>
+
+    <!-- ════════════════════════════════════════ -->
+    <!-- HEADER                                  -->
+    <!-- ════════════════════════════════════════ -->
+    <section class="pt-20 pb-6 sm:pt-24 sm:pb-8">
+        <div class="max-w-6xl mx-auto px-5 sm:px-6">
+            <h1 class="font-serif font-semibold text-3xl sm:text-4xl text-ink mb-3">Campaigns</h1>
+            <p class="text-ink-light text-base sm:text-lg max-w-xl mb-8 leading-relaxed">
+                Back open-source, repairable indie hardware. Every project ships with full source files.
+            </p>
+
+            <!-- Search -->
+            <div class="relative max-w-md mb-6">
+                <i class="ph-bold ph-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-kraft-dark text-sm"></i>
+                <input
+                    type="text"
+                    v-model="searchQuery"
+                    placeholder="Search campaigns..."
+                    class="search-input"
+                >
+            </div>
+
+            <!-- Category Filter Pills -->
+            <div class="flex flex-wrap gap-2">
+                <button
+                    v-for="cat in categories"
+                    :key="cat"
+                    class="filter-pill"
+                    :class="{ active: activeCategory === cat }"
+                    @click="activeCategory = cat"
+                >
+                    {{ cat }}
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════════════════════════════════════ -->
+    <!-- CAMPAIGN GRID                           -->
+    <!-- ════════════════════════════════════════ -->
+    <section class="pb-16 sm:pb-20">
+        <div class="max-w-6xl mx-auto px-5 sm:px-6">
+
+            <!-- Results count -->
+            <p class="text-sm text-ink-faint mb-5" v-if="filteredCampaigns.length > 0">
+                Showing {{ filteredCampaigns.length }} campaign<span v-if="filteredCampaigns.length !== 1">s</span>
+            </p>
+
+            <!-- Empty state -->
+            <div v-if="filteredCampaigns.length === 0" class="paper-card p-10 text-center">
+                <i class="ph-bold ph-binoculars text-5xl text-kraft-dark mb-4 block"></i>
+                <p class="font-serif font-semibold text-xl text-ink mb-2">No campaigns found</p>
+                <p class="text-ink-faint text-sm">Try a different search term or category filter.</p>
+            </div>
+
+            <!-- Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <a
+                    v-for="(campaign, index) in filteredCampaigns"
+                    :key="campaign.id"
+                    href="detail.html"
+                    class="paper-card overflow-hidden fade-in no-underline text-ink group block"
+                    :style="{ animationDelay: (index * 0.06) + 's' }"
+                >
+                    <!-- Image Area -->
+                    <div class="card-image-area m-4 mb-0" style="min-height: 170px;">
+                        <i :class="'ph-bold ph-' + campaign.icon" class="text-5xl"></i>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="p-5 pt-4">
+                        <!-- Tags -->
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span
+                                class="tag"
+                                :class="{
+                                    'tag-stamp': campaign.status === 'live',
+                                    'tag-funded': campaign.status === 'funded',
+                                    'tag-default': campaign.status === 'coming'
+                                }"
+                            >
+                                {{ campaign.status === 'live' ? 'Live' : campaign.status === 'funded' ? 'Funded' : 'Coming Soon' }}
+                            </span>
+                            <span class="tag tag-default">{{ campaign.category }}</span>
+                            <span class="tag tag-default"><i class="ph-bold ph-scales mr-1"></i>{{ campaign.license }}</span>
+                        </div>
+
+                        <!-- Title -->
+                        <h3 class="font-serif font-semibold text-lg text-ink mb-2 leading-snug group-hover:text-stamp transition-colors">{{ campaign.name }}</h3>
+
+                        <!-- Description -->
+                        <p class="text-ink-light text-sm leading-relaxed mb-3">{{ campaign.description }}</p>
+
+                        <!-- Born from request callout -->
+                        <div v-if="campaign.fromRequest" class="flex items-center gap-1.5 mb-3 text-xs font-semibold" style="color: #2A5F41;">
+                            <i class="ph-bold ph-arrow-bend-up-left"></i>
+                            Born from community request
+                        </div>
+
+                        <!-- Maker -->
+                        <div class="flex items-center gap-2 mb-4">
+                            <div
+                                class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold"
+                                :style="{ background: campaign.avatarColor, color: '#FAF3E8' }"
+                            >
+                                {{ campaign.maker.charAt(0) }}
+                            </div>
+                            <span class="text-sm font-medium text-ink">{{ campaign.maker }}</span>
+                            <span class="text-xs text-ink-faint">&middot; {{ campaign.location }}</span>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div class="progress mb-3">
+                            <div
+                                class="progress-fill"
+                                :class="{ hot: campaign.percent >= 90 && campaign.status === 'live' }"
+                                :style="{ width: Math.min(campaign.percent, 100) + '%' }"
+                            ></div>
+                        </div>
+
+                        <!-- Stats -->
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="font-semibold" :class="campaign.percent >= 100 ? 'text-funded' : 'text-ink'">
+                                {{ campaign.percent }}% funded
+                            </span>
+                            <span class="text-ink-faint">
+                                {{ campaign.backers }} backer<span v-if="campaign.backers !== 1">s</span>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════════════════════════════════════ -->
+    <!-- FOOTER                                  -->
+    <!-- ════════════════════════════════════════ -->
+    <footer class="py-10" style="background: rgba(184,149,106,0.5);">
+        <div class="max-w-5xl mx-auto px-5 sm:px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+                <div>
+                    <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Platform</h4>
+                    <ul class="space-y-2 text-sm list-none p-0 m-0">
+                        <li><a href="./" class="text-ink hover:underline font-medium">Campaigns</a></li>
+                        <li><a href="../makers/" class="text-ink hover:underline font-medium">Makers</a></li>
+                        <li><a href="../requests/" class="text-ink hover:underline font-medium">Requests</a></li>
+                        <li><a href="../events/" class="text-ink hover:underline font-medium">Events</a></li>
+                        <li><a href="../inventory/" class="text-ink hover:underline font-medium">Inventory</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Community</h4>
+                    <ul class="space-y-2 text-sm list-none p-0 m-0">
+                        <li><a href="https://discord.gg/DUSUtguG2H" target="_blank" class="text-ink hover:underline font-medium">Discord</a></li>
+                        <li><a href="https://www.instagram.com/absurd.industries" target="_blank" class="text-ink hover:underline font-medium">Instagram</a></li>
+                        <li><a href="https://www.youtube.com/@absurd.industries" target="_blank" class="text-ink hover:underline font-medium">YouTube</a></li>
+                        <li><a href="https://www.linkedin.com/company/absurd-industries" target="_blank" class="text-ink hover:underline font-medium">LinkedIn</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Resources</h4>
+                    <ul class="space-y-2 text-sm list-none p-0 m-0">
+                        <li><a href="../hardware-devroom/" class="text-ink hover:underline font-medium">Hardware Devroom</a></li>
+                        <li><a href="../contact.htm" class="text-ink hover:underline font-medium">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Legal</h4>
+                    <ul class="space-y-2 text-sm list-none p-0 m-0">
+                        <li><a href="../privacy-policy.htm" class="text-ink hover:underline font-medium">Privacy</a></li>
+                        <li><a href="../terms-and-conditions.htm" class="text-ink hover:underline font-medium">Terms</a></li>
+                        <li><a href="../policies.htm" class="text-ink hover:underline font-medium">Policies</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-ink/10 pt-5 flex flex-col sm:flex-row justify-between items-center gap-2">
+                <div class="flex items-center gap-2">
+                    <img src="../hardware-devroom/images/absurd-logo-for-any-background.png" alt="" class="h-5">
+                    <span class="text-xs font-semibold">Absurd Industries</span>
+                </div>
+                <p class="text-xs text-ink-faint">
+                    <span class="copyleft">&copy;</span> Copyleft 2023&ndash;2026. Made with curiosity in Bengaluru.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ════════════════════════════════════════ -->
+    <!-- MOBILE NAV                              -->
+    <!-- ════════════════════════════════════════ -->
+    <nav class="bottom-bar" style="position:relative;">
+        <div class="grid grid-cols-5">
+            <a href="./" class="active"><i class="ph-bold ph-rocket-launch"></i><span>Campaigns</span></a>
+            <a href="../makers/"><i class="ph-bold ph-users-three"></i><span>Makers</span></a>
+            <a href="../requests/"><i class="ph-bold ph-megaphone"></i><span>Requests</span></a>
+            <a href="../events/"><i class="ph-bold ph-calendar-dots"></i><span>Events</span></a>
+            <button @click="megaMenuOpen = !megaMenuOpen">
+                <i :class="megaMenuOpen ? 'ph-bold ph-x' : 'ph-bold ph-dots-three'"></i>
+                <span>More</span>
+            </button>
+        </div>
+
+        <transition name="slide">
+            <div v-if="megaMenuOpen" class="mega-menu" @click="megaMenuOpen = false">
+                <a href="../inventory/">
+                    <i class="ph-bold ph-package"></i> Inventory
+                </a>
+                <a href="https://discord.gg/DUSUtguG2H" target="_blank">
+                    <i class="fa-brands fa-discord"></i> Discord
+                </a>
+                <a href="../hardware-devroom/">
+                    <i class="ph-bold ph-microchip"></i> Hardware Devroom
+                </a>
+                <a href="../contact.htm">
+                    <i class="ph-bold ph-envelope"></i> Contact
+                </a>
+            </div>
+        </transition>
+    </nav>
+
+    <!-- ════════════════════════════════════════ -->
+    <!-- JOIN MODAL                              -->
+    <!-- ════════════════════════════════════════ -->
+    <div v-if="showJoinModal" class="fixed inset-0 z-50 flex items-center justify-center p-5" @click.self="showJoinModal = false">
+        <div class="fixed inset-0 bg-ink/40 backdrop-blur-sm" @click="showJoinModal = false"></div>
+        <div class="paper-card p-8 max-w-md w-full relative z-10 text-center">
+            <button @click="showJoinModal = false" class="absolute top-4 right-4 text-ink-faint hover:text-ink text-lg cursor-pointer bg-transparent border-none">
+                <i class="ph-bold ph-x"></i>
+            </button>
+            <i class="ph-bold ph-hand-waving text-4xl text-stamp mb-3 block"></i>
+            <h3 class="font-serif font-semibold text-xl mb-2">Join the Guild</h3>
+            <p class="text-ink-light text-sm mb-5 leading-relaxed">
+                Join the Absurd Industries community on Discord to connect with makers, get early access to campaigns, and shape the future of open hardware.
+            </p>
+            <a href="https://discord.gg/DUSUtguG2H" target="_blank" class="btn btn-stamp w-full justify-center">
+                <i class="fa-brands fa-discord mr-2"></i>Join on Discord
+            </a>
+        </div>
+    </div>
+
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- VUE APP                                 -->
+<!-- ════════════════════════════════════════ -->
+<script>
+const { createApp } = Vue;
+
+createApp({
+    data() {
+        return {
+            showJoinModal: false,
+            megaMenuOpen: false,
+            searchQuery: '',
+            activeCategory: 'All',
+            categories: ['All', 'Electronics', 'Tools', 'IoT', 'Sustainability', 'Education', 'Audio', 'Agriculture'],
+            campaigns: [
+                {
+                    id: 1,
+                    name: 'Lampy — The Open-Source Desk Lamp',
+                    icon: 'lamp',
+                    description: 'A modular, repairable LED desk lamp with adjustable color temperature. Full STEP files, PCB schematics, and firmware included.',
+                    maker: 'Absurd Industries',
+                    location: 'Bengaluru, IN',
+                    avatarColor: '#FF5900',
+                    category: 'Electronics',
+                    status: 'live',
+                    percent: 142,
+                    goal: 5000,
+                    backers: 238,
+                    license: 'CERN-OHL-S',
+                    fromRequest: false,
+                },
+                {
+                    id: 2,
+                    name: 'SoilPulse — Open Moisture Sensor Network',
+                    icon: 'plant',
+                    description: 'LoRa-connected soil sensors for small farms. Solar-powered nodes that last 3 years. All hardware designs released under CERN-OHL-S.',
+                    maker: 'Priya Mehta',
+                    location: 'Pune, IN',
+                    avatarColor: '#2A5F41',
+                    category: 'Agriculture',
+                    status: 'live',
+                    percent: 91,
+                    goal: 12000,
+                    backers: 184,
+                    license: 'CERN-OHL-S',
+                    fromRequest: true,
+                },
+                {
+                    id: 3,
+                    name: 'TinyTracker — GPS Module for Wildlife',
+                    icon: 'map-pin',
+                    description: 'A 4-gram solar-powered GPS tracker for bird migration research. Open firmware, 3D-printable enclosure, and LoRaWAN backhaul.',
+                    maker: 'Carlos Rivera',
+                    location: 'Madrid, ES',
+                    avatarColor: '#6B5B4A',
+                    category: 'IoT',
+                    status: 'live',
+                    percent: 67,
+                    goal: 8500,
+                    backers: 112,
+                    license: 'MIT',
+                    fromRequest: false,
+                },
+                {
+                    id: 4,
+                    name: 'HexWrench — Parametric Multitool',
+                    icon: 'wrench',
+                    description: 'A 3D-printable, customizable hex wrench set generated from OpenSCAD parameters. Print exactly the sizes you need in carbon-fiber nylon.',
+                    maker: 'Jens Holm',
+                    location: 'Copenhagen, DK',
+                    avatarColor: '#1A1A1A',
+                    category: 'Tools',
+                    status: 'funded',
+                    percent: 100,
+                    goal: 3200,
+                    backers: 421,
+                    license: 'GPL-3.0',
+                    fromRequest: true,
+                },
+                {
+                    id: 5,
+                    name: 'BreathBox — Open Air Quality Monitor',
+                    icon: 'wind',
+                    description: 'Indoor air quality station measuring CO2, PM2.5, VOCs, and humidity. ESP32-based with a beautiful e-ink display. KiCad source included.',
+                    maker: 'Amara Osei',
+                    location: 'Accra, GH',
+                    avatarColor: '#B8956A',
+                    category: 'Sustainability',
+                    status: 'live',
+                    percent: 53,
+                    goal: 7000,
+                    backers: 89,
+                    license: 'CERN-OHL-S',
+                    fromRequest: false,
+                },
+                {
+                    id: 6,
+                    name: 'LogicBuddy — Learn Digital Circuits',
+                    icon: 'circuit-board',
+                    description: 'A tactile logic gate learning kit with magnetic snap-together modules. Comes with a workbook and open-source simulation software.',
+                    maker: 'Tobias Engel',
+                    location: 'Berlin, DE',
+                    avatarColor: '#FF5900',
+                    category: 'Education',
+                    status: 'funded',
+                    percent: 100,
+                    goal: 15000,
+                    backers: 573,
+                    license: 'CERN-OHL-P',
+                    fromRequest: false,
+                },
+                {
+                    id: 7,
+                    name: 'CrateAmp — Portable Open-Source Speaker',
+                    icon: 'speaker-high',
+                    description: 'A 20W portable speaker built into a laser-cut wooden crate. Class-D amp PCB, passive radiator design, and enclosure files all open.',
+                    maker: 'Nkechi Adeyemi',
+                    location: 'Lagos, NG',
+                    avatarColor: '#2A5F41',
+                    category: 'Audio',
+                    status: 'live',
+                    percent: 34,
+                    goal: 6000,
+                    backers: 57,
+                    license: 'MIT',
+                    fromRequest: false,
+                },
+                {
+                    id: 8,
+                    name: 'PicoProbe — USB Logic Analyzer',
+                    icon: 'cpu',
+                    description: 'An RP2040-based 8-channel logic analyzer with a web UI. Captures at 100 MHz, decodes SPI/I2C/UART. Fully open hardware and software.',
+                    maker: 'Saito Haruki',
+                    location: 'Osaka, JP',
+                    avatarColor: '#6B5B4A',
+                    category: 'Electronics',
+                    status: 'coming',
+                    percent: 0,
+                    goal: 10000,
+                    backers: 0,
+                    license: 'CERN-OHL-S',
+                    fromRequest: true,
+                },
+                {
+                    id: 9,
+                    name: 'GrowFrame — Vertical Garden Controller',
+                    icon: 'potted-plant',
+                    description: 'Automated vertical garden with open irrigation, grow-light scheduling, and nutrient dosing. Works with Home Assistant via MQTT.',
+                    maker: 'Lin Wei',
+                    location: 'Taipei, TW',
+                    avatarColor: '#2A5F41',
+                    category: 'Agriculture',
+                    status: 'live',
+                    percent: 78,
+                    goal: 9500,
+                    backers: 145,
+                    license: 'GPL-3.0',
+                    fromRequest: false,
+                },
+                {
+                    id: 10,
+                    name: 'SuperSaber — Open Lightsaber Kit',
+                    icon: 'lightning',
+                    description: 'A smooth-swing, sound-reactive lightsaber with swappable blade colors. Open PCB, 3D-printed hilt, and Arduino-compatible firmware.',
+                    maker: 'Absurd Industries',
+                    location: 'Bengaluru, IN',
+                    avatarColor: '#FF5900',
+                    category: 'Education',
+                    status: 'coming',
+                    percent: 0,
+                    goal: 4500,
+                    backers: 0,
+                    license: 'CERN-OHL-P',
+                    fromRequest: false,
+                },
+            ],
+        };
+    },
+    computed: {
+        filteredCampaigns() {
+            let results = this.campaigns;
+
+            if (this.activeCategory !== 'All') {
+                results = results.filter(c => c.category === this.activeCategory);
+            }
+
+            if (this.searchQuery.trim()) {
+                const q = this.searchQuery.trim().toLowerCase();
+                results = results.filter(c =>
+                    c.name.toLowerCase().includes(q) ||
+                    c.description.toLowerCase().includes(q) ||
+                    c.maker.toLowerCase().includes(q) ||
+                    c.category.toLowerCase().includes(q)
+                );
+            }
+
+            return results;
+        },
+    },
+}).mount('#app');
+</script>
+
+</body>
+</html>

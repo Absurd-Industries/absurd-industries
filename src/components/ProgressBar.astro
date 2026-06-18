@@ -1,0 +1,30 @@
+---
+/**
+ * Funding progress bar used on campaign cards.
+ *
+ * Usage:
+ *   <ProgressBar percent={72} />
+ *   <ProgressBar percent={105} hot />
+ */
+
+interface Props {
+  /** Percentage filled (0-100+, clamped visually at 100) */
+  percent: number;
+  /** Use stamp orange instead of funded green (for overfunded campaigns) */
+  hot?: boolean;
+}
+
+const { percent, hot = false } = Astro.props;
+const clampedWidth = Math.min(percent, 100);
+---
+
+<div class="progress">
+  <div
+    class:list={["progress-fill", { hot }]}
+    style={`width: ${clampedWidth}%`}
+    role="progressbar"
+    aria-valuenow={percent}
+    aria-valuemin={0}
+    aria-valuemax={100}
+  ></div>
+</div>

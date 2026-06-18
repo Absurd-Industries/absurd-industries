@@ -1,0 +1,28 @@
+---
+/**
+ * SVG filter definitions for paper-cut card edges.
+ * Rendered once in BaseLayout, hidden via position:absolute.
+ * Cards reference these by filter ID: url(#papercut), url(#torn), etc.
+ */
+---
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <!-- Hero: strong torn edge -->
+  <filter id="torn">
+    <feTurbulence type="turbulence" baseFrequency="0.04" numOctaves="5" result="n" />
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G" />
+  </filter>
+  <!-- Cards: subtle paper-cut -->
+  <filter id="papercut">
+    <feTurbulence type="turbulence" baseFrequency="0.04" numOctaves="4" result="n" />
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G" />
+  </filter>
+  <filter id="papercut-2">
+    <feTurbulence type="turbulence" baseFrequency="0.035" numOctaves="4" seed="3" result="n" />
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G" />
+  </filter>
+  <filter id="papercut-3">
+    <feTurbulence type="turbulence" baseFrequency="0.045" numOctaves="4" seed="7" result="n" />
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="3.5" xChannelSelector="R" yChannelSelector="G" />
+  </filter>
+</svg>

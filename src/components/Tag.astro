@@ -1,0 +1,23 @@
+---
+/**
+ * Pill-shaped tag/badge component.
+ *
+ * Usage:
+ *   <Tag>Default</Tag>
+ *   <Tag variant="stamp">Open Source STEAM</Tag>
+ *   <Tag variant="funded">Funded</Tag>
+ */
+
+interface Props {
+  variant?: "default" | "stamp" | "funded" | "muted" | "danger";
+  class?: string;
+}
+
+const { variant = "default", class: className = "" } = Astro.props;
+
+const variantClass = `tag-${variant}`;
+---
+
+<span class:list={["tag", variantClass, className]}>
+  <slot />
+</span>

@@ -1,0 +1,34 @@
+---
+/**
+ * Events listing page.
+ * Shows Bengaluru-first STEAM events — meetups, workshops, hackathons,
+ * talks, and conferences. Calendar/planner view with city filtering
+ * and search, handled client-side by the EventsListing Vue island.
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import EventsListing from "../../components/EventsListing.vue";
+import { events } from "../../data/events";
+---
+
+<BaseLayout
+  title="Events"
+  description="Bengaluru-first STEAM events - meetups, workshops, hackathons, talks, and conferences for makers, scientists, artists, and engineers."
+  activeTab="events"
+>
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 pt-6 pb-8 md:pt-8 md:pb-12">
+    <!-- Page Header -->
+    <div class="mb-6">
+      <h1 class="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-ink mb-2">
+        <i class="ph-duotone ph-calendar-dots text-ink mr-2" style="font-size:1.4rem;"></i>Events
+      </h1>
+      <p class="text-sm text-ink max-w-lg leading-relaxed">
+        Bengaluru-first STEAM (Science, Technology, Engineering, Art & Math) events for makers, scientists, artists, engineers,
+        and the endlessly curious. Find your people.
+      </p>
+    </div>
+
+    <!-- Interactive calendar listing island -->
+    <EventsListing events={events} client:load />
+  </div>
+</BaseLayout>

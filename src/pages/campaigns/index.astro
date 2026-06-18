@@ -1,0 +1,35 @@
+---
+/**
+ * Campaigns listing page.
+ * Displays a searchable, filterable grid of open-source hardware campaigns.
+ * Filtering is handled client-side by the CampaignsListing Vue island.
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CampaignsListing from "../../components/CampaignsListing.vue";
+import { campaigns } from "../../data/campaigns";
+---
+
+<BaseLayout
+  title="Campaigns"
+  description="Back open-source, repairable indie hardware. Every project ships with full source files."
+  activeTab="campaigns"
+>
+  <section class="pt-6 pb-6 sm:pt-8 sm:pb-8">
+    <div class="max-w-6xl mx-auto px-5 sm:px-6">
+      <h1 class="font-serif font-bold text-3xl sm:text-4xl text-ink mb-2">
+        <i class="ph-duotone ph-rocket-launch text-ink mr-2" style="font-size:1.4rem;"></i>Campaigns
+      </h1>
+      <p class="text-ink text-base sm:text-lg max-w-xl leading-relaxed">
+        Back open-source, repairable indie hardware. Every project ships with full source files.
+      </p>
+    </div>
+  </section>
+
+  <section class="pb-16 sm:pb-20">
+    <div class="max-w-6xl mx-auto px-5 sm:px-6">
+      <!-- Interactive listing island -->
+      <CampaignsListing campaigns={campaigns} client:load />
+    </div>
+  </section>
+</BaseLayout>

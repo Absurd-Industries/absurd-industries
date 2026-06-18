@@ -1,0 +1,982 @@
+---
+/**
+ * Steam-style maker profile detail page.
+ * Generated at build time from the makers data via getStaticPaths().
+ *
+ * Layout: profile banner, two-column body (main + sidebar), with
+ * showcase, activity feed, projects grid, workshop section,
+ * comment wall, badges, skills, and about panels.
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Card from "../../components/Card.astro";
+import Tag from "../../components/Tag.astro";
+import ProgressBar from "../../components/ProgressBar.astro";
+import { makers } from "../../data/makers";
+import type { Maker } from "../../types";
+
+export function getStaticPaths() {
+  return makers.map((maker) => ({
+    params: { slug: maker.slug },
+    props: { maker },
+  }));
+}
+
+const { maker } = Astro.props as { maker: Maker };
+
+// ────────────────────────────────────────────────────────────
+// Per-maker enriched data (mock / derived for static build)
+// In production these would come from the API.
+// ────────────────────────────────────────────────────────────
+
+/** Banner colour — use avatarColor as the default */
+const bannerColor = maker.avatarColor;
+const bannerAccent = "#FF5900";
+
+const initial = maker.name.charAt(0).toUpperCase();
+const firstName = maker.name.split(" ")[0];
+
+/** Showcase — first project (mock campaign data) */
+const showcase = {
+  name: `${firstName}'s Featured Project`,
+  description: maker.bio ?? `Open-source ${maker.specialty.toLowerCase()} project by ${maker.name}.`,
+  icon: getSpecialtyIcon(maker.specialty),
+  category: maker.specialty,
+  license: "CERN-OHL-S",
+  percent: Math.min(Math.round((maker.backers / (maker.backers + 50)) * 100), 100),
+  goal: `₹${Math.round((maker.backers * 1400) / 100000).toFixed(0)},00,000`,
+  backers: maker.backers,
+  link: "/campaigns",
+};
+
+function getSpecialtyIcon(specialty: string): string {
+  const map: Record<string, string> = {
+    Electronics: "cpu",
+    Firmware: "code",
+    "Product Design": "cube",
+    Education: "graduation-cap",
+    Robotics: "robot",
+    Audio: "speaker-high",
+  };
+  return map[specialty] ?? "wrench";
+}
+
+/** Activity feed entries */
+const activities = [
+  {
+    icon: "rocket-launch",
+    text: `Launched <strong>${showcase.name}</strong> campaign`,
+    time: "3 days ago",
+    highlight: true,
+    miniCard: {
+      icon: showcase.icon,
+      name: showcase.name,
+      percent: showcase.percent,
+      backers: showcase.backers,
+    },
+  },
+  {
+    icon: "article",
+    text: `Published build journal: <strong>Field Testing v${maker.projects}</strong>`,
+    time: "1 week ago",
+    highlight: false,
+    miniCard: null as null | { icon: string; name: string; percent: number; backers: number },
+  },
+  {
+    icon: "file-text",
+    text: `Contributed specs to a <span class="text-stamp font-semibold">Community Request</span>`,
+    time: "2 weeks ago",
+    highlight: false,
+    miniCard: null as null | { icon: string; name: string; percent: number; backers: number },
+  },
+  {
+    icon: "heart",
+    text: "Backed <strong>Desktop CNC Mill</strong> by Vikram Rao",
+    time: "3 weeks ago",
+    highlight: false,
+    miniCard: null as null | { icon: string; name: string; percent: number; backers: number },
+  },
+  {
+    icon: "trophy",
+    text: `Earned badge: <strong>${maker.backers >= 100 ? "Crowd Favourite" : "First Backer"}</strong>`,
+    time: "1 month ago",
+    highlight: true,
+    miniCard: null as null | { icon: string; name: string; percent: number; backers: number },
+  },
+  {
+    icon: "user-plus",
+    text: "Joined <strong>Ooru</strong>",
+    time: "2024",
+    highlight: false,
+    miniCard: null as null | { icon: string; name: string; percent: number; backers: number },
+  },
+];
+
+/** Projects list */
+const projects = [
+  {
+    name: showcase.name,
+    description: showcase.description,
+    icon: showcase.icon,
+    status: "Live" as const,
+    percent: showcase.percent,
+    backers: showcase.backers,
+  },
+  ...(maker.projects > 1
+    ? [
+        {
+          name: `${maker.skills[0]} Monitor`,
+          description: `Open-source ${maker.skills[0].toLowerCase()} monitoring system with wireless alerts.`,
+          icon: "chart-line",
+          status: "Completed" as const,
+          percent: 100,
+          backers: Math.round(maker.backers * 0.4),
+        },
+      ]
+    : []),
+  ...(maker.projects > 2
+    ? [
+        {
+          name: `${maker.skills[1] ?? maker.specialty} Kit`,
+          description: `Upcoming kit for ${maker.specialty.toLowerCase()} enthusiasts.`,
+          icon: "package",
+          status: "Coming Soon" as const,
+          percent: null as number | null,
+          backers: 0,
+        },
+      ]
+    : []),
+];
+
+/** Badges */
+const badges = [
+  {
+    name: "Guild Member",
+    icon: "seal-check",
+    description: "Verified Ooru maker",
+    bg: "rgba(42,95,65,0.12)",
+    color: "#2A5F41",
+  },
+  {
+    name: "First Campaign",
+    icon: "flag-banner",
+    description: "Successfully funded their first campaign",
+    bg: "rgba(255,89,0,0.1)",
+    color: "#FF5900",
+  },
+  ...(maker.backers >= 100
+    ? [
+        {
+          name: "Crowd Favourite",
+          icon: "users-three",
+          description: "Projects loved by the community",
+          bg: "rgba(26,26,26,0.08)",
+          color: "#1A1A1A",
+        },
+      ]
+    : []),
+  {
+    name: "Community Helper",
+    icon: "handshake",
+    description: "Contributed to community requests",
+    bg: "rgba(42,95,65,0.12)",
+    color: "#2A5F41",
+  },
+  {
+    name: `${maker.specialty} Specialist`,
+    icon: "lightning",
+    description: `Specialist in ${maker.specialty}`,
+    bg: "rgba(107,91,74,0.12)",
+    color: "#6B5B4A",
+  },
+  {
+    name: "Open Source",
+    icon: "lock-key-open",
+    description: "All projects use open-source licenses",
+    bg: "rgba(255,89,0,0.1)",
+    color: "#FF5900",
+  },
+];
+
+/** Workshop / Setup */
+const workshop = {
+  name: `${firstName}'s Workshop`,
+  location: maker.location,
+  size: "Home workshop",
+  hours: "Open for visits by appointment",
+  equipment: [
+    { name: "3D Printer", icon: "cube" },
+    { name: "Soldering Station", icon: "fire" },
+    { name: "Oscilloscope", icon: "wave-sine" },
+    { name: "Multimeter", icon: "lightning" },
+    { name: "Power Supply", icon: "battery-charging" },
+    { name: "Hot Air Station", icon: "wind" },
+  ],
+};
+
+/** Comments wall */
+const comments = [
+  {
+    id: 1,
+    author: "Vikram Rao",
+    time: "2 days ago",
+    text: `${firstName}'s documentation is incredible. This is what open source should look like.`,
+  },
+  {
+    id: 2,
+    author: "Arjun Nair",
+    time: "1 week ago",
+    text: `Thanks for the detailed specs! Your ${maker.skills[0]} recommendations were exactly what we needed.`,
+  },
+  {
+    id: 3,
+    author: "Community Member",
+    time: "3 weeks ago",
+    text: `Exceptional work on the ${maker.specialty.toLowerCase()} projects. Keep shipping!`,
+  },
+];
+
+/** External links with icons */
+const externalLinks = [
+  ...(maker.links?.github
+    ? [{ label: maker.links.github.replace("https://", ""), url: maker.links.github, iconType: "github" as const }]
+    : []),
+  ...(maker.links?.website
+    ? [{ label: maker.links.website.replace("https://", ""), url: maker.links.website, iconType: "globe" as const }]
+    : []),
+  ...(maker.links?.twitter
+    ? [{ label: maker.links.twitter.replace("https://twitter.com/", "@"), url: maker.links.twitter, iconType: "twitter" as const }]
+    : []),
+];
+
+/** Contribution count (mock) */
+const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
+
+---
+
+<BaseLayout
+  title={`${maker.name} - ${maker.title}`}
+  description={maker.bio ?? `${maker.name} is a ${maker.title} from ${maker.location} on Ooru.`}
+  activeTab="makers"
+  hideNav
+>
+  <section class="pt-6 pb-0 sm:pt-8">
+    <div class="max-w-5xl mx-auto px-5 sm:px-6">
+      <div class="flex items-center justify-between">
+        <a href="/makers" class="back-btn">
+          <i class="ph-bold ph-arrow-left"></i>
+          Makers
+        </a>
+        <button class="share-float-btn" title="Share" onclick="if(navigator.share){navigator.share({title:document.title,url:window.location.href})}else{navigator.clipboard.writeText(window.location.href).then(function(){var i=event.currentTarget.querySelector('i');i.className='ph-bold ph-check';setTimeout(function(){i.className='ph-bold ph-share-network'},1500)})}">
+          <i class="ph-bold ph-share-network"></i>
+        </button>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- PROFILE BANNER                        -->
+  <!-- ══════════════════════════════════════ -->
+  <section class="pt-4 pb-0" id="about">
+    <div class="max-w-5xl mx-auto px-5 sm:px-6">
+      <div
+        class="profile-banner"
+        style={`--banner-bg: ${bannerColor}; --banner-accent: ${bannerAccent};`}
+        data-configurable="banner"
+      >
+        <!-- Punch hole (card stock ring) -->
+        <div class="punch-hole"></div>
+
+        <div class="relative z-10 px-6 py-8 sm:px-10 sm:py-10">
+          <div class="banner-layout">
+
+            <!-- Octagon Avatar -->
+            <div class="relative flex-shrink-0">
+              <div class="oct-avatar">
+                {maker.avatar ? (
+                  <img src={maker.avatar} alt={maker.name} class="oct-avatar-img" />
+                ) : (
+                  <span class="font-serif font-bold text-4xl sm:text-5xl text-ink-faint/40 select-none">{initial}</span>
+                )}
+              </div>
+            </div>
+
+            <!-- Name + info -->
+            <div class="banner-name-section">
+              <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                <h1 class="font-serif font-bold text-xl sm:text-2xl md:text-3xl text-paper tracking-tight leading-tight">{maker.name}</h1>
+              </div>
+              <div class="flex flex-wrap items-center gap-3 mt-2 text-xs text-kraft-light">
+                <span class="flex items-center gap-1">
+                  <i class="ph-bold ph-map-pin text-xs"></i>
+                  {maker.location}
+                </span>
+                <span>·</span>
+                <span>{maker.specialty}</span>
+              </div>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="banner-actions">
+              <button
+                class="btn btn-sm"
+                style="background:rgba(250,243,232,0.12); color:#FAF3E8; border:1.5px solid rgba(250,243,232,0.2);"
+                onclick="window.__comingSoon && window.__comingSoon('Direct Messages', 'Send a private message to this maker. Messaging launches with the next platform update.')"
+              >
+                <i class="ph-bold ph-envelope-simple mr-1.5" style="font-size:0.75rem;"></i>
+                Message
+              </button>
+            </div>
+          </div>
+
+          <!-- Bio -->
+          <div class="mt-4 pt-4 border-t border-paper/15">
+            <p class="text-sm text-kraft leading-relaxed">{maker.bio ?? `${maker.name} is a ${maker.title} based in ${maker.location}.`}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- TWO-COLUMN LAYOUT                     -->
+  <!-- ══════════════════════════════════════ -->
+  <section class="pt-6 sm:pt-8 pb-14 md:pb-20">
+    <div class="max-w-5xl mx-auto px-5 sm:px-6">
+      <div class="flex flex-col lg:flex-row gap-6">
+
+        <!-- ══════════════════════════ -->
+        <!-- MAIN COLUMN (LEFT)         -->
+        <!-- ══════════════════════════ -->
+        <div class="flex-1 min-w-0">
+
+          <Card>
+            <!-- ── SETUP ── -->
+            <div id="setup" class="profile-section profile-section--dark">
+                <div class="text-paper">
+                  <div class="flex items-center gap-3 mb-5">
+                    <i class="ph-bold ph-wrench text-stamp text-xl"></i>
+                    <h2 class="font-serif font-bold text-xl sm:text-2xl tracking-tight">Setup</h2>
+                  </div>
+
+                  <!-- Workspace photos -->
+                  <div class="mb-5">
+                    <div class="grid grid-cols-3 gap-2">
+                      <div class="aspect-video rounded-lg overflow-hidden">
+                        <img src="/images/projects/workdesk.jpg" alt="Workshop" class="w-full h-full object-cover" loading="lazy" />
+                      </div>
+                      <div class="aspect-video rounded-lg overflow-hidden">
+                        <img src="/images/projects/workdesk-ii.jpg" alt="Workspace" class="w-full h-full object-cover" loading="lazy" />
+                      </div>
+                      <div class="aspect-video rounded-lg overflow-hidden">
+                        <img src="/images/projects/drone-on-cutting-mat.jpg" alt="Project in progress" class="w-full h-full object-cover" loading="lazy" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Equipment grid -->
+                  <div class="mb-5 pt-5 border-t border-paper/10">
+                    <div class="text-xs font-semibold uppercase tracking-wider text-kraft-dark mb-3">Equipment</div>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                      {workshop.equipment.map((e) => (
+                        <div class="flex items-center gap-2 p-2 rounded-lg" style="background:rgba(250,243,232,0.06);">
+                          <div class="equip-icon" style="width:28px; height:28px; font-size:0.85rem;">
+                            <i class={`ph-bold ph-${e.icon}`}></i>
+                          </div>
+                          <span class="text-[0.65rem] text-kraft leading-tight">{e.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <button onclick="window.__comingSoon && window.__comingSoon('Lab Inventory', 'Browse the full equipment list and specs for this maker\'s workshop. Inventory pages are coming soon.')" class="flex items-center gap-2 text-sm font-semibold text-stamp hover:underline cursor-pointer bg-transparent border-none p-0">
+                    <i class="ph-bold ph-package text-sm"></i>
+                    View full lab inventory
+                    <i class="ph-bold ph-arrow-right text-xs"></i>
+                  </button>
+
+                  {externalLinks.length > 0 && (
+                    <div class="mt-5 pt-5 border-t border-paper/10 space-y-2.5">
+                      {externalLinks.map((link) => (
+                        <a href={link.url} target="_blank" rel="noopener" class="flex items-center gap-2.5 text-sm text-kraft hover:text-stamp transition-colors no-underline group">
+                          {link.iconType === "github" && (
+                            <svg class="link-icon text-kraft-dark group-hover:text-stamp transition-colors" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+                          )}
+                          {link.iconType === "globe" && (
+                            <i class="ph-bold ph-globe link-icon text-kraft-dark group-hover:text-stamp transition-colors" style="font-size:1rem;"></i>
+                          )}
+                          {link.iconType === "twitter" && (
+                            <svg class="link-icon text-kraft-dark group-hover:text-stamp transition-colors" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                          )}
+                          <span class="font-medium">{link.label}</span>
+                          <i class="ph-bold ph-arrow-square-out text-xs text-paper/30 ml-auto"></i>
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+            </div>
+
+            <!-- ── ALL PROJECTS ── -->
+            <div id="projects" class="profile-section">
+              <h2 class="font-serif font-bold text-xl sm:text-2xl tracking-tight mb-5">Projects</h2>
+
+              <div class="space-y-3">
+                {projects.map((project, idx) => (
+                  <a
+                    href="/campaigns"
+                    class:list={[
+                      "project-card group",
+                      idx === 0 && "project-card--featured",
+                    ]}
+                  >
+                    {idx === 0 && (
+                      <div class="project-featured-label">
+                        <i class="ph-bold ph-star" style="font-size:0.55rem;"></i>
+                        Featured
+                      </div>
+                    )}
+                    <div class="flex items-center gap-3 mb-2">
+                      <div class="w-10 h-10 rounded-lg bg-kraft-light flex items-center justify-center flex-shrink-0">
+                        <i class={`ph-bold ph-${project.icon} text-lg text-stencil group-hover:text-stamp transition-colors`}></i>
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <h3 class="text-sm font-semibold truncate group-hover:text-stamp transition-colors">{project.name}</h3>
+                        <span class:list={["text-[0.6rem] font-semibold uppercase tracking-wider", project.status === "Live" ? "text-stamp" : project.status === "Completed" ? "text-funded" : "text-stencil"]}>
+                          {project.status}
+                        </span>
+                      </div>
+                      <i class="ph-bold ph-caret-right text-xs text-ink-faint/40 flex-shrink-0"></i>
+                    </div>
+                    <p class="text-xs text-stencil leading-relaxed line-clamp-2">{project.description}</p>
+                    {project.percent !== null && (
+                      <div class="mt-2.5">
+                        <ProgressBar percent={project.percent} hot={project.percent >= 100} />
+                      </div>
+                    )}
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <!-- ── ACTIVITY & WALL ── -->
+            <div id="wall" class="profile-section">
+              <div class="flex items-center justify-between mb-5">
+                <h2 class="font-serif font-bold text-xl sm:text-2xl tracking-tight">Log</h2>
+              </div>
+              <div class="space-y-4">
+                {activities.map((a) => (
+                  <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5" style={`background: ${a.highlight ? "rgba(217,72,0,0.1)" : "rgba(26,26,26,0.04)"}`}>
+                      <i class={`ph-bold ph-${a.icon} text-sm`} style={`color: ${a.highlight ? "#D94800" : "#4A3D2F"}`}></i>
+                    </div>
+                    <div class="flex-1">
+                      <p class="text-sm text-ink leading-snug" set:html={a.text} />
+                      <span class="text-xs text-ink-faint mt-0.5 block">{a.time}</span>
+
+                      {a.miniCard && (
+                        <div class="mt-2 p-3 rounded-lg bg-kraft-light/50 border border-ink/5">
+                          <div class="flex items-center gap-2 mb-1.5">
+                            <i class={`ph-bold ph-${a.miniCard.icon} text-sm text-stencil`}></i>
+                            <span class="text-xs font-semibold text-ink">{a.miniCard.name}</span>
+                          </div>
+                          <div class="progress mb-1" style="height:4px;">
+                            <div class="progress-fill" style={`width: ${a.miniCard.percent}%`}></div>
+                          </div>
+                          <div class="text-[0.6rem] text-ink-faint">
+                            <strong class="text-ink font-semibold">{a.miniCard.percent}%</strong> funded
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <!-- Divider -->
+              <div class="border-t border-ink/5 pt-5 mt-6">
+                <!-- Comments -->
+                <h3 class="font-serif font-semibold text-base mb-4">Comments</h3>
+
+                <!-- Existing comments -->
+                <div class="mb-5">
+                  {comments.map((c) => (
+                    <div class="comment-entry">
+                      <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 bg-kraft-light flex items-center justify-center flex-shrink-0 mt-0.5 oct-sm">
+                          <i class="ph-bold ph-user text-xs text-ink-faint"></i>
+                        </div>
+                        <div class="flex-1">
+                          <div class="flex items-center gap-2 mb-1">
+                            <span class="text-sm font-semibold text-ink">{c.author}</span>
+                            <span class="text-[0.6rem] text-ink-faint">{c.time}</span>
+                          </div>
+                          <p class="text-sm text-ink-light leading-relaxed">{c.text}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <!-- Comment form placeholder -->
+                <div class="border-t border-ink/5 pt-4">
+                  <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 bg-kraft flex items-center justify-center flex-shrink-0 mt-0.5 oct-sm">
+                      <i class="ph-bold ph-user text-xs text-ink-faint"></i>
+                    </div>
+                    <div class="flex-1">
+                      <textarea
+                        rows="2"
+                        placeholder={`Leave a comment on ${firstName}'s wall...`}
+                        class="w-full p-3 rounded-lg border border-ink/10 bg-paper text-sm focus:outline-none focus:border-stamp focus:ring-1 focus:ring-stamp/30 resize-none"
+                        disabled
+                      ></textarea>
+                      <div class="flex justify-end mt-2">
+                        <button class="btn btn-primary btn-sm" style="opacity:0.5; transform:none;" onclick="window.__comingSoon && window.__comingSoon('Profile Wall', 'Post comments on maker profiles. Wall comments launch with the next platform update.')">
+                          <i class="ph-bold ph-paper-plane-tilt mr-1.5" style="font-size:0.7rem;"></i>
+                          Post Comment
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ── BADGES ── -->
+            <div id="badges" class="profile-section" data-configurable="badges">
+              <h2 class="font-serif font-bold text-xl sm:text-2xl tracking-tight mb-4">Badges</h2>
+
+              <div class="grid grid-cols-3 sm:grid-cols-6 gap-1">
+                {badges.map((b) => (
+                  <div class="badge-item" title={b.description}>
+                    <div class="badge-icon" style={`background: ${b.bg}; color: ${b.color};`}>
+                      <i class={`ph-bold ph-${b.icon}`}></i>
+                    </div>
+                    <span class="text-[0.58rem] text-ink-faint text-center font-semibold leading-tight">{b.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Card>
+
+        </div>
+
+        <!-- ══════════════════════════ -->
+        <!-- SIDEBAR (RIGHT)            -->
+        <!-- ══════════════════════════ -->
+        <div class="w-full lg:w-80 flex-shrink-0 space-y-5">
+
+          <!-- ── QUICK INFO + SKILLS ── -->
+          <Card>
+            <div class="p-5 sm:p-6">
+              <h3 class="font-serif font-bold text-base mb-4">Interests</h3>
+              <div class="flex flex-wrap gap-1.5">
+                {maker.skills.map((s) => (
+                  <Tag class="text-[0.62rem]">{s}</Tag>
+                ))}
+              </div>
+            </div>
+          </Card>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fixed bottom profile nav (replaces main nav) -->
+  <nav class="profile-nav">
+    <div class="max-w-5xl mx-auto px-5 sm:px-6">
+      <div class="profile-nav-inner">
+        <a href="#about" class="profile-nav-pill"><i class="ph-bold ph-user"></i> About</a>
+        <a href="#setup" class="profile-nav-pill"><i class="ph-bold ph-wrench"></i> Setup</a>
+        <a href="#projects" class="profile-nav-pill"><i class="ph-bold ph-folder-open"></i> Projects</a>
+        <a href="#wall" class="profile-nav-pill"><i class="ph-bold ph-chat-circle"></i> Log</a>
+        <a href="#badges" class="profile-nav-pill"><i class="ph-bold ph-medal"></i> Badges</a>
+      </div>
+    </div>
+  </nav>
+</BaseLayout>
+
+<script is:inline data-astro-rerun>
+(function() {
+  var pills = document.querySelectorAll('.profile-nav-pill');
+  var sections = ['about', 'setup', 'projects', 'wall', 'badges'];
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        pills.forEach(function(p) { p.classList.remove('active'); });
+        var pill = document.querySelector('.profile-nav-pill[href="#' + entry.target.id + '"]');
+        if (pill) pill.classList.add('active');
+      }
+    });
+  }, { threshold: 0.2, rootMargin: '-60px 0px -60% 0px' });
+
+  sections.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
+})();
+</script>
+
+<style>
+  /* ================================================================ */
+  /* STEAM-STYLE PROFILE — page-scoped styles                        */
+  /* ================================================================ */
+
+  /* Breadcrumb */
+  .breadcrumb a {
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  /* Profile banner — filter on pseudo-element to avoid blurring content */
+  .profile-banner {
+    --banner-bg: #1A1A1A;
+    --banner-accent: #D94800;
+    --banner-pattern: repeating-linear-gradient(
+      135deg,
+      transparent,
+      transparent 20px,
+      rgba(217, 72, 0, 0.04) 20px,
+      rgba(217, 72, 0, 0.04) 22px
+    );
+    position: relative;
+    border-radius: 0.875rem;
+    overflow: hidden;
+  }
+  .profile-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--banner-bg);
+    background-image: var(--banner-pattern);
+    filter: url(#papercut);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Punch hole — card stock ring that cuts through the banner */
+  .punch-hole {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--banner-bg);
+    box-shadow:
+      inset 0 1px 3px rgba(0,0,0,0.4),
+      inset 0 -1px 2px rgba(255,255,255,0.05),
+      0 0 0 3px rgba(255,255,255,0.08);
+    z-index: 20;
+  }
+  .punch-hole::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border-radius: 50%;
+    background: #D4B896;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.15);
+  }
+
+  /* Banner layout — prevents smushing on narrow screens */
+  .banner-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  @media (min-width: 640px) {
+    .banner-layout {
+      flex-direction: row;
+      align-items: flex-end;
+      gap: 1.25rem;
+    }
+  }
+  .banner-name-section {
+    flex: 1;
+    min-width: 0;
+    padding-bottom: 2px;
+  }
+  .banner-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+  @media (min-width: 640px) {
+    .banner-actions {
+      padding-bottom: 2px;
+    }
+  }
+
+  /* Octagon avatar */
+  .oct-avatar {
+    width: 96px;
+    height: 96px;
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+    background: #FAF3E8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .oct-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  @media (min-width: 640px) {
+    .oct-avatar {
+      width: 112px;
+      height: 112px;
+    }
+  }
+
+  /* Showcase section */
+  .showcase-border {
+    background: linear-gradient(135deg, rgba(217, 72, 0, 0.15), rgba(42, 95, 65, 0.1));
+    border: 1.5px solid rgba(217, 72, 0, 0.2);
+    border-radius: 0.875rem;
+    padding: 1px;
+  }
+
+  /* Badge grid */
+  .badge-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.5rem 0.25rem;
+    border-radius: 0.5rem;
+    transition: background 0.15s;
+    cursor: default;
+  }
+  .badge-item:hover {
+    background: rgba(26, 26, 26, 0.04);
+  }
+  .badge-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+  }
+
+  /* Timeline */
+  .timeline-line {
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(26, 26, 26, 0.08);
+  }
+  .timeline-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #D4B896;
+    border: 2px solid #B8956A;
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+  }
+  .timeline-dot.highlight {
+    background: #D94800;
+    border-color: #CC4700;
+  }
+
+  /* Equipment icons */
+  .equip-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 0.5rem;
+    background: rgba(250, 243, 232, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(250, 243, 232, 0.6);
+    font-size: 1.1rem;
+  }
+
+  /* Comment wall */
+  .comment-entry {
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.06);
+  }
+  .comment-entry:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
+  }
+
+  /* Profile section dividers */
+  .profile-section {
+    padding: 1.5rem;
+    border-top: 1px solid rgba(26, 26, 26, 0.06);
+  }
+  .profile-section:first-child {
+    border-top: none;
+  }
+  .profile-section--dark {
+    background: #1A1A1A;
+    border-top: none;
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.875rem 0.875rem 0 0;
+    margin: 0;
+    padding: 1.5rem;
+  }
+  @media (min-width: 640px) {
+    .profile-section {
+      padding: 2rem;
+    }
+    .profile-section--dark {
+      padding: 2rem;
+      margin: 0;
+    }
+  }
+
+  /* Section divider label */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(26, 26, 26, 0.1);
+  }
+
+  /* Profile section nav — fixed bottom bar matching main bottom bar style */
+  .profile-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 40;
+    background: #1A1A1A;
+    padding: 0.5rem 0;
+    box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.15);
+  }
+  .profile-nav-inner {
+    display: flex;
+    gap: 0;
+    justify-content: space-around;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .profile-nav-inner::-webkit-scrollbar {
+    display: none;
+  }
+  .profile-nav-pill {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.6rem;
+    font-weight: 600;
+    color: rgba(250, 243, 232, 0.55);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.15s;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .profile-nav-pill i {
+    font-size: 1.25rem;
+    margin-bottom: 3px;
+  }
+  .profile-nav-pill:hover {
+    color: #FF5900;
+    background: transparent;
+  }
+  .profile-nav-pill.active {
+    color: #FF5900;
+    background: transparent;
+  }
+
+  /* Share button */
+  .share-float-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 0.5rem;
+    border: 1.5px solid rgba(26, 26, 26, 0.12);
+    background: transparent;
+    color: #4A3D2F;
+    cursor: pointer;
+    font-size: 1rem;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .share-float-btn:hover {
+    border-color: #D94800;
+    color: #D94800;
+  }
+
+  /* External link icons */
+  .link-icon {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+  }
+
+  /* Project cards with clear clickable boundaries */
+  .project-card {
+    display: block;
+    padding: 1rem 1.25rem;
+    border-radius: 0.75rem;
+    border: 1.5px solid rgba(26, 26, 26, 0.1);
+    background: transparent;
+    transition: all 0.15s;
+    text-decoration: none;
+    color: #1A1A1A;
+    position: relative;
+  }
+  .project-card:hover {
+    border-color: rgba(26, 26, 26, 0.25);
+    background: rgba(250, 243, 232, 0.4);
+  }
+  .project-card--featured {
+    border-color: #D94800;
+    border-width: 2px;
+    background: rgba(217, 72, 0, 0.03);
+  }
+  .project-card--featured:hover {
+    border-color: #FF5900;
+    background: rgba(217, 72, 0, 0.06);
+  }
+  .project-featured-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.55rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #D94800;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Octagonal avatar helper */
+  .oct-sm {
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+  }
+</style>

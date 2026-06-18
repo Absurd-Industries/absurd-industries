@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Source Desktop CNC Machine | Requests | Absurd Industries</title>
+    <meta name="description" content="Community request for an affordable, fully open-source desktop CNC machine for PCB milling, wood engraving, and light aluminum work. Join 342 people who want this built.">
+
+    <meta property="og:title" content="Open Source Desktop CNC Machine | Absurd Industries">
+    <meta property="og:description" content="342 people want this built. An affordable open-source desktop CNC for PCB milling, engraving, and light metalwork.">
+    <meta property="og:image" content="https://absurd.industries/hardware-devroom/screen.png">
+    <meta property="og:url" content="https://absurd.industries/requests/detail.html">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16x16.png">
+    <link rel="shortcut icon" href="../assets/favicon/favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap" rel="stylesheet">
+
+    <script src="https://kit.fontawesome.com/e0c6d65845.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kraft: { DEFAULT: '#D4B896', light: '#E8D5B7', dark: '#B8956A' },
+                        ink: { DEFAULT: '#1A1A1A', light: '#3D3D3D', faint: '#6B5B4A' },
+                        stamp: { DEFAULT: '#FF5900', dark: '#CC4700' },
+                        tape: '#F5E6C8',
+                        paper: '#FAF3E8',
+                        stencil: '#6B5B4A',
+                        funded: '#2A5F41',
+                    },
+                    fontFamily: {
+                        serif: ['"Fraunces"', 'Georgia', 'serif'],
+                        sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
+                    },
+                },
+            },
+        };
+    </script>
+
+    <style>
+        body {
+            background-color: #D4B896;
+            background-image: url('../hardware-devroom/images/kraft-paper.jpg');
+            background-repeat: repeat;
+            background-size: auto;
+        }
+
+        /* Paper-cut cards */
+        .card { position: relative; }
+        .card-bg {
+            position: absolute; inset: 0;
+            background: #FAF3E8;
+            border-radius: 0.875rem;
+            filter: url(#papercut);
+            z-index: 0;
+        }
+        .card-bg-dark {
+            position: absolute; inset: 0;
+            background: #1A1A1A;
+            border-radius: 0.875rem;
+            filter: url(#papercut);
+            z-index: 0;
+        }
+        .card-content { position: relative; z-index: 1; }
+
+        .card-v2 > .card-bg,
+        .card-v2 > .card-bg-dark { filter: url(#papercut-2); }
+        .card-v3 > .card-bg,
+        .card-v3 > .card-bg-dark { filter: url(#papercut-3); }
+
+        /* Buttons — gentle round (0.625rem) */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 0.7rem 1.6rem;
+            font-family: 'DM Sans', system-ui, sans-serif;
+            font-weight: 600; font-size: 0.875rem;
+            letter-spacing: 0.01em;
+            border-radius: 0.625rem;
+            text-decoration: none;
+            transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+            cursor: pointer; border: none;
+        }
+        .btn:hover { transform: translateY(-1px); }
+        .btn-primary { background: #1A1A1A; color: #FAF3E8; }
+        .btn-primary:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .btn-stamp { background: #FF5900; color: #FAF3E8; }
+        .btn-stamp:hover { box-shadow: 0 4px 12px rgba(255,89,0,0.25); }
+        .btn-outline { background: transparent; color: #1A1A1A; border: 1.5px solid #1A1A1A; }
+        .btn-outline:hover { background: #1A1A1A; color: #FAF3E8; }
+        .btn-ghost { background: transparent; color: #1A1A1A; padding: 0.5rem 1rem; }
+        .btn-ghost:hover { background: rgba(26,26,26,0.06); border-radius: 0.625rem; }
+        .btn-sm { padding: 0.5rem 1.15rem; font-size: 0.8rem; }
+        .btn-funded { background: #2A5F41; color: #FAF3E8; }
+        .btn-funded:hover { box-shadow: 0 4px 12px rgba(42,95,65,0.25); }
+
+        /* Tags — pill */
+        .tag {
+            display: inline-flex; align-items: center;
+            padding: 0.2rem 0.65rem; border-radius: 999px;
+            font-size: 0.68rem; font-weight: 600;
+            letter-spacing: 0.04em; text-transform: uppercase;
+        }
+        .tag-default { background: rgba(26,26,26,0.08); color: #1A1A1A; }
+        .tag-stamp { background: rgba(255,89,0,0.12); color: #FF5900; }
+        .tag-funded { background: rgba(42,95,65,0.12); color: #2A5F41; }
+
+        /* Fixed wonky logo */
+        .wonky-logo {
+            position: fixed; top: 1rem; left: 50%; transform: translateX(-50%) rotate(-2deg);
+            z-index: 40; transition: transform 0.2s ease;
+        }
+        .wonky-logo:hover { transform: translateX(-50%) rotate(0deg) scale(1.05); }
+
+        /* Bottom bar */
+        .bottom-bar {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: #1A1A1A;
+            z-index: 50;
+            box-shadow: 0 -2px 12px rgba(0,0,0,0.15);
+        }
+        .bottom-bar a, .bottom-bar button {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 10px 0;
+            color: rgba(250,243,232,0.55);
+            text-decoration: none; background: none; border: none;
+            font-family: 'DM Sans', system-ui, sans-serif;
+            font-size: 0.6rem; font-weight: 600;
+            letter-spacing: 0.03em; text-transform: uppercase;
+            transition: color 0.15s; cursor: pointer;
+        }
+        .bottom-bar a:hover, .bottom-bar a:active,
+        .bottom-bar button:hover { color: #FF5900; }
+        .bottom-bar a.active { color: #FF5900; }
+        .bottom-bar i, .bottom-bar .ph-bold { font-size: 1.25rem; margin-bottom: 3px; }
+
+        /* Mega menu */
+        .mega-menu {
+            position: absolute; bottom: 100%; right: 0; left: 0;
+            background: #FAF3E8;
+            border-radius: 0.875rem 0.875rem 0 0;
+            box-shadow: 0 -4px 24px rgba(0,0,0,0.12);
+            padding: 1.25rem 1.5rem;
+        }
+        .mega-menu a {
+            display: flex; align-items: center; gap: 0.75rem;
+            color: #1A1A1A; text-decoration: none;
+            font-size: 0.875rem; font-weight: 500;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid rgba(26,26,26,0.06);
+            flex-direction: row;
+        }
+        .mega-menu a:last-child { border-bottom: none; }
+        .mega-menu a i { font-size: 1.1rem; color: #6B5B4A; }
+        .mega-menu a:hover { color: #FF5900; }
+        .mega-menu a:hover i { color: #FF5900; }
+
+        body { padding-bottom: 72px; }
+
+        .copyleft { display: inline-block; transform: rotate(180deg); }
+
+        /* Upvote button — tactile */
+        .upvote-btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.55rem 1.1rem; border-radius: 0.625rem;
+            border: 1.5px solid rgba(26,26,26,0.2); background: transparent;
+            font-size: 0.8rem; font-weight: 700; cursor: pointer;
+            transition: all 0.15s; color: #1A1A1A;
+            font-family: 'DM Sans', system-ui, sans-serif;
+        }
+        .upvote-btn:hover { border-color: #FF5900; color: #FF5900; background: rgba(255,89,0,0.04); }
+        .upvote-btn.voted { background: #1A1A1A; color: #FAF3E8; border-color: #1A1A1A; }
+        .upvote-btn i { font-size: 1rem; }
+
+        /* Spec table */
+        .spec-row {
+            display: flex; align-items: flex-start; gap: 1rem;
+            padding: 0.7rem 0;
+            border-bottom: 1px solid rgba(26,26,26,0.06);
+        }
+        .spec-row:last-child { border-bottom: none; }
+        .spec-label {
+            flex-shrink: 0; width: 130px;
+            font-size: 0.75rem; font-weight: 600; color: #6B5B4A;
+            text-transform: uppercase; letter-spacing: 0.04em;
+            padding-top: 0.1rem;
+        }
+        .spec-value {
+            flex: 1; font-size: 0.875rem; color: #1A1A1A; line-height: 1.5;
+        }
+        .spec-edit {
+            flex-shrink: 0; opacity: 0; transition: opacity 0.15s;
+            cursor: pointer; color: #6B5B4A; font-size: 0.8rem;
+        }
+        .spec-row:hover .spec-edit { opacity: 1; }
+        .spec-edit:hover { color: #FF5900; }
+
+        /* Comment */
+        .comment {
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(26,26,26,0.06);
+        }
+        .comment:last-child { border-bottom: none; }
+        .comment-reply {
+            margin-left: 2.5rem;
+            padding-left: 1rem;
+            border-left: 2px solid rgba(26,26,26,0.08);
+        }
+        .comment-vote {
+            display: inline-flex; align-items: center; gap: 0.25rem;
+            font-size: 0.72rem; font-weight: 600; color: #6B5B4A;
+            cursor: pointer; padding: 0.15rem 0.4rem; border-radius: 0.375rem;
+            transition: all 0.12s;
+        }
+        .comment-vote:hover { background: rgba(26,26,26,0.06); color: #1A1A1A; }
+        .comment-vote.voted { color: #FF5900; }
+        .comment-vote i { font-size: 0.8rem; }
+        .comment-action {
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            font-size: 0.72rem; font-weight: 600; color: #6B5B4A;
+            cursor: pointer; padding: 0.15rem 0.4rem; border-radius: 0.375rem;
+            transition: all 0.12s;
+        }
+        .comment-action:hover { background: rgba(26,26,26,0.06); color: #1A1A1A; }
+
+        /* Comment composer */
+        .comment-textarea {
+            width: 100%; padding: 0.75rem 1rem;
+            border-radius: 0.625rem;
+            border: 1.5px solid rgba(26,26,26,0.12);
+            background: rgba(250,243,232,0.5);
+            font-family: 'DM Sans', system-ui, sans-serif;
+            font-size: 0.875rem; color: #1A1A1A;
+            resize: vertical; min-height: 80px;
+            transition: border-color 0.15s;
+        }
+        .comment-textarea:focus { outline: none; border-color: #FF5900; background: #FAF3E8; box-shadow: 0 0 0 3px rgba(255,89,0,0.08); }
+        .comment-textarea::placeholder { color: #B8956A; }
+
+        /* Sidebar stat */
+        .sidebar-stat {
+            display: flex; align-items: center; gap: 0.75rem;
+            padding: 0.6rem 0;
+        }
+        .sidebar-stat-icon {
+            width: 36px; height: 36px; border-radius: 0.5rem;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem;
+        }
+
+        /* Contributor row */
+        .contributor-row {
+            display: flex; align-items: center; gap: 0.75rem;
+            padding: 0.5rem 0;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb a {
+            color: #6B5B4A; text-decoration: none; font-weight: 500;
+            transition: color 0.12s;
+        }
+        .breadcrumb a:hover { color: #FF5900; }
+
+        /* Sort tabs */
+        .sort-tab {
+            padding: 0.35rem 0.8rem;
+            border-radius: 0.625rem;
+            font-size: 0.75rem; font-weight: 600;
+            color: #6B5B4A; cursor: pointer;
+            transition: all 0.15s; background: transparent;
+            border: none;
+            font-family: 'DM Sans', system-ui, sans-serif;
+        }
+        .sort-tab:hover { background: rgba(26,26,26,0.06); color: #1A1A1A; }
+        .sort-tab.active { background: #1A1A1A; color: #FAF3E8; }
+
+        /* Use case item */
+        .use-case-item {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(26,26,26,0.06);
+        }
+        .use-case-item:last-child { border-bottom: none; }
+
+        /* Resource link */
+        .resource-link {
+            display: block; padding: 0.6rem 0;
+            border-bottom: 1px solid rgba(26,26,26,0.06);
+            text-decoration: none; transition: all 0.12s;
+        }
+        .resource-link:last-child { border-bottom: none; }
+        .resource-link:hover { padding-left: 0.25rem; }
+    </style>
+</head>
+
+<body class="font-sans text-ink min-h-screen antialiased">
+
+    <!-- SVG Filters -->
+    <svg width="0" height="0" style="position:absolute">
+        <filter id="papercut">
+            <feTurbulence type="turbulence" baseFrequency="0.04" numOctaves="4" result="n"/>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <filter id="papercut-2">
+            <feTurbulence type="turbulence" baseFrequency="0.035" numOctaves="4" seed="3" result="n"/>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <filter id="papercut-3">
+            <feTurbulence type="turbulence" baseFrequency="0.045" numOctaves="4" seed="7" result="n"/>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="3.5" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+    </svg>
+
+    <div id="app">
+
+        <!-- Fixed wonky logo -->
+        <a href="../" class="wonky-logo">
+            <img src="../hardware-devroom/images/absurd-logo-for-any-background.png" alt="Absurd Industries" class="h-9 sm:h-10 drop-shadow-sm">
+        </a>
+
+        <!-- Main content -->
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-20 pb-6 md:pt-24 md:pb-10">
+
+            <!-- Breadcrumb -->
+            <div class="breadcrumb text-sm mb-6 flex items-center gap-2">
+                <a href="./">Requests</a>
+                <i class="ph-bold ph-caret-right text-xs text-stencil"></i>
+                <span class="text-ink font-medium">Open Source Desktop CNC Machine</span>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-6">
+
+                <!-- ===== Main Column ===== -->
+                <div class="flex-1 min-w-0">
+
+                    <!-- Header card -->
+                    <div class="card mb-5">
+                        <div class="card-bg"></div>
+                        <div class="card-content p-5 sm:p-7">
+                            <!-- Title -->
+                            <h1 class="font-serif text-2xl sm:text-3xl md:text-4xl font-black tracking-tight leading-tight mb-3">Open Source Desktop CNC Machine</h1>
+
+                            <!-- Tags -->
+                            <div class="flex flex-wrap items-center gap-2 mb-4">
+                                <span class="tag tag-stamp">High Demand</span>
+                                <span class="tag tag-default">Tools & Equipment</span>
+                            </div>
+
+                            <!-- Meta -->
+                            <p class="text-sm text-ink-faint mb-5">
+                                Submitted by <strong class="text-ink font-semibold">Ravi Menon</strong> · 3 months ago · Last edited 2 days ago
+                            </p>
+
+                            <!-- Action row -->
+                            <div class="flex flex-wrap items-center gap-3">
+                                <button
+                                    class="upvote-btn"
+                                    :class="{ voted: hasVoted }"
+                                    @click="toggleVote"
+                                >
+                                    <i class="ph-bold ph-arrow-fat-up"></i>
+                                    <span>{{ votes }}</span>
+                                    <span class="font-normal text-xs hidden sm:inline">I want this too</span>
+                                </button>
+                                <button class="btn btn-outline btn-sm">
+                                    <i class="ph-bold ph-share-network mr-1.5"></i>Share
+                                </button>
+                                <button
+                                    class="btn btn-sm"
+                                    :class="isFollowing ? 'btn-primary' : 'btn-outline'"
+                                    @click="isFollowing = !isFollowing"
+                                >
+                                    <i class="ph-bold mr-1.5" :class="isFollowing ? 'ph-bell-ringing' : 'ph-bell'"></i>
+                                    {{ isFollowing ? 'Following' : 'Follow' }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description card -->
+                    <div class="card card-v2 mb-5">
+                        <div class="card-bg"></div>
+                        <div class="card-content p-5 sm:p-7">
+                            <h2 class="font-serif font-bold text-lg mb-4">Description</h2>
+                            <div class="text-sm leading-relaxed text-ink-light space-y-4">
+                                <p>
+                                    There is a glaring gap in the market for a truly open-source desktop CNC machine that a hobbyist or small makerspace can afford, build, and maintain without depending on any single vendor. We need a compact router capable of <strong>PCB milling</strong> (isolation routing down to 0.1mm trace/space), <strong>wood engraving</strong>, and <strong>light aluminum work</strong> — all in a footprint that fits on a workbench.
+                                </p>
+                                <p>
+                                    Existing options fall short in critical ways. The <strong>Shapeoko</strong> is excellent hardware but closed-source and expensive. The <strong>MPCNC</strong> (Mostly Printed CNC) is admirably open but relies on 3D-printed structural parts that flex under load, limiting precision for PCB work. The <strong>PrintNC</strong> is a steel-frame beast — powerful but oversized and over-budget for most hobbyists. None of these ship with open electronics: you're always bolting on a proprietary controller board that can't be audited, modified, or locally manufactured.
+                                </p>
+                                <p>
+                                    What the community needs is a machine designed from the ground up to be <strong>fully open</strong>: mechanical CAD in FreeCAD, electronics in KiCad, firmware forked from Grbl-HAL, and a complete BOM sourced from globally available parts. The target is under &#8377;42,000 for a complete kit, buildable in a weekend, and precise enough to mill a double-sided PCB. Everything published under <strong>CERN-OHL-S</strong> so anyone can manufacture, modify, and sell improvements. No black boxes. No vendor lock-in. No planned obsolescence.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Specifications card -->
+                    <div class="card card-v3 mb-5">
+                        <div class="card-bg"></div>
+                        <div class="card-content p-5 sm:p-7">
+                            <div class="flex items-center justify-between mb-1">
+                                <h2 class="font-serif font-bold text-lg">Specifications</h2>
+                                <button class="btn btn-ghost btn-sm text-xs">
+                                    <i class="ph-bold ph-pencil-simple mr-1"></i>Suggest Edit
+                                </button>
+                            </div>
+                            <p class="text-xs text-ink-faint mb-4">
+                                <i class="ph-bold ph-users-three mr-1"></i>12 contributors have edited these specifications
+                            </p>
+
+                            <div>
+                                <div class="spec-row" v-for="spec in specifications" :key="spec.label">
+                                    <div class="spec-label">{{ spec.label }}</div>
+                                    <div class="spec-value">{{ spec.value }}</div>
+                                    <div class="spec-edit" title="Suggest an edit">
+                                        <i class="ph-bold ph-pencil-simple"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Use Cases card -->
+                    <div class="card mb-5">
+                        <div class="card-bg"></div>
+                        <div class="card-content p-5 sm:p-7">
+                            <div class="flex items-center justify-between mb-4">
+                                <h2 class="font-serif font-bold text-lg">Use Cases</h2>
+                                <button class="btn btn-ghost btn-sm text-xs">
+                                    <i class="ph-bold ph-plus mr-1"></i>Add a use case
+                                </button>
+                            </div>
+
+                            <div>
+                                <div class="use-case-item" v-for="uc in useCases" :key="uc.title">
+                                    <div class="flex items-start gap-3">
+                                        <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5" style="background: rgba(255,89,0,0.08);">
+                                            <i :class="uc.icon" class="text-stamp text-sm"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-sm font-semibold mb-0.5">{{ uc.title }}</h4>
+                                            <p class="text-xs text-ink-faint leading-relaxed">{{ uc.description }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Related Resources card -->
+                    <div class="card card-v2 mb-5">
+                        <div class="card-bg"></div>
+                        <div class="card-content p-5 sm:p-7">
+                            <h2 class="font-serif font-bold text-lg mb-4">Related Resources</h2>
+
+                            <div>
+                                <a v-for="r in resources" :key="r.name" :href="r.url" target="_blank" class="resource-link group">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-lg bg-ink/5 flex items-center justify-center flex-shrink-0">
+                                            <i class="ph-bold ph-arrow-square-out text-sm text-stencil group-hover:text-stamp transition-colors"></i>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <div class="text-sm font-semibold text-ink group-hover:text-stamp transition-colors">{{ r.name }}</div>
+                                            <div class="text-xs text-ink-faint">{{ r.note }}</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Discussion section -->
+                    <div class="card card-v3 mb-5">
+                        <div class="card-bg"></div>
+                        <div class="card-content p-5 sm:p-7">
+                            <div class="flex items-center justify-between mb-2">
+                                <h2 class="font-serif font-bold text-lg">
+                                    Discussion
+                                    <span class="text-sm font-sans font-normal text-ink-faint ml-1">(47 comments)</span>
+                                </h2>
+                            </div>
+
+                            <!-- Sort tabs -->
+                            <div class="flex items-center gap-1 mb-5">
+                                <button
+                                    v-for="s in sortOptions" :key="s.value"
+                                    class="sort-tab"
+                                    :class="{ active: commentSort === s.value }"
+                                    @click="commentSort = s.value"
+                                >{{ s.label }}</button>
+                            </div>
+
+                            <!-- Comment composer -->
+                            <div class="mb-6">
+                                <div class="flex gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-kraft-dark flex items-center justify-center text-xs font-bold text-paper flex-shrink-0 mt-0.5">
+                                        <i class="ph-bold ph-user text-xs"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <textarea class="comment-textarea" placeholder="Share your thoughts, specs, or resources..." v-model="newComment"></textarea>
+                                        <div class="flex items-center justify-end mt-2">
+                                            <button class="btn btn-stamp btn-sm" @click="postComment">Post Comment</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Comments list -->
+                            <div>
+                                <div v-for="comment in sortedComments" :key="comment.id" class="comment">
+                                    <div class="flex gap-3">
+                                        <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-paper flex-shrink-0"
+                                             :style="{ background: comment.color }">
+                                            {{ comment.initials }}
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex flex-wrap items-center gap-2 mb-1">
+                                                <span class="text-sm font-semibold">{{ comment.author }}</span>
+                                                <span v-if="comment.badge" class="tag text-[0.6rem] py-0" :class="comment.badgeClass">{{ comment.badge }}</span>
+                                                <span class="text-xs text-ink-faint">{{ comment.time }}</span>
+                                            </div>
+                                            <div class="text-sm leading-relaxed text-ink-light" v-html="comment.content"></div>
+                                            <div class="flex items-center gap-2 mt-2">
+                                                <span
+                                                    class="comment-vote"
+                                                    :class="{ voted: comment.liked }"
+                                                    @click="toggleCommentLike(comment)"
+                                                >
+                                                    <i class="ph-bold ph-heart"></i>
+                                                    {{ comment.likes }}
+                                                </span>
+                                                <span class="comment-action" @click="comment.showReply = !comment.showReply">
+                                                    <i class="ph-bold ph-chat-circle"></i>
+                                                    Reply
+                                                </span>
+                                            </div>
+
+                                            <!-- Reply composer -->
+                                            <div v-if="comment.showReply" class="mt-3 flex gap-2">
+                                                <textarea class="comment-textarea" style="min-height:60px;" placeholder="Write a reply..." v-model="comment.replyText"></textarea>
+                                                <button class="btn btn-stamp btn-sm flex-shrink-0 self-end" @click="postReply(comment)">Reply</button>
+                                            </div>
+
+                                            <!-- Nested replies -->
+                                            <div v-if="comment.replies && comment.replies.length" class="mt-3">
+                                                <div v-for="reply in comment.replies" :key="reply.id" class="comment-reply comment">
+                                                    <div class="flex gap-3">
+                                                        <div class="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold text-paper flex-shrink-0"
+                                                             :style="{ background: reply.color }">
+                                                            {{ reply.initials }}
+                                                        </div>
+                                                        <div class="flex-1 min-w-0">
+                                                            <div class="flex flex-wrap items-center gap-2 mb-1">
+                                                                <span class="text-sm font-semibold">{{ reply.author }}</span>
+                                                                <span v-if="reply.badge" class="tag text-[0.6rem] py-0" :class="reply.badgeClass">{{ reply.badge }}</span>
+                                                                <span class="text-xs text-ink-faint">{{ reply.time }}</span>
+                                                            </div>
+                                                            <div class="text-sm leading-relaxed text-ink-light" v-html="reply.content"></div>
+                                                            <div class="flex items-center gap-2 mt-1.5">
+                                                                <span
+                                                                    class="comment-vote"
+                                                                    :class="{ voted: reply.liked }"
+                                                                    @click="toggleCommentLike(reply)"
+                                                                >
+                                                                    <i class="ph-bold ph-heart"></i>
+                                                                    {{ reply.likes }}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-ghost btn-sm text-xs mt-4 w-full justify-center">
+                                Load more comments
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== Sidebar (desktop) ===== -->
+                <div class="w-full lg:w-80 flex-shrink-0">
+
+                    <!-- Quick Stats card -->
+                    <div class="card mb-5">
+                        <div class="card-bg"></div>
+                        <div class="card-content p-5">
+                            <h3 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Quick Stats</h3>
+                            <div class="sidebar-stat">
+                                <div class="sidebar-stat-icon bg-stamp/10 text-stamp">
+                                    <i class="ph-bold ph-arrow-fat-up"></i>
+                                </div>
+                                <div>
+                                    <div class="font-serif text-2xl font-black leading-none">{{ votes }}</div>
+                                    <div class="text-xs text-ink-faint mt-0.5">votes</div>
+                                </div>
+                            </div>
+                            <div class="sidebar-stat">
+                                <div class="sidebar-stat-icon bg-ink/5 text-ink">
+                                    <i class="ph-bold ph-users-three"></i>
+                                </div>
+                                <div>
+                                    <div class="font-serif text-2xl font-black leading-none">28</div>
+                                    <div class="text-xs text-ink-faint mt-0.5">contributors</div>
+                                </div>
+                            </div>
+                            <div class="sidebar-stat">
+                                <div class="sidebar-stat-icon bg-ink/5 text-ink">
+                                    <i class="ph-bold ph-chat-circle"></i>
+                                </div>
+                                <div>
+                                    <div class="font-serif text-2xl font-black leading-none">47</div>
+                                    <div class="text-xs text-ink-faint mt-0.5">comments</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bounty card -->
+                    <div class="card card-v2 mb-5">
+                        <div class="card-bg"></div>
+                        <div class="card-content p-5">
+                            <h3 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Bounty Pool</h3>
+                            <div class="flex items-baseline gap-2 mb-2">
+                                <span class="font-serif text-3xl font-black text-funded">&#8377;1,00,000</span>
+                            </div>
+                            <p class="text-xs text-ink-faint mb-4 leading-relaxed">
+                                <strong class="text-ink">4 backers</strong> have pooled funds for the first maker who delivers a working prototype matching community specs.
+                            </p>
+                            <button class="btn btn-stamp btn-sm w-full">
+                                <i class="ph-bold ph-coin mr-1.5"></i>Add to Bounty
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Claim this Build card (dark bg) -->
+                    <div class="card card-v3 mb-5">
+                        <div class="card-bg-dark"></div>
+                        <div class="card-content p-5 text-paper">
+                            <i class="ph-bold ph-wrench text-3xl text-stamp mb-3 block"></i>
+                            <h3 class="font-serif font-bold text-lg mb-1">Are you a maker?</h3>
+                            <p class="text-sm text-kraft mb-4 leading-relaxed">
+                                If you can build this, claim it and start a campaign. The community will back you.
+                            </p>
+                            <button class="btn btn-stamp w-full mb-3">
+                                <i class="ph-bold ph-hammer mr-2"></i>Claim as Maker
+                            </button>
+                            <div class="flex items-center gap-2 text-xs text-kraft-dark">
+                                <div class="flex -space-x-1.5">
+                                    <div class="w-5 h-5 rounded-full bg-stamp flex items-center justify-center text-[7px] font-bold text-paper border border-ink">VR</div>
+                                    <div class="w-5 h-5 rounded-full bg-funded flex items-center justify-center text-[7px] font-bold text-paper border border-ink">AK</div>
+                                </div>
+                                <span>2 makers already interested</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contributors card -->
+                    <div class="card mb-5">
+                        <div class="card-bg"></div>
+                        <div class="card-content p-5">
+                            <h3 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Top Contributors</h3>
+                            <div class="space-y-0.5">
+                                <div class="contributor-row" v-for="c in topContributors" :key="c.name">
+                                    <div class="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold text-paper flex-shrink-0"
+                                         :style="{ background: c.color }">
+                                        {{ c.initials }}
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="text-sm font-semibold leading-tight">{{ c.name }}</div>
+                                        <div class="text-xs text-ink-faint">{{ c.role }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Related Requests card -->
+                    <div class="card card-v2 mb-5">
+                        <div class="card-bg"></div>
+                        <div class="card-content p-5">
+                            <h3 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Related Requests</h3>
+                            <div class="space-y-3">
+                                <a href="#" class="block no-underline group">
+                                    <div class="text-sm font-semibold text-ink group-hover:text-stamp transition-colors leading-snug">Open Source Reflow Oven</div>
+                                    <div class="flex items-center gap-2 mt-1 text-xs text-ink-faint">
+                                        <span><i class="ph-bold ph-arrow-fat-up mr-0.5"></i>209</span>
+                                        <span>&middot;</span>
+                                        <span>44 comments</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="block no-underline group">
+                                    <div class="text-sm font-semibold text-ink group-hover:text-stamp transition-colors leading-snug">DIY Pick & Place Machine</div>
+                                    <div class="flex items-center gap-2 mt-1 text-xs text-ink-faint">
+                                        <span><i class="ph-bold ph-arrow-fat-up mr-0.5"></i>198</span>
+                                        <span>&middot;</span>
+                                        <span>38 comments</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="block no-underline group">
+                                    <div class="text-sm font-semibold text-ink group-hover:text-stamp transition-colors leading-snug">Laser Cutter Safety Enclosure</div>
+                                    <div class="flex items-center gap-2 mt-1 text-xs text-ink-faint">
+                                        <span><i class="ph-bold ph-arrow-fat-up mr-0.5"></i>156</span>
+                                        <span>&middot;</span>
+                                        <span>31 comments</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="block no-underline group">
+                                    <div class="text-sm font-semibold text-ink group-hover:text-stamp transition-colors leading-snug">Open Source Oscilloscope</div>
+                                    <div class="flex items-center gap-2 mt-1 text-xs text-ink-faint">
+                                        <span><i class="ph-bold ph-arrow-fat-up mr-0.5"></i>134</span>
+                                        <span>&middot;</span>
+                                        <span>27 comments</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="py-10" style="background: rgba(184,149,106,0.45);">
+            <div class="max-w-5xl mx-auto px-5 sm:px-6">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+                    <div>
+                        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Platform</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="../campaigns/" class="text-ink hover:underline font-medium">Campaigns</a></li>
+                            <li><a href="../makers/" class="text-ink hover:underline font-medium">Makers</a></li>
+                            <li><a href="./" class="text-ink hover:underline font-medium">Requests</a></li>
+                            <li><a href="../events/" class="text-ink hover:underline font-medium">Events</a></li>
+                            <li><a href="../inventory/" class="text-ink hover:underline font-medium">Inventory</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Community</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="https://discord.gg/DUSUtguG2H" target="_blank" class="text-ink hover:underline font-medium">Discord</a></li>
+                            <li><a href="https://www.instagram.com/absurd.industries" target="_blank" class="text-ink hover:underline font-medium">Instagram</a></li>
+                            <li><a href="https://www.youtube.com/@absurd.industries" target="_blank" class="text-ink hover:underline font-medium">YouTube</a></li>
+                            <li><a href="https://www.linkedin.com/company/absurd-industries" target="_blank" class="text-ink hover:underline font-medium">LinkedIn</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Resources</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="../hardware-devroom/" class="text-ink hover:underline font-medium">Hardware Devroom</a></li>
+                            <li><a href="../contact.htm" class="text-ink hover:underline font-medium">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Legal</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="../privacy-policy.htm" class="text-ink hover:underline font-medium">Privacy</a></li>
+                            <li><a href="../terms-and-conditions.htm" class="text-ink hover:underline font-medium">Terms</a></li>
+                            <li><a href="../policies.htm" class="text-ink hover:underline font-medium">Policies</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="border-t border-ink/10 pt-5 flex flex-col sm:flex-row justify-between items-center gap-2">
+                    <div class="flex items-center gap-2">
+                        <img src="../hardware-devroom/images/absurd-logo-for-any-background.png" alt="" class="h-5">
+                        <span class="text-xs font-semibold">Absurd Industries</span>
+                    </div>
+                    <p class="text-xs text-ink-faint">
+                        <span class="copyleft">&copy;</span> Copyleft 2023&ndash;2026. Made with curiosity in Bengaluru.
+                    </p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Bottom Bar (mobile) with More mega menu -->
+        <nav class="bottom-bar" style="position:relative;">
+            <div class="grid grid-cols-5">
+                <a href="../campaigns/"><i class="ph-bold ph-rocket-launch"></i><span>Campaigns</span></a>
+                <a href="../makers/"><i class="ph-bold ph-users-three"></i><span>Makers</span></a>
+                <a href="./" class="active"><i class="ph-bold ph-megaphone"></i><span>Requests</span></a>
+                <a href="../events/"><i class="ph-bold ph-calendar-dots"></i><span>Events</span></a>
+                <button @click="megaMenuOpen = !megaMenuOpen">
+                    <i :class="megaMenuOpen ? 'ph-bold ph-x' : 'ph-bold ph-dots-three'"></i>
+                    <span>More</span>
+                </button>
+            </div>
+
+            <transition name="slide">
+                <div v-if="megaMenuOpen" class="mega-menu" @click="megaMenuOpen = false">
+                    <a href="../inventory/">
+                        <i class="ph-bold ph-package"></i> Inventory
+                    </a>
+                    <a href="https://discord.gg/DUSUtguG2H" target="_blank">
+                        <i class="fa-brands fa-discord"></i> Discord
+                    </a>
+                    <a href="../hardware-devroom/">
+                        <i class="ph-bold ph-microchip"></i> Hardware Devroom
+                    </a>
+                    <a href="../contact.htm">
+                        <i class="ph-bold ph-envelope"></i> Contact
+                    </a>
+                </div>
+            </transition>
+        </nav>
+
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            data() {
+                return {
+                    megaMenuOpen: false,
+                    hasVoted: false,
+                    votes: 342,
+                    isFollowing: false,
+                    newComment: '',
+                    commentSort: 'newest',
+                    sortOptions: [
+                        { value: 'newest', label: 'Newest' },
+                        { value: 'oldest', label: 'Oldest' },
+                        { value: 'liked', label: 'Most Liked' },
+                    ],
+                    specifications: [
+                        { label: 'Work Area', value: '300 x 200 x 80mm' },
+                        { label: 'Spindle', value: '120W minimum, ER11 collet, 10k-30k RPM variable speed' },
+                        { label: 'Frame', value: 'Aluminum extrusion (2040 or 2060 V-slot)' },
+                        { label: 'Controller', value: 'Grbl-compatible, 32-bit preferred (ESP32 or STM32)' },
+                        { label: 'Connectivity', value: 'USB-C primary + optional WiFi via ESP32' },
+                        { label: 'Software', value: 'Works with FlatCAM, Candle, bCNC, CNCjs' },
+                        { label: 'Power', value: '24V DC, 150W minimum' },
+                        { label: 'Target Cost', value: 'Under ₹42,000 BOM for complete kit' },
+                        { label: 'License', value: 'CERN-OHL-S (hardware), GPL v3 (firmware)' },
+                        { label: 'PCB Milling', value: '0.1mm trace/space capable, isolation routing' },
+                    ],
+                    useCases: [
+                        {
+                            title: 'PCB Prototyping',
+                            description: 'Mill isolation traces, drill vias, and cut board outlines. Eliminate multi-week PCB fab turnaround for prototypes.',
+                            icon: 'ph-bold ph-circuit-board',
+                        },
+                        {
+                            title: 'Wood Engraving',
+                            description: 'Engrave signs, inlays, and decorative panels in softwood, MDF, and plywood with fine detail.',
+                            icon: 'ph-bold ph-tree',
+                        },
+                        {
+                            title: 'Acrylic Cutting',
+                            description: 'Cut and engrave acrylic panels for enclosures, light guides, and decorative pieces up to 6mm thick.',
+                            icon: 'ph-bold ph-diamond',
+                        },
+                        {
+                            title: 'Aluminum Milling',
+                            description: 'Light aluminum work including front panels, heatsinks, and small mechanical parts. Requires proper feeds and speeds.',
+                            icon: 'ph-bold ph-gear-six',
+                        },
+                        {
+                            title: 'Educational Workshops',
+                            description: 'Teach CNC fundamentals, G-code, CAM workflows, and digital fabrication in makerspaces and schools.',
+                            icon: 'ph-bold ph-graduation-cap',
+                        },
+                    ],
+                    resources: [
+                        { name: 'MPCNC (Mostly Printed CNC)', url: 'https://www.v1e.com/', note: 'Open-source, 3D-printed frame. Great community, but printed parts limit rigidity.' },
+                        { name: 'PrintNC', url: 'https://wiki.printnc.info/', note: 'Steel-frame open-source CNC. Very rigid but large footprint and higher cost.' },
+                        { name: 'Mekanika', url: 'https://mekanika.io/', note: 'European open-source CNC project with clean documentation and aluminum frame.' },
+                        { name: 'OpenBuilds', url: 'https://openbuilds.com/', note: 'V-slot extrusion ecosystem with open-source machine designs and parts store.' },
+                    ],
+                    topContributors: [
+                        { name: 'Ravi Menon', initials: 'RM', color: '#FF5900', role: 'Created this request' },
+                        { name: 'Priya Sharma', initials: 'PS', color: '#2A5F41', role: 'Edited specs' },
+                        { name: 'Ankit Kumar', initials: 'AK', color: '#6B5B4A', role: 'Added use case' },
+                        { name: 'Sarah Chen', initials: 'SC', color: '#B8956A', role: 'Top commenter' },
+                        { name: 'David Torres', initials: 'DT', color: '#1A1A1A', role: 'Edited specs' },
+                    ],
+                    comments: [
+                        {
+                            id: 1,
+                            author: 'Priya Sharma',
+                            initials: 'PS',
+                            color: '#2A5F41',
+                            badge: null,
+                            badgeClass: '',
+                            time: '2 months ago',
+                            content: 'I\'ve done a lot of research on spindle options for this price range. I\'d strongly recommend the <strong>Machifit 120W brushless spindle with ER11 collet</strong>. It\'s about ₹2,950 on AliExpress and has excellent runout specs for the price. Here\'s the <a href="#" style="color:#FF5900; text-decoration:underline;">datasheet I found</a>. The key advantage over the typical 775 motor is the ER11 collet system — you get proper tool holding instead of a wobbly chuck.',
+                            likes: 12,
+                            liked: false,
+                            showReply: false,
+                            replyText: '',
+                            timestamp: 1711929600000,
+                            replies: [
+                                {
+                                    id: 101,
+                                    author: 'David Torres',
+                                    initials: 'DT',
+                                    color: '#1A1A1A',
+                                    badge: null,
+                                    badgeClass: '',
+                                    time: '2 months ago',
+                                    content: 'Good find. One concern though: these brushless spindles can be pretty loud, especially at higher RPMs. Has anyone measured the noise level? In a shared makerspace that could be a dealbreaker without an enclosure.',
+                                    likes: 5,
+                                    liked: false,
+                                },
+                                {
+                                    id: 102,
+                                    author: 'Priya Sharma',
+                                    initials: 'PS',
+                                    color: '#2A5F41',
+                                    badge: null,
+                                    badgeClass: '',
+                                    time: '2 months ago',
+                                    content: 'Fair point. I measured mine at about 62dB at 20k RPM unloaded. Under load with aluminum it jumps to ~75dB. Definitely want that enclosure option in the spec. But compared to the 775 motor alternatives, this is actually quieter and WAY more precise.',
+                                    likes: 8,
+                                    liked: false,
+                                },
+                            ],
+                        },
+                        {
+                            id: 2,
+                            author: 'Ankit Kumar',
+                            initials: 'AK',
+                            color: '#6B5B4A',
+                            badge: null,
+                            badgeClass: '',
+                            time: '6 weeks ago',
+                            content: 'Regarding the controller board: why not go with an <strong>ESP32-S3 running Grbl-HAL</strong> instead of the classic Arduino + CNC shield? We get WiFi, Bluetooth, more GPIO for limit switches and probes, and Grbl-HAL is actively maintained by @terjeio. I\'ve started a preliminary KiCad schematic for a custom board — happy to share it if there\'s interest.',
+                            likes: 8,
+                            liked: false,
+                            showReply: false,
+                            replyText: '',
+                            timestamp: 1713139200000,
+                            replies: [],
+                        },
+                        {
+                            id: 3,
+                            author: 'Vikram Rao',
+                            initials: 'VR',
+                            color: '#FF5900',
+                            badge: 'Maker Interest',
+                            badgeClass: 'tag-stamp',
+                            time: '1 month ago',
+                            content: 'I\'m seriously interested in building this. I run a small CNC workshop in Hyderabad and have experience manufacturing aluminum-extrusion machines. I\'ve built 4 custom CNCs in the last 2 years for local clients. If the specs stabilize, I could produce a prototype within 6-8 weeks and document the entire process. My shop has the tooling for aluminum milling, and I can source all the parts locally except maybe the spindle. Would love to connect with whoever is leading the spec work.',
+                            likes: 24,
+                            liked: false,
+                            showReply: false,
+                            replyText: '',
+                            timestamp: 1714348800000,
+                            replies: [],
+                        },
+                        {
+                            id: 4,
+                            author: 'Lisa Wang',
+                            initials: 'LW',
+                            color: '#B8956A',
+                            badge: null,
+                            badgeClass: '',
+                            time: '3 weeks ago',
+                            content: 'Found a related project that might be useful as reference: the <strong>Mekanika CNC</strong> from Belgium. They\'ve open-sourced their mechanical design files and have a very clean aluminum extrusion frame. Their approach to cable management and limit switch placement is worth studying. Here\'s the <a href="https://mekanika.io" target="_blank" style="color:#FF5900; text-decoration:underline;">link to their docs</a>.',
+                            likes: 6,
+                            liked: false,
+                            showReply: false,
+                            replyText: '',
+                            timestamp: 1715558400000,
+                            replies: [],
+                        },
+                        {
+                            id: 5,
+                            author: 'Rashid Nair',
+                            initials: 'RN',
+                            color: '#CC4700',
+                            badge: null,
+                            badgeClass: '',
+                            time: '2 weeks ago',
+                            content: 'Can we talk about <strong>linear rails vs. V-wheels</strong>? I know V-wheels on V-slot extrusion are cheaper and simpler, but in my experience they wear out fast — especially if you\'re milling aluminum. After about 6 months of regular use, my V-wheels had visible flat spots and I was losing 0.1mm of repeatability. MGN12H linear rails are about ₹670-1,000 each and last basically forever if you keep them clean.',
+                            likes: 15,
+                            liked: false,
+                            showReply: false,
+                            replyText: '',
+                            timestamp: 1716768000000,
+                            replies: [
+                                {
+                                    id: 501,
+                                    author: 'Sarah Chen',
+                                    initials: 'SC',
+                                    color: '#B8956A',
+                                    badge: null,
+                                    badgeClass: '',
+                                    time: '2 weeks ago',
+                                    content: 'Completely agree. Linear rails are the right call. The cost difference is maybe ₹3,400-4,200 total for X+Y axes, but you get dramatically better precision and longevity. I\'ve been through 3 sets of V-wheels in 2 years on my Workbee.',
+                                    likes: 9,
+                                    liked: false,
+                                },
+                                {
+                                    id: 502,
+                                    author: 'Vikram Rao',
+                                    initials: 'VR',
+                                    color: '#FF5900',
+                                    badge: 'Maker Interest',
+                                    badgeClass: 'tag-stamp',
+                                    time: '1 week ago',
+                                    content: 'From a manufacturing perspective, linear rails also simplify assembly. With V-wheels you need to carefully adjust the eccentric nuts for preload, which confuses beginners. Linear rails you just bolt on and go. I\'d vote for MGN12H on X/Y and MGN12C on Z.',
+                                    likes: 11,
+                                    liked: false,
+                                },
+                                {
+                                    id: 503,
+                                    author: 'Ankit Kumar',
+                                    initials: 'AK',
+                                    color: '#6B5B4A',
+                                    badge: null,
+                                    badgeClass: '',
+                                    time: '1 week ago',
+                                    content: 'One more vote for linear rails. Also, if we\'re targeting 0.1mm trace/space for PCB milling, we NEED the precision. V-wheels simply can\'t deliver that consistently over time.',
+                                    likes: 7,
+                                    liked: false,
+                                },
+                            ],
+                        },
+                        {
+                            id: 6,
+                            author: 'Maya Johnson',
+                            initials: 'MJ',
+                            color: '#2A5F41',
+                            badge: null,
+                            badgeClass: '',
+                            time: '5 days ago',
+                            content: 'Has anyone thought about adding a <strong>tool length sensor</strong> to the base spec? It\'s literally ₹170 in parts — a spring-loaded contact plate wired to a probe input. But it makes tool changes SO much faster. Every time I change a bit on my current CNC I have to re-zero Z manually. With a probe pad built into the bed it\'s automatic.',
+                            likes: 10,
+                            liked: false,
+                            showReply: false,
+                            replyText: '',
+                            timestamp: 1718150400000,
+                            replies: [],
+                        },
+                    ],
+                };
+            },
+            computed: {
+                sortedComments() {
+                    let sorted = [...this.comments];
+                    if (this.commentSort === 'newest') {
+                        sorted.sort((a, b) => b.timestamp - a.timestamp);
+                    } else if (this.commentSort === 'oldest') {
+                        sorted.sort((a, b) => a.timestamp - b.timestamp);
+                    } else if (this.commentSort === 'liked') {
+                        sorted.sort((a, b) => b.likes - a.likes);
+                    }
+                    return sorted;
+                },
+            },
+            methods: {
+                toggleVote() {
+                    if (this.hasVoted) {
+                        this.votes--;
+                        this.hasVoted = false;
+                    } else {
+                        this.votes++;
+                        this.hasVoted = true;
+                    }
+                },
+                toggleCommentLike(item) {
+                    if (item.liked) {
+                        item.likes--;
+                        item.liked = false;
+                    } else {
+                        item.likes++;
+                        item.liked = true;
+                    }
+                },
+                postComment() {
+                    if (!this.newComment.trim()) return;
+                    this.comments.unshift({
+                        id: Date.now(),
+                        author: 'You',
+                        initials: 'Y',
+                        color: '#B8956A',
+                        badge: null,
+                        badgeClass: '',
+                        time: 'just now',
+                        content: this.newComment.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>'),
+                        likes: 1,
+                        liked: true,
+                        showReply: false,
+                        replyText: '',
+                        timestamp: Date.now(),
+                        replies: [],
+                    });
+                    this.newComment = '';
+                },
+                postReply(comment) {
+                    if (!comment.replyText.trim()) return;
+                    comment.replies.push({
+                        id: Date.now(),
+                        author: 'You',
+                        initials: 'Y',
+                        color: '#B8956A',
+                        badge: null,
+                        badgeClass: '',
+                        time: 'just now',
+                        content: comment.replyText.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>'),
+                        likes: 1,
+                        liked: true,
+                    });
+                    comment.replyText = '';
+                    comment.showReply = false;
+                },
+            },
+        }).mount('#app');
+    </script>
+</body>
+</html>

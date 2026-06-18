@@ -1,0 +1,223 @@
+---
+/**
+ * Maker ID card component.
+ * Styled as a physical ID badge — black jagged-edged top bar with octagon avatar,
+ * name in the bar, punch hole, barcode, perforation, and stats.
+ *
+ * Usage:
+ *   <MakerCard maker={maker} />
+ */
+
+import type { Maker } from "../types";
+import Tag from "./Tag.astro";
+
+interface Props {
+  maker: Maker;
+}
+
+const { maker } = Astro.props;
+
+/** Deterministic barcode heights from slug hash */
+function generateBarcode(slug: string): number[] {
+  const bars: number[] = [];
+  const count = 30;
+  let hash = 0;
+  for (const ch of slug) {
+    hash = ((hash << 5) - hash + ch.charCodeAt(0)) | 0;
+  }
+  for (let i = 0; i < count; i++) {
+    hash = ((hash * 1103515245 + 12345) >>> 0) & 0x7fffffff;
+    bars.push(8 + (hash % 16));
+  }
+  return bars;
+}
+
+/** Deterministic member ID from slug */
+function generateMemberId(slug: string): string {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let hash = 0;
+  for (const ch of slug) {
+    hash = ((hash << 5) - hash + ch.charCodeAt(0)) | 0;
+  }
+  let id = "";
+  for (let i = 0; i < 6; i++) {
+    hash = ((hash * 1103515245 + 12345) >>> 0) & 0x7fffffff;
+    id += chars[hash % chars.length];
+  }
+  return id;
+}
+
+const barcode = generateBarcode(maker.slug);
+const memberId = generateMemberId(maker.slug);
+
+const idNum = Math.abs(
+  Array.from(maker.slug).reduce((a, c) => ((a << 5) - a + c.charCodeAt(0)) | 0, 0)
+) % 10000;
+
+const initial = maker.name.charAt(0).toUpperCase();
+---
+
+<a
+  href={`/makers/${maker.slug}`}
+  class="card card-hover id-card no-underline text-ink block group"
+>
+  <div class="card-bg"></div>
+  <div class="card-content flex flex-col">
+
+    <!-- Black jagged top bar with avatar + name -->
+    <div class="id-card-header">
+      <div class="flex items-center gap-3 flex-1 min-w-0">
+        <!-- Octagon avatar -->
+        <div class="octagon-avatar-wrap">
+          {maker.avatar ? (
+            <img src={maker.avatar} alt={maker.name} class="octagon-avatar" />
+          ) : (
+            <div class="octagon-avatar-fallback" style={`background: ${maker.avatarColor};`}>
+              <span>{initial}</span>
+            </div>
+          )}
+        </div>
+        <div class="min-w-0">
+          <h3 class="text-white font-serif font-bold text-lg leading-tight truncate group-hover:text-stamp transition-colors">{maker.name}</h3>
+          <span class="text-white/40 text-[0.6rem] font-semibold uppercase tracking-widest">{maker.specialty}</span>
+        </div>
+      </div>
+      <!-- Punch hole -->
+      <div class="punch-hole"></div>
+    </div>
+
+    <!-- Title + Location -->
+    <div class="px-5 pt-4">
+      <p class="text-sm text-ink-light">{maker.title}</p>
+      <p class="text-xs text-ink-faint mt-1.5 flex items-center gap-1">
+        <i class="ph-bold ph-map-pin text-xs text-stamp"></i>
+        {maker.location}
+      </p>
+    </div>
+
+    <!-- Skills -->
+    <div class="px-5 pt-3 flex flex-wrap gap-1.5">
+      {maker.skills.map((skill) => (
+        <Tag class="text-[0.6rem]">{skill}</Tag>
+      ))}
+    </div>
+
+    <!-- Stats row -->
+    <div class="px-5 pt-4 flex items-center gap-5">
+      <div class="text-center">
+        <div class="text-lg font-bold font-serif leading-none">{maker.projects}</div>
+        <div class="text-[0.6rem] text-ink-faint uppercase tracking-wide mt-0.5">Projects</div>
+      </div>
+      <div class="w-px h-8 bg-ink/10"></div>
+      <div class="text-center">
+        <div class="text-lg font-bold font-serif leading-none">{maker.backers}</div>
+        <div class="text-[0.6rem] text-ink-faint uppercase tracking-wide mt-0.5">Backers</div>
+      </div>
+    </div>
+
+    <!-- Perforation + bottom section -->
+    <div class="mt-4 mx-4 perforation"></div>
+    <div class="px-5 pt-3 pb-4 flex items-end justify-between">
+      <div>
+        <div class="barcode">
+          {barcode.map((h) => (
+            <span style={`height: ${h}px`}></span>
+          ))}
+        </div>
+        <div class="text-[0.55rem] text-ink-faint/40 font-mono mt-1 tracking-widest">
+          AI-{String(idNum).padStart(4, "0")}-{memberId}
+        </div>
+      </div>
+      <span class="text-stamp font-semibold text-sm flex items-center gap-1 flex-shrink-0 group-hover:underline">
+        Profile
+        <i class="ph-bold ph-arrow-right text-xs"></i>
+      </span>
+    </div>
+  </div>
+</a>
+
+<style>
+  .id-card {
+    position: relative;
+  }
+
+  .id-card-header {
+    padding: 0.85rem 1.25rem;
+    border-radius: 0.875rem 0.875rem 0 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .id-card-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #1A1A1A;
+    border-radius: 0.875rem 0.875rem 0 0;
+    filter: url(#papercut);
+    z-index: 0;
+  }
+  .id-card-header > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .octagon-avatar-wrap {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+  }
+
+  .octagon-avatar {
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+  }
+
+  .octagon-avatar-fallback {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+    color: #FAF3E8;
+    font-weight: 700;
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+  }
+
+  .punch-hole {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid rgba(250, 243, 232, 0.15);
+    flex-shrink: 0;
+  }
+
+  .barcode {
+    display: flex;
+    align-items: flex-end;
+    gap: 1px;
+    height: 24px;
+    opacity: 0.2;
+  }
+  .barcode span {
+    display: block;
+    background: #1A1A1A;
+    width: 2px;
+  }
+  .barcode span:nth-child(3n) {
+    width: 3px;
+  }
+  .barcode span:nth-child(5n) {
+    width: 1px;
+  }
+
+  .perforation {
+    border-top: 2px dashed rgba(26, 26, 26, 0.1);
+  }
+</style>

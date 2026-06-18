@@ -1,0 +1,889 @@
+---
+/**
+ * Request detail page.
+ * Generated at build time from the requests data via getStaticPaths().
+ *
+ * Layout: breadcrumb, two-column body (main + sidebar).
+ * Main: header card, description card, specs card, use cases, discussion.
+ * Sidebar: quick stats, bounty, claim CTA, contributors, related requests.
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Card from "../../components/Card.astro";
+import Tag from "../../components/Tag.astro";
+import { requests } from "../../data/requests";
+import { makers } from "../../data/makers";
+import type { Request } from "../../types";
+
+export function getStaticPaths() {
+  return requests.map((req) => ({
+    params: { slug: req.slug },
+    props: { request: req },
+  }));
+}
+
+interface Props {
+  request: Request;
+}
+
+const { request } = Astro.props;
+
+// ────────────────────────────────────────────────────────────
+// Derived data (mock / enriched for static build)
+// In production these would come from the API.
+// ────────────────────────────────────────────────────────────
+
+/** Look up maker display names from slugs */
+const makerMap: Record<string, string> = {};
+for (const m of makers) {
+  makerMap[m.slug] = m.name;
+}
+
+const authorDisplayName = makerMap[request.authorSlug] ?? request.authorName;
+const claimedByName = request.claimedBy
+  ? makerMap[request.claimedBy] ?? request.claimedBy
+  : null;
+
+/** Status tag styling */
+function statusTagVariant(
+  status: string
+): "stamp" | "funded" | "default" | "muted" {
+  if (status === "open") return "stamp";
+  if (status === "fulfilled") return "funded";
+  if (status === "claimed" || status === "in-progress") return "default";
+  return "muted";
+}
+
+function statusLabel(status: string): string {
+  if (status === "open") return "Open";
+  if (status === "claimed") return "Claimed";
+  if (status === "in-progress") return "In Progress";
+  if (status === "fulfilled") return "Fulfilled";
+  return status;
+}
+
+/** Time ago helper */
+function timeAgo(dateStr: string): string {
+  const now = new Date();
+  const then = new Date(dateStr);
+  const diffMs = now.getTime() - then.getTime();
+  const diffDays = Math.floor(diffMs / 86400000);
+  if (diffDays < 1) return "today";
+  if (diffDays === 1) return "yesterday";
+  if (diffDays < 7) return `${diffDays} days ago`;
+  const diffWeeks = Math.floor(diffDays / 7);
+  if (diffWeeks < 5) return `${diffWeeks} week${diffWeeks > 1 ? "s" : ""} ago`;
+  const diffMonths = Math.floor(diffDays / 30);
+  if (diffMonths < 12)
+    return `${diffMonths} month${diffMonths > 1 ? "s" : ""} ago`;
+  return `${Math.floor(diffDays / 365)} year${Math.floor(diffDays / 365) > 1 ? "s" : ""} ago`;
+}
+
+const createdTimeAgo = timeAgo(request.createdAt);
+
+// ────────────────────────────────────────────────────────────
+// Mock specifications (per-request enrichment for the CNC)
+// ────────────────────────────────────────────────────────────
+
+interface Spec {
+  label: string;
+  value: string;
+}
+
+const specsBySlug: Record<string, Spec[]> = {
+  "open-source-desktop-cnc-machine": [
+    { label: "Work Area", value: "300 x 200 x 80mm" },
+    {
+      label: "Spindle",
+      value: "120W minimum, ER11 collet, 10k-30k RPM variable speed",
+    },
+    { label: "Frame", value: "Aluminum extrusion (2040 or 2060 V-slot)" },
+    {
+      label: "Controller",
+      value: "Grbl-compatible, 32-bit preferred (ESP32 or STM32)",
+    },
+    { label: "Connectivity", value: "USB-C primary + optional WiFi via ESP32" },
+    { label: "Software", value: "Works with FlatCAM, Candle, bCNC, CNCjs" },
+    { label: "Power", value: "24V DC, 150W minimum" },
+    {
+      label: "Target Cost",
+      value: "Under ₹42,000 BOM for complete kit",
+    },
+    { label: "License", value: "CERN-OHL-S (hardware), GPL v3 (firmware)" },
+    {
+      label: "PCB Milling",
+      value: "0.1mm trace/space capable, isolation routing",
+    },
+  ],
+  "community-water-purifier-open-firmware": [
+    { label: "Power Source", value: "Solar panel (10W), battery backup" },
+    { label: "Controller", value: "ESP32 with open firmware" },
+    {
+      label: "Sensors",
+      value: "TDS, pH, turbidity, flow rate - all I2C/UART",
+    },
+    { label: "Filters", value: "3-stage modular: sediment, carbon, UV" },
+    { label: "Enclosure", value: "IP65, field-repairable with hand tools" },
+    { label: "Target Cost", value: "Under ₹16,500 per unit" },
+    { label: "License", value: "CERN-OHL-S (hardware), MIT (firmware)" },
+  ],
+  "affordable-risc-v-dev-board": [
+    { label: "CPU", value: "RISC-V RV64GC, 1GHz+" },
+    { label: "Memory", value: "512MB DDR4 minimum" },
+    { label: "GPIO", value: "40-pin Raspberry Pi-compatible header" },
+    { label: "Connectivity", value: "USB-C (power + data), optional WiFi" },
+    { label: "Debug", value: "Onboard JTAG debugger via USB-C" },
+    { label: "OS Support", value: "Linux (Debian/Fedora RISC-V)" },
+    { label: "Target Cost", value: "Under ₹2,100" },
+    { label: "License", value: "CERN-OHL-P (hardware), GPL v2 (BSP)" },
+  ],
+};
+
+const specifications = specsBySlug[request.slug] ?? [
+  { label: "Category", value: request.category },
+  { label: "Status", value: statusLabel(request.status) },
+  {
+    label: "Tags",
+    value: request.tags.join(", "),
+  },
+  {
+    label: "License",
+    value: "To be determined by the community",
+  },
+];
+
+// ────────────────────────────────────────────────────────────
+// Mock use cases
+// ────────────────────────────────────────────────────────────
+
+interface UseCase {
+  title: string;
+  description: string;
+  icon: string;
+}
+
+const useCasesBySlug: Record<string, UseCase[]> = {
+  "open-source-desktop-cnc-machine": [
+    {
+      title: "PCB Prototyping",
+      description:
+        "Mill isolation traces, drill vias, and cut board outlines. Eliminate multi-week PCB fab turnaround for prototypes.",
+      icon: "ph-bold ph-circuit-board",
+    },
+    {
+      title: "Wood Engraving",
+      description:
+        "Engrave signs, inlays, and decorative panels in softwood, MDF, and plywood with fine detail.",
+      icon: "ph-bold ph-tree",
+    },
+    {
+      title: "Acrylic Cutting",
+      description:
+        "Cut and engrave acrylic panels for enclosures, light guides, and decorative pieces up to 6mm thick.",
+      icon: "ph-bold ph-diamond",
+    },
+    {
+      title: "Educational Workshops",
+      description:
+        "Teach CNC fundamentals, G-code, CAM workflows, and digital fabrication in makerspaces and schools.",
+      icon: "ph-bold ph-graduation-cap",
+    },
+  ],
+};
+
+const useCases = useCasesBySlug[request.slug] ?? [];
+
+// ────────────────────────────────────────────────────────────
+// Mock discussion comments
+// ────────────────────────────────────────────────────────────
+
+interface Comment {
+  author: string;
+  initials: string;
+  color: string;
+  time: string;
+  content: string;
+  likes: number;
+  replies: { author: string; initials: string; color: string; time: string; content: string; likes: number }[];
+}
+
+const commentsBySlug: Record<string, Comment[]> = {
+  "open-source-desktop-cnc-machine": [
+    {
+      author: "Priya Sharma",
+      initials: "PS",
+      color: "#2A5F41",
+      time: "2 months ago",
+      content:
+        "I've done a lot of research on spindle options for this price range. I'd strongly recommend the <strong>Machifit 120W brushless spindle with ER11 collet</strong>. It's about ₹2,950 on AliExpress and has excellent runout specs for the price.",
+      likes: 12,
+      replies: [
+        {
+          author: "David Torres",
+          initials: "DT",
+          color: "#1A1A1A",
+          time: "2 months ago",
+          content:
+            "Good find. One concern though: these brushless spindles can be pretty loud at higher RPMs. Has anyone measured the noise level?",
+          likes: 5,
+        },
+      ],
+    },
+    {
+      author: "Ankit Kumar",
+      initials: "AK",
+      color: "#6B5B4A",
+      time: "6 weeks ago",
+      content:
+        "Regarding the controller board: why not go with an <strong>ESP32-S3 running Grbl-HAL</strong> instead of the classic Arduino + CNC shield? We get WiFi, Bluetooth, more GPIO, and Grbl-HAL is actively maintained.",
+      likes: 8,
+      replies: [],
+    },
+    {
+      author: "Vikram Rao",
+      initials: "VR",
+      color: "#FF5900",
+      time: "1 month ago",
+      content:
+        "I'm seriously interested in building this. I run a small CNC workshop in Hyderabad and have experience manufacturing aluminum-extrusion machines. If the specs stabilize, I could produce a prototype within 6-8 weeks.",
+      likes: 24,
+      replies: [],
+    },
+  ],
+};
+
+const comments =
+  commentsBySlug[request.slug] ?? [
+    {
+      author: request.authorName,
+      initials: request.authorName
+        .split(" ")
+        .map((w: string) => w[0])
+        .join("")
+        .slice(0, 2),
+      color: "#6B5B4A",
+      time: createdTimeAgo,
+      content: `I submitted this request because I believe the community needs this. Let's discuss the specifications and find a maker to build it!`,
+      likes: 3,
+      replies: [],
+    },
+  ];
+
+// ────────────────────────────────────────────────────────────
+// Mock top contributors
+// ────────────────────────────────────────────────────────────
+
+const topContributors = [
+  {
+    name: request.authorName,
+    initials: request.authorName
+      .split(" ")
+      .map((w: string) => w[0])
+      .join("")
+      .slice(0, 2),
+    color: "#FF5900",
+    role: "Created this request",
+  },
+  {
+    name: "Priya Sharma",
+    initials: "PS",
+    color: "#2A5F41",
+    role: "Edited specs",
+  },
+  {
+    name: "Ankit Kumar",
+    initials: "AK",
+    color: "#6B5B4A",
+    role: "Top commenter",
+  },
+];
+
+// ────────────────────────────────────────────────────────────
+// Related requests (other requests in the same category)
+// ────────────────────────────────────────────────────────────
+
+const relatedRequests = requests
+  .filter(
+    (r) => r.slug !== request.slug && r.category === request.category
+  )
+  .slice(0, 4);
+
+---
+
+<BaseLayout
+  title={`${request.title} - Requests`}
+  description={`${request.upvotes} people want this built. ${request.description}`}
+  activeTab="requests"
+>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-8 pb-6 md:pt-12 md:pb-10">
+    <div class="flex items-center justify-between mb-6">
+      <a href="/requests" class="back-btn inline-flex">
+        <i class="ph-bold ph-arrow-left"></i>
+        Requests
+      </a>
+      <button class="share-float-btn" title="Share">
+        <i class="ph-bold ph-share-network"></i>
+      </button>
+    </div>
+
+    <div class="flex flex-col lg:flex-row gap-6">
+      <!-- ===== Main Column ===== -->
+      <div class="flex-1 min-w-0">
+        <!-- Header card -->
+        <Card class="mb-5">
+          <div class="p-5 sm:p-7">
+            <h1
+              class="font-serif text-2xl sm:text-3xl md:text-4xl font-black tracking-tight leading-tight mb-3"
+            >
+              {request.title}
+            </h1>
+
+            <!-- Tags -->
+            <div class="flex flex-wrap items-center gap-2 mb-4">
+              <Tag variant={statusTagVariant(request.status)}>
+                {statusLabel(request.status)}
+              </Tag>
+              <Tag>{request.category}</Tag>
+            </div>
+
+            <!-- Meta -->
+            <p class="text-sm text-ink-faint mb-5">
+              Submitted by <a
+                href={`/makers/${request.authorSlug}`}
+                class="text-ink font-semibold no-underline hover:text-stamp transition-colors"
+              >
+                {authorDisplayName}
+              </a> &middot; {createdTimeAgo}
+            </p>
+
+            <!-- Action row -->
+            <div class="flex flex-wrap items-center gap-3">
+              <button class="upvote-btn">
+                <i class="ph-bold ph-arrow-fat-up"></i>
+                <span>{request.upvotes}</span>
+                <span class="font-normal text-xs hidden sm:inline"
+                  >I want this too</span
+                >
+              </button>
+              <button class="btn btn-outline btn-sm">
+                <i class="ph-bold ph-share-network mr-1.5"></i>Share
+              </button>
+              <button class="btn btn-outline btn-sm">
+                <i class="ph-bold ph-bell mr-1.5"></i>Follow
+              </button>
+            </div>
+          </div>
+        </Card>
+
+        <!-- Description card -->
+        <Card class="mb-5">
+          <div class="p-5 sm:p-7">
+            <h2 class="font-serif font-bold text-lg mb-4">Description</h2>
+            <div class="text-sm leading-relaxed text-ink-light space-y-4">
+              <p>{request.description}</p>
+            </div>
+          </div>
+        </Card>
+
+        <!-- Specifications card -->
+        <Card class="mb-5">
+          <div class="p-5 sm:p-7">
+            <div class="flex items-center justify-between mb-1">
+              <h2 class="font-serif font-bold text-lg">Specifications</h2>
+              <a href="https://discord.gg/DUSUtguG2H" target="_blank" rel="noopener" class="btn btn-ghost btn-sm text-xs" style="text-decoration:none;">
+                <i class="ph-bold ph-pencil-simple mr-1"></i>Suggest Edit
+              </a>
+            </div>
+            <p class="text-xs text-ink-faint mb-4">
+              <i class="ph-bold ph-users-three mr-1"></i>Community-edited
+              specifications
+            </p>
+
+            <div>
+              {
+                specifications.map((spec) => (
+                  <div class="spec-row">
+                    <div class="spec-label">{spec.label}</div>
+                    <div class="spec-value">{spec.value}</div>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+        </Card>
+
+        <!-- Use Cases card (only if we have them) -->
+        {
+          useCases.length > 0 && (
+            <Card class="mb-5">
+              <div class="p-5 sm:p-7">
+                <h2 class="font-serif font-bold text-lg mb-4">Use Cases</h2>
+                <div>
+                  {useCases.map((uc) => (
+                    <div class="use-case-item">
+                      <div class="flex items-start gap-3">
+                        <div
+                          class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+                          style="background: rgba(255,89,0,0.08);"
+                        >
+                          <i class={`${uc.icon} text-stamp text-sm`} />
+                        </div>
+                        <div>
+                          <h4 class="text-sm font-semibold mb-0.5">
+                            {uc.title}
+                          </h4>
+                          <p class="text-xs text-ink-faint leading-relaxed">
+                            {uc.description}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Card>
+          )
+        }
+
+        <!-- Discussion card -->
+        <Card class="mb-5">
+          <div class="p-5 sm:p-7">
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="font-serif font-bold text-lg">
+                Discussion
+                <span class="text-sm font-sans font-normal text-ink-faint ml-1">
+                  ({request.commentCount} comments)
+                </span>
+              </h2>
+            </div>
+
+            <!-- Comment composer placeholder -->
+            <div class="mb-6">
+              <div class="flex gap-3">
+                <div
+                  class="w-8 h-8 flex items-center justify-center text-xs font-bold text-paper flex-shrink-0 mt-0.5 oct-sm" style="background: #6B5B4A;"
+                >
+                  <i class="ph-bold ph-user text-xs"></i>
+                </div>
+                <div class="flex-1">
+                  <textarea
+                    rows="3"
+                    placeholder="Comments coming soon. Join Discord to discuss this request."
+                    class="comment-textarea"
+                    disabled
+                    style="opacity: 0.5; cursor: not-allowed;"
+                  ></textarea>
+                  <div class="flex items-center justify-end mt-2">
+                    <span
+                      class="btn btn-stamp btn-sm"
+                      style="opacity: 0.4; cursor: not-allowed; transform: none;"
+                    >
+                      Post Comment
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Comments list -->
+            <div>
+              {
+                comments.map((comment) => (
+                  <div class="comment-entry">
+                    <div class="flex gap-3">
+                      <div
+                        class="w-8 h-8 flex items-center justify-center text-xs font-bold text-paper flex-shrink-0 oct-sm"
+                        style={`background: ${comment.color}`}
+                      >
+                        {comment.initials}
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <div class="flex flex-wrap items-center gap-2 mb-1">
+                          <span class="text-sm font-semibold">
+                            {comment.author}
+                          </span>
+                          <span class="text-xs text-ink-faint">
+                            {comment.time}
+                          </span>
+                        </div>
+                        <div
+                          class="text-sm leading-relaxed text-ink-light"
+                          set:html={comment.content}
+                        />
+                        <div class="flex items-center gap-2 mt-2">
+                          <span class="comment-vote" style="cursor: default; opacity: 0.5;" title="Coming soon">
+                            <i class="ph-bold ph-heart" />
+                            {comment.likes}
+                          </span>
+                          <span class="comment-action" style="cursor: default; opacity: 0.5;" title="Coming soon">
+                            <i class="ph-bold ph-chat-circle" />
+                            Reply
+                          </span>
+                        </div>
+
+                        {/* Nested replies */}
+                        {comment.replies && comment.replies.length > 0 && (
+                          <div class="mt-3">
+                            {comment.replies.map((reply) => (
+                              <div class="comment-reply comment-entry">
+                                <div class="flex gap-3">
+                                  <div
+                                    class="w-7 h-7 flex items-center justify-center text-[10px] font-bold text-paper flex-shrink-0 oct-sm"
+                                    style={`background: ${reply.color}`}
+                                  >
+                                    {reply.initials}
+                                  </div>
+                                  <div class="flex-1 min-w-0">
+                                    <div class="flex flex-wrap items-center gap-2 mb-1">
+                                      <span class="text-sm font-semibold">
+                                        {reply.author}
+                                      </span>
+                                      <span class="text-xs text-ink-faint">
+                                        {reply.time}
+                                      </span>
+                                    </div>
+                                    <div
+                                      class="text-sm leading-relaxed text-ink-light"
+                                      set:html={reply.content}
+                                    />
+                                    <div class="flex items-center gap-2 mt-1.5">
+                                      <span class="comment-vote" style="cursor: default; opacity: 0.5;" title="Coming soon">
+                                        <i class="ph-bold ph-heart" />
+                                        {reply.likes}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+        </Card>
+      </div>
+
+      <!-- ===== Sidebar ===== -->
+      <div class="w-full lg:w-80 flex-shrink-0">
+        <!-- Quick Stats -->
+        <Card class="mb-5">
+          <div class="p-5">
+            <h3
+              class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3"
+            >
+              Quick Stats
+            </h3>
+            <div class="sidebar-stat">
+              <div class="sidebar-stat-icon bg-stamp/10 text-stamp">
+                <i class="ph-bold ph-arrow-fat-up"></i>
+              </div>
+              <div>
+                <div class="font-serif text-2xl font-black leading-none">
+                  {request.upvotes}
+                </div>
+                <div class="text-xs text-ink-faint mt-0.5">votes</div>
+              </div>
+            </div>
+            <div class="sidebar-stat">
+              <div class="sidebar-stat-icon bg-ink/5 text-ink">
+                <i class="ph-bold ph-chat-circle"></i>
+              </div>
+              <div>
+                <div class="font-serif text-2xl font-black leading-none">
+                  {request.commentCount}
+                </div>
+                <div class="text-xs text-ink-faint mt-0.5">comments</div>
+              </div>
+            </div>
+            <div class="sidebar-stat">
+              <div class="sidebar-stat-icon bg-ink/5 text-ink">
+                <i class="ph-bold ph-calendar-blank"></i>
+              </div>
+              <div>
+                <div class="text-sm font-semibold leading-none">
+                  {new Date(request.createdAt).toLocaleDateString("en-IN", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </div>
+                <div class="text-xs text-ink-faint mt-0.5">submitted</div>
+              </div>
+            </div>
+          </div>
+        </Card>
+
+        <!-- Status / Claimed-by info -->
+        {
+          request.claimedBy ? (
+            <Card class="mb-5">
+              <div class="p-5">
+                <h3 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">
+                  Status
+                </h3>
+                <div class="flex items-center gap-2 mb-3">
+                  <i
+                    class="ph-bold ph-check-circle text-lg"
+                    style="color: #2A5F41"
+                  />
+                  <span class="font-semibold text-sm" style="color: #2A5F41">
+                    {statusLabel(request.status)}
+                  </span>
+                </div>
+                <p class="text-sm text-ink-light mb-3">
+                  Claimed by{" "}
+                  <a
+                    href={`/makers/${request.claimedBy}`}
+                    class="font-semibold text-ink no-underline hover:text-stamp transition-colors"
+                  >
+                    {claimedByName}
+                  </a>
+                </p>
+                {request.campaignSlug && (
+                  <a
+                    href={`/campaigns/${request.campaignSlug}`}
+                    class="btn btn-sm w-full justify-center no-underline"
+                    style="background: #2A5F41; color: #FAF3E8;"
+                  >
+                    <i class="ph-bold ph-rocket-launch mr-1.5" />
+                    View Campaign
+                  </a>
+                )}
+              </div>
+            </Card>
+          ) : (
+            <Card variant="dark" class="mb-5">
+              <div class="p-5 text-paper">
+                <i class="ph-bold ph-wrench text-3xl text-stamp mb-3 block" />
+                <h3 class="font-serif font-bold text-lg mb-1">
+                  Are you a maker?
+                </h3>
+                <p class="text-sm text-kraft mb-4 leading-relaxed">
+                  If you can build this, claim it and start a campaign. The
+                  community will back you.
+                </p>
+                <a href="https://discord.gg/DUSUtguG2H" target="_blank" rel="noopener" class="btn btn-stamp w-full mb-3" style="text-decoration:none;">
+                  <i class="ph-bold ph-hammer mr-2" />
+                  Claim as Maker
+                </a>
+              </div>
+            </Card>
+          )
+        }
+
+        <!-- Tags -->
+        <Card class="mb-5">
+          <div class="p-5">
+            <h3
+              class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3"
+            >
+              Tags
+            </h3>
+            <div class="flex flex-wrap gap-1.5">
+              {request.tags.map((t) => <Tag class="text-[0.62rem]">{t}</Tag>)}
+            </div>
+          </div>
+        </Card>
+
+        <!-- Top Contributors -->
+        <Card class="mb-5">
+          <div class="p-5">
+            <h3
+              class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3"
+            >
+              Top Contributors
+            </h3>
+            <div class="space-y-0.5">
+              {
+                topContributors.map((c) => (
+                  <div class="contributor-row">
+                    <div
+                      class="w-7 h-7 flex items-center justify-center text-[10px] font-bold text-paper flex-shrink-0 oct-sm"
+                      style={`background: ${c.color}`}
+                    >
+                      {c.initials}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <div class="text-sm font-semibold leading-tight">
+                        {c.name}
+                      </div>
+                      <div class="text-xs text-ink-faint">{c.role}</div>
+                    </div>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+        </Card>
+
+        <!-- Related Requests -->
+        {
+          relatedRequests.length > 0 && (
+            <Card class="mb-5">
+              <div class="p-5">
+                <h3 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">
+                  Related Requests
+                </h3>
+                <div class="space-y-3">
+                  {relatedRequests.map((r) => (
+                    <a
+                      href={`/requests/${r.slug}`}
+                      class="block no-underline group"
+                    >
+                      <div class="text-sm font-semibold text-ink group-hover:text-stamp transition-colors leading-snug">
+                        {r.title}
+                      </div>
+                      <div class="flex items-center gap-2 mt-1 text-xs text-ink-faint">
+                        <span>
+                          <i class="ph-bold ph-arrow-fat-up mr-0.5" />
+                          {r.upvotes}
+                        </span>
+                        <span>&middot;</span>
+                        <span>{r.commentCount} comments</span>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </Card>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  /* ── Upvote button (detail page — inline horizontal) ── */
+  .upvote-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1.1rem;
+    border-radius: 0.625rem;
+    border: 1.5px solid rgba(26, 26, 26, 0.2);
+    background: transparent;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: #1a1a1a;
+    font-family: "DM Sans", system-ui, sans-serif;
+  }
+  .upvote-btn:hover {
+    border-color: #ff5900;
+    color: #ff5900;
+    background: rgba(255, 89, 0, 0.04);
+  }
+  .upvote-btn i {
+    font-size: 1rem;
+  }
+
+  /* ── Spec table ── */
+  .spec-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.06);
+  }
+  .spec-row:last-child {
+    border-bottom: none;
+  }
+  .spec-label {
+    flex-shrink: 0;
+    width: 130px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6b5b4a;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding-top: 0.1rem;
+  }
+  .spec-value {
+    flex: 1;
+    font-size: 0.875rem;
+    color: #1a1a1a;
+    line-height: 1.5;
+  }
+
+  /* ── Use case item ── */
+  .use-case-item {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.06);
+  }
+  .use-case-item:last-child {
+    border-bottom: none;
+  }
+
+  /* ── Sidebar stats ── */
+  .sidebar-stat {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0;
+  }
+  .sidebar-stat-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+  }
+
+  /* ── Share button ── */
+  .share-float-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 0.5rem;
+    border: 1.5px solid rgba(26, 26, 26, 0.12);
+    background: transparent;
+    color: #4A3D2F;
+    cursor: pointer;
+    font-size: 1rem;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .share-float-btn:hover {
+    border-color: #D94800;
+    color: #D94800;
+  }
+
+  /* ── Contributor row ── */
+  .contributor-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+  }
+
+  .oct-sm {
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+  }
+</style>
+
+<script is:inline data-astro-rerun>
+document.querySelectorAll('.share-float-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    if (navigator.share) {
+      navigator.share({ title: document.title, url: window.location.href }).catch(function() {});
+    } else {
+      navigator.clipboard.writeText(window.location.href).then(function() {
+        var icon = btn.querySelector('i');
+        icon.className = 'ph-bold ph-check';
+        setTimeout(function() { icon.className = 'ph-bold ph-share-network'; }, 1500);
+      });
+    }
+  });
+});
+</script>

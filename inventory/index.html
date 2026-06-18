@@ -12,10 +12,13 @@
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/e0c6d65845.js" crossorigin="anonymous"></script>
 
-    <!-- Google Fonts - Jura -->
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+
+    <!-- Google Fonts - Fraunces + DM Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jura:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap" rel="stylesheet">
 
     <!-- Tailwind Config -->
     <script>
@@ -23,314 +26,997 @@
             darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: {
-                        jura: ['Jura', 'sans-serif'],
-                    },
                     colors: {
-                        'absurd-orange': '#ff4500',
+                        kraft: { DEFAULT: '#D4B896', light: '#E8D5B7', dark: '#B8956A' },
+                        ink: { DEFAULT: '#1A1A1A', light: '#3D3D3D', faint: '#6B5B4A' },
+                        stamp: { DEFAULT: '#FF5900', dark: '#CC4700' },
+                        paper: '#FAF3E8',
+                        stencil: '#6B5B4A',
+                        funded: '#2A5F41',
                     },
-                    animation: {
-                        'spin-slow': 'spin 33s linear infinite',
-                        'pulse-slow': 'pulse 3s ease-in-out infinite',
+                    fontFamily: {
+                        serif: ['"Fraunces"', 'Georgia', 'serif'],
+                        sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
                     },
                 },
             },
         };
     </script>
 
-    <!-- Custom Styles -->
-    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* ===================================================================
+           BASE STYLES
+           =================================================================== */
+        body {
+            background-color: #D4B896;
+            background-image: url('../hardware-devroom/images/kraft-paper.jpg');
+            background-repeat: repeat;
+            background-size: auto;
+        }
+
+        html.dark body {
+            background-color: #1A1A1A;
+            background-image: none;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        ::selection {
+            background-color: #FF5900;
+            color: #FAF3E8;
+        }
+
+        /* ===================================================================
+           WONKY LOGO
+           =================================================================== */
+        .wonky-logo {
+            position: fixed;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+            z-index: 40;
+            transition: transform 0.2s ease;
+        }
+        .wonky-logo:hover {
+            transform: translateX(-50%) rotate(0deg) scale(1.05);
+        }
+
+        /* ===================================================================
+           BUTTONS
+           =================================================================== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.7rem 1.6rem;
+            font-family: 'DM Sans', system-ui, sans-serif;
+            font-weight: 600;
+            font-size: 0.875rem;
+            letter-spacing: 0.01em;
+            border-radius: 0.625rem;
+            text-decoration: none;
+            transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+            cursor: pointer;
+            border: none;
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+        .btn-primary {
+            background: #1A1A1A;
+            color: #FAF3E8;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .btn-stamp {
+            background: #FF5900;
+            color: #FAF3E8;
+        }
+        .btn-stamp:hover {
+            box-shadow: 0 4px 12px rgba(255,89,0,0.25);
+        }
+        .btn-outline {
+            background: transparent;
+            color: #1A1A1A;
+            border: 1.5px solid #1A1A1A;
+        }
+        .btn-outline:hover {
+            background: #1A1A1A;
+            color: #FAF3E8;
+        }
+        .btn-ghost {
+            background: transparent;
+            color: #1A1A1A;
+            padding: 0.5rem 1rem;
+        }
+        .btn-ghost:hover {
+            background: rgba(26,26,26,0.06);
+            border-radius: 0.625rem;
+        }
+        .btn-sm {
+            padding: 0.5rem 1.15rem;
+            font-size: 0.8rem;
+        }
+
+        html.dark .btn-primary {
+            background: #FAF3E8;
+            color: #1A1A1A;
+        }
+        html.dark .btn-outline {
+            color: #FAF3E8;
+            border-color: #FAF3E8;
+        }
+        html.dark .btn-outline:hover {
+            background: #FAF3E8;
+            color: #1A1A1A;
+        }
+        html.dark .btn-ghost {
+            color: #FAF3E8;
+        }
+        html.dark .btn-ghost:hover {
+            background: rgba(250,243,232,0.08);
+        }
+
+        /* ===================================================================
+           TAGS / BADGES
+           =================================================================== */
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.2rem 0.65rem;
+            border-radius: 999px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .tag-default {
+            background: rgba(26,26,26,0.08);
+            color: #1A1A1A;
+        }
+        .tag-stamp {
+            background: rgba(255,89,0,0.12);
+            color: #FF5900;
+        }
+        .tag-funded {
+            background: rgba(42,95,65,0.12);
+            color: #2A5F41;
+        }
+        .tag-danger {
+            background: rgba(220,38,38,0.12);
+            color: #DC2626;
+        }
+        .tag-muted {
+            background: rgba(107,91,74,0.1);
+            color: #6B5B4A;
+        }
+
+        html.dark .tag-default {
+            background: rgba(250,243,232,0.1);
+            color: #FAF3E8;
+        }
+        html.dark .tag-funded {
+            background: rgba(42,95,65,0.2);
+            color: #4ADE80;
+        }
+        html.dark .tag-danger {
+            background: rgba(220,38,38,0.2);
+            color: #FCA5A5;
+        }
+        html.dark .tag-muted {
+            background: rgba(250,243,232,0.06);
+            color: #9CA3AF;
+        }
+
+        /* Status badge mapping for app.js getStatusClass */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.2rem 0.65rem;
+            border-radius: 999px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .badge-available {
+            background: rgba(42,95,65,0.12);
+            color: #2A5F41;
+        }
+        .badge-low-stock {
+            background: rgba(255,89,0,0.12);
+            color: #FF5900;
+        }
+        .badge-out-of-stock {
+            background: rgba(220,38,38,0.12);
+            color: #DC2626;
+        }
+        .badge-in-use {
+            background: rgba(107,91,74,0.1);
+            color: #6B5B4A;
+        }
+
+        html.dark .badge-available {
+            background: rgba(42,95,65,0.2);
+            color: #4ADE80;
+        }
+        html.dark .badge-low-stock {
+            background: rgba(255,89,0,0.2);
+            color: #FF5900;
+        }
+        html.dark .badge-out-of-stock {
+            background: rgba(220,38,38,0.2);
+            color: #FCA5A5;
+        }
+        html.dark .badge-in-use {
+            background: rgba(250,243,232,0.08);
+            color: #9CA3AF;
+        }
+
+        /* ===================================================================
+           CARD SYSTEM (Paper-cut SVG filter)
+           =================================================================== */
+        .card {
+            position: relative;
+        }
+        .card-bg {
+            position: absolute;
+            inset: 0;
+            background: #FAF3E8;
+            border-radius: 0.875rem;
+            filter: url(#papercut);
+            z-index: 0;
+        }
+        .card-bg-dark {
+            position: absolute;
+            inset: 0;
+            background: #2A2A2A;
+            border-radius: 0.875rem;
+            filter: url(#papercut);
+            z-index: 0;
+        }
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Alternate filter seeds via card-grid */
+        .card-grid > .card:nth-child(3n+2) > .card-bg,
+        .card-grid > .card:nth-child(3n+2) > .card-bg-dark { filter: url(#papercut-2); }
+        .card-grid > .card:nth-child(3n+3) > .card-bg,
+        .card-grid > .card:nth-child(3n+3) > .card-bg-dark { filter: url(#papercut-3); }
+
+        .card-hover {
+            transition: transform 0.2s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-3px);
+        }
+
+        html.dark .card-bg {
+            background: #2A2A2A;
+        }
+
+        /* ===================================================================
+           FORM CONTROLS
+           =================================================================== */
+        .input-base {
+            background-color: #FAF3E8;
+            border: 1.5px solid rgba(26,26,26,0.15);
+            color: #1A1A1A;
+            padding: 0.65rem 1rem;
+            border-radius: 0.625rem;
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+            font-family: 'DM Sans', system-ui, sans-serif;
+            font-size: 0.875rem;
+        }
+        .input-base:focus {
+            border-color: #FF5900;
+            box-shadow: 0 0 0 3px rgba(255,89,0,0.1);
+        }
+        .input-base::placeholder {
+            color: #6B5B4A;
+            opacity: 0.6;
+        }
+
+        html.dark .input-base {
+            background-color: #2A2A2A;
+            border-color: rgba(250,243,232,0.15);
+            color: #FAF3E8;
+        }
+        html.dark .input-base::placeholder {
+            color: #9CA3AF;
+        }
+
+        input[type="search"]::-webkit-search-cancel-button {
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        /* ===================================================================
+           INVENTORY CARDS - overrides for the Vue card bindings
+           =================================================================== */
+        .inventory-card {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .inventory-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .inventory-card.card-pinned .card-bg {
+            box-shadow: 0 0 0 2px #FF5900;
+        }
+        .inventory-card.card-pinned::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #FF5900;
+            border-radius: 0.875rem 0.875rem 0 0;
+            z-index: 2;
+        }
+
+        .inventory-card.card-panic {
+            animation: pulse-soft 1s ease-in-out infinite;
+        }
+        .inventory-card.card-panic .card-bg {
+            box-shadow: 0 0 20px rgba(255,89,0,0.3);
+        }
+
+        .inventory-card.card-out-of-stock {
+            opacity: 0.5;
+        }
+        .inventory-card.card-out-of-stock:hover {
+            opacity: 0.7;
+        }
+
+        .inventory-card:active {
+            transform: scale(0.98);
+        }
+
+        /* ===================================================================
+           BOTTOM BAR (MOBILE)
+           =================================================================== */
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #1A1A1A;
+            z-index: 50;
+            box-shadow: 0 -2px 12px rgba(0,0,0,0.15);
+        }
+        .bottom-bar a,
+        .bottom-bar button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 0;
+            color: rgba(250,243,232,0.55);
+            text-decoration: none;
+            background: none;
+            border: none;
+            font-family: 'DM Sans', system-ui, sans-serif;
+            font-size: 0.6rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            transition: color 0.15s;
+            cursor: pointer;
+        }
+        .bottom-bar a:hover,
+        .bottom-bar a:active,
+        .bottom-bar button:hover {
+            color: #FF5900;
+        }
+        .bottom-bar a.active-tab {
+            color: #FF5900;
+        }
+        .bottom-bar i,
+        .bottom-bar .ph-bold {
+            font-size: 1.25rem;
+            margin-bottom: 3px;
+        }
+
+        .mega-menu {
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            left: 0;
+            background: #FAF3E8;
+            border-radius: 0.875rem 0.875rem 0 0;
+            box-shadow: 0 -4px 24px rgba(0,0,0,0.12);
+            padding: 1.25rem 1.5rem;
+        }
+        .mega-menu a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #1A1A1A;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid rgba(26,26,26,0.06);
+            flex-direction: row;
+        }
+        .mega-menu a:last-child {
+            border-bottom: none;
+        }
+        .mega-menu a i {
+            font-size: 1.1rem;
+            color: #6B5B4A;
+        }
+        .mega-menu a:hover {
+            color: #FF5900;
+        }
+        .mega-menu a:hover i {
+            color: #FF5900;
+        }
+
+        /* Slide transition for mega menu */
+        .slide-enter-active,
+        .slide-leave-active {
+            transition: transform 0.25s ease, opacity 0.25s ease;
+        }
+        .slide-enter-from,
+        .slide-leave-to {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+
+        body {
+            padding-bottom: 72px;
+        }
+
+        /* ===================================================================
+           TABLE STYLES
+           =================================================================== */
+        .table-wrapper .card-bg {
+            border-radius: 0.875rem;
+        }
+
+        /* ===================================================================
+           PROGRESS BAR
+           =================================================================== */
+        .progress {
+            height: 5px;
+            background: #E8D5B7;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            border-radius: 999px;
+            background: #2A5F41;
+            transition: width 0.6s ease;
+        }
+
+        /* ===================================================================
+           COPYLEFT
+           =================================================================== */
+        .copyleft {
+            display: inline-block;
+            transform: rotate(180deg);
+        }
+
+        /* ===================================================================
+           ANIMATIONS
+           =================================================================== */
+        @keyframes pulse-soft {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .pulse-soft {
+            animation: pulse-soft 2s ease-in-out infinite;
+        }
+
+        /* ===================================================================
+           THEME TOGGLE
+           =================================================================== */
+        .theme-icon {
+            transition: transform 0.3s ease;
+        }
+        .theme-icon.rotating {
+            transform: rotate(180deg);
+        }
+
+        /* ===================================================================
+           SCROLLBAR STYLES
+           =================================================================== */
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #E8D5B7;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #B8956A;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FF5900;
+        }
+        html.dark ::-webkit-scrollbar-track {
+            background: #2A2A2A;
+        }
+        html.dark ::-webkit-scrollbar-thumb {
+            background: #3D3D3D;
+        }
+
+        /* ===================================================================
+           UTILITIES
+           =================================================================== */
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .no-select {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* ===================================================================
+           ACCESSIBILITY
+           =================================================================== */
+        *:focus-visible {
+            outline: 2px solid #FF5900;
+            outline-offset: 2px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* ===================================================================
+           PRINT
+           =================================================================== */
+        @media print {
+            body { background: white; color: black; }
+            nav, .bottom-bar, button { display: none; }
+            .card-bg { display: none; }
+        }
+    </style>
 </head>
 
-<body class="font-jura">
+<body class="font-sans text-ink min-h-screen antialiased">
+
+    <!-- SVG Filters for Paper-Cut Cards -->
+    <svg width="0" height="0" style="position:absolute">
+        <filter id="papercut">
+            <feTurbulence type="turbulence" baseFrequency="0.04" numOctaves="4" result="n"/>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <filter id="papercut-2">
+            <feTurbulence type="turbulence" baseFrequency="0.035" numOctaves="4" seed="3" result="n"/>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <filter id="papercut-3">
+            <feTurbulence type="turbulence" baseFrequency="0.045" numOctaves="4" seed="7" result="n"/>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="3.5" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+    </svg>
+
     <div id="app">
-        <!-- Mobile Header -->
-        <header class="sticky top-0 z-40 bg-primary border-b-2 border-theme">
-            <div class="max-w-7xl mx-auto px-4 py-4">
-                <div class="flex items-center justify-between">
-                    <!-- Logo -->
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 flex items-center justify-center">
-                            <i class="fas fa-box-open text-primary text-2xl"></i>
-                        </div>
-                        <div>
-                            <h1 class="text-xl font-bold text-primary">Absurd Inventory</h1>
-                            <p class="text-xs text-secondary">{{ filteredItems.length }} items</p>
-                        </div>
-                    </div>
 
-                    <!-- Actions -->
-                    <div class="flex items-center gap-2">
-                        <!-- Panic Button -->
-                        <button @click="panicMode"
-                            class="w-12 h-12 rounded-full bg-secondary border-2 border-theme hover:border-orange-500 flex items-center justify-center transition-all hover:-translate-y-1 group"
-                            title="PANIC MODE: Random component selector">
-                            <i class="fas fa-bolt text-primary group-hover:accent-orange-text transition-colors"
-                                :class="{ 'animate-pulse': isPanicking }"></i>
-                        </button>
+        <!-- ============================================================
+             WONKY LOGO
+             ============================================================ -->
+        <a href="../" class="wonky-logo">
+            <img src="../hardware-devroom/images/absurd-logo-for-any-background.png" alt="Absurd Industries" style="height:2.2rem;">
+        </a>
 
-                        <!-- View Toggle -->
-                        <button @click="toggleView"
-                            class="w-12 h-12 rounded-full bg-secondary border-2 border-theme hover:border-orange-500 flex items-center justify-center transition-all hover:-translate-y-1">
-                            <i :class="viewMode === 'card' ? 'fas fa-th-list' : 'fas fa-th-large'"
-                                class="text-primary"></i>
-                        </button>
+        <!-- ============================================================
+             INVENTORY TOOLBAR
+             ============================================================ -->
+        <div class="max-w-5xl mx-auto px-5 sm:px-6 pt-20 sm:pt-24 pb-4">
 
-                        <!-- Theme Toggle -->
-                        <button @click="toggleTheme"
-                            class="w-12 h-12 rounded-full bg-secondary border-2 border-theme hover:border-orange-500 flex items-center justify-center transition-all hover:-translate-y-1">
-                            <i :class="isDark ? 'fas fa-sun' : 'fas fa-moon'" class="text-primary theme-icon"></i>
-                        </button>
-                    </div>
+            <!-- Title Row -->
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h1 class="font-serif font-bold text-3xl sm:text-4xl mb-1">Inventory</h1>
+                    <p class="text-sm text-ink-faint dark:text-gray-400">
+                        {{ filteredItems.length }} items <span class="hidden sm:inline">&middot; Workshop Chaos Manager</span>
+                    </p>
                 </div>
+                <div class="flex items-center gap-2">
+                    <!-- Panic Button -->
+                    <button @click="panicMode"
+                        class="btn btn-outline btn-sm"
+                        :class="{ 'pulse-soft': isPanicking }"
+                        title="PANIC MODE: Random component selector (Ctrl+P)">
+                        <i class="ph-bold ph-lightning mr-1"></i>
+                        <span class="hidden sm:inline">Panic</span>
+                    </button>
 
-                <!-- Search Bar -->
-                <div class="mt-4 relative">
-                    <input v-model="searchQuery" type="search" placeholder="Search inventory..."
-                        class="input-base w-full pr-10">
-                    <i class="fas fa-search absolute right-3 top-1/2 -translate-y-1/2 text-secondary"></i>
-                </div>
+                    <!-- View Toggle -->
+                    <button @click="toggleView"
+                        class="btn btn-ghost btn-sm"
+                        title="Toggle view (Ctrl+V)">
+                        <i :class="viewMode === 'card' ? 'ph-bold ph-list' : 'ph-bold ph-squares-four'"></i>
+                    </button>
 
-                <!-- Filter Pills -->
-                <div class="mt-4 flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-                    <button v-for="cat in categories" :key="cat.id" @click="activeCategory = cat.id"
-                        class="px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-2"
-                        :class="activeCategory === cat.id 
-                            ? 'accent-orange text-on-accent' 
-                            : 'bg-secondary border border-theme text-primary hover:border-orange-500'">
-                        <i :class="cat.icon" class="text-sm"></i>
-                        {{ cat.name }}
+                    <!-- Theme Toggle -->
+                    <button @click="toggleTheme"
+                        class="btn btn-ghost btn-sm"
+                        title="Toggle theme">
+                        <i :class="isDark ? 'ph-bold ph-sun' : 'ph-bold ph-moon'" class="theme-icon"></i>
                     </button>
                 </div>
             </div>
-        </header>
 
-        <!-- Loading State -->
-        <div v-if="isLoading" class="flex items-center justify-center min-h-[60vh]">
-            <div class="text-center">
-                <div class="w-16 h-16 border-4 border-theme border-t-orange-500 rounded-full animate-spin mx-auto mb-4">
-                </div>
-                <p class="text-primary font-semibold">{{ loadingMessage }}</p>
+            <!-- Search Bar -->
+            <div class="relative mb-4">
+                <i class="ph-bold ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-ink-faint dark:text-gray-400"></i>
+                <input v-model="searchQuery" type="search" placeholder="Search inventory... (Ctrl+K)"
+                    class="input-base w-full pl-10 pr-4">
+            </div>
+
+            <!-- Category Filter Pills -->
+            <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                <button v-for="cat in categories" :key="cat.id" @click="activeCategory = cat.id"
+                    class="tag whitespace-nowrap transition-all cursor-pointer"
+                    :class="activeCategory === cat.id
+                        ? 'tag-stamp'
+                        : 'tag-default hover:opacity-80'"
+                    style="padding: 0.35rem 0.85rem; font-size: 0.75rem;">
+                    <i :class="cat.icon" class="mr-1.5 text-xs"></i>
+                    {{ cat.name }}
+                </button>
             </div>
         </div>
 
-        <!-- Main Content -->
-        <main v-else class="max-w-7xl mx-auto px-4 py-6 pb-24">
+        <!-- ============================================================
+             LOADING STATE
+             ============================================================ -->
+        <div v-if="isLoading" class="flex items-center justify-center min-h-[60vh]">
+            <div class="text-center">
+                <i class="ph-bold ph-circle-notch text-5xl text-stamp animate-spin mb-4 block"></i>
+                <p class="font-serif font-semibold text-lg">{{ loadingMessage }}</p>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             MAIN CONTENT
+             ============================================================ -->
+        <main v-else class="max-w-5xl mx-auto px-5 sm:px-6 pb-20">
+
             <!-- Panic Mode Banner -->
-            <div v-if="isPanicking"
-                class="mb-6 bg-orange-500/10 border-2 border-orange-500 rounded-xl p-4 animate-pulse">
-                <div class="flex items-center gap-3">
-                    <i class="fas fa-bolt accent-orange-text text-2xl"></i>
-                    <div class="flex-1">
-                        <h3 class="font-bold text-primary">PANIC MODE ACTIVATED!</h3>
-                        <p class="text-sm text-secondary">Randomly selected {{ panickedItems.length }} components for
-                            emergency hacking</p>
+            <div v-if="isPanicking" class="mb-6">
+                <div class="card card-hover">
+                    <div class="card-bg" style="background: rgba(255,89,0,0.08);"></div>
+                    <div class="card-content p-4">
+                        <div class="flex items-center gap-3">
+                            <i class="ph-bold ph-lightning text-stamp text-2xl"></i>
+                            <div class="flex-1">
+                                <h3 class="font-serif font-bold">PANIC MODE ACTIVATED!</h3>
+                                <p class="text-sm text-ink-faint dark:text-gray-400">Randomly selected {{ panickedItems.length }} components for emergency hacking</p>
+                            </div>
+                            <button @click="isPanicking = false" class="btn btn-ghost btn-sm">
+                                <i class="ph-bold ph-x"></i>
+                            </button>
+                        </div>
                     </div>
-                    <button @click="isPanicking = false" class="text-secondary hover:text-primary">
-                        <i class="fas fa-times"></i>
-                    </button>
                 </div>
             </div>
 
             <!-- Empty State -->
             <div v-if="filteredItems.length === 0" class="text-center py-16">
-                <i class="fas fa-box-open text-6xl text-secondary mb-4"></i>
-                <h3 class="text-2xl font-bold text-primary mb-2">No items found</h3>
-                <p class="text-secondary">Try adjusting your filters or search query</p>
+                <i class="ph-bold ph-package text-6xl text-ink-faint dark:text-gray-500 mb-4 block"></i>
+                <h3 class="font-serif text-2xl font-bold mb-2">No items found</h3>
+                <p class="text-sm text-ink-faint dark:text-gray-400">Try adjusting your filters or search query</p>
             </div>
 
-            <!-- Card View -->
+            <!-- ========================================================
+                 CARD VIEW
+                 ======================================================== -->
             <div v-else-if="viewMode === 'card'"
-                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <div v-for="item in sortedItems" :key="item.id" class="inventory-card group" :class="{
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 card-grid">
+
+                <div v-for="item in sortedItems" :key="item.id"
+                    class="inventory-card card card-hover"
+                    :class="{
                         'card-pinned': item.isPinned,
                         'card-panic': isPanicking && panickedItems.includes(item.id),
                         'card-low-stock': item.status === 'low-stock',
                         'card-out-of-stock': item.status === 'out-of-stock'
-                    }" :data-item-id="item.id" @touchstart="handleTouchStart($event, item)"
-                    @touchmove="handleTouchMove($event, item)" @touchend="handleTouchEnd($event, item)">
+                    }"
+                    :data-item-id="item.id"
+                    @touchstart="handleTouchStart($event, item)"
+                    @touchmove="handleTouchMove($event, item)"
+                    @touchend="handleTouchEnd($event, item)">
 
-                    <!-- Image -->
-                    <div
-                        class="h-48 bg-tertiary rounded-t-xl flex items-center justify-center relative overflow-hidden">
-                        <img v-if="item.images && item.images[0]" :src="item.images[0]" :alt="item.name"
-                            class="w-full h-full object-cover">
-                        <div v-else class="text-center">
-                            <i :class="getCategoryIcon(item.category)" class="text-6xl text-secondary mb-2"></i>
-                            <p class="text-xs text-secondary uppercase tracking-wider">{{ item.category }}</p>
-                        </div>
+                    <div class="card-bg"></div>
+                    <div class="card-content">
 
-                        <!-- Pin Badge -->
-                        <button @click.stop="togglePin(item)"
-                            class="absolute top-3 right-3 w-10 h-10 rounded-full bg-secondary/90 backdrop-blur flex items-center justify-center transition-all hover:scale-110 z-10"
-                            :class="item.isPinned ? 'text-orange-500' : 'text-secondary'">
-                            <i :class="item.isPinned ? 'fas fa-star' : 'far fa-star'"></i>
-                        </button>
-                    </div>
-
-                    <!-- Content -->
-                    <div class="p-6">
-                        <!-- Status & Category -->
-                        <div class="flex items-center gap-2 mb-3 flex-wrap">
-                            <span class="badge" :class="getStatusClass(item.status)">
-                                <i :class="getStatusIcon(item.status)" class="mr-1"></i>
-                                {{ item.status.replace('-', ' ').toUpperCase() }}
-                            </span>
-                            <span v-if="item.subcategory" class="text-xs text-secondary capitalize">
-                                {{ item.subcategory }}
-                            </span>
-                        </div>
-
-                        <!-- Name -->
-                        <h3 class="text-xl font-bold text-primary mb-3 line-clamp-2">{{ item.name }}</h3>
-
-                        <!-- Info Grid -->
-                        <div class="space-y-2 text-sm mb-4">
-                            <div class="flex items-center justify-between">
-                                <span class="text-secondary">Quantity:</span>
-                                <span class="font-semibold text-primary">{{ formatQuantity(item.quantity) }}</span>
+                        <!-- Image Area -->
+                        <div class="h-44 rounded-t-[0.875rem] flex items-center justify-center relative overflow-hidden"
+                            :class="item.images && item.images[0] ? '' : 'bg-kraft-light/50 dark:bg-white/5'">
+                            <img v-if="item.images && item.images[0]" :src="item.images[0]" :alt="item.name"
+                                class="w-full h-full object-cover rounded-t-[0.6rem]">
+                            <div v-else class="text-center">
+                                <i :class="getCategoryIcon(item.category)" class="text-5xl text-stencil dark:text-gray-500 mb-2 block"></i>
+                                <p class="text-xs text-ink-faint dark:text-gray-500 uppercase tracking-wider">{{ item.category }}</p>
                             </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-secondary">Location:</span>
-                                <span class="font-semibold text-primary text-right">{{ item.location }}</span>
-                            </div>
-                            <div v-if="item.minimumStock" class="flex items-center justify-between">
-                                <span class="text-secondary">Min Stock:</span>
-                                <span class="font-semibold"
-                                    :class="item.quantity !== 'unknown' && item.quantity <= item.minimumStock ? 'accent-orange-text' : 'text-primary'">
-                                    {{ item.minimumStock }}
-                                </span>
-                            </div>
-                        </div>
 
-                        <!-- Specs Preview -->
-                        <div v-if="item.specs" class="mb-4 pb-4 border-b border-theme">
-                            <div class="flex flex-wrap gap-2">
-                                <span v-if="item.specs.architecture"
-                                    class="text-xs bg-tertiary px-2 py-1 rounded text-secondary">
-                                    {{ item.specs.architecture }}
-                                </span>
-                                <span v-if="item.specs.clockSpeed"
-                                    class="text-xs bg-tertiary px-2 py-1 rounded text-secondary">
-                                    {{ item.specs.clockSpeed }}
-                                </span>
-                                <span v-if="item.specs.gpio"
-                                    class="text-xs bg-tertiary px-2 py-1 rounded text-secondary">
-                                    {{ item.specs.gpio }} GPIO
-                                </span>
-                                <span v-if="item.specs.connectivity"
-                                    class="text-xs bg-tertiary px-2 py-1 rounded text-secondary">
-                                    {{ item.specs.connectivity.join(', ') }}
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- Notes -->
-                        <p v-if="item.notes" class="text-sm text-secondary italic mb-4 line-clamp-2">{{ item.notes }}
-                        </p>
-
-                        <!-- Actions -->
-                        <div class="flex gap-2">
-                            <button class="flex-1 btn-secondary text-sm py-2">
-                                <i class="fas fa-eye mr-2"></i>Details
+                            <!-- Pin Badge -->
+                            <button @click.stop="togglePin(item)"
+                                class="absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center transition-all hover:scale-110 z-10"
+                                :class="item.isPinned
+                                    ? 'bg-stamp text-white'
+                                    : 'bg-paper/80 dark:bg-ink/60 text-ink-faint dark:text-gray-400 hover:text-stamp'">
+                                <i :class="item.isPinned ? 'ph-bold ph-star-fill' : 'ph-bold ph-star'" class="text-base"></i>
                             </button>
-                            <button class="flex-1 btn-primary text-sm py-2">
-                                <i class="fas fa-plus mr-2"></i>BOM
-                            </button>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="p-5">
+                            <!-- Status & Category -->
+                            <div class="flex items-center gap-2 mb-2 flex-wrap">
+                                <span class="badge" :class="getStatusClass(item.status)">
+                                    <i :class="getStatusIcon(item.status)" class="mr-1"></i>
+                                    {{ item.status.replace('-', ' ').toUpperCase() }}
+                                </span>
+                                <span v-if="item.subcategory" class="text-xs text-ink-faint dark:text-gray-500 capitalize">
+                                    {{ item.subcategory }}
+                                </span>
+                            </div>
+
+                            <!-- Name -->
+                            <h3 class="font-serif font-bold text-lg mb-2 line-clamp-2 dark:text-paper">{{ item.name }}</h3>
+
+                            <!-- Info Grid -->
+                            <div class="space-y-1.5 text-sm mb-3">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-ink-faint dark:text-gray-400">Quantity</span>
+                                    <span class="font-semibold dark:text-paper">{{ formatQuantity(item.quantity) }}</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-ink-faint dark:text-gray-400">Location</span>
+                                    <span class="font-semibold text-right dark:text-paper">{{ item.location }}</span>
+                                </div>
+                                <div v-if="item.minimumStock" class="flex items-center justify-between">
+                                    <span class="text-ink-faint dark:text-gray-400">Min Stock</span>
+                                    <span class="font-semibold"
+                                        :class="item.quantity !== 'unknown' && item.quantity <= item.minimumStock ? 'text-stamp' : 'dark:text-paper'">
+                                        {{ item.minimumStock }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Specs Preview -->
+                            <div v-if="item.specs && (item.specs.architecture || item.specs.clockSpeed || item.specs.gpio || item.specs.connectivity)"
+                                class="mb-3 pb-3 border-b border-ink/5 dark:border-white/10">
+                                <div class="flex flex-wrap gap-1.5">
+                                    <span v-if="item.specs.architecture"
+                                        class="tag tag-muted" style="font-size:0.6rem;">
+                                        {{ item.specs.architecture }}
+                                    </span>
+                                    <span v-if="item.specs.clockSpeed"
+                                        class="tag tag-muted" style="font-size:0.6rem;">
+                                        {{ item.specs.clockSpeed }}
+                                    </span>
+                                    <span v-if="item.specs.gpio"
+                                        class="tag tag-muted" style="font-size:0.6rem;">
+                                        {{ item.specs.gpio }} GPIO
+                                    </span>
+                                    <span v-if="item.specs.connectivity"
+                                        class="tag tag-muted" style="font-size:0.6rem;">
+                                        {{ item.specs.connectivity.join(', ') }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Notes -->
+                            <p v-if="item.notes" class="text-xs text-ink-faint dark:text-gray-400 italic mb-3 line-clamp-2">{{ item.notes }}</p>
+
+                            <!-- Actions -->
+                            <div class="flex gap-2">
+                                <button class="flex-1 btn btn-outline btn-sm text-xs">
+                                    <i class="ph-bold ph-eye mr-1.5"></i>Details
+                                </button>
+                                <button class="flex-1 btn btn-primary btn-sm text-xs">
+                                    <i class="ph-bold ph-plus mr-1.5"></i>BOM
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Table View -->
-            <div v-else class="bg-secondary border-2 border-theme rounded-xl overflow-hidden">
-                <div class="overflow-x-auto">
-                    <table class="w-full">
-                        <thead class="bg-tertiary border-b-2 border-theme">
-                            <tr>
-                                <th class="px-4 py-3 text-left text-sm font-semibold text-primary cursor-pointer hover:accent-orange-text transition-colors"
-                                    @click="sortBy('name')">
-                                    Name <i class="fas fa-sort text-xs ml-1 opacity-50"></i>
-                                </th>
-                                <th class="px-4 py-3 text-left text-sm font-semibold text-primary cursor-pointer hover:accent-orange-text transition-colors"
-                                    @click="sortBy('category')">
-                                    Category <i class="fas fa-sort text-xs ml-1 opacity-50"></i>
-                                </th>
-                                <th class="px-4 py-3 text-left text-sm font-semibold text-primary cursor-pointer hover:accent-orange-text transition-colors"
-                                    @click="sortBy('quantity')">
-                                    Qty <i class="fas fa-sort text-xs ml-1 opacity-50"></i>
-                                </th>
-                                <th class="px-4 py-3 text-left text-sm font-semibold text-primary cursor-pointer hover:accent-orange-text transition-colors"
-                                    @click="sortBy('location')">
-                                    Location <i class="fas fa-sort text-xs ml-1 opacity-50"></i>
-                                </th>
-                                <th class="px-4 py-3 text-left text-sm font-semibold text-primary cursor-pointer hover:accent-orange-text transition-colors"
-                                    @click="sortBy('status')">
-                                    Status <i class="fas fa-sort text-xs ml-1 opacity-50"></i>
-                                </th>
-                                <th class="px-4 py-3 text-center text-sm font-semibold text-primary">
-                                    Actions
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="item in sortedItems" :key="item.id"
-                                class="border-b border-theme hover:bg-tertiary transition-colors"
-                                :class="{ 'bg-orange-500/5': item.isPinned }">
-                                <td class="px-4 py-3">
-                                    <div class="flex items-center gap-3">
-                                        <i v-if="item.isPinned" class="fas fa-star text-orange-500"></i>
-                                        <span class="font-semibold text-primary">{{ item.name }}</span>
-                                    </div>
-                                </td>
-                                <td class="px-4 py-3">
-                                    <span class="text-sm text-secondary capitalize">{{ item.category }}</span>
-                                    <span v-if="item.subcategory" class="text-xs text-secondary block">{{
-                                        item.subcategory }}</span>
-                                </td>
-                                <td class="px-4 py-3 text-sm font-semibold text-primary">{{
-                                    formatQuantity(item.quantity) }}</td>
-                                <td class="px-4 py-3 text-sm text-secondary">{{ item.location }}</td>
-                                <td class="px-4 py-3">
-                                    <span class="badge text-xs" :class="getStatusClass(item.status)">
-                                        <i :class="getStatusIcon(item.status)" class="mr-1"></i>
-                                        {{ item.status.replace('-', ' ').toUpperCase() }}
-                                    </span>
-                                </td>
-                                <td class="px-4 py-3">
-                                    <div class="flex items-center justify-center gap-2">
-                                        <button @click="togglePin(item)"
-                                            class="w-8 h-8 rounded-lg hover:bg-secondary flex items-center justify-center transition-colors"
-                                            :title="item.isPinned ? 'Unpin' : 'Pin'">
-                                            <i
-                                                :class="item.isPinned ? 'fas fa-star text-orange-500' : 'far fa-star text-secondary'"></i>
-                                        </button>
-                                        <button
-                                            class="w-8 h-8 rounded-lg hover:bg-secondary flex items-center justify-center transition-colors"
-                                            title="View Details">
-                                            <i
-                                                class="fas fa-eye text-secondary hover:text-primary transition-colors"></i>
-                                        </button>
-                                        <button
-                                            class="w-8 h-8 rounded-lg hover:bg-secondary flex items-center justify-center transition-colors"
-                                            title="Add to BOM">
-                                            <i
-                                                class="fas fa-plus text-secondary hover:accent-orange-text transition-colors"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <!-- ========================================================
+                 TABLE VIEW
+                 ======================================================== -->
+            <div v-else class="table-wrapper card">
+                <div class="card-bg"></div>
+                <div class="card-content overflow-hidden" style="border-radius: 0.875rem;">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b border-ink/10 dark:border-white/10">
+                                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-ink-faint dark:text-gray-400 cursor-pointer hover:text-stamp transition-colors"
+                                        @click="sortBy('name')">
+                                        Name <i class="ph-bold ph-caret-up-down text-[0.6rem] ml-1 opacity-50"></i>
+                                    </th>
+                                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-ink-faint dark:text-gray-400 cursor-pointer hover:text-stamp transition-colors"
+                                        @click="sortBy('category')">
+                                        Category <i class="ph-bold ph-caret-up-down text-[0.6rem] ml-1 opacity-50"></i>
+                                    </th>
+                                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-ink-faint dark:text-gray-400 cursor-pointer hover:text-stamp transition-colors"
+                                        @click="sortBy('quantity')">
+                                        Qty <i class="ph-bold ph-caret-up-down text-[0.6rem] ml-1 opacity-50"></i>
+                                    </th>
+                                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-ink-faint dark:text-gray-400 cursor-pointer hover:text-stamp transition-colors hidden sm:table-cell"
+                                        @click="sortBy('location')">
+                                        Location <i class="ph-bold ph-caret-up-down text-[0.6rem] ml-1 opacity-50"></i>
+                                    </th>
+                                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-ink-faint dark:text-gray-400 cursor-pointer hover:text-stamp transition-colors"
+                                        @click="sortBy('status')">
+                                        Status <i class="ph-bold ph-caret-up-down text-[0.6rem] ml-1 opacity-50"></i>
+                                    </th>
+                                    <th class="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-ink-faint dark:text-gray-400">
+                                        Actions
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="item in sortedItems" :key="item.id"
+                                    class="border-b border-ink/5 dark:border-white/5 hover:bg-ink/[0.02] dark:hover:bg-white/[0.03] transition-colors"
+                                    :class="{ 'bg-stamp/5': item.isPinned }">
+                                    <td class="px-4 py-3">
+                                        <div class="flex items-center gap-2">
+                                            <i v-if="item.isPinned" class="ph-bold ph-star-fill text-stamp text-xs"></i>
+                                            <span class="font-semibold text-sm dark:text-paper">{{ item.name }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <span class="text-sm text-ink-faint dark:text-gray-400 capitalize">{{ item.category }}</span>
+                                        <span v-if="item.subcategory" class="text-xs text-ink-faint/60 dark:text-gray-500 block">{{ item.subcategory }}</span>
+                                    </td>
+                                    <td class="px-4 py-3 text-sm font-semibold dark:text-paper">{{ formatQuantity(item.quantity) }}</td>
+                                    <td class="px-4 py-3 text-sm text-ink-faint dark:text-gray-400 hidden sm:table-cell">{{ item.location }}</td>
+                                    <td class="px-4 py-3">
+                                        <span class="badge text-xs" :class="getStatusClass(item.status)">
+                                            <i :class="getStatusIcon(item.status)" class="mr-1"></i>
+                                            {{ item.status.replace('-', ' ').toUpperCase() }}
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <div class="flex items-center justify-center gap-1">
+                                            <button @click="togglePin(item)"
+                                                class="btn btn-ghost btn-sm p-1.5"
+                                                :title="item.isPinned ? 'Unpin' : 'Pin'">
+                                                <i :class="item.isPinned ? 'ph-bold ph-star-fill text-stamp' : 'ph-bold ph-star text-ink-faint dark:text-gray-500'"></i>
+                                            </button>
+                                            <button class="btn btn-ghost btn-sm p-1.5" title="View Details">
+                                                <i class="ph-bold ph-eye text-ink-faint dark:text-gray-500"></i>
+                                            </button>
+                                            <button class="btn btn-ghost btn-sm p-1.5" title="Add to BOM">
+                                                <i class="ph-bold ph-plus text-ink-faint dark:text-gray-500 hover:text-stamp"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </main>
 
-        <!-- Floating Action Button (Mobile) -->
-        <button
-            class="fixed bottom-6 right-6 w-16 h-16 accent-orange text-on-accent rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform lg:hidden z-50">
-            <i class="fas fa-plus text-2xl"></i>
-        </button>
+        <!-- ============================================================
+             FOOTER
+             ============================================================ -->
+        <footer class="py-10" style="background: rgba(184,149,106,0.45);">
+            <div class="max-w-5xl mx-auto px-5 sm:px-6">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+                    <div>
+                        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Platform</h4>
+                        <ul class="space-y-2 text-sm list-none p-0 m-0">
+                            <li><a href="../campaigns/" class="text-ink hover:underline font-medium no-underline">Campaigns</a></li>
+                            <li><a href="../makers/" class="text-ink hover:underline font-medium no-underline">Makers</a></li>
+                            <li><a href="../requests/" class="text-ink hover:underline font-medium no-underline">Requests</a></li>
+                            <li><a href="../events/" class="text-ink hover:underline font-medium no-underline">Events</a></li>
+                            <li><a href="./" class="text-ink hover:underline font-medium no-underline">Inventory</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Community</h4>
+                        <ul class="space-y-2 text-sm list-none p-0 m-0">
+                            <li><a href="https://discord.gg/DUSUtguG2H" target="_blank" class="text-ink hover:underline font-medium no-underline">Discord</a></li>
+                            <li><a href="https://www.instagram.com/absurd.industries" target="_blank" class="text-ink hover:underline font-medium no-underline">Instagram</a></li>
+                            <li><a href="https://www.youtube.com/@absurd.industries" target="_blank" class="text-ink hover:underline font-medium no-underline">YouTube</a></li>
+                            <li><a href="https://www.linkedin.com/company/absurd-industries" target="_blank" class="text-ink hover:underline font-medium no-underline">LinkedIn</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Resources</h4>
+                        <ul class="space-y-2 text-sm list-none p-0 m-0">
+                            <li><a href="../hardware-devroom/" class="text-ink hover:underline font-medium no-underline">Hardware Devroom</a></li>
+                            <li><a href="../contact.htm" class="text-ink hover:underline font-medium no-underline">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-semibold uppercase tracking-wider text-ink-faint mb-3">Legal</h4>
+                        <ul class="space-y-2 text-sm list-none p-0 m-0">
+                            <li><a href="../privacy-policy.htm" class="text-ink hover:underline font-medium no-underline">Privacy</a></li>
+                            <li><a href="../terms-and-conditions.htm" class="text-ink hover:underline font-medium no-underline">Terms</a></li>
+                            <li><a href="../policies.htm" class="text-ink hover:underline font-medium no-underline">Policies</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="border-t border-ink/10 pt-5 flex flex-col sm:flex-row justify-between items-center gap-2">
+                    <div class="flex items-center gap-2">
+                        <img src="../hardware-devroom/images/absurd-logo-for-any-background.png" alt="" class="h-5">
+                        <span class="text-xs font-semibold">Absurd Industries</span>
+                    </div>
+                    <p class="text-xs text-ink-faint">
+                        <span class="copyleft">&copy;</span> Copyleft 2023&ndash;2026. Made with curiosity in Bengaluru.
+                    </p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- ============================================================
+             BOTTOM BAR
+             ============================================================ -->
+        <nav class="bottom-bar" style="position:relative;">
+            <div class="grid grid-cols-5">
+                <a href="../campaigns/"><i class="ph-bold ph-rocket-launch"></i><span>Campaigns</span></a>
+                <a href="../makers/"><i class="ph-bold ph-users-three"></i><span>Makers</span></a>
+                <a href="../requests/"><i class="ph-bold ph-megaphone"></i><span>Requests</span></a>
+                <a href="../events/"><i class="ph-bold ph-calendar-dots"></i><span>Events</span></a>
+                <button @click="megaMenuOpen = !megaMenuOpen">
+                    <i :class="megaMenuOpen ? 'ph-bold ph-x' : 'ph-bold ph-dots-three'"></i>
+                    <span>More</span>
+                </button>
+            </div>
+
+            <transition name="slide">
+                <div v-if="megaMenuOpen" class="mega-menu" @click="megaMenuOpen = false">
+                    <a href="./">
+                        <i class="ph-bold ph-package"></i> Inventory
+                    </a>
+                    <a href="https://discord.gg/DUSUtguG2H" target="_blank">
+                        <i class="fa-brands fa-discord"></i> Discord
+                    </a>
+                    <a href="../hardware-devroom/">
+                        <i class="ph-bold ph-microchip"></i> Hardware Devroom
+                    </a>
+                    <a href="../contact.htm">
+                        <i class="ph-bold ph-envelope"></i> Contact
+                    </a>
+                </div>
+            </transition>
+        </nav>
+
     </div>
 
     <!-- Vue 3 CDN -->
@@ -338,6 +1024,22 @@
 
     <!-- App Scripts -->
     <script src="js/data.js"></script>
+
+    <!-- Patch app.js: add megaMenuOpen to data since bottom bar needs it -->
+    <script>
+        // Store original createApp to intercept
+        const _originalCreateApp = Vue.createApp;
+        Vue.createApp = function(options) {
+            // Inject megaMenuOpen into data
+            const originalData = options.data;
+            options.data = function() {
+                const d = originalData.call(this);
+                d.megaMenuOpen = false;
+                return d;
+            };
+            return _originalCreateApp.call(this, options);
+        };
+    </script>
     <script src="js/app.js"></script>
 </body>
 

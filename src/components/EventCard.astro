@@ -1,0 +1,195 @@
+---
+/**
+ * Static Astro card for a single community event.
+ * Renders date block, title, venue, category tag, host, attendees,
+ * price, and tag pills inside a paper-cut card.
+ *
+ * Usage:
+ *   <EventCard event={event} />
+ */
+
+import type { AbsurdEvent } from "../types";
+import Tag from "./Tag.astro";
+
+interface Props {
+  event: AbsurdEvent;
+}
+
+const { event } = Astro.props;
+
+// Parse the date into month abbreviation and day number
+const dateObj = new Date(event.date + "T00:00:00");
+const month = dateObj.toLocaleString("en-IN", { month: "short" });
+const day = dateObj.getDate().toString();
+
+// Category display label (singular -> plural where appropriate)
+const categoryLabels: Record<string, string> = {
+  meetup: "Meetup",
+  workshop: "Workshop",
+  hackathon: "Hackathon",
+  talk: "Talk",
+  conference: "Conference",
+};
+const categoryLabel = categoryLabels[event.category] ?? event.category;
+
+// Category tag variant
+const categoryVariant = (() => {
+  if (event.category === "hackathon") return "stamp" as const;
+  if (event.category === "conference") return "funded" as const;
+  return "default" as const;
+})();
+
+// Spots left calculation
+const spotsLeft =
+  event.maxAttendees != null ? event.maxAttendees - event.attendees : null;
+
+// Price display
+const priceDisplay = event.priceINR === 0 ? "Free" : `₹${event.priceINR}`;
+
+// Is this a drop-in event? (detect by tags)
+const isDropIn = event.tags.some((t) => t === "drop-in");
+---
+
+<div class="event-item">
+  <div class="flex gap-3 sm:gap-4">
+    <!-- Date block -->
+    <div class="date-block">
+      <span class="month">{month}</span>
+      <span class="day">{day}</span>
+    </div>
+
+    <!-- Content -->
+    <div class="flex-1 min-w-0">
+      <!-- Title -->
+      <h3
+        class="font-serif font-bold text-base sm:text-lg leading-snug text-ink mb-1"
+      >
+        {event.title}
+      </h3>
+
+      <!-- Venue + time -->
+      <div
+        class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-ink-faint mb-1.5"
+      >
+        <span class="inline-flex items-center gap-1">
+          <i class="ph-bold ph-map-pin" style="font-size:0.75rem;"></i>
+          {event.venue}
+        </span>
+        <span class="inline-flex items-center gap-1">
+          <i class="ph-bold ph-clock" style="font-size:0.75rem;"></i>
+          {event.time}
+        </span>
+      </div>
+
+      <!-- Category tag + spots left -->
+      <div class="flex flex-wrap items-center gap-2 mb-2">
+        <Tag variant={categoryVariant}>{categoryLabel}</Tag>
+        {
+          spotsLeft != null && spotsLeft > 0 && (
+            <Tag variant="stamp">{spotsLeft} spots left</Tag>
+          )
+        }
+        {
+          event.priceINR > 0 && (
+            <Tag variant="muted">{priceDisplay}</Tag>
+          )
+        }
+      </div>
+
+      <!-- Description -->
+      <p class="text-sm text-ink-faint leading-relaxed mb-2.5 line-clamp-2">
+        {event.description}
+      </p>
+
+      <!-- Tags as pills -->
+      <div class="flex flex-wrap gap-1.5 mb-2.5">
+        {
+          event.tags.map((tag) => (
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[0.65rem] font-semibold bg-ink/[0.05] text-ink-faint">
+              {tag}
+            </span>
+          ))
+        }
+      </div>
+
+      <!-- Bottom row: host, attendance, RSVP -->
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="text-xs text-ink-faint">
+            <i class="ph-bold ph-user" style="font-size:0.7rem;"></i>
+            {event.hostName}
+          </span>
+          <span class="attendance">
+            <i class="ph-bold ph-users"></i>
+            {event.attendees} going
+          </span>
+        </div>
+        <button
+          class:list={["btn btn-sm", isDropIn ? "btn-outline" : "btn-primary"]}
+        >
+          {isDropIn ? "Drop in" : spotsLeft != null && spotsLeft > 0 ? "Register" : "RSVP"}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Event feed items */
+  .event-item {
+    padding: 1.25rem 0;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.07);
+    transition: background 0.12s ease;
+  }
+  .event-item:last-child {
+    border-bottom: none;
+  }
+  .event-item:hover {
+    background: rgba(250, 243, 232, 0.35);
+    margin: 0 -1rem;
+    padding: 1.25rem 1rem;
+    border-radius: 0.625rem;
+  }
+
+  /* Date block */
+  .date-block {
+    width: 52px;
+    height: 56px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.625rem;
+    border: 1.5px solid rgba(26, 26, 26, 0.12);
+    background: rgba(250, 243, 232, 0.6);
+    flex-shrink: 0;
+  }
+  .date-block .month {
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #ff5900;
+    line-height: 1;
+  }
+  .date-block .day {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #1a1a1a;
+    line-height: 1.1;
+    font-family: "Fraunces", Georgia, serif;
+  }
+
+  /* Attendance badge */
+  .attendance {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: #2a5f41;
+  }
+  .attendance i {
+    font-size: 0.75rem;
+  }
+</style>
