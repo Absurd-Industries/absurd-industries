@@ -17,7 +17,7 @@ import "../styles/global.css";
 const isDev = import.meta.env.DEV;
 
 interface Props {
-  /** Page title — appended with "| Absurd Industries" */
+  /** Page title — appended with "| ooru.build" */
   title: string;
   /** Meta description for SEO */
   description?: string;
@@ -34,13 +34,13 @@ interface Props {
 const {
   title,
   description = "The open-source STEAM platform. Back indie campaigns, discover makers, request what you need, and build together.",
-  ogImage = "/images/absurd-logo.png",
+  ogImage = "/images/ooru-logo.svg",
   activeTab,
   darkMode = false,
   hideNav = false,
 } = Astro.props;
 
-const fullTitle = `${title} | Absurd Industries`;
+const fullTitle = `${title} | ooru.build`;
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 ---
 

@@ -6,7 +6,7 @@ import cloudflare from "@astrojs/cloudflare";
 
 export default defineConfig({
   adapter: cloudflare(),
-  site: "https://absurd.industries",
+  site: "https://ooru.build",
 
   integrations: [
     tailwind(),

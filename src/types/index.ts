@@ -1,5 +1,5 @@
 /**
- * Absurd Industries — Shared TypeScript Types
+ * ooru.build — Shared TypeScript Types
  *
  * Shaped as future API response interfaces so they can serve as
  * drop-in replacements when the platform moves to a D1 backend.
@@ -239,7 +239,7 @@ export interface Request {
 // Friends / Partners
 // ---------------------------------------------------------------------------
 
-/** An Absurd Industries partner or friend organisation. */
+/** An ooru.build partner or friend organisation. */
 export interface Friend {
   /** Organisation or partner name. */
   name: string;

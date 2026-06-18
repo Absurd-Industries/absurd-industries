@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 80" fill="none">
+  <!-- ooru.build logo — symbol derived from Kannada ಊ (ooru = village) -->
+  <!-- Symbol mark: abstracted ಊ glyph as flowing geometric paths -->
+  <g transform="translate(8, 8)">
+    <!-- Main stroke — inspired by the sweeping curve of ಊ -->
+    <path d="M12 52 C12 28, 24 12, 40 12 C52 12, 52 24, 44 32 C36 40, 24 36, 24 28 C24 20, 32 16, 40 16"
+          stroke="#FF5900" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <!-- Upper flourish — the head stroke of ಊ -->
+    <path d="M40 16 C48 16, 54 22, 54 30 C54 42, 42 48, 32 52"
+          stroke="#FF5900" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <!-- Dot — the bindu/anusvara accent, gives it character -->
+    <circle cx="50" cy="12" r="4" fill="#FF5900"/>
+  </g>
+  <!-- Wordmark -->
+  <text x="82" y="53" font-family="'DM Sans', system-ui, sans-serif" font-weight="700" font-size="36" fill="#1A1A1A" letter-spacing="-0.5">
+    ooru<tspan fill="#FF5900" font-weight="800">.</tspan>build
+  </text>
+</svg>
