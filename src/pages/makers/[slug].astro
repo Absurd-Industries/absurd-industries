@@ -105,7 +105,7 @@ const activities = [
   },
   {
     icon: "user-plus",
-    text: "Joined <strong>ooru.build</strong>",
+    text: "Joined <strong>Ooru</strong>",
     time: "2024",
     highlight: false,
     miniCard: null as null | { icon: string; name: string; percent: number; backers: number },
@@ -153,7 +153,7 @@ const badges = [
   {
     name: "Guild Member",
     icon: "seal-check",
-    description: "Verified ooru maker",
+    description: "Verified Ooru maker",
     bg: "rgba(42,95,65,0.12)",
     color: "#2A5F41",
   },
@@ -256,7 +256,7 @@ const contributions = Math.round(maker.projects * 8 + maker.backers / 10);
 
 <BaseLayout
   title={`${maker.name} - ${maker.title}`}
-  description={maker.bio ?? `${maker.name} is a ${maker.title} from ${maker.location} on ooru.build.`}
+  description={maker.bio ?? `${maker.name} is a ${maker.title} from ${maker.location} on Ooru.`}
   activeTab="makers"
   hideNav
 >

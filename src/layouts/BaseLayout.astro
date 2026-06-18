@@ -17,7 +17,7 @@ import "../styles/global.css";
 const isDev = import.meta.env.DEV;
 
 interface Props {
-  /** Page title — appended with "| ooru.build" */
+  /** Page title — appended with "| Ooru" */
   title: string;
   /** Meta description for SEO */
   description?: string;
@@ -40,7 +40,7 @@ const {
   hideNav = false,
 } = Astro.props;
 
-const fullTitle = `${title} | ooru.build`;
+const fullTitle = `${title} | Ooru`;
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 ---
 

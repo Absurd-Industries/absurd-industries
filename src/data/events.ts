@@ -12,7 +12,7 @@ export const events: AbsurdEvent[] = [
     category: "meetup",
     description:
       "Monthly gathering for open hardware enthusiasts. Show off what you built, get feedback on your PCB designs, find collaborators, or just hang out with fellow makers. All skill levels welcome.",
-    hostName: "ooru.build",
+    hostName: "Ooru",
     attendees: 45,
     priceINR: 0,
     tags: ["open-hardware", "networking", "show-and-tell", "monthly"],
@@ -28,7 +28,7 @@ export const events: AbsurdEvent[] = [
     category: "workshop",
     description:
       "Go from zero to your first schematic and PCB layout in one day. Bring your laptop with KiCad 9 installed. We will design a simple sensor breakout board and send it to fab by end of session.",
-    hostName: "ooru.build",
+    hostName: "Ooru",
     attendees: 12,
     maxAttendees: 20,
     priceINR: 500,
@@ -45,7 +45,7 @@ export const events: AbsurdEvent[] = [
     category: "conference",
     description:
       "The annual open-source hardware devroom at IndiaFOSS. Two days of talks, demos, and lightning rounds covering RISC-V, open PCB design, firmware freedom, and community manufacturing. Call for proposals is open.",
-    hostName: "FOSS United & ooru.build",
+    hostName: "FOSS United & Ooru",
     attendees: 320,
     priceINR: 0,
     tags: ["risc-v", "open-hardware", "conference", "indiafoss"],
@@ -57,12 +57,12 @@ export const events: AbsurdEvent[] = [
     date: "2026-07-05",
     time: "2:00 PM - 7:00 PM IST",
     location: "Bengaluru, India",
-    venue: "ooru HQ, HSR Layout",
+    venue: "Ooru HQ, HSR Layout",
     city: "Bengaluru",
     category: "workshop",
     description:
       "Drop-in soldering sessions. Irons, flux, and solder provided. Bring your own boards or practice on our through-hole kits. Great for beginners who want to learn or pros who need bench time.",
-    hostName: "ooru.build",
+    hostName: "Ooru",
     attendees: 18,
     priceINR: 0,
     tags: ["soldering", "beginner", "drop-in", "weekly"],
@@ -78,7 +78,7 @@ export const events: AbsurdEvent[] = [
     category: "talk",
     description:
       "Panel discussion with women leading in science, technology, engineering, art, and math across India. Followed by networking and chai. Speakers from ISRO, Strand Life Sciences, Srishti Manipal, and more.",
-    hostName: "ooru.build",
+    hostName: "Ooru",
     attendees: 86,
     priceINR: 0,
     tags: ["women-in-stem", "panel", "networking", "diversity"],
@@ -94,7 +94,7 @@ export const events: AbsurdEvent[] = [
     category: "hackathon",
     description:
       "One night, one microcontroller, one language. Bring your STM32 or ESP32 and hack on embedded Rust projects. We will have dev boards and mentors for beginners. Pizza and mass debugging included.",
-    hostName: "ooru.build",
+    hostName: "Ooru",
     attendees: 22,
     maxAttendees: 30,
     priceINR: 200,
@@ -111,7 +111,7 @@ export const events: AbsurdEvent[] = [
     category: "workshop",
     description:
       "Learn the art of scientific illustration. We will cover botanical drawing, anatomical sketching, and technical diagrams using pen and ink. All materials provided. No prior art experience needed.",
-    hostName: "ooru.build",
+    hostName: "Ooru",
     attendees: 28,
     priceINR: 300,
     tags: ["art", "science", "illustration", "beginner"],
