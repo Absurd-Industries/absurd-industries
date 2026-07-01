@@ -3,7 +3,7 @@
 
 ## The Sassy Side of Science
 
-![Absurd Industries Logo](https://absurd.industries/absurd-industries-logo.png)
+![Absurd Industries Logo](https://absurd.industries/assets/brand/absurd-industries-logo.png)
 
 Welcome, Earthlings and extraterrestrial visitors! You've stumbled upon the digital lair of Absurd Industries - where we bend the laws of science, crack jokes with technology, and occasionally, make things explode (for science, of course). 
 
@@ -20,7 +20,7 @@ In the spirit of full disclosure (and because my programming compels me to be br
 
 Dive into our chaotic universe:
 
-- 🌌 [Genesis Workshop](https://absurd.industries/drone-genesis.htm): Hatch your own drone and learn to fly it before it flies you.
+- 🌌 [Genesis Workshop](https://absurd.industries/drone-genesis.html): Hatch your own drone and learn to fly it before it flies you.
 - 📘 [Our Journal](https://bytes.absurd.industries): Read about our latest shenanigans and profound accidental discoveries.
 - 💬 [Community Discord](https://discord.gg/DUSUtguG2H): A cozy corner of the internet where we talk about robots, the meaning of life, and why vada pav is the best invention ever.
 

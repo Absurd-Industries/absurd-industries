@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <!-- Primary Meta Tags -->
+        <title>Contact — Absurd Industries</title>
+        <meta name="title" content="Contact — Absurd Industries" />
+        <meta
+            name="description"
+            content="Get in touch with Absurd Industries — email, WhatsApp, and where to find our lab in Bengaluru."
+        />
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta
+            property="og:url"
+            content="https://absurd.industries/contact.html"
+        />
+        <meta property="og:title" content="Contact — Absurd Industries" />
+        <meta
+            property="og:description"
+            content="Get in touch with Absurd Industries — email, WhatsApp, and where to find our lab in Bengaluru."
+        />
+        <meta
+            property="og:image"
+            content="https://absurd.industries/assets/images/meta.jpg"
+        />
+
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta
+            property="twitter:url"
+            content="https://absurd.industries/contact.html"
+        />
+        <meta property="twitter:title" content="Contact — Absurd Industries" />
+        <meta
+            property="twitter:description"
+            content="Get in touch with Absurd Industries — email, WhatsApp, and where to find our lab in Bengaluru."
+        />
+        <meta
+            property="twitter:image"
+            content="https://absurd.industries/assets/images/meta.jpg"
+        />
+
+        <!-- Favicon -->
+        <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="/assets/favicon/apple-touch-icon.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/assets/favicon/favicon-32x32.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/assets/favicon/favicon-16x16.png"
+        />
+        <link rel="manifest" href="/assets/favicon/site.webmanifest" />
+        <link
+            rel="mask-icon"
+            href="/assets/favicon/safari-pinned-tab.svg"
+            color="#141414"
+        />
+        <link rel="shortcut icon" href="/assets/favicon/favicon.ico" />
+        <meta name="theme-color" content="#d4b896" />
+
+        <!-- Fonts: Fraunces (display) + DM Sans (body) + Space Mono (stamps) -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Space+Mono:wght@400;700&display=swap"
+            rel="stylesheet"
+        />
+
+        <!-- Icons -->
+        <script
+            src="https://kit.fontawesome.com/e0c6d65845.js"
+            crossorigin="anonymous"
+        ></script>
+        <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+
+        <!-- Tailwind -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            kraft: {
+                                DEFAULT: "#D4B896",
+                                light: "#E8D5B7",
+                                dark: "#B8956A",
+                            },
+                            ink: { DEFAULT: "#1A1A1A", light: "#3D3D3D" },
+                            stamp: { DEFAULT: "#FF5900", dark: "#CC4700" },
+                            tape: "#F5E6C8",
+                            paper: "#FAF3E8",
+                            stencil: "#6B5B4A",
+                            funded: "#2A5F41",
+                        },
+                        fontFamily: {
+                            serif: ['"Fraunces"', "Georgia", "serif"],
+                            sans: ['"DM Sans"', "system-ui", "sans-serif"],
+                            mono: ['"Space Mono"', "monospace"],
+                        },
+                    },
+                },
+            };
+        </script>
+        <link rel="stylesheet" href="/style.css" />
+    </head>
+
+    <body class="font-sans text-ink min-h-screen">
+        <!-- SVG torn-edge filter -->
+        <svg width="0" height="0" style="position: absolute">
+            <filter id="torn-edge-filter">
+                <feTurbulence
+                    type="turbulence"
+                    baseFrequency="0.04"
+                    numOctaves="5"
+                    result="t"
+                />
+                <feDisplacementMap
+                    in="SourceGraphic"
+                    in2="t"
+                    scale="6"
+                    xChannelSelector="R"
+                    yChannelSelector="G"
+                />
+            </filter>
+            <filter id="torn-edge-filter-2">
+                <feTurbulence
+                    type="turbulence"
+                    baseFrequency="0.035"
+                    numOctaves="4"
+                    seed="2"
+                    result="t"
+                />
+                <feDisplacementMap
+                    in="SourceGraphic"
+                    in2="t"
+                    scale="7"
+                    xChannelSelector="R"
+                    yChannelSelector="G"
+                />
+            </filter>
+            <filter id="torn-edge-filter-3">
+                <feTurbulence
+                    type="turbulence"
+                    baseFrequency="0.045"
+                    numOctaves="5"
+                    seed="5"
+                    result="t"
+                />
+                <feDisplacementMap
+                    in="SourceGraphic"
+                    in2="t"
+                    scale="5"
+                    xChannelSelector="R"
+                    yChannelSelector="G"
+                />
+            </filter>
+        </svg>
+
+        <!-- Header: logo strip -->
+        <header class="site-header">
+            <div class="max-w-6xl mx-auto px-4 md:px-6 mt-24 pb-2">
+                <div class="menu-band">
+                    <a
+                        href="/"
+                        class="site-logo"
+                        aria-label="Absurd Industries home"
+                    >
+                        <img
+                            src="/assets/brand/absurd-industries-logo.png"
+                            alt="Absurd Industries"
+                        />
+                    </a>
+                    <nav
+                        class="top-nav hidden md:flex items-center gap-1 ml-auto"
+                    >
+                        <a href="/hardware-devroom/">Devroom</a>
+                        <a href="https://ooru.build">Ooru</a>
+                        <a href="https://shop.absurd.industries/">Shop</a>
+                        <a
+                            href="https://discord.gg/DUSUtguG2H"
+                            target="_blank"
+                            class="nav-discord"
+                            ><i class="ph-bold ph-discord-logo"></i>
+                            Community</a
+                        >
+                    </nav>
+                    <a
+                        href="https://discord.gg/DUSUtguG2H"
+                        target="_blank"
+                        class="nav-discord nav-discord-mobile md:hidden ml-auto"
+                        ><i class="ph-bold ph-discord-logo"></i> Community</a
+                    >
+                </div>
+            </div>
+        </header>
+
+        <!-- Title -->
+        <section class="max-w-3xl mx-auto px-4 md:px-6 pt-10 md:pt-14">
+            <div class="stamp-label mb-4">Say Hello</div>
+            <h1
+                class="font-serif font-black text-4xl md:text-6xl text-ink mb-3"
+            >
+                Contact
+            </h1>
+            <p class="font-serif text-lg md:text-2xl text-ink-light">
+                Questions, ideas, or just want to say hi? We’re easy to reach.
+            </p>
+        </section>
+
+        <!-- Content -->
+        <section class="max-w-3xl mx-auto px-4 md:px-6 py-10 md:py-14">
+            <div class="torn-card">
+                <div class="tape-piece"></div>
+                <div class="torn-bg"></div>
+                <div class="torn-content legal p-6 md:p-12">
+                    <h2>Need a Hand?</h2>
+                    <p>
+                        Drop us an email at
+                        <a href="mailto:amit@absurd.industries"
+                            >amit@absurd.industries</a
+                        >
+                        or ping on WhatsApp at
+                        <a href="https://wa.me/9892836471">+91 98928 36471</a>.
+                    </p>
+
+                    <hr />
+
+                    <h2>This is where it all happens</h2>
+                    <address>
+                        <strong
+                            >Absurd Explorations (OPC) Private Limited</strong
+                        ><br />
+                        <em>Registered</em>: #609 Binnamangala, 5th Floor, 17th
+                        B Cross 2nd Stage, Indiranagar, Bengaluru, Karnataka,
+                        India, 560038<br />
+                        <em>Lab</em>: B207, Third Floor, Block B, Adithi Elite,
+                        Bhoganhalli, Bengaluru, Karnataka 560103
+                    </address>
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.7057212243412!2d77.6931389105467!3d12.926625887332058!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1304ac27c575%3A0x5ac296fdcfb473d7!2sabsurd.industries!5e0!3m2!1sen!2sin!4v1720654248811!5m2!1sen!2sin"
+                        height="320"
+                        style="border: 0"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                    ></iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer-wrap">
+            <div class="max-w-5xl mx-auto px-5 sm:px-6">
+                <div class="flex flex-col items-center mb-8 pt-2">
+                    <a
+                        href="/"
+                        class="footer-logo"
+                        aria-label="Absurd Industries home"
+                    >
+                        <img
+                            src="/hardware-devroom/images/absurd-logo-for-any-background.png"
+                            alt="Absurd Industries"
+                        />
+                    </a>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-col">
+                        <h4 class="footer-heading">Make</h4>
+                        <a href="/hardware-devroom/"
+                            ><i class="ph-duotone ph-broadcast"></i>
+                            <span>Devroom</span></a
+                        >
+                        <a href="https://ooru.build"
+                            ><i class="ph-duotone ph-rocket-launch"></i>
+                            <span>Ooru</span></a
+                        >
+                        <a href="https://shop.absurd.industries/"
+                            ><i class="ph-duotone ph-storefront"></i>
+                            <span>Shop</span></a
+                        >
+                    </div>
+                    <div class="footer-col">
+                        <h4 class="footer-heading">Community</h4>
+                        <a
+                            href="https://discord.gg/DUSUtguG2H"
+                            target="_blank"
+                            rel="noopener"
+                            ><i class="ph-duotone ph-discord-logo"></i>
+                            <span>Discord</span></a
+                        >
+                        <a
+                            href="https://www.instagram.com/absurd.science/"
+                            target="_blank"
+                            rel="noopener"
+                            ><i class="ph-duotone ph-instagram-logo"></i>
+                            <span>Instagram</span></a
+                        >
+                        <a
+                            href="https://www.youtube.com/@absurd.industries"
+                            target="_blank"
+                            rel="noopener"
+                            ><i class="ph-duotone ph-youtube-logo"></i>
+                            <span>YouTube</span></a
+                        >
+                        <a
+                            href="https://www.linkedin.com/company/absurd-explorations/"
+                            target="_blank"
+                            rel="noopener"
+                            ><i class="ph-duotone ph-linkedin-logo"></i>
+                            <span>LinkedIn</span></a
+                        >
+                    </div>
+                    <div class="footer-col">
+                        <h4 class="footer-heading">More</h4>
+                        <a href="/policies.html"
+                            ><i class="ph-duotone ph-truck"></i>
+                            <span>Refund &amp; Shipping</span></a
+                        >
+                        <a href="/privacy-policy.html"
+                            ><i class="ph-duotone ph-lock"></i>
+                            <span>Privacy</span></a
+                        >
+                        <a href="/terms-and-conditions.html"
+                            ><i class="ph-duotone ph-file-text"></i>
+                            <span>Terms</span></a
+                        >
+                        <a href="/contact.html"
+                            ><i class="ph-duotone ph-envelope-simple"></i>
+                            <span>Contact</span></a
+                        >
+                        <a href="/2025/"
+                            ><i
+                                class="ph-duotone ph-clock-counter-clockwise"
+                            ></i>
+                            <span>Old Website</span></a
+                        >
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p class="text-xs text-stencil">
+                        <span class="copyleft">&#127744;</span> Copyleft Absurd
+                        Explorations (OPC) Private Limited. Fueled by chaos in
+                        Bengaluru, India.
+                    </p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Mobile bottom bar -->
+        <nav class="mobile-bar md:hidden">
+            <div class="grid grid-cols-4">
+                <a href="/hardware-devroom/">
+                    <i class="ph-bold ph-broadcast"></i><span>Devroom</span>
+                </a>
+                <a href="https://ooru.build">
+                    <i class="ph-bold ph-cube"></i><span>Ooru</span>
+                </a>
+                <a href="https://shop.absurd.industries/" target="_blank">
+                    <i class="ph-bold ph-storefront"></i><span>Shop</span>
+                </a>
+                <a href="https://discord.gg/DUSUtguG2H" target="_blank">
+                    <i class="ph-bold ph-discord-logo"></i><span>Discord</span>
+                </a>
+            </div>
+        </nav>
+    </body>
+</html>

@@ -118,606 +118,7 @@
             };
         </script>
 
-        <style>
-            html,
-            html,
-            body {
-                overflow-x: hidden;
-            }
-            body {
-                background-color: #d4b896;
-                background-image: url("/hardware-devroom/images/kraft-paper.jpg");
-                background-repeat: repeat;
-                background-size: auto;
-            }
-
-            /* ── torn-paper cards (feTurbulence displacement) ── */
-            .torn-card {
-                position: relative;
-            }
-            .torn-card > .torn-bg {
-                position: absolute;
-                inset: 0;
-                background: #faf3e8;
-                filter: url(#torn-edge-filter);
-                z-index: 0;
-            }
-            .torn-card > .torn-bg-kraft {
-                position: absolute;
-                inset: 0;
-                background: #e8d5b7;
-                filter: url(#torn-edge-filter);
-                z-index: 0;
-            }
-            .torn-card > .torn-bg-ink {
-                position: absolute;
-                inset: 0;
-                background: #1a1a1a;
-                filter: url(#torn-edge-filter);
-                z-index: 0;
-            }
-            .torn-card > .torn-content {
-                position: relative;
-                z-index: 1;
-            }
-            .torn-grid > .torn-card:nth-child(3n + 2) > .torn-bg,
-            .torn-grid > .torn-card:nth-child(3n + 2) > .torn-bg-kraft,
-            .torn-grid > .torn-card:nth-child(3n + 2) > .torn-bg-ink {
-                filter: url(#torn-edge-filter-2);
-            }
-            .torn-grid > .torn-card:nth-child(3n + 3) > .torn-bg,
-            .torn-grid > .torn-card:nth-child(3n + 3) > .torn-bg-kraft,
-            .torn-grid > .torn-card:nth-child(3n + 3) > .torn-bg-ink {
-                filter: url(#torn-edge-filter-3);
-            }
-            .torn-divider {
-                height: 10px;
-                margin: 0 auto;
-                max-width: 80%;
-                background: #b8956a;
-                filter: url(#torn-edge-filter);
-                opacity: 0.5;
-            }
-            .tape-piece {
-                position: absolute;
-                top: -16px;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 120px;
-                height: 32px;
-                background-image: url("/hardware-devroom/images/paper-tape.webp");
-                background-size: cover;
-                background-position: center;
-                z-index: 2;
-                opacity: 0.9;
-            }
-
-            /* ── stamps + labels ── */
-            .stamp-label {
-                display: inline-block;
-                padding: 0.3rem 0.85rem;
-                border: 2px solid #1a1a1a;
-                color: #1a1a1a;
-                font-family: "Space Mono", monospace;
-                font-weight: 700;
-                font-size: 0.85rem;
-                text-transform: uppercase;
-                letter-spacing: 0.15em;
-            }
-            .stat-chip {
-                display: inline-flex;
-                align-items: center;
-                gap: 0.45rem;
-                font-family: "Space Mono", monospace;
-                font-weight: 700;
-                font-size: 0.72rem;
-                text-transform: uppercase;
-                letter-spacing: 0.08em;
-                color: #1a1a1a;
-                border: 2px solid #1a1a1a;
-                padding: 0.35rem 0.75rem;
-                background: #faf3e8;
-            }
-            .stat-chip i {
-                color: #ff5900;
-            }
-            .postal-stamp {
-                width: 104px;
-                height: 104px;
-                border: 3px solid #1a1a1a;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-direction: column;
-                opacity: 0.4;
-                outline: 2px solid #1a1a1a;
-                outline-offset: 4px;
-                font-family: "Space Mono", monospace;
-                font-weight: 700;
-                font-size: 0.58rem;
-                text-transform: uppercase;
-                color: #1a1a1a;
-                letter-spacing: 0.1em;
-                text-align: center;
-                line-height: 1.3;
-            }
-
-            /* ── shipping-label buttons ── */
-            .label-btn {
-                position: relative;
-                display: inline-flex;
-                align-items: center;
-                background: #faf3e8;
-                border: 2px dashed #1a1a1a;
-                padding: 0.85rem 1.5rem 0.85rem 2.75rem;
-                font-family: "Space Mono", monospace;
-                font-weight: 700;
-                text-transform: uppercase;
-                letter-spacing: 0.1em;
-                font-size: 0.875rem;
-                color: #1a1a1a;
-                text-decoration: none;
-                transition:
-                    transform 0.2s ease,
-                    box-shadow 0.2s ease;
-            }
-            .label-btn::before {
-                content: "";
-                position: absolute;
-                left: 14px;
-                top: 50%;
-                transform: translateY(-50%);
-                width: 12px;
-                height: 12px;
-                border: 2px solid #1a1a1a;
-                border-radius: 50%;
-            }
-            .label-btn:hover {
-                transform: translateY(-3px);
-                box-shadow: 3px 5px 0 rgba(0, 0, 0, 0.12);
-            }
-            .label-btn-primary {
-                background: #1a1a1a;
-                color: #faf3e8;
-                border-color: #1a1a1a;
-                border-style: solid;
-            }
-            .label-btn-primary::before {
-                border-color: #faf3e8;
-            }
-            .label-btn-stamp {
-                background: #ff5900;
-                color: #faf3e8;
-                border-color: #ff5900;
-                border-style: solid;
-            }
-            .label-btn-stamp::before {
-                border-color: #faf3e8;
-            }
-            .label-btn-big {
-                padding: 1.1rem 2rem 1.1rem 3.25rem;
-                font-size: 1.05rem;
-            }
-            .label-btn-big::before {
-                left: 18px;
-                width: 16px;
-                height: 16px;
-            }
-
-            /* ── lift on hover ── */
-            .lift {
-                transition:
-                    transform 0.15s ease,
-                    box-shadow 0.15s ease;
-            }
-            .lift:hover {
-                transform: translateY(-3px);
-                box-shadow: 3px 5px 0 rgba(0, 0, 0, 0.1);
-            }
-            .checklist-item {
-                border-left: 4px solid #ff5900;
-            }
-
-            /* ── header: big slanted corner logo + darkish-brown menu band in the right corner (NOT fixed) ── */
-            .site-header {
-                position: relative;
-                z-index: 30;
-            }
-            /* full-width strip: logo pops over its left at an angle, nav rides the right */
-            .menu-band {
-                position: relative;
-                display: flex;
-                align-items: center;
-                min-height: 3.6rem;
-                padding: 0.4rem 0.8rem 0.4rem 10rem;
-                background: rgba(184, 149, 106, 0.55);
-                border: 1px solid rgba(26, 26, 26, 0.12);
-                border-radius: 99rem;
-                backdrop-filter: saturate(1.2) blur(6px);
-                -webkit-backdrop-filter: saturate(1.2) blur(6px);
-                box-shadow: 0 2px 8px rgba(26, 26, 26, 0.1);
-            }
-            .site-logo {
-                position: absolute;
-                left: 0.8rem;
-                top: 28%;
-                transform: translateY(-50%) rotate(-25deg);
-                transform-origin: center;
-                z-index: 40;
-                display: block;
-                line-height: 0;
-            }
-            .site-logo img {
-                width: 250px;
-                height: auto;
-                filter: drop-shadow(2px 5px 7px rgba(26, 26, 26, 0.3));
-            }
-            @media (max-width: 767px) {
-                .menu-band {
-                    min-height: 3rem;
-                    padding-left: 6.75rem;
-                }
-                .site-logo {
-                    left: 0.4rem;
-                    transform: translateY(-50%) rotate(-11deg);
-                }
-                .site-logo img {
-                    width: 104px;
-                }
-            }
-            .top-nav a {
-                font-family: "DM Sans", system-ui, sans-serif;
-                font-weight: 600;
-                font-size: 0.9rem;
-                color: #1a1a1a;
-                text-decoration: none;
-                padding: 0.4rem 0.8rem;
-                border-radius: 0.5rem;
-                transition:
-                    color 0.15s,
-                    background 0.15s;
-            }
-            .top-nav a:hover {
-                color: #ff5900;
-            }
-            .top-nav a.nav-discord {
-                display: inline-flex;
-                align-items: center;
-                gap: 0.4rem;
-                margin-left: 0.4rem;
-                padding: 0.45rem 0.95rem;
-                border-radius: 999px;
-                background: #ff5900;
-                color: #faf3e8;
-                transition:
-                    background 0.15s,
-                    transform 0.15s;
-            }
-            .top-nav a.nav-discord:hover {
-                background: #cc4700;
-                color: #faf3e8;
-                transform: translateY(-1px);
-            }
-            .nav-discord-mobile {
-                font-family: "DM Sans", system-ui, sans-serif;
-                font-weight: 600;
-                font-size: 0.8rem;
-                white-space: nowrap;
-                padding: 0.4rem 0.75rem;
-                margin-right: 0.1rem;
-            }
-
-            /* ── mobile bottom bar ── */
-            .mobile-bar {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                background: #1a1a1a;
-                z-index: 50;
-                box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
-            }
-            .mobile-bar a {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                padding: 12px 0;
-                color: #faf3e8;
-                text-decoration: none;
-                font-family: "Space Mono", monospace;
-                font-size: 0.7rem;
-                font-weight: 700;
-                text-transform: uppercase;
-                letter-spacing: 0.05em;
-                transition: color 0.15s;
-            }
-            .mobile-bar a:hover,
-            .mobile-bar a:active {
-                color: #ff5900;
-            }
-            .mobile-bar a i {
-                font-size: 1.3rem;
-                margin-bottom: 4px;
-            }
-            .copyleft {
-                display: inline-block;
-                transform: rotate(180deg);
-            }
-
-            /* ── footer (ooru-style: light kraft band, icon links) ── */
-            .footer-wrap {
-                background: rgba(184, 149, 106, 0.35);
-                padding: 2.5rem 0 0;
-                border-top: 1px solid rgba(26, 26, 26, 0.06);
-                margin-top: 2rem;
-            }
-            .footer-links {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 1.5rem;
-                margin-bottom: 1rem;
-            }
-            @media (max-width: 480px) {
-                .footer-links {
-                    grid-template-columns: 1fr 1fr;
-                    gap: 1.25rem;
-                }
-                .footer-links .footer-col:last-child {
-                    grid-column: span 2;
-                }
-            }
-            .footer-col {
-                display: flex;
-                flex-direction: column;
-                gap: 0.1rem;
-            }
-            .footer-heading {
-                font-family: "Space Mono", monospace;
-                font-size: 0.65rem;
-                font-weight: 700;
-                text-transform: uppercase;
-                letter-spacing: 0.12em;
-                color: #4a3d2f;
-                margin-bottom: 0.35rem;
-            }
-            .footer-col a {
-                display: inline-flex;
-                align-items: center;
-                gap: 0.5rem;
-                font-family: "DM Sans", system-ui, sans-serif;
-                font-size: 0.85rem;
-                font-weight: 500;
-                color: #1a1a1a;
-                text-decoration: none;
-                transition: color 0.15s;
-                padding: 0.3rem 0;
-            }
-            .footer-col a:hover {
-                color: #ff5900;
-            }
-            .footer-col a i {
-                font-size: 1.15rem;
-                color: #4a3d2f;
-                width: 1.2rem;
-                text-align: center;
-                flex-shrink: 0;
-                transition: color 0.15s;
-            }
-            .footer-col a:hover i {
-                color: #ff5900;
-            }
-            .footer-bottom {
-                border-top: 1px solid rgba(26, 26, 26, 0.08);
-                margin-top: 1rem;
-                padding: 1rem 0;
-                text-align: center;
-            }
-            @media (max-width: 767px) {
-                body {
-                    padding-bottom: 80px;
-                }
-            }
-            @media (prefers-reduced-motion: reduce) {
-                .friends-marquee {
-                    animation: none;
-                }
-            }
-
-            /* ── community emblem (à la ooru) ── */
-            .tools-emblem {
-                position: absolute;
-                pointer-events: none;
-                user-select: none;
-                z-index: 0;
-            }
-            .cta-emblem {
-                width: 330px;
-                right: -30px;
-                top: 50%;
-                transform: translateY(-50%) rotate(30deg);
-                opacity: 0.16;
-            }
-
-            /* ── video gallery + lightbox ── */
-            .video-card {
-                appearance: none;
-                background: transparent;
-                border: 0;
-                padding: 0;
-                width: 100%;
-                cursor: pointer;
-                text-align: left;
-            }
-            /* scattered "cards on a table" layout */
-            .video-scatter {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                align-items: center;
-                padding: 1rem 0 2rem;
-            }
-            .video-scatter .video-card {
-                width: clamp(180px, 26vw, 280px);
-                max-width: 92vw;
-                margin: 6px;
-                position: relative;
-                z-index: 1;
-                transform: rotate(var(--rot, 0deg)) translateY(var(--ty, 0px));
-                transition:
-                    transform 0.25s ease,
-                    filter 0.25s ease;
-                filter: drop-shadow(2px 4px 7px rgba(26, 26, 26, 0.18));
-            }
-            .video-scatter .video-card:hover,
-            .video-scatter .video-card:focus-visible {
-                transform: rotate(0deg) translateY(-8px) scale(1.07);
-                z-index: 30;
-                filter: drop-shadow(3px 8px 14px rgba(26, 26, 26, 0.3));
-            }
-            .video-scatter .p-4 {
-                display: none;
-            }
-
-            /* ── buttons (ooru-style) ── */
-            .btn {
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                gap: 0.4rem;
-                padding: 0.7rem 1.6rem;
-                font-family: "DM Sans", system-ui, sans-serif;
-                font-weight: 600;
-                font-size: 0.875rem;
-                letter-spacing: 0.01em;
-                border-radius: 0.625rem;
-                text-decoration: none;
-                cursor: pointer;
-                border: none;
-                transition:
-                    transform 0.15s ease,
-                    box-shadow 0.15s ease,
-                    background 0.15s ease;
-            }
-            .btn:hover {
-                transform: translateY(-1px);
-            }
-            .btn-stamp {
-                background: #ff5900;
-                color: #faf3e8;
-            }
-            .btn-stamp:hover {
-                box-shadow: 0 4px 12px rgba(255, 89, 0, 0.25);
-            }
-
-            /* ── friends marquee (à la ooru) ── */
-            .friends-marquee-wrapper {
-                overflow: hidden;
-                width: 100%;
-                mask-image: linear-gradient(
-                    to right,
-                    transparent,
-                    black 5%,
-                    black 95%,
-                    transparent
-                );
-                -webkit-mask-image: linear-gradient(
-                    to right,
-                    transparent,
-                    black 5%,
-                    black 95%,
-                    transparent
-                );
-            }
-            .friends-marquee {
-                display: flex;
-                gap: 3rem;
-                width: max-content;
-                animation: marquee-scroll 25s linear infinite;
-            }
-            .friends-marquee:hover {
-                animation-play-state: paused;
-            }
-            .friend-item {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 0.35rem;
-                text-decoration: none;
-                flex-shrink: 0;
-                opacity: 0.7;
-                transition: opacity 0.2s;
-            }
-            .friend-item:hover {
-                opacity: 1;
-            }
-            .friend-item img {
-                border-radius: 6px;
-            }
-            @keyframes marquee-scroll {
-                from {
-                    transform: translateX(0);
-                }
-                to {
-                    transform: translateX(-50%);
-                }
-            }
-
-            /* footer logo — slanted like the internal pages, no wordmark */
-            .footer-logo {
-                display: inline-block;
-                line-height: 0;
-            }
-            .footer-logo img {
-                width: 204px;
-                height: auto;
-                transform: rotate(-14deg);
-                filter: drop-shadow(2px 4px 6px rgba(26, 26, 26, 0.22));
-            }
-            .video-modal {
-                position: fixed;
-                inset: 0;
-                z-index: 100;
-                display: none;
-                align-items: center;
-                justify-content: center;
-                background: rgba(26, 26, 26, 0.88);
-                padding: 1rem;
-            }
-            .video-modal.open {
-                display: flex;
-            }
-            .video-modal-inner {
-                position: relative;
-                width: min(92vw, 920px);
-            }
-            .video-modal-frame {
-                position: relative;
-                aspect-ratio: 16 / 9;
-                background: #000;
-                border: 3px solid #faf3e8;
-            }
-            .video-modal-frame iframe {
-                position: absolute;
-                inset: 0;
-                width: 100%;
-                height: 100%;
-                border: 0;
-            }
-            .video-modal-close {
-                position: absolute;
-                top: -2.8rem;
-                right: 0;
-                background: none;
-                border: none;
-                color: #faf3e8;
-                font-size: 2rem;
-                line-height: 1;
-                cursor: pointer;
-                font-family: "Space Mono", monospace;
-            }
-        </style>
+        <link rel="stylesheet" href="/style.css" />
     </head>
 
     <body class="font-sans text-ink min-h-screen">
@@ -774,7 +175,9 @@
 
         <!-- ── Header / nav ── -->
         <header class="site-header">
-            <div class="max-w-6xl mx-auto px-4 md:px-6 pt-6 pb-2 mt-24">
+            <div
+                class="max-w-6xl mx-auto px-4 md:px-6 pt-6 pb-2 mt-12 md:mt-24"
+            >
                 <div class="menu-band">
                     <a
                         href="/"
@@ -782,7 +185,7 @@
                         aria-label="Absurd Industries home"
                     >
                         <img
-                            src="/absurd-industries-logo.png"
+                            src="/assets/brand/absurd-industries-logo.png"
                             alt="Absurd Industries"
                         />
                     </a>
@@ -811,7 +214,7 @@
         </header>
 
         <!-- ── Hero ── -->
-        <section class="max-w-4xl mx-auto px-4 md:px-6 py-10 md:py-20">
+        <section class="max-w-4xl mx-auto px-12 md:px-6 py-10 md:py-20">
             <div class="relative max-w-2xl mt-12">
                 <h1
                     class="font-serif font-black text-3xl sm:text-4xl md:text-5xl text-ink mb-4"
@@ -1451,6 +854,23 @@
                         >
                     </a>
                     <a
+                        href="https://www.isfixable.com/"
+                        target="_blank"
+                        rel="noopener"
+                        class="friend-item"
+                        title="isFixable"
+                    >
+                        <img
+                            src="/hardware-devroom/images/partners/isfixable.svg"
+                            alt="isFixable"
+                            class="h-8 sm:h-10 object-contain"
+                            loading="lazy"
+                        />
+                        <span class="text-xs font-semibold text-ink"
+                            >isFixable</span
+                        >
+                    </a>
+                    <a
                         href="https://pcbcupid.com"
                         target="_blank"
                         rel="noopener"
@@ -1556,12 +976,297 @@
                     >
                         <img
                             src="/hardware-devroom/images/partners/mecha.svg"
-                            alt="Mecha"
+                            alt=""
                             class="h-8 sm:h-10 object-contain"
                             loading="lazy"
                         />
                         <span class="text-xs font-semibold text-ink"
                             >Mecha</span
+                        >
+                    </a>
+                    <a
+                        href="https://www.isfixable.com/"
+                        target="_blank"
+                        rel="noopener"
+                        class="friend-item"
+                        aria-hidden="true"
+                        tabindex="-1"
+                        title="isFixable"
+                    >
+                        <img
+                            src="/hardware-devroom/images/partners/isfixable.svg"
+                            alt=""
+                            class="h-8 sm:h-10 object-contain"
+                            loading="lazy"
+                        />
+                        <span class="text-xs font-semibold text-ink"
+                            >isFixable</span
+                        >
+                    </a>
+                    <a
+                        href="https://pcbcupid.com"
+                        target="_blank"
+                        rel="noopener"
+                        class="friend-item"
+                        aria-hidden="true"
+                        tabindex="-1"
+                        title="PCB Cupid"
+                    >
+                        <img
+                            src="/hardware-devroom/images/partners/pcb-cupid.png"
+                            alt=""
+                            class="h-8 sm:h-10 object-contain"
+                            loading="lazy"
+                        />
+                        <span class="text-xs font-semibold text-ink"
+                            >PCB Cupid</span
+                        >
+                    </a>
+                    <a
+                        href="https://ampere.works"
+                        target="_blank"
+                        rel="noopener"
+                        class="friend-item"
+                        aria-hidden="true"
+                        tabindex="-1"
+                        title="ampere.works"
+                    >
+                        <img
+                            src="/hardware-devroom/images/partners/ampere-works.png"
+                            alt=""
+                            class="h-8 sm:h-10 object-contain"
+                            loading="lazy"
+                        />
+                        <span class="text-xs font-semibold text-ink"
+                            >ampere.works</span
+                        >
+                    </a>
+                    <a
+                        href="https://uservader.com"
+                        target="_blank"
+                        rel="noopener"
+                        class="friend-item"
+                        aria-hidden="true"
+                        tabindex="-1"
+                        title="Vader"
+                    >
+                        <img
+                            src="/hardware-devroom/images/partners/vader.png"
+                            alt=""
+                            class="h-8 sm:h-10 object-contain"
+                            loading="lazy"
+                        />
+                        <span class="text-xs font-semibold text-ink"
+                            >Vader</span
+                        >
+                    </a>
+                    <a
+                        href="https://makerville.io"
+                        target="_blank"
+                        rel="noopener"
+                        class="friend-item"
+                        aria-hidden="true"
+                        tabindex="-1"
+                        title="Makerville"
+                    >
+                        <img
+                            src="/hardware-devroom/images/partners/makerville.svg"
+                            alt=""
+                            class="h-8 sm:h-10 object-contain"
+                            loading="lazy"
+                        />
+                        <span class="text-xs font-semibold text-ink"
+                            >Makerville</span
+                        >
+                    </a>
+                    <a
+                        href="https://fossunited.org"
+                        target="_blank"
+                        rel="noopener"
+                        class="friend-item"
+                        aria-hidden="true"
+                        tabindex="-1"
+                        title="FOSS United"
+                    >
+                        <img
+                            src="/hardware-devroom/images/partners/foss-united.svg"
+                            alt=""
+                            class="h-8 sm:h-10 object-contain"
+                            loading="lazy"
+                        />
+                        <span class="text-xs font-semibold text-ink"
+                            >FOSS United</span
+                        >
+                    </a>
+                    <a
+                        href="https://mecha.so/"
+                        target="_blank"
+                        rel="noopener"
+                        class="friend-item"
+                        aria-hidden="true"
+                        tabindex="-1"
+                        title="Mecha"
+                    >
+                        <img
+                            src="/hardware-devroom/images/partners/mecha.svg"
+                            alt=""
+                            class="h-8 sm:h-10 object-contain"
+                            loading="lazy"
+                        />
+                        <span class="text-xs font-semibold text-ink"
+                            >Mecha</span
+                        >
+                    </a>
+                    <a
+                        href="https://www.isfixable.com/"
+                        target="_blank"
+                        rel="noopener"
+                        class="friend-item"
+                        aria-hidden="true"
+                        tabindex="-1"
+                        title="isFixable"
+                    >
+                        <img
+                            src="/hardware-devroom/images/partners/isfixable.svg"
+                            alt=""
+                            class="h-8 sm:h-10 object-contain"
+                            loading="lazy"
+                        />
+                        <span class="text-xs font-semibold text-ink"
+                            >isFixable</span
+                        >
+                    </a>
+                    <a
+                        href="https://pcbcupid.com"
+                        target="_blank"
+                        rel="noopener"
+                        class="friend-item"
+                        aria-hidden="true"
+                        tabindex="-1"
+                        title="PCB Cupid"
+                    >
+                        <img
+                            src="/hardware-devroom/images/partners/pcb-cupid.png"
+                            alt=""
+                            class="h-8 sm:h-10 object-contain"
+                            loading="lazy"
+                        />
+                        <span class="text-xs font-semibold text-ink"
+                            >PCB Cupid</span
+                        >
+                    </a>
+                    <a
+                        href="https://ampere.works"
+                        target="_blank"
+                        rel="noopener"
+                        class="friend-item"
+                        aria-hidden="true"
+                        tabindex="-1"
+                        title="ampere.works"
+                    >
+                        <img
+                            src="/hardware-devroom/images/partners/ampere-works.png"
+                            alt=""
+                            class="h-8 sm:h-10 object-contain"
+                            loading="lazy"
+                        />
+                        <span class="text-xs font-semibold text-ink"
+                            >ampere.works</span
+                        >
+                    </a>
+                    <a
+                        href="https://uservader.com"
+                        target="_blank"
+                        rel="noopener"
+                        class="friend-item"
+                        aria-hidden="true"
+                        tabindex="-1"
+                        title="Vader"
+                    >
+                        <img
+                            src="/hardware-devroom/images/partners/vader.png"
+                            alt=""
+                            class="h-8 sm:h-10 object-contain"
+                            loading="lazy"
+                        />
+                        <span class="text-xs font-semibold text-ink"
+                            >Vader</span
+                        >
+                    </a>
+                    <a
+                        href="https://makerville.io"
+                        target="_blank"
+                        rel="noopener"
+                        class="friend-item"
+                        aria-hidden="true"
+                        tabindex="-1"
+                        title="Makerville"
+                    >
+                        <img
+                            src="/hardware-devroom/images/partners/makerville.svg"
+                            alt=""
+                            class="h-8 sm:h-10 object-contain"
+                            loading="lazy"
+                        />
+                        <span class="text-xs font-semibold text-ink"
+                            >Makerville</span
+                        >
+                    </a>
+                    <a
+                        href="https://fossunited.org"
+                        target="_blank"
+                        rel="noopener"
+                        class="friend-item"
+                        aria-hidden="true"
+                        tabindex="-1"
+                        title="FOSS United"
+                    >
+                        <img
+                            src="/hardware-devroom/images/partners/foss-united.svg"
+                            alt=""
+                            class="h-8 sm:h-10 object-contain"
+                            loading="lazy"
+                        />
+                        <span class="text-xs font-semibold text-ink"
+                            >FOSS United</span
+                        >
+                    </a>
+                    <a
+                        href="https://mecha.so/"
+                        target="_blank"
+                        rel="noopener"
+                        class="friend-item"
+                        aria-hidden="true"
+                        tabindex="-1"
+                        title="Mecha"
+                    >
+                        <img
+                            src="/hardware-devroom/images/partners/mecha.svg"
+                            alt=""
+                            class="h-8 sm:h-10 object-contain"
+                            loading="lazy"
+                        />
+                        <span class="text-xs font-semibold text-ink"
+                            >Mecha</span
+                        >
+                    </a>
+                    <a
+                        href="https://www.isfixable.com/"
+                        target="_blank"
+                        rel="noopener"
+                        class="friend-item"
+                        aria-hidden="true"
+                        tabindex="-1"
+                        title="isFixable"
+                    >
+                        <img
+                            src="/hardware-devroom/images/partners/isfixable.svg"
+                            alt=""
+                            class="h-8 sm:h-10 object-contain"
+                            loading="lazy"
+                        />
+                        <span class="text-xs font-semibold text-ink"
+                            >isFixable</span
                         >
                     </a>
                 </div>
@@ -1682,19 +1387,19 @@
                     </div>
                     <div class="footer-col">
                         <h4 class="footer-heading">More</h4>
-                        <a href="/policies.htm"
+                        <a href="/policies.html"
                             ><i class="ph-duotone ph-truck"></i>
                             <span>Refund &amp; Shipping</span></a
                         >
-                        <a href="/privacy-policy.htm"
+                        <a href="/privacy-policy.html"
                             ><i class="ph-duotone ph-lock"></i>
                             <span>Privacy</span></a
                         >
-                        <a href="/terms-and-conditions.htm"
+                        <a href="/terms-and-conditions.html"
                             ><i class="ph-duotone ph-file-text"></i>
                             <span>Terms</span></a
                         >
-                        <a href="/contact.htm"
+                        <a href="/contact.html"
                             ><i class="ph-duotone ph-envelope-simple"></i>
                             <span>Contact</span></a
                         >
