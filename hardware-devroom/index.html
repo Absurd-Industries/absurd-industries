@@ -72,7 +72,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
-            href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
             rel="stylesheet"
         />
 
@@ -108,8 +108,11 @@
                             tape: "#F5E6C8",
                             paper: "#FAF3E8",
                             stencil: "#6B5B4A",
+                            funded: "#2A5F41",
                         },
                         fontFamily: {
+                            serif: ['"Fraunces"', "Georgia", "serif"],
+                            sans: ['"DM Sans"', "system-ui", "sans-serif"],
                             mono: ['"Space Mono"', "monospace"],
                         },
                     },
@@ -117,9 +120,13 @@
             };
         </script>
         <style>
+            html,
+            body {
+                overflow-x: hidden;
+            }
             body {
                 background-color: #d4b896;
-                background-image: url("images/kraft-paper.jpg");
+                background-image: url("/hardware-devroom/images/kraft-paper.jpg");
                 background-repeat: repeat;
                 background-size: auto;
                 background-position: top left;
@@ -146,18 +153,28 @@
                 z-index: 0;
             }
 
+            .torn-card > .torn-bg-ink {
+                position: absolute;
+                inset: 0;
+                background: #1a1a1a;
+                filter: url(#torn-edge-filter);
+                z-index: 0;
+            }
+
             .torn-card > .torn-content {
                 position: relative;
                 z-index: 1;
             }
 
             .torn-grid > .torn-card:nth-child(3n + 2) > .torn-bg,
-            .torn-grid > .torn-card:nth-child(3n + 2) > .torn-bg-kraft {
+            .torn-grid > .torn-card:nth-child(3n + 2) > .torn-bg-kraft,
+            .torn-grid > .torn-card:nth-child(3n + 2) > .torn-bg-ink {
                 filter: url(#torn-edge-filter-2);
             }
 
             .torn-grid > .torn-card:nth-child(3n + 3) > .torn-bg,
-            .torn-grid > .torn-card:nth-child(3n + 3) > .torn-bg-kraft {
+            .torn-grid > .torn-card:nth-child(3n + 3) > .torn-bg-kraft,
+            .torn-grid > .torn-card:nth-child(3n + 3) > .torn-bg-ink {
                 filter: url(#torn-edge-filter-3);
             }
 
@@ -178,7 +195,7 @@
                 transform: translateX(-50%);
                 width: 120px;
                 height: 32px;
-                background-image: url("images/paper-tape.webp");
+                background-image: url("/hardware-devroom/images/paper-tape.webp");
                 background-size: cover;
                 background-position: center;
                 z-index: 2;
@@ -246,6 +263,17 @@
                 border-color: #faf3e8;
             }
 
+            .label-btn-stamp {
+                background: #ff5900;
+                color: #faf3e8;
+                border-color: #ff5900;
+                border-style: solid;
+            }
+
+            .label-btn-stamp::before {
+                border-color: #faf3e8;
+            }
+
             .label-btn-big {
                 padding: 1.1rem 2rem 1.1rem 3.25rem;
                 font-size: 1.1rem;
@@ -259,7 +287,38 @@
 
             /* Checklist items */
             .checklist-item {
-                border-left: 4px solid #1a1a1a;
+                border-left: 4px solid #ff5900;
+            }
+
+            /* Rounded stamp CTA buttons (match homepage) */
+            .btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.4rem;
+                padding: 0.7rem 1.6rem;
+                font-family: "DM Sans", system-ui, sans-serif;
+                font-weight: 600;
+                font-size: 0.875rem;
+                letter-spacing: 0.01em;
+                border-radius: 0.625rem;
+                text-decoration: none;
+                cursor: pointer;
+                border: none;
+                transition:
+                    transform 0.15s ease,
+                    box-shadow 0.15s ease,
+                    background 0.15s ease;
+            }
+            .btn:hover {
+                transform: translateY(-1px);
+            }
+            .btn-stamp {
+                background: #ff5900;
+                color: #faf3e8;
+            }
+            .btn-stamp:hover {
+                box-shadow: 0 4px 12px rgba(255, 89, 0, 0.25);
             }
 
             /* Topic cards */
@@ -328,7 +387,7 @@
             }
 
             .mobile-bar a i {
-                font-size: 1.4rem;
+                font-size: 1.3rem;
                 margin-bottom: 4px;
             }
 
@@ -467,14 +526,197 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+                justify-content: flex-start;
                 gap: 0.75rem;
+                width: 8rem;
                 text-decoration: none;
                 color: inherit;
                 transition: transform 0.15s ease;
             }
+            @media (min-width: 768px) {
+                .community-logo {
+                    width: 11rem;
+                }
+            }
 
             .community-logo:hover {
                 transform: translateY(-3px);
+            }
+
+            /* ── header: full-width logo strip (mirrors homepage) ── */
+            .site-header {
+                position: relative;
+                z-index: 30;
+            }
+            .menu-band {
+                position: relative;
+                display: flex;
+                align-items: center;
+                min-height: 3.6rem;
+                padding: 0.4rem 0.8rem 0.4rem 10rem;
+                background: rgba(184, 149, 106, 0.55);
+                border: 1px solid rgba(26, 26, 26, 0.12);
+                border-radius: 99rem;
+                backdrop-filter: saturate(1.2) blur(6px);
+                -webkit-backdrop-filter: saturate(1.2) blur(6px);
+                box-shadow: 0 2px 8px rgba(26, 26, 26, 0.1);
+            }
+            .site-logo {
+                position: absolute;
+                left: 0.8rem;
+                top: 28%;
+                transform: translateY(-50%) rotate(-25deg);
+                transform-origin: center;
+                z-index: 40;
+                display: block;
+                line-height: 0;
+            }
+            .site-logo img {
+                width: 250px;
+                height: auto;
+                filter: drop-shadow(2px 5px 7px rgba(26, 26, 26, 0.3));
+            }
+            @media (max-width: 767px) {
+                .menu-band {
+                    min-height: 3rem;
+                    padding-left: 6.75rem;
+                }
+                .site-logo {
+                    left: 0.4rem;
+                    transform: translateY(-50%) rotate(-11deg);
+                }
+                .site-logo img {
+                    width: 104px;
+                }
+            }
+            .top-nav a {
+                font-family: "DM Sans", system-ui, sans-serif;
+                font-weight: 600;
+                font-size: 0.9rem;
+                color: #1a1a1a;
+                text-decoration: none;
+                padding: 0.4rem 0.8rem;
+                border-radius: 0.5rem;
+                transition:
+                    color 0.15s,
+                    background 0.15s;
+            }
+            .top-nav a:hover {
+                color: #ff5900;
+            }
+            .top-nav a.nav-discord {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.4rem;
+                margin-left: 0.4rem;
+                padding: 0.45rem 0.95rem;
+                border-radius: 999px;
+                background: #ff5900;
+                color: #faf3e8;
+                transition:
+                    background 0.15s,
+                    transform 0.15s;
+            }
+            .top-nav a.nav-discord:hover {
+                background: #cc4700;
+                color: #faf3e8;
+                transform: translateY(-1px);
+            }
+            .nav-discord-mobile {
+                font-family: "DM Sans", system-ui, sans-serif;
+                font-weight: 600;
+                font-size: 0.8rem;
+                white-space: nowrap;
+                padding: 0.4rem 0.75rem;
+                margin-right: 0.1rem;
+            }
+
+            /* ── footer (mirrors homepage) ── */
+            .footer-wrap {
+                background: rgba(184, 149, 106, 0.35);
+                padding: 2.5rem 0 0;
+                border-top: 1px solid rgba(26, 26, 26, 0.06);
+                margin-top: 2rem;
+            }
+            .footer-links {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1.5rem;
+                margin-bottom: 1rem;
+            }
+            @media (max-width: 480px) {
+                .footer-links {
+                    grid-template-columns: 1fr 1fr;
+                    gap: 1.25rem;
+                }
+                .footer-links .footer-col:last-child {
+                    grid-column: span 2;
+                }
+            }
+            .footer-col {
+                display: flex;
+                flex-direction: column;
+                gap: 0.1rem;
+            }
+            .footer-heading {
+                font-family: "Space Mono", monospace;
+                font-size: 0.65rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.12em;
+                color: #4a3d2f;
+                margin-bottom: 0.35rem;
+            }
+            .footer-col a {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                font-family: "DM Sans", system-ui, sans-serif;
+                font-size: 0.85rem;
+                font-weight: 500;
+                color: #1a1a1a;
+                text-decoration: none;
+                transition: color 0.15s;
+                padding: 0.3rem 0;
+            }
+            .footer-col a:hover {
+                color: #ff5900;
+            }
+            .footer-col a i {
+                font-size: 1.15rem;
+                color: #4a3d2f;
+                width: 1.2rem;
+                text-align: center;
+                flex-shrink: 0;
+                transition: color 0.15s;
+            }
+            .footer-col a:hover i {
+                color: #ff5900;
+            }
+            .footer-logo {
+                display: inline-block;
+                line-height: 0;
+            }
+            .footer-logo img {
+                width: 204px;
+                height: auto;
+                transform: rotate(-14deg);
+                filter: drop-shadow(2px 4px 6px rgba(26, 26, 26, 0.22));
+            }
+            .footer-bottom {
+                border-top: 1px solid rgba(26, 26, 26, 0.08);
+                margin-top: 1rem;
+                padding: 1rem 0;
+                text-align: center;
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                .showcase-item {
+                    animation: none;
+                }
+                .showcase-item:nth-child(1) {
+                    opacity: 1;
+                }
             }
         </style>
     </head>
@@ -592,7 +834,7 @@
                                                 class="torn-content p-6 text-center"
                                             >
                                                 <img
-                                                    src="images/projects/corydora.png"
+                                                    src="/hardware-devroom/images/projects/corydora.png"
                                                     alt="CoryDora"
                                                 />
                                                 <h4
@@ -616,7 +858,7 @@
                                                 class="torn-content p-6 text-center"
                                             >
                                                 <img
-                                                    src="images/projects/makerville-badge.png"
+                                                    src="/hardware-devroom/images/projects/makerville-badge.png"
                                                     alt="Makervile Badge"
                                                 />
                                                 <h4
@@ -641,7 +883,7 @@
                                                 class="torn-content p-6 text-center"
                                             >
                                                 <img
-                                                    src="images/projects/lampy.png"
+                                                    src="/hardware-devroom/images/projects/lampy.png"
                                                     alt="Lampy"
                                                 />
                                                 <h4
@@ -665,7 +907,7 @@
                                                 class="torn-content p-6 text-center"
                                             >
                                                 <img
-                                                    src="images/projects/cube.png"
+                                                    src="/hardware-devroom/images/projects/cube.png"
                                                     alt="Minirack"
                                                 />
                                                 <h4
@@ -1178,7 +1420,7 @@
                                 style="min-height: 180px"
                             >
                                 <img
-                                    src="images/projects/corydora.png"
+                                    src="/hardware-devroom/images/projects/corydora.png"
                                     alt="CoryDora"
                                     class="max-h-40 object-contain"
                                 />
@@ -1208,7 +1450,7 @@
                                 style="min-height: 180px"
                             >
                                 <img
-                                    src="images/projects/makerville-badge.png"
+                                    src="/hardware-devroom/images/projects/makerville-badge.png"
                                     alt="Makerville Badge"
                                     class="max-h-40 object-contain"
                                 />
@@ -1238,7 +1480,7 @@
                                 style="min-height: 180px"
                             >
                                 <img
-                                    src="images/projects/jigita.png"
+                                    src="/hardware-devroom/images/projects/jigita.png"
                                     alt="JigIta"
                                     class="max-h-40 object-contain"
                                 />
@@ -1269,7 +1511,7 @@
                                 style="min-height: 180px"
                             >
                                 <img
-                                    src="images/projects/cube.png"
+                                    src="/hardware-devroom/images/projects/cube.png"
                                     alt="Minirack"
                                     class="max-h-40 object-contain"
                                 />
@@ -1296,7 +1538,7 @@
                                 style="min-height: 180px"
                             >
                                 <img
-                                    src="images/projects/lampy.png"
+                                    src="/hardware-devroom/images/projects/lampy.png"
                                     alt="Lampy"
                                     class="max-h-40 object-contain"
                                 />
@@ -1321,7 +1563,7 @@
                                 style="min-height: 180px"
                             >
                                 <img
-                                    src="images/projects/explorer.png"
+                                    src="/hardware-devroom/images/projects/explorer.png"
                                     alt="Explorer"
                                     class="max-h-40 object-contain"
                                 />
@@ -1347,7 +1589,7 @@
                                 style="min-height: 180px"
                             >
                                 <img
-                                    src="images/projects/glyph.png"
+                                    src="/hardware-devroom/images/projects/glyph.png"
                                     alt="Glyph"
                                     class="max-h-40 object-contain"
                                 />
@@ -1704,7 +1946,7 @@
                 </p>
 
                 <div
-                    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 items-center"
+                    class="flex flex-wrap justify-center gap-x-6 gap-y-8"
                 >
                     <a
                         href="https://absurd.industries"
@@ -1712,7 +1954,7 @@
                         class="community-logo"
                     >
                         <img
-                            src="images/absurd-logo-for-any-background.png"
+                            src="/hardware-devroom/images/absurd-logo-for-any-background.png"
                             alt="Absurd Industries"
                             class="h-16 md:h-20 object-contain"
                         />
@@ -1727,7 +1969,7 @@
                         class="community-logo"
                     >
                         <img
-                            src="images/pcb-cupid-for-dark-background.png"
+                            src="/hardware-devroom/images/pcb-cupid-for-dark-background.png"
                             alt="PCB Cupid"
                             class="h-16 md:h-20 object-contain"
                         />
@@ -1742,7 +1984,7 @@
                         class="community-logo"
                     >
                         <img
-                            src="images/ampere-works-for-dark-background.png"
+                            src="/hardware-devroom/images/ampere-works-for-dark-background.png"
                             alt="ampere.works"
                             class="h-16 md:h-20 object-contain"
                         />
@@ -1757,7 +1999,7 @@
                         class="community-logo"
                     >
                         <img
-                            src="images/vader-logo-for-any-background.png"
+                            src="/hardware-devroom/images/vader-logo-for-any-background.png"
                             alt="Vader"
                             class="h-16 md:h-20 object-contain"
                         />
@@ -1772,7 +2014,7 @@
                         class="community-logo"
                     >
                         <img
-                            src="images/makerville.svg"
+                            src="/hardware-devroom/images/makerville.svg"
                             alt="Makerville"
                             class="h-16 md:h-20 object-contain"
                         />
@@ -1787,13 +2029,29 @@
                         class="community-logo"
                     >
                         <img
-                            src="images/foss-united.svg"
+                            src="/hardware-devroom/images/foss-united.svg"
                             alt="FOSS United"
                             class="h-12 md:h-16 object-contain"
                         />
                         <span
                             class="font-bold text-xs uppercase tracking-wide text-center"
                             >FOSS United</span
+                        >
+                    </a>
+                    <a
+                        href="https://mecha.so/"
+                        target="_blank"
+                        rel="noopener"
+                        class="community-logo"
+                    >
+                        <img
+                            src="/hardware-devroom/images/partners/mecha.svg"
+                            alt="Mecha"
+                            class="h-16 md:h-20 object-contain"
+                        />
+                        <span
+                            class="font-bold text-xs uppercase tracking-wide text-center"
+                            >Mecha</span
                         >
                     </a>
                 </div>
@@ -1903,88 +2161,81 @@
         </section>
 
         <!-- Footer -->
-        <footer class="py-12 mt-8" style="background: rgba(184, 149, 106, 0.6)">
-            <div class="max-w-4xl mx-auto px-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                    <div>
-                        <h3
-                            class="font-bold text-base uppercase tracking-widest mb-4 text-ink"
+        <footer class="footer-wrap">
+            <div class="max-w-4xl mx-auto px-5 sm:px-6">
+                <!-- links -->
+                <div
+                    class="footer-links"
+                    style="grid-template-columns: 1fr 1fr"
+                >
+                    <div class="footer-col">
+                        <h4 class="footer-heading">Links</h4>
+                        <a
+                            href="https://fossunited.org/indiafoss/2026/devrooms/hardware"
+                            target="_blank"
+                            rel="noopener"
+                            ><i class="ph-duotone ph-paper-plane-tilt"></i>
+                            <span>Submit a Proposal</span></a
                         >
-                            Links
-                        </h3>
-                        <ul class="space-y-3 text-sm">
-                            <li>
-                                <a
-                                    href="https://fossunited.org/indiafoss/2026/devrooms/hardware"
-                                    class="text-ink hover:underline flex items-center font-bold"
-                                >
-                                    <i
-                                        class="fa-solid fa-paper-plane mr-2 text-xs"
-                                    ></i>
-                                    Submit a Proposal
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://fossunited.org/dashboard/buy-tickets?event=ek0supi1tu"
-                                    class="text-ink hover:underline flex items-center font-bold"
-                                >
-                                    <i
-                                        class="fa-solid fa-ticket mr-2 text-xs"
-                                    ></i>
-                                    Get Tickets
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://absurd.industries"
-                                    class="text-ink hover:underline flex items-center font-bold"
-                                >
-                                    <i
-                                        class="fa-solid fa-flask mr-2 text-xs"
-                                    ></i>
-                                    Absurd Industries
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://discord.gg/DUSUtguG2H"
-                                    class="text-ink hover:underline flex items-center font-bold"
-                                >
-                                    <i
-                                        class="fa-brands fa-discord mr-2 text-xs"
-                                    ></i>
-                                    Discord
-                                </a>
-                            </li>
-                        </ul>
+                        <a
+                            href="https://fossunited.org/dashboard/buy-tickets?event=ek0supi1tu"
+                            target="_blank"
+                            rel="noopener"
+                            ><i class="ph-duotone ph-ticket"></i>
+                            <span>Get Tickets</span></a
+                        >
+                        <a href="/"
+                            ><i class="ph-duotone ph-flask"></i>
+                            <span>Absurd Industries</span></a
+                        >
+                        <a
+                            href="https://discord.gg/DUSUtguG2H"
+                            target="_blank"
+                            rel="noopener"
+                            ><i class="ph-duotone ph-discord-logo"></i>
+                            <span>Discord</span></a
+                        >
                     </div>
-
-                    <div>
-                        <a href="https://fossunited.org" target="_blank">
+                    <div class="footer-col">
+                        <a
+                            href="https://fossunited.org"
+                            target="_blank"
+                            rel="noopener"
+                            class="inline-block mb-3"
+                        >
                             <img
-                                src="images/foss-united.svg"
+                                src="/hardware-devroom/images/foss-united.svg"
                                 alt="FOSS United"
-                                class="h-8 mb-4"
+                                class="h-8"
                             />
                         </a>
-                        <p class="text-sm text-ink leading-relaxed">
+                        <p
+                            style="
+                                font-family:
+                                    &quot;DM Sans&quot;, system-ui, sans-serif;
+                                font-size: 0.85rem;
+                                color: #3d3d3d;
+                                line-height: 1.6;
+                            "
+                        >
                             FOSS United is a non-profit foundation that aims to
-                            increase the FOSS footprint in India &mdash;
-                            evangelising, promoting, and educating communities
-                            about Free and Open Source Software.
+                            increase the FOSS footprint in India - evangelising,
+                            promoting, and educating communities about Free and
+                            Open Source Software.
                         </p>
                     </div>
                 </div>
 
+                <!-- bottom bar -->
                 <div
-                    class="border-t border-ink border-opacity-20 pt-6 flex flex-col md:flex-row justify-between items-center gap-2"
+                    class="footer-bottom flex flex-col sm:flex-row justify-between items-center gap-1"
                 >
-                    <p class="text-xs text-ink font-bold">
-                        Absurd Industries x FOSS United
+                    <p class="text-xs text-ink font-semibold">
+                        Absurd Industries &times; FOSS United
                     </p>
                     <p class="text-xs text-stencil">
-                        Made with curiosity in Bengaluru.
+                        <span class="copyleft">&#127744;</span> Made with
+                        curiosity in Bengaluru.
                     </p>
                 </div>
             </div>
