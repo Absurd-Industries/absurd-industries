@@ -10,6 +10,9 @@
 .Spotlight-V100
 .Trashes
 
+# LLMs/IDE
+CLAUDE.md
+
 # Directories potentially created on remote AFP share
 .AppleDB
 .AppleDesktop
